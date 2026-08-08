@@ -73,6 +73,50 @@ export default function BibleAudioPage() {
     return () => clearTimeout(timer);
   }, [liturgySearchQuery]);
 
+const formatLiturgyItemFromKey = (key, apiBase) => {
+  let category = 'gospel';
+  let categoryLabel = 'Tin Mừng';
+  if (key.startsWith('r1_') || key.startsWith('r1')) {
+    category = 'r1';
+    categoryLabel = 'Bài Đọc 1';
+  } else if (key.startsWith('r2_') || key.startsWith('r2')) {
+    category = 'r2';
+    categoryLabel = 'Bài Đọc 2';
+  } else if (key.startsWith('psalm_') || key.startsWith('psalm')) {
+    category = 'psalm';
+    categoryLabel = 'Đáp Ca';
+  }
+
+  let displayTitle = key;
+  const parts = key.split('_');
+  if (parts.length >= 2) {
+    const bookShort = parts[1];
+    const versePart = parts.slice(2).join(' ');
+    displayTitle = `${categoryLabel} (${bookShort} ${versePart})`;
+  }
+
+  let relPath = key;
+  if (category === 'gospel') {
+    relPath = `/audio/gospel/${key}.mp3`;
+  } else if (category === 'r1') {
+    relPath = `/audio/readings/r1/${key}.mp3`;
+  } else if (category === 'r2') {
+    relPath = `/audio/readings/r2/${key}.mp3`;
+  } else {
+    relPath = `/audio/readings/psalm/${key}.mp3`;
+  }
+
+  const streamUrl = `${apiBase}${relPath}`;
+
+  return {
+    trackId: key,
+    title: displayTitle,
+    category,
+    streamUrl,
+    filename: `${key}.mp3`
+  };
+};
+
   // 1. Tải Bài Đọc Phụng Vụ từ Server API hoặc R2 Static Storage Manifest
   const fetchLiturgyAudioInitial = useCallback(async (category, searchQuery) => {
     setIsLoadingLiturgy(true);
@@ -80,8 +124,18 @@ export default function BibleAudioPage() {
     const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
 
     if (isStaticStorage) {
-      setLiturgyAudioList([]);
-      setTotalLiturgyCount(0);
+      const index = await loadAudioIndex();
+      const liturgyKeys = index?.liturgy || [];
+      const items = liturgyKeys.map(k => formatLiturgyItemFromKey(k, AUDIO_API_BASE));
+
+      const filtered = items.filter(item => {
+        const matchCat = category === 'all' || item.category === category;
+        const matchQ = !searchQuery || item.title.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchCat && matchQ;
+      });
+
+      setLiturgyAudioList(filtered);
+      setTotalLiturgyCount(filtered.length);
       setHasMoreLiturgy(false);
       setNextCursorLiturgy(null);
       setIsLoadingLiturgy(false);
@@ -202,9 +256,24 @@ export default function BibleAudioPage() {
   }, [allBibleBooks, selectedBookId, filteredBibleBooks]);
 
   // Thao tác Xin Token & Phát Track
-  const handlePlayTrack = useCallback(async (item, trackMeta) => {
-    if (!item || !item.trackId || loadingTrackId) return;
+  const handlePlayTrack = useCallback(async (item, trackMeta = {}) => {
+    if (!item || loadingTrackId) return;
 
+    if (item.streamUrl) {
+      setCurrentTrack({
+        trackId: item.trackId || item.filename,
+        title: trackMeta?.title || item.title,
+        subtitle: trackMeta?.subtitle || 'Bài Đọc Phụng Vụ Audio',
+        category: trackMeta?.category || item.category || 'Phụng Vụ',
+        url: item.streamUrl,
+        filename: item.filename,
+        bookId: trackMeta?.bookId,
+        chapter: trackMeta?.chapter
+      });
+      return;
+    }
+
+    if (!item.trackId) return;
     setLoadingTrackId(item.trackId);
     try {
       const signedStreamUrl = await fetchAudioAccessStreamUrl(item.trackId);
