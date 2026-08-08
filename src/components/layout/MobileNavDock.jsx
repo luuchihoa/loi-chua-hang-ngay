@@ -10,7 +10,7 @@ export default function MobileNavDock() {
 
   const navItems = [
     {
-      path: '/liturgy',
+      path: '/',
       label: 'Lời Chúa',
       icon: BookOpen,
       isActive: location.pathname === '/' || location.pathname === '/liturgy',
