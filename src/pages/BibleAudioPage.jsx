@@ -76,24 +76,43 @@ export default function BibleAudioPage() {
 const formatLiturgyItemFromKey = (key, apiBase) => {
   let category = 'gospel';
   let categoryLabel = 'Tin Mừng';
+  let badgeColor = 'bg-amber-100/90 text-amber-900 border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800';
+
   if (key.startsWith('r1_') || key.startsWith('r1')) {
     category = 'r1';
     categoryLabel = 'Bài Đọc 1';
+    badgeColor = 'bg-emerald-100/90 text-emerald-900 border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800';
   } else if (key.startsWith('r2_') || key.startsWith('r2')) {
     category = 'r2';
     categoryLabel = 'Bài Đọc 2';
+    badgeColor = 'bg-purple-100/90 text-purple-900 border-purple-300 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-800';
   } else if (key.startsWith('psalm_') || key.startsWith('psalm')) {
     category = 'psalm';
     categoryLabel = 'Đáp Ca';
+    badgeColor = 'bg-rose-100/90 text-rose-900 border-rose-300 dark:bg-rose-950/70 dark:text-rose-300 dark:border-rose-800';
   }
 
-  let displayTitle = key;
+  let formattedRef = '';
   const parts = key.split('_');
-  if (parts.length >= 2) {
-    const bookShort = parts[1];
-    const versePart = parts.slice(2).join(' ');
-    displayTitle = `${categoryLabel} (${bookShort} ${versePart})`;
+
+  if (category === 'gospel') {
+    const book = parts[1] || '';
+    const rawRef = parts.slice(2).join(' ');
+    formattedRef = `${book} ${rawRef.replace(/(\d+)(\d{2})/g, '$1,$2')}`;
+  } else {
+    if (parts.length >= 3 && !isNaN(parts[1])) {
+      const numPrefix = parts[1];
+      const book = parts[2];
+      const rawRef = parts.slice(3).join(' ');
+      formattedRef = `${numPrefix} ${book} ${rawRef.replace(/(\d+)(\d{2})/g, '$1,$2')}`;
+    } else if (parts.length >= 2) {
+      const book = parts[1];
+      const rawRef = parts.slice(2).join(' ');
+      formattedRef = `${book} ${rawRef.replace(/(\d+)(\d{2})/g, '$1,$2')}`;
+    }
   }
+
+  const fullScriptureTitle = `${categoryLabel} (${formattedRef || key})`;
 
   let relPath = key;
   if (category === 'gospel') {
@@ -110,10 +129,18 @@ const formatLiturgyItemFromKey = (key, apiBase) => {
 
   return {
     trackId: key,
-    title: displayTitle,
+    title: fullScriptureTitle,
+    fullScriptureTitle,
+    categoryLabel,
     category,
+    badgeColor,
+    formattedRef,
     streamUrl,
-    filename: `${key}.mp3`
+    filename: `${key}.mp3`,
+    hasMetadataMatch: true,
+    primaryUsage: {
+      title: 'Phụng Vụ Hằng Ngày'
+    }
   };
 };
 
@@ -564,40 +591,25 @@ const formatLiturgyItemFromKey = (key, apiBase) => {
                           <div className="min-w-0 flex-1 space-y-1">
                             <div className="flex items-center gap-2 flex-wrap">
                               <h2 className="text-sm font-bold text-stone-950 dark:text-stone-50 font-serif tracking-tight leading-snug">
-                                {item.fullScriptureTitle}
+                                {item.fullScriptureTitle || item.title}
                               </h2>
                             </div>
 
                             <div className="flex items-center gap-2 flex-wrap text-xs">
-                              <span className="px-2 py-0.5 rounded bg-amber-100/70 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 text-[10px] uppercase font-semibold border border-amber-300/40 dark:border-amber-800/50 shrink-0">
-                                {item.category}
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold border shrink-0 ${
+                                item.badgeColor || 'bg-amber-100/70 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border-amber-300/40'
+                              }`}>
+                                {item.categoryLabel || item.category}
                               </span>
 
-                              {item.hasMetadataMatch && item.primaryUsage ? (
-                                <span className="text-stone-700 dark:text-stone-300 font-medium flex items-center gap-1 truncate" title={item.primaryUsage.title}>
-                                  <Calendar size={12} className="text-amber-700 shrink-0" aria-hidden="true" />
-                                  <span className="truncate">{item.primaryUsage.title}</span>
-                                </span>
-                              ) : (
-                                <span className="text-stone-400 dark:text-stone-500 font-normal italic">
-                                  Chưa gắn ngày/lễ
-                                </span>
-                              )}
-
-                              {item.extraUsagesCount > 0 && (
-                                <span 
-                                  className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 text-[10px] font-mono font-medium shrink-0"
-                                  title={item.usages?.map(u => u.title).join('\n')}
-                                >
-                                  +{item.extraUsagesCount} lễ khác
-                                </span>
-                              )}
+                              <span className="text-stone-700 dark:text-stone-300 font-medium flex items-center gap-1 truncate">
+                                <Calendar size={12} className="text-amber-700 shrink-0" aria-hidden="true" />
+                                <span className="truncate">{item.primaryUsage?.title || 'Phụng Vụ Hằng Ngày'}</span>
+                              </span>
                             </div>
 
                             <div className="text-[11px] text-stone-400 dark:text-stone-500 font-mono truncate flex items-center gap-2 pt-0.5">
-                              <span className="truncate" title={item.filename}>{item.filename}</span>
-                              <span>•</span>
-                              <span className="shrink-0">{item.size_kb} KB</span>
+                              <span className="truncate" title={item.filename}>Cloudflare R2 • {item.filename}</span>
                             </div>
                           </div>
                         </div>
