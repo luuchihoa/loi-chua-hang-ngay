@@ -11,6 +11,8 @@ import {
   Headphones,
   BookMarked,
   Sparkles,
+  Info,
+  CheckCircle,
 } from 'lucide-react';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
 import {
@@ -34,6 +36,7 @@ const TESTAMENT_TABS = [
     gradient: 'from-amber-500 to-orange-600',
     activeBg: 'bg-gradient-to-r from-amber-500 to-orange-600',
     ringColor: 'ring-amber-400/60',
+    chipActiveBg: 'bg-gradient-to-br from-amber-500 to-orange-600',
     icon: BookMarked,
   },
   {
@@ -43,9 +46,35 @@ const TESTAMENT_TABS = [
     gradient: 'from-blue-500 to-indigo-600',
     activeBg: 'bg-gradient-to-r from-blue-500 to-indigo-600',
     ringColor: 'ring-blue-400/60',
+    chipActiveBg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
     icon: Sparkles,
   },
 ];
+
+// ── Toast Component ──────────────────────────────────────────────────────────
+function Toast({ message, onDismiss }) {
+  if (!message) return null;
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="fixed bottom-28 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border border-white/20 bg-stone-900/95 backdrop-blur-md text-white max-w-[90vw] sm:max-w-sm animate-[fadeInUp_0.25s_ease]"
+    >
+      <span className="shrink-0 w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center">
+        <Info size={14} className="text-amber-400" />
+      </span>
+      <p className="text-sm leading-snug flex-1">{message}</p>
+      <button
+        type="button"
+        onClick={onDismiss}
+        className="shrink-0 text-white/40 hover:text-white transition cursor-pointer"
+        aria-label="Đóng thông báo"
+      >
+        <X size={14} />
+      </button>
+    </div>
+  );
+}
 
 export default function BibleAudioPage() {
   useAudioIndex();
@@ -56,8 +85,16 @@ export default function BibleAudioPage() {
   const [selectedBookId, setSelectedBookId] = useState('st');
   const [currentTrack, setCurrentTrack] = useState(null);
   const [loadingTrackId, setLoadingTrackId] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
 
-  const chipScrollRef = useRef(null);
+  const bookChipRef = useRef(null);
+  const chapterScrollRef = useRef(null);
+
+  const triggerToast = useCallback((msg) => {
+    setToastMessage(msg);
+    const t = setTimeout(() => setToastMessage(null), 4000);
+    return () => clearTimeout(t);
+  }, []);
 
   const filteredBibleBooks = useMemo(() => {
     const query = bibleSearchQuery.trim().toLowerCase();
@@ -78,13 +115,11 @@ export default function BibleAudioPage() {
     return filteredBibleBooks[0] || allBibleBooks[0];
   }, [allBibleBooks, selectedBookId, filteredBibleBooks, testamentFilter]);
 
-  // Scroll selected chip into view on mobile
+  // Scroll selected book chip into view
   useEffect(() => {
-    if (!chipScrollRef.current || !selectedBook) return;
-    const activeChip = chipScrollRef.current.querySelector(`[data-book-id="${selectedBook.id}"]`);
-    if (activeChip) {
-      activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
+    if (!bookChipRef.current || !selectedBook) return;
+    const chip = bookChipRef.current.querySelector(`[data-book-id="${selectedBook.id}"]`);
+    if (chip) chip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, [selectedBook?.id]);
 
   const handlePlayBibleChapter = useCallback(
@@ -92,7 +127,7 @@ export default function BibleAudioPage() {
       if (!selectedBook) return;
       const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
       if (!isMp3Available) {
-        alert(`Chương ${chapNum} hiện chưa có bản thu Audio Studio MP3.\nBan biên tập đang cập nhật!`);
+        triggerToast(`Chương ${chapNum} — ${selectedBook.name} chưa có bản thu Studio MP3. Ban biên tập đang cập nhật dần!`);
         return;
       }
 
@@ -135,7 +170,7 @@ export default function BibleAudioPage() {
         })
         .finally(() => setLoadingTrackId(null));
     },
-    [selectedBook, loadingTrackId]
+    [selectedBook, loadingTrackId, triggerToast]
   );
 
   const activeTabMeta = TESTAMENT_TABS.find((t) => t.id === testamentFilter);
@@ -159,11 +194,9 @@ export default function BibleAudioPage() {
   return (
     <main className="min-h-screen pb-40 font-sans">
 
-      {/* ── HERO + CONTENT as one connected surface ───────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <div className="relative">
-
-        {/* Dark hero background — extends behind the card */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 px-4 pt-10 pb-32 sm:pb-36 sm:px-8">
+        <div className="relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 px-4 pt-10 pb-36 sm:pb-40 sm:px-8">
           <div className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-10 -left-10 w-60 h-60 rounded-full bg-indigo-500/8 blur-3xl" />
 
@@ -209,11 +242,11 @@ export default function BibleAudioPage() {
           </div>
         </div>
 
-        {/* ── CONTENT CARD — floats up over hero with negative margin ───────── */}
-        <div className="relative z-10 -mt-24 max-w-4xl mx-auto px-3 sm:px-6">
-          <div className="rounded-3xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-xl overflow-hidden">
+        {/* ── CONTENT CARD — floated up over hero ───────────────────────── */}
+        <div className="relative z-10 -mt-28 max-w-4xl mx-auto px-3 sm:px-6">
+          <div className="rounded-3xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-2xl overflow-hidden">
 
-            {/* Search bar inside card header */}
+            {/* Search bar */}
             <div className={`bg-gradient-to-r ${activeTabMeta?.gradient} px-4 py-3`}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none" size={14} />
@@ -221,7 +254,7 @@ export default function BibleAudioPage() {
                   type="text"
                   value={bibleSearchQuery}
                   onChange={(e) => setBibleSearchQuery(e.target.value)}
-                  placeholder={`Tìm trong ${activeTabMeta?.label}…`}
+                  placeholder={`Tìm sách trong ${activeTabMeta?.label}…`}
                   className="w-full pl-9 pr-8 py-2 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-white placeholder-white/50 text-sm focus:outline-none focus:bg-white/25 transition"
                 />
                 {bibleSearchQuery && (
@@ -236,15 +269,15 @@ export default function BibleAudioPage() {
               </div>
             </div>
 
-            {/* ── MOBILE: Horizontal chip scroll ─────────────────────────────── */}
+            {/* ── BOOK CHIPS — horizontal scroll, full name ─────────────────── */}
             <div
-              ref={chipScrollRef}
-              className="lg:hidden flex gap-2 px-3 py-3 overflow-x-auto scrollbar-none border-b border-stone-100 dark:border-stone-800 bg-stone-50/60 dark:bg-stone-800/30"
+              ref={bookChipRef}
+              className="flex gap-2 px-3 py-3 overflow-x-auto scrollbar-none border-b border-stone-100 dark:border-stone-800 bg-stone-50/40 dark:bg-stone-800/20"
               role="listbox"
-              aria-label="Chọn sách"
+              aria-label="Chọn sách Kinh Thánh"
             >
               {filteredBibleBooks.length === 0 ? (
-                <span className="text-xs text-stone-400 px-2 py-1">Không tìm thấy sách phù hợp</span>
+                <span className="text-xs text-stone-400 py-2 px-1">Không tìm thấy sách phù hợp</span>
               ) : (
                 filteredBibleBooks.map((book) => {
                   const isSelected = selectedBook?.id === book.id;
@@ -262,204 +295,152 @@ export default function BibleAudioPage() {
                       role="option"
                       aria-selected={isSelected}
                       onClick={() => setSelectedBookId(book.id)}
-                      className={`shrink-0 flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl text-center transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+                      className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 leading-none ${
                         isSelected
-                          ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-md scale-105`
-                          : 'bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-amber-300 dark:hover:border-amber-600'
+                          ? `${activeTabMeta?.chipActiveBg} text-white shadow-md`
+                          : 'bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-amber-300 dark:hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300'
                       }`}
                     >
-                      <span className="text-[11px] font-extrabold font-mono leading-none">{book.short}</span>
                       {hasMp3 && !isSelected && (
-                        <span className="w-1 h-1 rounded-full bg-amber-500" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
                       )}
+                      {isSelected && <Volume2 size={12} className="shrink-0" />}
+                      <span>{book.name}</span>
                     </button>
                   );
                 })
               )}
             </div>
 
-            {/* ── DESKTOP: Two column layout ──────────────────────────────────── */}
-            <div className="grid grid-cols-1 lg:grid-cols-5">
+            {/* ── SELECTED BOOK HEADER ────────────────────────────────────────── */}
+            {selectedBook && (
+              <>
+                <div className="px-4 sm:px-5 py-4 border-b border-stone-100 dark:border-stone-800 bg-stone-50/30 dark:bg-stone-800/10">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold font-mono bg-gradient-to-br ${activeTabMeta?.gradient} text-white`}>
+                          {selectedBook.short}
+                        </span>
+                        <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100">
+                          Sách {selectedBook.name}
+                        </h2>
+                      </div>
+                      <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">
+                        {selectedBook.category} · {selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} · {selectedBook.chapters} chương
+                      </p>
+                    </div>
 
-              {/* LEFT col: Book list (desktop only) */}
-              <div className="hidden lg:block lg:col-span-2 border-r border-stone-100 dark:border-stone-800 overflow-y-auto max-h-[560px]">
-                <div className="px-3 py-2 border-b border-stone-100 dark:border-stone-800 flex items-center gap-2">
-                  <BookOpen size={12} className="text-stone-400" />
-                  <span className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-widest">
-                    {filteredBibleBooks.length} Sách
-                  </span>
+                    <div className="shrink-0 text-right">
+                      <div className="text-xl font-extrabold font-mono leading-none text-stone-900 dark:text-stone-100">
+                        {availableCount}
+                        <span className="text-xs font-normal text-stone-400">/{selectedBook.chapters}</span>
+                      </div>
+                      <p className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-0.5">
+                        {availableCount > 0 ? 'chương có MP3' : 'chưa có MP3'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="mt-3 h-1.5 w-full bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full bg-gradient-to-r ${activeTabMeta?.gradient} transition-all duration-700`}
+                      style={{ width: availableCount > 0 ? `${(availableCount / selectedBook.chapters) * 100}%` : '2%' }}
+                    />
+                  </div>
                 </div>
-                <div className="divide-y divide-stone-100 dark:divide-stone-800/60">
-                  {filteredBibleBooks.length === 0 ? (
-                    <div className="py-10 text-center text-sm text-stone-400">Không tìm thấy sách phù hợp.</div>
-                  ) : (
-                    filteredBibleBooks.map((book) => {
-                      const isSelected = selectedBook?.id === book.id;
-                      const mp3Count = (() => {
-                        let n = 0;
-                        for (let i = 1; i <= book.chapters; i++) {
-                          if (hasBibleChapterAudio(book.id, i)) n++;
-                        }
-                        return n;
-                      })();
+
+                {/* ── CHAPTER — horizontal scroll row ──────────────────────────── */}
+                <div className="px-4 py-3 border-b border-stone-100 dark:border-stone-800">
+                  {/* Legend row */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 dark:text-stone-400">
+                      <span className="w-4 h-4 rounded-md bg-amber-100 dark:bg-amber-950/40 border border-amber-300/70 flex items-center justify-center">
+                        <Play size={7} className="fill-amber-600 text-amber-600" />
+                      </span>
+                      Có MP3
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-400 dark:text-stone-500">
+                      <span className="w-4 h-4 rounded-md bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
+                        <Lock size={7} className="text-stone-300 dark:text-stone-600" />
+                      </span>
+                      Đang cập nhật
+                    </div>
+                    <div className="flex items-center gap-1 text-[11px] text-amber-600 dark:text-amber-400 ml-auto font-medium">
+                      <Radio size={9} className="animate-pulse" />
+                      Chạm để nghe
+                    </div>
+                  </div>
+
+                  {/* Horizontal chapter scroll */}
+                  <div
+                    ref={chapterScrollRef}
+                    className="flex gap-2 overflow-x-auto scrollbar-none pb-1"
+                    role="group"
+                    aria-label={`Chương sách ${selectedBook.name}`}
+                  >
+                    {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
+                      const filename = getBibleAudioFilename(selectedBook.id, chapNum);
+                      const trackId = `bible_${selectedBook.id}_${chapNum}`;
+                      const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
+                      const isPlayingThisChap = Boolean(
+                        currentTrack &&
+                          (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`))
+                      );
+                      const isLoadingThisChap = loadingTrackId === trackId;
+
                       return (
                         <button
-                          key={book.id}
+                          key={chapNum}
                           type="button"
-                          onClick={() => setSelectedBookId(book.id)}
-                          className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-amber-400 ${
-                            isSelected
-                              ? 'bg-amber-50 dark:bg-amber-950/40 border-r-[3px] border-amber-500'
-                              : 'hover:bg-stone-50 dark:hover:bg-stone-800/40'
+                          disabled={isLoadingThisChap}
+                          aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
+                          onClick={() => handlePlayBibleChapter(chapNum)}
+                          className={`group shrink-0 flex flex-col items-center justify-center gap-1 w-14 h-14 rounded-2xl font-mono font-bold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 relative overflow-hidden ${
+                            isPlayingThisChap
+                              ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-lg scale-110 ring-2 ${activeTabMeta?.ringColor}`
+                              : isMp3Available
+                              ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/60 hover:scale-105 hover:shadow-md hover:bg-amber-100 dark:hover:bg-amber-900/50'
+                              : 'bg-stone-50 dark:bg-stone-800/20 text-stone-300 dark:text-stone-600 border border-stone-150/50 dark:border-stone-700/20'
                           }`}
                         >
-                          <span className={`w-9 h-9 rounded-xl flex items-center justify-center text-[11px] font-extrabold font-mono shrink-0 ${
-                            isSelected
-                              ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-sm`
-                              : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-                          }`}>
-                            {book.short}
+                          {isPlayingThisChap && (
+                            <span className="absolute inset-0 rounded-2xl ring-4 ring-amber-400/25 animate-ping pointer-events-none" />
+                          )}
+                          <span className={`text-xs leading-none ${!isMp3Available && !isPlayingThisChap ? 'opacity-30' : 'font-extrabold'}`}>
+                            {isLoadingThisChap ? (
+                              <Loader2 size={14} className="animate-spin" />
+                            ) : isPlayingThisChap ? (
+                              <Radio size={14} className="animate-pulse" />
+                            ) : (
+                              chapNum
+                            )}
                           </span>
-                          <div className="min-w-0 flex-1">
-                            <p className={`text-sm font-semibold truncate ${isSelected ? 'text-amber-900 dark:text-amber-200' : 'text-stone-800 dark:text-stone-200'}`}>
-                              {book.name}
-                            </p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className="text-[10px] text-stone-400 dark:text-stone-500">{book.chapters} chương</span>
-                              {mp3Count > 0 && (
-                                <span className="flex items-center gap-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400">
-                                  <Volume2 size={9} />{mp3Count} MP3
-                                </span>
-                              )}
-                            </div>
-                          </div>
+                          {/* MP3 / Lock indicator dot */}
+                          {!isPlayingThisChap && !isLoadingThisChap && (
+                            <span className={`w-1 h-1 rounded-full ${isMp3Available ? 'bg-amber-500' : 'bg-stone-200 dark:bg-stone-700'}`} />
+                          )}
                         </button>
                       );
-                    })
-                  )}
-                </div>
-              </div>
-
-              {/* RIGHT col: Chapter grid (full width mobile, right col desktop) */}
-              <div className="lg:col-span-3 flex flex-col">
-                {selectedBook ? (
-                  <>
-                    {/* Book header */}
-                    <div className="px-4 sm:px-5 py-4 border-b border-stone-100 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-800/20">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold font-mono bg-gradient-to-br ${activeTabMeta?.gradient} text-white`}>
-                              {selectedBook.short}
-                            </span>
-                            <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100">
-                              Sách {selectedBook.name}
-                            </h2>
-                          </div>
-                          <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">
-                            {selectedBook.category} · {selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} · {selectedBook.chapters} chương
-                          </p>
-                        </div>
-                        <div className="shrink-0 text-right">
-                          <div className="text-xl font-extrabold font-mono leading-none text-stone-900 dark:text-stone-100">
-                            {availableCount}
-                            <span className="text-xs font-normal text-stone-400">/{selectedBook.chapters}</span>
-                          </div>
-                          <p className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">MP3 sẵn sàng</p>
-                        </div>
-                      </div>
-
-                      {/* Progress bar */}
-                      <div className="mt-3 h-1.5 w-full bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full bg-gradient-to-r ${activeTabMeta?.gradient} transition-all duration-700`}
-                          style={{ width: availableCount > 0 ? `${(availableCount / selectedBook.chapters) * 100}%` : '0%' }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Legend */}
-                    <div className="px-4 sm:px-5 py-2 flex items-center gap-3 border-b border-stone-100 dark:border-stone-800">
-                      <div className="flex items-center gap-1.5 text-[11px] text-stone-500 dark:text-stone-400">
-                        <span className="w-4 h-4 rounded-md bg-amber-500/20 border border-amber-400/50 flex items-center justify-center">
-                          <Play size={7} className="fill-amber-600 text-amber-600" />
-                        </span>
-                        Có MP3
-                      </div>
-                      <div className="flex items-center gap-1.5 text-[11px] text-stone-400 dark:text-stone-500">
-                        <span className="w-4 h-4 rounded-md bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
-                          <Lock size={7} className="text-stone-400" />
-                        </span>
-                        Đang cập nhật
-                      </div>
-                      <div className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-amber-400 ml-auto font-semibold">
-                        <Radio size={9} className="animate-pulse" />
-                        Nhấn để nghe
-                      </div>
-                    </div>
-
-                    {/* Chapter grid */}
-                    <div className="p-3 sm:p-4 grid grid-cols-6 sm:grid-cols-8 md:grid-cols-9 lg:grid-cols-7 xl:grid-cols-9 gap-2">
-                      {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
-                        const filename = getBibleAudioFilename(selectedBook.id, chapNum);
-                        const trackId = `bible_${selectedBook.id}_${chapNum}`;
-                        const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
-                        const isPlayingThisChap = Boolean(
-                          currentTrack &&
-                            (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`))
-                        );
-                        const isLoadingThisChap = loadingTrackId === trackId;
-
-                        return (
-                          <button
-                            key={chapNum}
-                            type="button"
-                            disabled={isLoadingThisChap}
-                            aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
-                            title={isMp3Available ? `Studio MP3: ${selectedBook.name} chương ${chapNum}` : `Chưa có MP3: ${selectedBook.name} chương ${chapNum}`}
-                            onClick={() => handlePlayBibleChapter(chapNum)}
-                            className={`group relative aspect-square rounded-xl flex flex-col items-center justify-center gap-0.5 font-mono text-xs font-bold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 overflow-hidden ${
-                              isPlayingThisChap
-                                ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-md scale-110 ring-2 ${activeTabMeta?.ringColor}`
-                                : isMp3Available
-                                ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/60 hover:scale-105 hover:shadow-sm hover:bg-amber-100 dark:hover:bg-amber-950/50'
-                                : 'bg-stone-50 dark:bg-stone-800/20 text-stone-300 dark:text-stone-600 border border-stone-200/40 dark:border-stone-700/20'
-                            }`}
-                          >
-                            {isPlayingThisChap && (
-                              <span className="absolute inset-0 rounded-xl ring-4 ring-amber-400/30 animate-ping pointer-events-none" />
-                            )}
-                            {isLoadingThisChap ? (
-                              <Loader2 size={13} className="animate-spin" />
-                            ) : isPlayingThisChap ? (
-                              <Radio size={13} className="animate-pulse" />
-                            ) : isMp3Available ? (
-                              <Play size={10} className="fill-current opacity-70 group-hover:opacity-100" />
-                            ) : (
-                              <Lock size={9} className="opacity-30" />
-                            )}
-                            <span className={`text-[11px] leading-none ${!isMp3Available && !isPlayingThisChap ? 'opacity-30' : ''}`}>
-                              {chapNum}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : (
-                  <div className="py-20 text-center text-sm text-stone-400">
-                    Chọn một sách để xem danh sách chương.
+                    })}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+
+                {/* Desktop spacer */}
+                <div className="h-3" />
+              </>
+            )}
           </div>
         </div>
 
-        {/* Bottom spacing */}
         <div className="h-8" />
       </div>
 
+      {/* ── TOAST ────────────────────────────────────────────────────────────── */}
+      <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
+
+      {/* ── AUDIO PLAYER ─────────────────────────────────────────────────────── */}
       {currentTrack && (
         <BibleAudioPlayer currentTrack={currentTrack} onClose={() => setCurrentTrack(null)} />
       )}
