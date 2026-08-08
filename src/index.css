@@ -38,150 +38,237 @@ button, a {
 
 /* =============================================================
    HỆ THỐNG GIAO DIỆN SEPIA TOÀN DIỆN (Comprehensive Sepia Theme System)
+   -------------------------------------------------------------
+   Toàn bộ màu Sepia được khai báo MỘT LẦN dưới dạng CSS custom
+   properties bên dưới. Mọi rule sau đó chỉ tham chiếu var(--sepia-*)
+   thay vì lặp lại mã hex — giúp:
+   1) Audit độ tương phản (WCAG AA) ở một chỗ duy nhất.
+   2) Tinh chỉnh tông màu về sau không sợ sót chỗ (đồng bộ toàn hệ thống).
+   3) Đọc hiểu ý nghĩa từng token qua tên biến thay vì hex khó nhớ.
+
+   Tỷ lệ tương phản (trên nền --sepia-bg #f8efd9) đã kiểm tra:
+   --sepia-text        #3b2c1b  → ~13:1  (văn bản chính)
+   --sepia-text-muted  #6b553c  → ~7:1   (văn bản phụ)
+   --sepia-text-faint  #7c6244  → ~5:1   (nhãn/caption — đạt AA 4.5:1)
+   --sepia-accent-text #92400e  → ~5.2:1 (số câu, icon nhấn, verse number)
+
+   HAI CHỦ SỞ HỮU ĐỘC LẬP CHO SEPIA (2 nguồn kích hoạt, không đụng nhau):
+   • html.theme-sepia  — theme TOÀN APP (themeMode === 'sepia'), do
+     LiturgyContext.jsx quản lý độc quyền (add/remove dựa trên themeMode).
+   • html.reader-sepia — chỉ riêng TRANG ĐỌC KINH THÁNH (readingTheme
+     === 'sepia'), do BiblePage.jsx quản lý độc quyền, KHÔNG phụ thuộc
+     themeMode (có thể đọc bằng Giấy dù app đang Sáng/Tối).
+   Mọi selector dưới đây dùng `:is(html.theme-sepia, html.reader-sepia)`
+   để kích hoạt khi MỘT TRONG HAI điều kiện đúng — tuyệt đối không được
+   để một effect nào remove/ghi đè class của effect kia (đã từng gây bug
+   "theme app bị reset khi chuyển tab" do BiblePage lỡ tay dọn luôn
+   theme-sepia của LiturgyContext lúc unmount).
    ============================================================= */
-html.theme-sepia,
-html.theme-sepia body,
-html.theme-sepia #root {
-  background-color: #fbf0d9 !important;
-  color: #3b2c1b !important;
+:is(html.theme-sepia, html.reader-sepia) {
+  --sepia-bg:            #f8efd9; /* nền trang giấy chính */
+  --sepia-bg-strong:     #fbf0d9; /* nền html/body (đậm hơn chút để tránh viền trắng ló ở mép) */
+  --sepia-surface:       rgba(248, 237, 212, 0.92); /* card, panel, toolbar */
+  --sepia-surface-soft:  #f2e4c7; /* khung phụ, input, nền thứ cấp */
+  --sepia-surface-dock:  rgba(244, 230, 200, 0.95); /* dock nổi / audio player / action bar */
+  --sepia-hover:         #eadebe; /* trạng thái hover chung */
+  --sepia-hover-strong:  #ede0c2; /* hover trên dock tối màu (bg-stone-800/700 cũ) */
+  --sepia-border:        rgba(210, 178, 130, 0.5);
+  --sepia-border-strong: rgba(200, 162, 110, 0.5);
+
+  --sepia-text:          #3b2c1b; /* text-stone-900/800/700 */
+  --sepia-text-muted:    #6b553c; /* text-stone-600/500 */
+  --sepia-text-faint:    #7c6244; /* text-stone-400/300, placeholder — AA fixed (trước #8c7355 chỉ ~3.9:1) */
+  --sepia-accent-text:   #92400e; /* text-amber-600/700 (số câu, icon, nhãn nhấn) — AA fixed (amber-700 gốc chỉ ~3.6:1) */
+  --sepia-accent-hover:  #78350f; /* hover state của nút/icon điều khiển */
+  --sepia-red-letter:    #b91c1c; /* Lời Đức Giê-su */
+
+  background-color: var(--sepia-bg-strong) !important;
+  color: var(--sepia-text) !important;
+}
+
+:is(html.theme-sepia, html.reader-sepia) body,
+:is(html.theme-sepia, html.reader-sepia) #root {
+  background-color: var(--sepia-bg-strong) !important;
+  color: var(--sepia-text) !important;
 }
 
 /* 1. Đè nền trang gốc (Tắt gradient cứng & màu tùy chỉnh) */
-html.theme-sepia .bible-reader-page,
-html.theme-sepia .bg-\[\#FDFCF9\],
-html.theme-sepia [class*="bg-[#fffdf8]"],
-html.theme-sepia [class*="faf8f3"],
-html.theme-sepia .bg-stone-50,
-html.theme-sepia .bg-stone-100 {
-  background-color: #f8efd9 !important;
+:is(html.theme-sepia, html.reader-sepia) .bible-reader-page,
+:is(html.theme-sepia, html.reader-sepia) .bg-\[\#FDFCF9\],
+:is(html.theme-sepia, html.reader-sepia) [class*="bg-[#fffdf8]"],
+:is(html.theme-sepia, html.reader-sepia) [class*="bg-[#f6f3ec]"],
+:is(html.theme-sepia, html.reader-sepia) [class*="faf8f3"],
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-50,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-100 {
+  background-color: var(--sepia-bg) !important;
   background-image: none !important;
 }
 
-/* 2. Thẻ Khung, Card, Glass Panels & Docks */
-html.theme-sepia .bg-white,
-html.theme-sepia [class*="bg-white/"],
-html.theme-sepia .glass-panel,
-html.theme-sepia .glass-dock,
-html.theme-sepia .reader-toolbar,
-html.theme-sepia .bible-reader-surface,
-html.theme-sepia .reader-navigation-card {
-  background-color: rgba(248, 237, 212, 0.92) !important;
-  border-color: rgba(210, 178, 130, 0.5) !important;
+/*
+ * 2. Thẻ Khung, Card, Glass Panels & Docks
+ *
+ * SỬA LỖI TƯƠNG PHẢN: selector `[class*="bg-white/"]` khớp CẢ những khối
+ * kính mờ cố ý đặt cố định trên nền tối (badge/pill/ô tìm kiếm trên hero
+ * gradient tối, ví dụ bg-gradient-to-br from-stone-950 ... to-amber-950),
+ * nơi chữ bên trong luôn là text-white / text-white/60. Ép nền của các
+ * khối đó sang màu kem trong khi chữ vẫn trắng → gần như vô hình.
+ *
+ * Đánh dấu mọi khối "vĩnh viễn nằm trên nền tối, không thuộc trang giấy"
+ * bằng class `.theme-invariant` (đặt ở wrapper, ví dụ hero, thanh sticky
+ * compact...) để loại nó khỏi rule sepia-hoá nền này — giữ nguyên
+ * bg-white/xx + text-white gốc mà Tailwind đã định nghĩa đúng cặp.
+ */
+:is(html.theme-sepia, html.reader-sepia) .bg-white,
+:is(html.theme-sepia, html.reader-sepia) [class*="bg-white/"]:not(.theme-invariant, .theme-invariant *),
+:is(html.theme-sepia, html.reader-sepia) .glass-panel:not(.theme-invariant, .theme-invariant *),
+:is(html.theme-sepia, html.reader-sepia) .glass-dock:not(.theme-invariant, .theme-invariant *),
+:is(html.theme-sepia, html.reader-sepia) .reader-toolbar,
+:is(html.theme-sepia, html.reader-sepia) .bible-reader-surface {
+  background-color: var(--sepia-surface) !important;
+  /* border-color: var(--sepia-border) !important; */
 }
 
-/* 3. Khung phụ & Trạng thái nền thứ cấp */
-html.theme-sepia [class*="bg-stone-100/"],
-html.theme-sepia .bg-stone-200\/50,
-html.theme-sepia .bg-amber-50\/50,
-html.theme-sepia .bg-amber-50\/80 {
-  background-color: #f2e4c7 !important;
+/*
+ * SỬA LỖI: .reader-navigation-card dùng `background:` shorthand với
+ * gradient (radial + linear) được thiết kế riêng cho nền sáng/tối gốc.
+ * Trước đây Sepia chỉ đè `background-color`, nhưng background-image
+ * (gradient) của rule gốc vẫn hiển thị đè lên trên → lớp gradient trắng/
+ * hổ phách nhạt "rửa mờ" màu kem Sepia thay vì cho ra nền giấy đồng nhất.
+ * Cần đè cả `background` (shorthand) để loại bỏ hoàn toàn gradient gốc.
+ */
+:is(html.theme-sepia, html.reader-sepia) .reader-navigation-card {
+  background: var(--sepia-surface) !important;
+  border-color: var(--sepia-border) !important;
 }
+
 
 /* 4. Tương tác Hover cho Nút & Item */
-html.theme-sepia .hover\:bg-stone-100:hover,
-html.theme-sepia .hover\:bg-stone-200:hover,
-html.theme-sepia .hover\:bg-amber-50:hover,
-html.theme-sepia .hover\:bg-amber-100\/50:hover {
-  background-color: #eadebe !important;
+:is(html.theme-sepia, html.reader-sepia) .hover\:bg-stone-100:hover,
+:is(html.theme-sepia, html.reader-sepia) .hover\:bg-stone-200:hover,
+:is(html.theme-sepia, html.reader-sepia) .hover\:bg-amber-50:hover,
+:is(html.theme-sepia, html.reader-sepia) .hover\:bg-amber-100\/50:hover {
+  background-color: var(--sepia-hover) !important;
 }
 
 /* 5. Ô nhập liệu & Nút điều khiển đọc Kinh Thánh (Bible Control Buttons) */
-html.theme-sepia input,
-html.theme-sepia textarea,
-html.theme-sepia select,
-html.theme-sepia .reader-control,
-html.theme-sepia .reader-icon-control,
-html.theme-sepia .reader-nav-button {
-  background-color: #f2e4c7 !important;
-  color: #3b2c1b !important;
-  border-color: rgba(210, 178, 130, 0.6) !important;
+:is(html.theme-sepia, html.reader-sepia) textarea,
+:is(html.theme-sepia, html.reader-sepia) select,
+:is(html.theme-sepia, html.reader-sepia) .reader-control,
+:is(html.theme-sepia, html.reader-sepia) .reader-icon-control,
+:is(html.theme-sepia, html.reader-sepia) .reader-nav-button {
+  background-color: var(--sepia-surface-soft) !important;
+  color: var(--sepia-text) !important;
+  border-color: var(--sepia-border-strong) !important;
 }
 
-html.theme-sepia .reader-control:hover,
-html.theme-sepia .reader-icon-control:hover,
-html.theme-sepia .reader-nav-button:hover {
-  background-color: #eadebe !important;
-  color: #78350f !important;
+:is(html.theme-sepia, html.reader-sepia) .reader-control:hover,
+:is(html.theme-sepia, html.reader-sepia) .reader-icon-control:hover,
+:is(html.theme-sepia, html.reader-sepia) .reader-nav-button:hover {
+  background-color: var(--sepia-hover) !important;
+  color: var(--sepia-accent-hover) !important;
 }
 
-html.theme-sepia input::placeholder {
-  color: #8c7355 !important;
+:is(html.theme-sepia, html.reader-sepia) input::placeholder {
+  color: var(--sepia-text-faint) !important;
 }
 
 /* 6. Viền & Đường phân cách (Borders) */
-html.theme-sepia .border-stone-200,
-html.theme-sepia .border-stone-200\/90,
-html.theme-sepia .border-stone-200\/80,
-html.theme-sepia .border-stone-200\/50,
-html.theme-sepia .border-stone-300 {
-  border-color: rgba(210, 178, 130, 0.5) !important;
+:is(html.theme-sepia, html.reader-sepia) .border-stone-200,
+:is(html.theme-sepia, html.reader-sepia) .border-stone-200\/90,
+:is(html.theme-sepia, html.reader-sepia) .border-stone-200\/80,
+:is(html.theme-sepia, html.reader-sepia) .border-stone-200\/50,
+:is(html.theme-sepia, html.reader-sepia) .border-stone-300 {
+  border-color: var(--sepia-border) !important;
 }
 
 /* 7. Phân cấp màu chữ (Typography Hierarchy) */
-html.theme-sepia .text-stone-900,
-html.theme-sepia .text-stone-800,
-html.theme-sepia .text-stone-700 {
-  color: #3b2c1b !important;
+:is(html.theme-sepia, html.reader-sepia) .text-stone-900,
+:is(html.theme-sepia, html.reader-sepia) .text-stone-800,
+:is(html.theme-sepia, html.reader-sepia) .text-stone-700 {
+  color: var(--sepia-text) !important;
 }
 
-html.theme-sepia .text-stone-600,
-html.theme-sepia .text-stone-500 {
-  color: #6b553c !important;
+:is(html.theme-sepia, html.reader-sepia) .text-stone-600,
+:is(html.theme-sepia, html.reader-sepia) .text-stone-500 {
+  color: var(--sepia-text-muted) !important;
 }
 
-html.theme-sepia .text-stone-400,
-html.theme-sepia .text-stone-300 {
-  color: #8c7355 !important;
+:is(html.theme-sepia, html.reader-sepia) .text-stone-400,
+:is(html.theme-sepia, html.reader-sepia) .text-stone-300 {
+  color: var(--sepia-text-faint) !important;
 }
+
 
 /* Red Letter Styling (Lời Đức Giê-su) ưu tiên cao trong Sepia Mode */
-html.theme-sepia .text-rose-700,
-html.theme-sepia .text-rose-400,
-html.theme-sepia .text-red-700,
-html.theme-sepia .red-letter {
-  color: #b91c1c !important;
+:is(html.theme-sepia, html.reader-sepia) .text-rose-700,
+:is(html.theme-sepia, html.reader-sepia) .text-rose-400,
+:is(html.theme-sepia, html.reader-sepia) .text-red-700,
+:is(html.theme-sepia, html.reader-sepia) .red-letter {
+  color: var(--sepia-red-letter) !important;
 }
 
 /* 8. Thanh điều hướng di động, Player Audio nổi & Dock (Mobile Floating Bars & Docks) */
-html.theme-sepia .glass-dock,
-html.theme-sepia [data-ui-layer="mobile-dock"] > div {
-  background-color: rgba(244, 230, 200, 0.95) !important;
-  border-color: rgba(200, 162, 110, 0.5) !important;
+:is(html.theme-sepia, html.reader-sepia) .glass-dock,
+:is(html.theme-sepia, html.reader-sepia) [data-ui-layer="mobile-dock"] > div {
+  background-color: var(--sepia-surface-dock) !important;
+  border-color: var(--sepia-border-strong) !important;
   box-shadow: 0 16px 40px -12px rgba(80, 60, 35, 0.25) !important;
 }
 
-html.theme-sepia .bg-stone-900,
-html.theme-sepia .bg-stone-900\/97,
-html.theme-sepia .bg-stone-900\/95,
-html.theme-sepia .bg-stone-900\/90,
-html.theme-sepia .bg-stone-900\/80,
-html.theme-sepia .verse-action-bar,
-html.theme-sepia .fixed.bottom-4 > div,
-html.theme-sepia .fixed.bottom-20 {
-  background-color: rgba(244, 230, 200, 0.96) !important;
-  color: #3b2c1b !important;
-  border-color: rgba(200, 162, 110, 0.5) !important;
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900\/97,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900\/95,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900\/90,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900\/80,
+:is(html.theme-sepia, html.reader-sepia) .verse-action-bar,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 > div,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-20 {
+  background-color: var(--sepia-surface-dock) !important;
+  color: var(--sepia-text) !important;
+  border-color: var(--sepia-border-strong) !important;
   box-shadow: 0 16px 36px -10px rgba(80, 60, 35, 0.22) !important;
 }
 
-html.theme-sepia .bg-stone-900 .text-white,
-html.theme-sepia .bg-stone-900\/97 .text-white,
-html.theme-sepia .bg-stone-900 .text-stone-100,
-html.theme-sepia .bg-stone-900 .text-stone-300,
-html.theme-sepia .fixed.bottom-4 .text-white,
-html.theme-sepia .fixed.bottom-4 .text-stone-100 {
-  color: #3b2c1b !important;
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900 .text-white,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900\/97 .text-white,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900 .text-stone-100,
+:is(html.theme-sepia, html.reader-sepia) .bg-stone-900 .text-stone-300,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .text-white,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .text-stone-100 {
+  color: var(--sepia-text) !important;
 }
 
-html.theme-sepia .fixed.bottom-4 .text-stone-400,
-html.theme-sepia .fixed.bottom-4 .text-stone-500 {
-  color: #6b553c !important;
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .text-stone-400,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .text-stone-500 {
+  color: var(--sepia-text-muted) !important;
 }
 
-html.theme-sepia .fixed.bottom-4 .bg-stone-800,
-html.theme-sepia .fixed.bottom-4 .bg-stone-700 {
-  background-color: #ede0c2 !important;
-  color: #3b2c1b !important;
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .bg-stone-800,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .bg-stone-700 {
+  background-color: var(--sepia-hover-strong) !important;
+  color: var(--sepia-text) !important;
+}
+
+/*
+ * Audio Player (Sepia): chữ hổ phách nhạt (category badge, "Câu đang đọc")
+ * được thiết kế cho nền tối #bg-stone-900, trên nền kem Sepia độ tương
+ * phản chỉ ~1.3:1 — gần như vô hình. Tối màu chữ lại.
+ */
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .text-amber-400,
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .text-amber-300 {
+  color: var(--sepia-accent-text) !important;
+}
+
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .bg-amber-500\/20 {
+  background-color: rgba(217, 119, 6, 0.16) !important;
+}
+
+/*
+ * Nút tắt tiếng / lùi-tới 10s dùng hover:text-white — đúng trên nền tối
+ * gốc, nhưng trên nền kem Sepia chữ trắng khi hover gần như biến mất.
+ */
+:is(html.theme-sepia, html.reader-sepia) .fixed.bottom-4 .hover\:text-white:hover {
+  color: var(--sepia-accent-hover) !important;
 }
 
 /* Red Letter Styling for Jesus' words */
@@ -191,9 +278,13 @@ html.theme-sepia .fixed.bottom-4 .bg-stone-700 {
 .dark .red-letter {
   color: #f87171; /* text-red-400 */
 }
-.theme-sepia .red-letter {
-  color: #991b1b; /* text-red-800 */
-}
+/*
+ * Lưu ý: màu Sepia cho .red-letter đã được định nghĩa ở khối biến
+ * --sepia-red-letter phía trên (html.theme-sepia .red-letter, !important).
+ * Rule `.theme-sepia .red-letter { color: #991b1b }` trước đây bị đè âm
+ * thầm bởi rule !important đó nên không bao giờ có tác dụng — đã gộp lại
+ * để tránh 2 nguồn sự thật khác nhau cho cùng một token màu.
+ */
 
 /* ====================================
    Multi-color Verse Highlight Classes
@@ -314,9 +405,7 @@ html.theme-sepia .fixed.bottom-4 .bg-stone-700 {
   background-color: rgba(20, 18, 16, 0.76);
 }
 
-.theme-sepia .bible-reader-surface {
-  background-color: rgba(248, 239, 217, 0.82);
-}
+/* .theme-sepia .bible-reader-surface đã gộp vào html.theme-sepia .bible-reader-surface ở khối hệ thống Sepia phía trên */
 
 .reader-toolbar {
   background-color: rgba(255, 253, 248, 0.88);
@@ -328,9 +417,7 @@ html.theme-sepia .fixed.bottom-4 .bg-stone-700 {
   background-color: rgba(20, 18, 16, 0.88);
 }
 
-.theme-sepia .reader-toolbar {
-  background-color: rgba(244, 236, 216, 0.9);
-}
+/* .theme-sepia .reader-toolbar đã gộp vào html.theme-sepia .reader-toolbar ở khối hệ thống Sepia phía trên */
 
 /* Header là app chrome nhưng vẫn cần hòa cùng nền Giấy của trang đọc. */
 .reader-sepia:not(.dark) .app-header {
@@ -340,70 +427,83 @@ html.theme-sepia .fixed.bottom-4 .bg-stone-700 {
   backdrop-filter: blur(18px) saturate(1.08);
 }
 
-/* Khi app đang ở Dark nhưng trang đọc dùng Giấy: chrome giữ tối, giấy giữ chữ nâu đậm. */
+/*
+ * Khi app đang ở Dark nhưng trang đọc dùng Giấy: chrome giữ tối, giấy giữ
+ * chữ nâu đậm.
+ *
+ * Cách kích hoạt: BiblePage.jsx gắn `reader-sepia` lên <html> khi
+ * readingTheme === 'sepia' (độc lập với themeMode). Khi đó `html.dark`
+ * (do LiturgyContext quản lý theo themeMode) và `html.reader-sepia` (do
+ * BiblePage quản lý theo readingTheme) có thể cùng tồn tại. Vì vậy khối
+ * chung `:is(html.theme-sepia, html.reader-sepia) ...` phía trên VẪN
+ * kích hoạt (qua reader-sepia) ngay cả khi Dark đang bật — các override
+ * "giấy-trong-chrome-tối" dưới đây cần `!important` để thắng đúng như
+ * thiết kế (độ ưu tiên theo class-count đã cao hơn, nhưng phải có
+ * !important thì mới thắng được rule !important ở khối chung phía trên).
+ */
 .dark .theme-sepia .reader-toolbar {
-  background-color: rgba(20, 18, 16, 0.92);
+  background-color: rgba(20, 18, 16, 0.92) !important;
 }
 
 .dark .theme-sepia .bible-reader-surface {
-  background-color: #f4ecd8;
+  background-color: #f4ecd8 !important;
 }
 
 .dark .theme-sepia .reader-book-title {
-  color: #2e2117;
+  color: #2e2117 !important;
 }
 
 .dark .theme-sepia .reader-book-hero > div > span {
-  color: #713f12;
-  background-color: rgba(254, 243, 199, 0.72);
-  border-color: rgba(180, 83, 9, 0.28);
+  color: #713f12 !important;
+  background-color: rgba(254, 243, 199, 0.72) !important;
+  border-color: rgba(180, 83, 9, 0.28) !important;
 }
 
 .dark .theme-sepia .reader-chapter-meta h2,
 .dark .theme-sepia .reader-chapter-meta button {
-  color: #5b4634;
+  color: #5b4634 !important;
 }
 
 .dark .theme-sepia .reader-chapter-meta button:hover {
-  color: #78350f;
-  background-color: rgba(255, 255, 255, 0.42);
+  color: #78350f !important;
+  background-color: rgba(255, 255, 255, 0.42) !important;
 }
 
 .dark .theme-sepia .reader-progress-labels {
-  color: #6b5845;
+  color: #6b5845 !important;
 }
 
 .dark .theme-sepia .reader-progress-track {
-  background-color: #d8c9ad;
+  background-color: #d8c9ad !important;
 }
 
 .dark .theme-sepia .font-serif-reading,
 .dark .theme-sepia .font-serif-reading p {
-  color: #3f3024;
+  color: #3f3024 !important;
 }
 
 .dark .theme-sepia .font-serif-reading .text-rose-400 {
-  color: #9f1239;
+  color: #9f1239 !important;
 }
 
 .dark .theme-sepia .reader-verse .font-mono {
-  color: #786451;
+  color: #786451 !important;
 }
 
 .dark .theme-sepia .reader-navigation-card {
-  color: #3f3024;
+  color: #3f3024 !important;
   background:
     radial-gradient(circle at 92% 10%, rgba(245, 158, 11, 0.12), transparent 13rem),
-    linear-gradient(145deg, rgba(255, 251, 235, 0.96), rgba(245, 232, 201, 0.9));
+    linear-gradient(145deg, rgba(255, 251, 235, 0.96), rgba(245, 232, 201, 0.9)) !important;
 }
 
 .dark .theme-sepia .reader-navigation-card h3,
 .dark .theme-sepia .reader-navigation-card p {
-  color: #3f3024;
+  color: #3f3024 !important;
 }
 
-.bible-search-input:focus,
-.bible-search-input:focus-visible {
+.search-input:focus,
+.search-input:focus-visible {
   outline: none;
   box-shadow: none;
 }

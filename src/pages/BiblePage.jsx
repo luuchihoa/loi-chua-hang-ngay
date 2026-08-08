@@ -612,9 +612,24 @@ export default function BiblePage() {
   };
 
   // Header nằm ngoài BiblePage, nên đồng bộ một class ở root trong lúc trang đọc dùng nền Giấy.
+  //
+  // LƯU Ý QUAN TRỌNG: KHÔNG toggle class `theme-sepia` ở đây.
+  // `theme-sepia` đã được LiturgyContext.jsx quản lý độc quyền dựa trên
+  // `themeMode` (theme toàn app: light/dark/sepia). `readingTheme` ở đây
+  // là một state KHÁC, độc lập (theme "giấy" riêng cho trang đọc, có thể
+  // khác với themeMode). Trước đây có thử đồng bộ luôn `theme-sepia` theo
+  // readingTheme tại đây — gây bug nghiêm trọng: khi rời trang đọc (unmount),
+  // cleanup xóa `theme-sepia` khỏi <html> VÔ ĐIỀU KIỆN, xóa mất luôn theme
+  // sepia toàn app dù themeMode vẫn đang là 'sepia' (LiturgyContext không
+  // chạy lại effect vì themeMode không đổi) → giao diện bị "reset" khi
+  // chuyển tab. Chỉ dùng riêng `reader-sepia` — class này không bị ai khác
+  // đụng vào, còn index.css đã được cập nhật để các rule sepia-cho-trang-đọc
+  // kích hoạt theo `html.theme-sepia, html.reader-sepia` (OR), nên vẫn chạy
+  // đúng dù đọc Sepia độc lập với themeMode toàn app hay không.
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle('reader-sepia', readingTheme === 'sepia');
+    const isSepia = readingTheme === 'sepia';
+    root.classList.toggle('reader-sepia', isSepia);
     return () => root.classList.remove('reader-sepia');
   }, [readingTheme]);
 
@@ -864,7 +879,7 @@ export default function BiblePage() {
             <ChevronDown size={15} className="shrink-0 text-stone-400" />
           </button>
 
-          <div className="flex h-10 shrink-0 items-center rounded-[14px] bg-stone-100/90 p-0.5 dark:bg-stone-800/90" aria-label="Điều hướng chương">
+          <div className="flex h-10 shrink-0 items-center rounded-[14px] p-0.5 dark:bg-stone-800/90" aria-label="Điều hướng chương">
             <button onClick={handlePrevChapter} disabled={chapterNum <= 1} className="flex h-9 w-8 items-center justify-center rounded-xl text-stone-500 transition-colors hover:bg-white hover:text-stone-900 disabled:opacity-30 dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white" aria-label="Chương trước"><ChevronLeft size={16} /></button>
             <span className="min-w-[48px] px-1 text-center leading-none">
               <span className="block text-[9px] font-semibold uppercase tracking-wide text-stone-400">Chương</span>

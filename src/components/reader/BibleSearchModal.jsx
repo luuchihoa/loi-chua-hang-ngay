@@ -175,7 +175,7 @@ export default function BibleSearchModal({ isOpen, onClose, allBooks }) {
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleInputKeyDown}
                   placeholder="Tìm sách, câu hoặc từ khóa..."
-                  className="bible-search-input h-12 min-w-0 flex-1 border-none bg-transparent px-3 font-serif text-base text-stone-900 outline-none placeholder:text-stone-400 sm:text-lg dark:text-stone-100"
+                  className="search-input h-12 min-w-0 flex-1 border-none bg-transparent px-3 font-serif text-base text-stone-900 outline-none placeholder:text-stone-400 sm:text-lg dark:text-stone-100"
                 />
                 {isSearching && (
                   <Loader2 size={16} className="mr-1 shrink-0 animate-spin text-amber-500" aria-hidden="true" />

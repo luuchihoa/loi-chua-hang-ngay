@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   Play,
   Search,
@@ -12,7 +12,9 @@ import {
   BookMarked,
   Sparkles,
   Info,
-  CheckCircle,
+  History,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
 import {
@@ -28,13 +30,15 @@ const RAW_AUDIO_API_BASE =
   (import.meta.env.DEV ? 'http://localhost:5005' : '');
 const AUDIO_API_BASE = RAW_AUDIO_API_BASE.replace(/\/+$/, '');
 
+const RECENT_STORAGE_KEY = 'bible_audio_recent_v1';
+const RECENT_MAX = 6;
+
 const TESTAMENT_TABS = [
   {
     id: 'old',
     label: 'Cựu Ước',
     count: 46,
     gradient: 'from-amber-500 to-orange-600',
-    activeBg: 'bg-gradient-to-r from-amber-500 to-orange-600',
     ringColor: 'ring-amber-400/60',
     chipActiveBg: 'bg-gradient-to-br from-amber-500 to-orange-600',
     icon: BookMarked,
@@ -44,34 +48,237 @@ const TESTAMENT_TABS = [
     label: 'Tân Ước',
     count: 27,
     gradient: 'from-blue-500 to-indigo-600',
-    activeBg: 'bg-gradient-to-r from-blue-500 to-indigo-600',
     ringColor: 'ring-blue-400/60',
     chipActiveBg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
     icon: Sparkles,
   },
 ];
 
-// ── Toast Component ──────────────────────────────────────────────────────────
-function Toast({ message, onDismiss }) {
-  if (!message) return null;
+/* ── Local storage helpers cho "Tiếp tục nghe" ───────────────────────────── */
+function loadRecent() {
+  try {
+    const raw = localStorage.getItem(RECENT_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+function saveRecent(list) {
+  try {
+    localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(list.slice(0, RECENT_MAX)));
+  } catch {
+    /* localStorage có thể bị chặn (chế độ riêng tư) — bỏ qua an toàn */
+  }
+}
+
+/* ── Toast Component ──────────────────────────────────────────────────────────
+   Thiết kế lại theo tông giấy da/ấm của trang thay vì hộp tối chung chung:
+   nền sáng + viền hổ phách bên trái, có thanh đếm ngược thời gian tự ẩn
+   (để người dùng biết còn bao lâu, không bị bất ngờ khi nó biến mất), tự
+   né trình phát mini ở dưới khi đang phát một track, và có hiệu ứng
+   trượt-vào/mờ-dần bằng transition thuần thay vì phụ thuộc keyframe tuỳ biến. */
+function Toast({ toast, onDismiss, avoidPlayer }) {
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    if (!toast) {
+      setEntered(false);
+      return;
+    }
+    setEntered(false);
+    const raf = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(raf);
+  }, [toast]);
+
+  if (!toast) return null;
+
   return (
     <div
       role="status"
       aria-live="polite"
-      className="fixed bottom-28 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border border-white/20 bg-stone-900/95 backdrop-blur-md text-white max-w-[90vw] sm:max-w-sm animate-[fadeInUp_0.25s_ease]"
+      className={`fixed left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 transition-all duration-300 ease-out ${
+        avoidPlayer ? 'bottom-24' : 'bottom-6'
+      } ${entered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
     >
-      <span className="shrink-0 w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center">
-        <Info size={14} className="text-amber-400" />
-      </span>
-      <p className="text-sm leading-snug flex-1">{message}</p>
-      <button
-        type="button"
-        onClick={onDismiss}
-        className="shrink-0 text-white/40 hover:text-white transition cursor-pointer"
-        aria-label="Đóng thông báo"
-      >
-        <X size={14} />
-      </button>
+      <div className="relative flex overflow-hidden rounded-2xl border border-amber-200/70 dark:border-amber-800/40 bg-white/97 dark:bg-stone-900/97 backdrop-blur-md shadow-2xl">
+        <span className="w-1 shrink-0 bg-gradient-to-b from-amber-400 to-orange-500" aria-hidden="true" />
+        <div className="flex items-start gap-3 px-3.5 py-3 flex-1 min-w-0">
+          <span className="mt-0.5 shrink-0 w-7 h-7 rounded-full bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center">
+            <Info size={14} className="text-amber-600 dark:text-amber-400" />
+          </span>
+          <p className="text-sm leading-snug text-stone-700 dark:text-stone-200 flex-1 pt-0.5">{toast.message}</p>
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="shrink-0 -mr-0.5 p-1 rounded-full text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 transition cursor-pointer"
+            aria-label="Đóng thông báo"
+          >
+            <X size={14} />
+          </button>
+        </div>
+        {/* Thanh đếm ngược — báo trước khi toast tự ẩn */}
+        <div className="absolute bottom-0 left-1 right-0 h-0.5 bg-stone-100 dark:bg-stone-800 overflow-hidden">
+          <div
+            key={toast.id}
+            className="h-full bg-gradient-to-r from-amber-400 to-orange-500 origin-left"
+            style={{ animation: `bibleToastCountdown ${toast.duration}ms linear forwards` }}
+          />
+        </div>
+      </div>
+      <style>{`
+        @keyframes bibleToastCountdown {
+          from { transform: scaleX(1); }
+          to { transform: scaleX(0); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/* ── Dải cuộn ngang có fade cạnh + mũi tên, báo hiệu còn nội dung ẩn ─────── */
+function EdgeFadeScroller({ children, className = '', innerRef }) {
+  const fallbackRef = useRef(null);
+  const ref = innerRef || fallbackRef;
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  const update = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, [ref]);
+
+  useEffect(() => {
+    update();
+    const el = ref.current;
+    if (!el) return;
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [update, children]);
+
+  const scrollBy = (dir) => ref.current?.scrollBy({ left: dir * 240, behavior: 'smooth' });
+
+  return (
+    <div className="relative">
+      {canLeft && (
+        <>
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-stone-900 to-transparent z-10" />
+          <button
+            type="button"
+            onClick={() => scrollBy(-1)}
+            aria-label="Cuộn sang trái"
+            className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow flex items-center justify-center text-stone-500 hover:text-stone-800 cursor-pointer"
+          >
+            <ChevronLeft size={13} />
+          </button>
+        </>
+      )}
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+      {canRight && (
+        <>
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-stone-900 to-transparent z-10" />
+          <button
+            type="button"
+            onClick={() => scrollBy(1)}
+            aria-label="Cuộn sang phải"
+            className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow flex items-center justify-center text-stone-500 hover:text-stone-800 cursor-pointer"
+          >
+            <ChevronRight size={13} />
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ── Toggle Cựu Ước / Tân Ước — pill trượt mượt phía sau nút đang chọn ───
+   Trước đây mỗi nút tự đổi nền khi active nên lúc chuyển tab, màu "nhảy"
+   tức thì từ nút này sang nút kia. Giờ có một pill nền dùng chung, đo vị
+   trí + bề rộng nút đang chọn bằng ref (không dùng % cứng vì hai nhãn
+   "Cựu Ước" / "Tân Ước" dài ngắn khác nhau và biến thể compact có thêm
+   icon/số đếm), rồi trượt sang bằng transform — mượt và không lệch. */
+function TestamentToggle({ active, onChange, variant = 'full' }) {
+  const containerRef = useRef(null);
+  const btnRefs = useRef({});
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+
+  const measure = useCallback(() => {
+    const btn = btnRefs.current[active];
+    const container = containerRef.current;
+    if (!btn || !container) return;
+    const cRect = container.getBoundingClientRect();
+    const bRect = btn.getBoundingClientRect();
+    setIndicator({ left: bRect.left - cRect.left, width: bRect.width, ready: true });
+  }, [active]);
+
+  useLayoutEffect(() => {
+    measure();
+  }, [measure]);
+
+  useEffect(() => {
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+
+  const isCompact = variant === 'compact';
+  const activeGradient = TESTAMENT_TABS.find((t) => t.id === active)?.gradient;
+
+  return (
+    <div
+      ref={containerRef}
+      className={`relative inline-flex gap-1 ${
+        isCompact
+          ? 'p-0.5 rounded-lg bg-white/15'
+          : 'p-1 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15'
+      }`}
+    >
+      {indicator.ready && (
+        <span
+          aria-hidden="true"
+          className={`absolute pointer-events-none transition-all duration-300 ease-out ${
+            isCompact ? 'top-0.5 bottom-0.5 rounded-md' : 'top-1 bottom-1 rounded-xl'
+          } ${isCompact ? 'bg-white/25' : `bg-gradient-to-r ${activeGradient} shadow-lg`}`}
+          style={{ transform: `translateX(${indicator.left}px)`, width: `${indicator.width}px` }}
+        />
+      )}
+      {TESTAMENT_TABS.map((tab) => {
+        const Icon = tab.icon;
+        const isActive = active === tab.id;
+        return (
+          <button
+            key={tab.id}
+            ref={(el) => {
+              btnRefs.current[tab.id] = el;
+            }}
+            type="button"
+            onClick={() => onChange(tab.id)}
+            aria-pressed={isActive}
+            className={`relative z-10 flex items-center justify-center cursor-pointer font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${
+              isCompact ? 'gap-1.5 px-2.5 py-1 rounded-md text-xs' : 'gap-2.5 px-5 py-2.5 rounded-xl text-sm'
+            } ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}
+          >
+            {!isCompact && <Icon size={15} aria-hidden="true" />}
+            <span>{tab.label}</span>
+            {!isCompact && (
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.5 rounded-md transition-colors duration-300 ${
+                  isActive ? 'bg-white/25 text-white' : 'bg-white/10 text-white/50'
+                }`}
+              >
+                {tab.count}
+              </span>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -85,15 +292,26 @@ export default function BibleAudioPage() {
   const [selectedBookId, setSelectedBookId] = useState('st');
   const [currentTrack, setCurrentTrack] = useState(null);
   const [loadingTrackId, setLoadingTrackId] = useState(null);
-  const [toastMessage, setToastMessage] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [recentPlays, setRecentPlays] = useState(() => loadRecent());
+  const [isCompact, setIsCompact] = useState(false);
 
   const bookChipRef = useRef(null);
   const chapterScrollRef = useRef(null);
+  const toastTimerRef = useRef(null);
+  const sentinelRef = useRef(null);
 
-  const triggerToast = useCallback((msg) => {
-    setToastMessage(msg);
-    const t = setTimeout(() => setToastMessage(null), 4000);
-    return () => clearTimeout(t);
+  // Sửa lỗi gốc: timeout cũ không bị clear khi người dùng bấm liên tiếp
+  // nhiều chương chưa có audio — toast trước có thể biến mất sai thời điểm.
+  // `id` đổi mỗi lần gọi để thanh đếm ngược trong Toast luôn chạy lại từ đầu.
+  const triggerToast = useCallback((msg, duration = 4000) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast({ id: Date.now(), message: msg, duration });
+    toastTimerRef.current = setTimeout(() => setToast(null), duration);
+  }, []);
+
+  useEffect(() => () => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
   }, []);
 
   const filteredBibleBooks = useMemo(() => {
@@ -122,17 +340,39 @@ export default function BibleAudioPage() {
     if (chip) chip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, [selectedBook?.id]);
 
+  // Thanh compact dính khi cuộn qua khỏi hero — giữ tìm kiếm + đổi giao ước
+  // trong tầm tay thay vì buộc cuộn ngược lên đầu trang mỗi lần.
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => setIsCompact(!entry.isIntersecting), { threshold: 0 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const pushRecent = useCallback((bookId, chapNum) => {
+    setRecentPlays((prev) => {
+      const next = [{ bookId, chapter: chapNum }, ...prev.filter((r) => !(r.bookId === bookId && r.chapter === chapNum))].slice(
+        0,
+        RECENT_MAX
+      );
+      saveRecent(next);
+      return next;
+    });
+  }, []);
+
   const handlePlayBibleChapter = useCallback(
-    (chapNum) => {
-      if (!selectedBook) return;
-      const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
+    (chapNum, book) => {
+      const targetBook = book || selectedBook;
+      if (!targetBook) return;
+      const isMp3Available = hasBibleChapterAudio(targetBook.id, chapNum);
       if (!isMp3Available) {
-        triggerToast(`Chương ${chapNum} — ${selectedBook.name} chưa có bản thu Studio MP3. Ban biên tập đang cập nhật dần!`);
+        triggerToast(`Chương ${chapNum} — ${targetBook.name} chưa có bản thu Studio MP3. Ban biên tập đang cập nhật dần!`);
         return;
       }
 
-      const filename = getBibleAudioFilename(selectedBook.id, chapNum);
-      const trackId = `bible_${selectedBook.id}_${chapNum}`;
+      const filename = getBibleAudioFilename(targetBook.id, chapNum);
+      const trackId = `bible_${targetBook.id}_${chapNum}`;
       const isStaticStorage =
         AUDIO_API_BASE.includes('.r2.dev') ||
         AUDIO_API_BASE.includes('r2.cloudflarestorage.com');
@@ -140,14 +380,15 @@ export default function BibleAudioPage() {
       if (isStaticStorage) {
         setCurrentTrack({
           trackId,
-          title: `${selectedBook.name} · Chương ${chapNum}`,
-          subtitle: `${selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
-          category: `Kinh Thánh - ${selectedBook.name}`,
+          title: `${targetBook.name} · Chương ${chapNum}`,
+          subtitle: `${targetBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${targetBook.short}`,
+          category: 'Kinh Thánh',
           url: `${AUDIO_API_BASE}/bible/${filename}`,
           filename,
-          bookId: selectedBook.id,
+          bookId: targetBook.id,
           chapter: chapNum,
         });
+        pushRecent(targetBook.id, chapNum);
         return;
       }
 
@@ -158,19 +399,20 @@ export default function BibleAudioPage() {
           if (signedUrl) {
             setCurrentTrack({
               trackId,
-              title: `${selectedBook.name} · Chương ${chapNum}`,
-              subtitle: `${selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
-              category: `Kinh Thánh - ${selectedBook.name}`,
+              title: `${targetBook.name} · Chương ${chapNum}`,
+              subtitle: `${targetBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${targetBook.short}`,
+              category: 'Kinh Thánh',
               url: signedUrl,
               filename,
-              bookId: selectedBook.id,
+              bookId: targetBook.id,
               chapter: chapNum,
             });
+            pushRecent(targetBook.id, chapNum);
           }
         })
         .finally(() => setLoadingTrackId(null));
     },
-    [selectedBook, loadingTrackId, triggerToast]
+    [selectedBook, loadingTrackId, triggerToast, pushRecent]
   );
 
   const activeTabMeta = TESTAMENT_TABS.find((t) => t.id === testamentFilter);
@@ -191,63 +433,154 @@ export default function BibleAudioPage() {
     if (first) setSelectedBookId(first.id);
   };
 
+  const recentWithBooks = useMemo(
+    () =>
+      recentPlays
+        .map((r) => ({ ...r, book: allBibleBooks.find((b) => b.id === r.bookId) }))
+        .filter((r) => r.book),
+    [recentPlays, allBibleBooks]
+  );
+
   return (
     <main className="min-h-screen pb-40 font-sans">
+      <style>{`
+        @keyframes bibleContentFade {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes biblePageEnter {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .bible-fade-card { animation: bibleContentFade 320ms ease-out; }
+        .bible-enter-1 { animation: biblePageEnter 550ms ease-out both; }
+        .bible-enter-2 { animation: biblePageEnter 550ms ease-out 90ms both; }
+        .bible-enter-3 { animation: biblePageEnter 550ms ease-out 170ms both; }
+        .bible-enter-4 { animation: biblePageEnter 550ms ease-out 250ms both; }
+        .bible-enter-5 { animation: biblePageEnter 550ms ease-out 330ms both; }
+        @media (prefers-reduced-motion: reduce) {
+          .bible-fade-card,
+          .bible-enter-1,
+          .bible-enter-2,
+          .bible-enter-3,
+          .bible-enter-4,
+          .bible-enter-5 {
+            animation: none !important;
+          }
+        }
+      `}</style>
+      {/* ── STICKY COMPACT BAR — hiện khi cuộn qua khỏi hero ──────────────── */}
+      <div
+        className={`theme-invariant fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ${
+          isCompact ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+        <div className={`bg-gradient-to-r ${activeTabMeta?.gradient} shadow-lg`}>
+          <div className="max-w-4xl mx-auto px-3 sm:px-6 py-2 flex items-center gap-2">
+            <TestamentToggle active={testamentFilter} onChange={handleTabSwitch} variant="compact" />
+            <div className="relative flex-1">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none" size={13} />
+              <input
+                value={bibleSearchQuery}
+                onChange={(e) => setBibleSearchQuery(e.target.value)}
+                placeholder="Tìm sách…"
+                aria-label="Tìm sách"
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-white/15 border border-white/20 text-white placeholder-white/50 text-xs focus:outline-none focus:bg-white/25"
+              />
+            </div>
+            {selectedBook && (
+              <span className="shrink-0 text-xs font-mono font-bold text-white/90 px-2 py-1 rounded-md bg-white/10">
+                {selectedBook.short}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <div className="relative">
-        <div className="relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 px-4 pt-10 pb-36 sm:pb-40 sm:px-8">
+        <div className="theme-invariant relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 px-4 pt-10 pb-36 sm:pb-40 sm:px-8">
           <div className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-10 -left-10 w-60 h-60 rounded-full bg-indigo-500/8 blur-3xl" />
 
           <div className="relative z-10 max-w-4xl mx-auto text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 text-[11px] font-semibold tracking-widest uppercase">
+            <div className="bible-enter-1 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 text-[11px] font-semibold tracking-widest uppercase">
               <Headphones size={12} />
               <span>Thư Viện Audio Kinh Thánh</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight leading-tight">
+            <h1 className="bible-enter-2 text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight leading-tight">
               Lắng Nghe <span className="text-amber-400">Lời Chúa</span>
             </h1>
-            <p className="text-sm text-stone-400 max-w-sm mx-auto">
+            <p className="bible-enter-3 text-sm text-stone-400 max-w-sm mx-auto">
               Bản thu Studio chất lượng cao từ 73 Sách Kinh Thánh Công Giáo
             </p>
 
             {/* Testament tabs */}
-            <div className="flex justify-center pt-2">
-              <div className="inline-flex p-1 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 gap-1">
-                {TESTAMENT_TABS.map((tab) => {
-                  const Icon = tab.icon;
-                  const isActive = testamentFilter === tab.id;
+            <div className="bible-enter-4 flex justify-center pt-2">
+              <TestamentToggle active={testamentFilter} onChange={handleTabSwitch} variant="full" />
+            </div>
+          </div>
+        </div>
+        <div ref={sentinelRef} className="h-px" />
+
+        {/* ── CONTENT — floated up over hero ─────────────────────────────── */}
+        <div className="relative z-10 -mt-28 max-w-4xl mx-auto px-3 sm:px-6 space-y-4">
+          {/* ── TIẾP TỤC NGHE ─────────────────────────────────────────────── */}
+          {recentWithBooks.length > 0 && (
+            <div className="bible-enter-5 rounded-2xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-xl p-3">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 px-1">
+                <History size={13} />
+                Tiếp tục nghe
+              </div>
+              <EdgeFadeScroller className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
+                {recentWithBooks.map((r) => {
+                  const trackId = `bible_${r.book.id}_${r.chapter}`;
+                  const isActive = currentTrack?.trackId === trackId;
+                  const isLoadingThis = loadingTrackId === trackId;
                   return (
                     <button
-                      key={tab.id}
+                      key={trackId}
                       type="button"
-                      onClick={() => handleTabSwitch(tab.id)}
-                      className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${
+                      disabled={isLoadingThis}
+                      onClick={() => {
+                        setSelectedBookId(r.book.id);
+                        setTestamentFilter(r.book.testament);
+                        handlePlayBibleChapter(r.chapter, r.book);
+                      }}
+                      className={`shrink-0 flex items-center gap-2 pl-2 pr-3 py-2 rounded-xl border text-left cursor-pointer transition ${
                         isActive
-                          ? `${tab.activeBg} text-white shadow-lg scale-[1.02]`
-                          : 'text-white/60 hover:text-white hover:bg-white/10'
+                          ? 'border-amber-400 bg-amber-50 dark:bg-amber-950/30'
+                          : 'border-stone-200 dark:border-stone-700 hover:border-amber-300'
                       }`}
                     >
-                      <Icon size={15} aria-hidden="true" />
-                      <span>{tab.label}</span>
-                      <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-md ${isActive ? 'bg-white/25 text-white' : 'bg-white/10 text-white/50'}`}>
-                        {tab.count}
+                      <span className="w-7 h-7 rounded-lg bg-stone-100 dark:bg-stone-800 flex items-center justify-center shrink-0">
+                        {isLoadingThis ? (
+                          <Loader2 size={13} className="animate-spin text-stone-500" />
+                        ) : isActive ? (
+                          <Radio size={13} className="text-amber-500 animate-pulse" />
+                        ) : (
+                          <Play size={12} className="text-stone-500" />
+                        )}
+                      </span>
+                      <span className="text-xs">
+                        <div className="font-semibold text-stone-800 dark:text-stone-100 leading-none">
+                          {r.book.short} {r.chapter}
+                        </div>
+                        <div className="text-[10px] text-stone-400 mt-0.5">{r.book.name}</div>
                       </span>
                     </button>
                   );
                 })}
-              </div>
+              </EdgeFadeScroller>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* ── CONTENT CARD — floated up over hero ───────────────────────── */}
-        <div className="relative z-10 -mt-28 max-w-4xl mx-auto px-3 sm:px-6">
-          <div className="rounded-3xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-2xl overflow-hidden">
-
+          <div
+            key={testamentFilter}
+            className="bible-fade-card rounded-3xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-2xl overflow-hidden"
+          >
             {/* Search bar */}
-            <div className={`bg-gradient-to-r ${activeTabMeta?.gradient} px-4 py-3`}>
+            <div className={`theme-invariant bg-gradient-to-r ${activeTabMeta?.gradient} px-4 py-3`}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none" size={14} />
                 <input
@@ -269,46 +602,58 @@ export default function BibleAudioPage() {
               </div>
             </div>
 
-            {/* ── BOOK CHIPS — horizontal scroll, full name ─────────────────── */}
-            <div
-              ref={bookChipRef}
-              className="flex gap-2 px-3 py-3 overflow-x-auto scrollbar-none border-b border-stone-100 dark:border-stone-800 bg-stone-50/40 dark:bg-stone-800/20"
-              role="listbox"
-              aria-label="Chọn sách Kinh Thánh"
-            >
+            {/* ── BOOK CHIPS — cuộn ngang có fade cạnh báo còn nội dung ẩn ──── */}
+            <div className="px-3 py-3 border-b border-stone-100 dark:border-stone-800 bg-stone-50/40 dark:bg-stone-800/20">
               {filteredBibleBooks.length === 0 ? (
-                <span className="text-xs text-stone-400 py-2 px-1">Không tìm thấy sách phù hợp</span>
+                <div className="flex flex-col items-center gap-2 py-6 text-center">
+                  <BookOpen size={22} className="text-stone-300" />
+                  <p className="text-sm text-stone-400">Không tìm thấy sách khớp với "{bibleSearchQuery}"</p>
+                  <button
+                    type="button"
+                    onClick={() => setBibleSearchQuery('')}
+                    className="text-xs font-semibold text-amber-600 hover:underline cursor-pointer"
+                  >
+                    Xóa tìm kiếm
+                  </button>
+                </div>
               ) : (
-                filteredBibleBooks.map((book) => {
-                  const isSelected = selectedBook?.id === book.id;
-                  const hasMp3 = (() => {
-                    for (let i = 1; i <= book.chapters; i++) {
-                      if (hasBibleChapterAudio(book.id, i)) return true;
-                    }
-                    return false;
-                  })();
-                  return (
-                    <button
-                      key={book.id}
-                      data-book-id={book.id}
-                      type="button"
-                      role="option"
-                      aria-selected={isSelected}
-                      onClick={() => setSelectedBookId(book.id)}
-                      className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 leading-none ${
-                        isSelected
-                          ? `${activeTabMeta?.chipActiveBg} text-white shadow-md`
-                          : 'bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-amber-300 dark:hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300'
-                      }`}
-                    >
-                      {hasMp3 && !isSelected && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                      )}
-                      {isSelected && <Volume2 size={12} className="shrink-0" />}
-                      <span>{book.name}</span>
-                    </button>
-                  );
-                })
+                <EdgeFadeScroller
+                  innerRef={bookChipRef}
+                  className="flex gap-2 overflow-x-auto scrollbar-none"
+                >
+                  <div className="flex gap-2" role="listbox" aria-label="Chọn sách Kinh Thánh">
+                    {filteredBibleBooks.map((book) => {
+                      const isSelected = selectedBook?.id === book.id;
+                      const hasMp3 = (() => {
+                        for (let i = 1; i <= book.chapters; i++) {
+                          if (hasBibleChapterAudio(book.id, i)) return true;
+                        }
+                        return false;
+                      })();
+                      return (
+                        <button
+                          key={book.id}
+                          data-book-id={book.id}
+                          type="button"
+                          role="option"
+                          aria-selected={isSelected}
+                          onClick={() => setSelectedBookId(book.id)}
+                          className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 leading-none ${
+                            isSelected
+                              ? `${activeTabMeta?.chipActiveBg} text-white shadow-md`
+                              : 'bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-amber-300 dark:hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300'
+                          }`}
+                        >
+                          {hasMp3 && !isSelected && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                          )}
+                          {isSelected && <Volume2 size={12} className="shrink-0" />}
+                          <span>{book.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </EdgeFadeScroller>
               )}
             </div>
 
@@ -351,7 +696,10 @@ export default function BibleAudioPage() {
                   </div>
                 </div>
 
-                {/* ── CHAPTER — horizontal scroll row ──────────────────────────── */}
+                {/* ── CHAPTER — lưới bọc dòng, cuộn dọc trong khung cố định ────
+                    Trước đây là dải cuộn ngang: với sách 150 chương (Thánh
+                    Vịnh) người dùng phải vuốt hàng chục lần. Lưới bọc dòng +
+                    khung cuộn dọc giúp quét mắt và bấm trực tiếp chương cần. */}
                 <div className="px-4 py-3 border-b border-stone-100 dark:border-stone-800">
                   {/* Legend row */}
                   <div className="flex items-center gap-3 mb-3">
@@ -373,10 +721,9 @@ export default function BibleAudioPage() {
                     </div>
                   </div>
 
-                  {/* Horizontal chapter scroll */}
                   <div
                     ref={chapterScrollRef}
-                    className="flex gap-2 overflow-x-auto scrollbar-none pb-1"
+                    className="grid grid-cols-6 xs:grid-cols-7 sm:grid-cols-9 md:grid-cols-11 gap-2 max-h-72 overflow-y-auto pr-1"
                     role="group"
                     aria-label={`Chương sách ${selectedBook.name}`}
                   >
@@ -395,32 +742,37 @@ export default function BibleAudioPage() {
                           key={chapNum}
                           type="button"
                           disabled={isLoadingThisChap}
-                          aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
+                          aria-label={
+                            isMp3Available
+                              ? `Phát ${selectedBook.name} chương ${chapNum}`
+                              : `Chương ${chapNum} chưa có bản thu`
+                          }
                           onClick={() => handlePlayBibleChapter(chapNum)}
-                          className={`group shrink-0 flex flex-col items-center justify-center gap-1 w-14 h-14 rounded-2xl font-mono font-bold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 relative overflow-hidden ${
+                          className={`group relative aspect-square flex flex-col items-center justify-center gap-0.5 rounded-xl font-mono font-bold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 overflow-hidden ${
                             isPlayingThisChap
-                              ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-lg scale-110 ring-2 ${activeTabMeta?.ringColor}`
+                              ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-lg scale-105 ring-2 ${activeTabMeta?.ringColor}`
                               : isMp3Available
                               ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/60 hover:scale-105 hover:shadow-md hover:bg-amber-100 dark:hover:bg-amber-900/50'
                               : 'bg-stone-50 dark:bg-stone-800/20 text-stone-300 dark:text-stone-600 border border-stone-150/50 dark:border-stone-700/20'
                           }`}
                         >
                           {isPlayingThisChap && (
-                            <span className="absolute inset-0 rounded-2xl ring-4 ring-amber-400/25 animate-ping pointer-events-none" />
+                            <span className="absolute inset-0 rounded-xl ring-4 ring-amber-400/25 animate-ping pointer-events-none" />
                           )}
-                          <span className={`text-xs leading-none ${!isMp3Available && !isPlayingThisChap ? 'opacity-30' : 'font-extrabold'}`}>
+                          <span className="text-xs leading-none">
                             {isLoadingThisChap ? (
                               <Loader2 size={14} className="animate-spin" />
                             ) : isPlayingThisChap ? (
                               <Radio size={14} className="animate-pulse" />
+                            ) : isMp3Available ? (
+                              <span className="font-extrabold">{chapNum}</span>
                             ) : (
-                              chapNum
+                              <span className="flex flex-col items-center gap-0.5">
+                                <Lock size={9} className="opacity-60" />
+                                <span className="opacity-50">{chapNum}</span>
+                              </span>
                             )}
                           </span>
-                          {/* MP3 / Lock indicator dot */}
-                          {!isPlayingThisChap && !isLoadingThisChap && (
-                            <span className={`w-1 h-1 rounded-full ${isMp3Available ? 'bg-amber-500' : 'bg-stone-200 dark:bg-stone-700'}`} />
-                          )}
                         </button>
                       );
                     })}
@@ -438,7 +790,14 @@ export default function BibleAudioPage() {
       </div>
 
       {/* ── TOAST ────────────────────────────────────────────────────────────── */}
-      <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
+      <Toast
+        toast={toast}
+        onDismiss={() => {
+          if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+          setToast(null);
+        }}
+        avoidPlayer={Boolean(currentTrack)}
+      />
 
       {/* ── AUDIO PLAYER ─────────────────────────────────────────────────────── */}
       {currentTrack && (

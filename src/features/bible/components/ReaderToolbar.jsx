@@ -28,20 +28,20 @@ export default function ReaderToolbar({
 }) {
   return (
     <div className="reader-toolbar sticky top-32 md:top-16 z-20 px-3 pb-2 sm:px-5 sm:py-2.5 md:px-8">
-      <div className="mx-auto grid max-w-lg grid-cols-4 gap-1 rounded-[18px] border border-stone-200/80 bg-white/88 p-1 shadow-[0_12px_28px_-20px_rgba(28,25,23,.7)] backdrop-blur-xl dark:border-stone-700/80 dark:bg-stone-900/88 sm:hidden">
-        <button type="button" onClick={onOpenSearch} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600 transition-colors hover:bg-amber-50 hover:text-amber-800 active:bg-amber-100 dark:text-stone-300 dark:hover:bg-amber-950/35 dark:hover:text-amber-300" aria-label="Tìm kiếm Kinh Thánh">
+      <div className="mx-auto grid max-w-lg grid-cols-4 gap-1 rounded-[18px] border border-stone-200/80 bg-white/80 p-1 shadow-[0_12px_28px_-20px_rgba(28,25,23,.7)] backdrop-blur-xl dark:border-stone-700/80 dark:bg-stone-900/88 sm:hidden">
+        <button type="button" onClick={onOpenSearch} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600" aria-label="Tìm kiếm Kinh Thánh">
           <Search size={17} />
           <span className="text-[9px] font-bold">Tìm kiếm</span>
         </button>
-        <button type="button" onClick={onOpenTranslation} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600 transition-colors hover:bg-amber-50 hover:text-amber-800 active:bg-amber-100 dark:text-stone-300 dark:hover:bg-amber-950/35 dark:hover:text-amber-300" aria-label="Chọn bản dịch Kinh Thánh">
+        <button type="button" onClick={onOpenTranslation} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600" aria-label="Chọn bản dịch Kinh Thánh">
           <Globe2 size={17} />
           <span className="max-w-full truncate px-1 text-[9px] font-bold">CGKPV</span>
         </button>
-        <button type="button" onClick={onOpenGoToMobile} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600 transition-colors hover:bg-amber-50 hover:text-amber-800 active:bg-amber-100 dark:text-stone-300 dark:hover:bg-amber-950/35 dark:hover:text-amber-300" aria-label="Đi tới sách, chương hoặc câu">
+        <button type="button" onClick={onOpenGoToMobile} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600" aria-label="Đi tới sách, chương hoặc câu">
           <Compass size={17} />
           <span className="text-[9px] font-bold">Đi tới</span>
         </button>
-        <button type="button" onClick={onOpenPreferences} className="flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] bg-amber-100/80 text-amber-900 transition-colors hover:bg-amber-200/80 active:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-200 dark:hover:bg-amber-900/60" aria-label="Mở tùy chỉnh đọc">
+        <button type="button" onClick={onOpenPreferences} className="group flex h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-[14px] text-stone-600" aria-label="Mở tùy chỉnh đọc">
           <SlidersHorizontal size={17} />
           <span className="text-[9px] font-bold">Hiển thị</span>
         </button>
@@ -108,11 +108,11 @@ export default function ReaderToolbar({
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <div className="hidden sm:flex items-center gap-1 rounded-2xl bg-stone-100/80 p-1 dark:bg-stone-800/70" aria-label="Điều hướng chương">
-            <button type="button" onClick={onPrevious} disabled={previousDisabled} className="reader-icon-control !h-9 !w-9 !rounded-xl !bg-transparent" aria-label="Chương trước">
+          <div className="hidden sm:flex items-center rounded-2xl bg-stone-100/80 dark:bg-stone-800/70" aria-label="Điều hướng chương">
+            <button type="button" onClick={onPrevious} disabled={previousDisabled} className="reader-icon-control h-11 px-3 sm:px-4 !rounded-l-xl !rounded-r-none bg-transparent" aria-label="Chương trước">
               <ChevronLeft size={17} />
             </button>
-            <button type="button" onClick={onNext} disabled={nextDisabled} className="reader-icon-control !h-9 !w-9 !rounded-xl !bg-transparent" aria-label="Chương sau">
+            <button type="button" onClick={onNext} disabled={nextDisabled} className="reader-icon-control h-11 px-3 sm:px-4 !rounded-r-xl !rounded-l-none bg-transparent" aria-label="Chương sau">
               <ChevronRight size={17} />
             </button>
           </div>

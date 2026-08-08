@@ -111,20 +111,6 @@ function BibleNavigationPanel({
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <div className="relative px-3 pb-2 pt-3">
-        {/* Hàng tiện ích mỏng — chỉ hiện nút đóng trên mobile */}
-        <div className="mb-2.5 flex items-center justify-between px-1 md:hidden">
-          <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400 dark:text-stone-500">
-            Danh mục sách
-          </span>
-          <button
-            type="button"
-            onClick={() => setIsMobileNavOpen(false)}
-            aria-label="Đóng danh mục"
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-200/70 text-stone-500 transition-colors hover:bg-stone-300 hover:text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:bg-stone-800 dark:text-stone-400 dark:hover:bg-stone-700"
-          >
-            <X size={13} strokeWidth={2.5} />
-          </button>
-        </div>
 
         {/* ── Testament tabs — điểm neo thị giác chính ─────────── */}
         <div className="relative grid grid-cols-2 gap-1 rounded-[20px] border border-stone-200/70 bg-stone-200/55 p-1 shadow-inner dark:border-stone-700/80 dark:bg-stone-950/70">
@@ -151,8 +137,8 @@ function BibleNavigationPanel({
                     : 'text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white'
                 }`}
               >
-                <span className="text-[13px] font-black">{item.label}</span>
-                <span className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[9px] font-black ${
+                <span className="text-sm font-black leading-none">{item.label}</span>
+                <span className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-black leading-none ${
                   isActive ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/55 dark:text-amber-200' : 'bg-stone-200/80 text-stone-500 dark:bg-stone-800'
                 }`}>{count}</span>
               </button>
@@ -171,7 +157,7 @@ function BibleNavigationPanel({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tìm sách hoặc ký hiệu..."
-            className="h-10 w-full rounded-[14px] border border-stone-200/80 bg-white/85 pl-9 pr-9 text-xs font-medium text-stone-900 shadow-sm outline-none transition-all placeholder:text-stone-400 focus:border-amber-400 focus:bg-white focus:ring-4 focus:ring-amber-400/10 dark:border-stone-700 dark:bg-stone-900/85 dark:text-stone-100 dark:focus:border-amber-600 dark:focus:bg-stone-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+            className="h-10 w-full rounded-[14px] border border-stone-200/80 bg-white/85 pl-9 pr-9 text-[13px] font-medium leading-normal text-stone-900 shadow-sm outline-none transition-all placeholder:text-stone-400 focus:border-amber-400 focus:bg-white focus:ring-4 focus:ring-amber-400/10 dark:border-stone-700 dark:bg-stone-900/85 dark:text-stone-100 dark:focus:border-amber-600 dark:focus:bg-stone-900 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
           />
           {searchQuery && (
             <button
@@ -186,70 +172,11 @@ function BibleNavigationPanel({
         </label>
       </div>
 
-      {/* ── Today's Reading Card ─────────────────────────────────── */}
-      <div className="relative px-3 pb-3">
-        <button
-          onClick={openTodayReading}
-          data-preserve-verse-selection="true"
-          aria-label={`Mở bài đọc hôm nay: ${todayLiturgyInfo.displayName}`}
-          className="group relative w-full overflow-hidden rounded-[22px] border border-amber-200/80 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:border-amber-800/40 dark:focus-visible:ring-offset-stone-950"
-          style={{ background: 'linear-gradient(145deg, #fffbeb 0%, #fef3c7 55%, #fde68a 100%)' }}
-        >
-          {/* Dark mode overlay */}
-          <div className="absolute inset-0 rounded-[22px] bg-[linear-gradient(145deg,rgba(69,26,3,.7),rgba(28,14,3,.85))] opacity-0 dark:opacity-100 pointer-events-none" />
-
-          {/* Glow orb */}
-          <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-amber-300/40 blur-2xl dark:bg-amber-500/20" />
-
-          <div className="relative p-3.5">
-            {/* Top row: icon + eyebrow + live dot */}
-            <div className="mb-2.5 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[11px] bg-amber-700/90 text-white shadow-sm dark:bg-amber-400 dark:text-stone-950">
-                  <CalendarDays size={15} />
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Sparkles size={11} className="text-amber-700 dark:text-amber-300" />
-                  <span className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-amber-800 dark:text-amber-300">
-                    Bài đọc hôm nay
-                  </span>
-                </span>
-              </div>
-              {/* Liturgy color dot */}
-              <span className={`h-2 w-2 rounded-full shadow-sm ${liturgyDotClass} ring-2 ring-white/60 dark:ring-stone-900/60`} />
-            </div>
-
-            {/* Date badge */}
-            <div className="mb-2">
-              <span className="inline-block rounded-full border border-amber-300/60 bg-white/60 px-2 py-0.5 text-[9px] font-bold text-amber-900 dark:border-amber-700/40 dark:bg-stone-900/50 dark:text-amber-200">
-                {todayDateLabel}
-              </span>
-            </div>
-
-            {/* Season name */}
-            <p className="mb-1 text-[12px] font-black leading-tight text-stone-900 dark:text-stone-100 line-clamp-2">
-              {todayLiturgyInfo.displayName}
-            </p>
-
-            {/* Gospel reference */}
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] font-black tracking-tight text-amber-700 dark:text-amber-300">
-                {todayReference.displayRef}
-              </span>
-              <ChevronRight
-                size={16}
-                className="shrink-0 text-amber-700/70 transition-transform group-hover:translate-x-0.5 dark:text-amber-400/70"
-              />
-            </div>
-          </div>
-        </button>
-      </div>
-
       {/* ── Book List ────────────────────────────────────────────── */}
       <div className="relative flex min-h-0 flex-1 flex-col border-t border-stone-200/65 dark:border-stone-800/80">
         <div className="flex items-center justify-between px-4 pb-1.5 pt-2.5">
-          <span className="text-[9px] font-extrabold uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400">Danh mục sách</span>
-          <span className="text-[9px] font-bold text-stone-400">{filteredBooks.length} kết quả</span>
+          <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-stone-500 dark:text-stone-400">Danh mục sách</span>
+          <span className="text-[10px] font-bold text-stone-400">{filteredBooks.length} kết quả</span>
         </div>
         <div
           ref={bookListContainerRef}
@@ -260,11 +187,11 @@ function BibleNavigationPanel({
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-200/70 text-stone-400 dark:bg-stone-800 dark:text-stone-500">
                 <Search size={16} />
               </span>
-              <p className="text-xs font-semibold text-stone-500 dark:text-stone-400">Không tìm thấy sách phù hợp</p>
+              <p className="text-[13px] font-semibold leading-snug text-stone-500 dark:text-stone-400">Không tìm thấy sách phù hợp</p>
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="rounded-full px-2 py-1 text-[11px] font-bold text-amber-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:text-amber-400"
+                className="rounded-full px-2 py-1 text-[12px] font-bold text-amber-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:text-amber-400"
               >
                 Xóa bộ lọc
               </button>
@@ -284,7 +211,7 @@ function BibleNavigationPanel({
                       : 'text-stone-700 hover:bg-white/80 hover:shadow-sm dark:text-stone-300 dark:hover:bg-stone-800/80'
                   }`}
                 >
-                  <span className={`flex h-8 min-w-9 shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-1.5 font-mono text-[10px] font-black tracking-tight ${
+                  <span className={`flex h-8 min-w-9 shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-1.5 font-mono text-[11px] font-black ${
                     isActive
                       ? 'bg-black/15 text-white dark:bg-stone-950/15 dark:text-stone-950'
                       : 'bg-stone-200/75 text-stone-600 group-hover:bg-amber-100 group-hover:text-amber-800 dark:bg-stone-800 dark:text-stone-300 dark:group-hover:bg-amber-900/50 dark:group-hover:text-amber-200'
@@ -292,8 +219,8 @@ function BibleNavigationPanel({
                     {book.short}
                   </span>
                   <span className="min-w-0 flex-1 leading-tight">
-                    <span className="block truncate text-[12px] font-extrabold">{book.name}</span>
-                    <span className={`mt-0.5 block truncate text-[8px] font-semibold ${isActive ? 'text-amber-50/90' : 'text-stone-400'}`}>{book.category}</span>
+                    <span className="block truncate text-[13px] font-extrabold leading-snug">{book.name}</span>
+                    <span className={`mt-0.5 block truncate text-[10px] font-semibold leading-snug ${isActive ? 'text-amber-50/90' : 'text-stone-400'}`}>{book.category}</span>
                   </span>
                   <ChevronRight size={14} className={`shrink-0 transition-all ${isActive ? 'text-white/80' : 'translate-x-1 text-stone-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 dark:text-stone-600'}`} />
                 </button>
@@ -308,10 +235,10 @@ function BibleNavigationPanel({
         <div className="rounded-[22px] border border-stone-200/80 bg-white/85 p-2.5 shadow-sm dark:border-stone-700/80 dark:bg-stone-900/90">
           <div className="mb-2 flex items-end justify-between gap-2 px-0.5">
             <span className="min-w-0">
-              <span className="block text-[8px] font-extrabold uppercase tracking-[0.16em] text-amber-700 dark:text-amber-400">Chọn chương</span>
-              <span className="mt-0.5 block truncate text-[11px] font-black text-stone-900 dark:text-stone-100">{activeBook.name}</span>
+              <span className="block text-[10px] font-extrabold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-400">Chọn chương</span>
+              <span className="mt-0.5 block truncate text-[12px] font-black leading-snug text-stone-900 dark:text-stone-100">{activeBook.name}</span>
             </span>
-            <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-[9px] font-black tabular-nums text-stone-600 dark:bg-stone-800 dark:text-stone-300">
+            <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-[10px] font-black tabular-nums text-stone-600 dark:bg-stone-800 dark:text-stone-300">
               {chapterNum}/{activeBook.chapters}
             </span>
           </div>
@@ -323,7 +250,7 @@ function BibleNavigationPanel({
           </div>
           <div
             ref={chapterGridContainerRef}
-            className="scrollbar-thin grid grid-flow-col auto-cols-[36px] gap-1.5 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,transparent,black_12px,black_calc(100%-12px),transparent)]"
+            className="scrollbar-thin grid grid-flow-col auto-cols-[38px] gap-1.5 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,transparent,black_12px,black_calc(100%-12px),transparent)]"
           >
             {Array.from({ length: activeBook.chapters }, (_, i) => i + 1).map((ch) => (
               <button
@@ -332,7 +259,7 @@ function BibleNavigationPanel({
                 onClick={() => { setChapterNum(ch); setIsMobileNavOpen(false); setSelectedVerses([]); setIsMultiSelect(false); }}
                 aria-label={`Chương ${ch}`}
                 aria-current={chapterNum === ch ? 'page' : undefined}
-                className={`h-8 rounded-xl font-mono text-[10px] font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900 ${
+                className={`h-9 rounded-xl font-mono text-[12px] font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900 ${
                   chapterNum === ch
                     ? 'bg-amber-700 text-white shadow-md shadow-amber-800/25 ring-2 ring-amber-200 dark:bg-amber-400 dark:text-stone-950 dark:ring-amber-900'
                     : 'bg-stone-100/90 text-stone-600 hover:bg-amber-100 hover:text-amber-800 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-amber-900/45 dark:hover:text-amber-200'

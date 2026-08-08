@@ -17,7 +17,7 @@ export default function WeekRibbon({ selectedDate, onSelectDate, theme }) {
   const days = getWeekDays(selectedDate);
 
   return (
-    <div aria-label="Chọn ngày trong tuần" className="grid grid-cols-7 gap-1 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md rounded-[20px] p-1.5 border border-stone-200/80 dark:border-stone-800/80 shadow-sm my-3">
+    <div aria-label="Chọn ngày trong tuần" className="hidden md:grid grid-cols-7 gap-1 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md rounded-[20px] p-1.5 border border-stone-200/80 dark:border-stone-800/80 shadow-sm my-3">
       {days.map((day, index) => {
         const isSelected = day.toDateString() === selectedDate.toDateString();
         const isToday = day.toDateString() === new Date().toDateString();

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bookmark, Sun, Moon, Coffee } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLiturgy } from '../../context/LiturgyContext.jsx';
 import { BRAND } from '../../config/brand.js';
 
@@ -27,6 +27,7 @@ export default function Header() {
   const desktopNavRef = useRef(null);
   const fontMenuRef = useRef(null);
   const [isFontMenuOpen, setIsFontMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [desktopActiveRect, setDesktopActiveRect] = useState({ left: 0, width: 0, opacity: 0 });
 
   const fontSizes = [
@@ -56,14 +57,26 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', closeFontMenu);
   }, []);
 
-
+  // Header dày/nổi hơn một chút khi cuộn trang, cho cảm giác chiều sâu
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <header className="app-header fixed top-0 left-0 right-0 z-40 w-full glass-panel border-b border-stone-200/80 dark:border-stone-800/80 transition-colors duration-300 shadow-xs">
+    <header
+      className={`app-header fixed top-0 left-0 right-0 z-40 w-full glass-panel border-b transition-all duration-300 ${
+        isScrolled
+          ? 'border-stone-200/80 dark:border-stone-800/80 shadow-md'
+          : 'border-stone-200/50 dark:border-stone-800/50 shadow-xs'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         
         {/* Logo & Application Name */}
-        <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0" aria-label={`${BRAND.name} — Trang chủ`}>
+        <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0 outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 rounded-xl" aria-label={`${BRAND.name} — Trang chủ`}>
           <motion.div
             whileHover={{ scale: 1.08, rotate: 2 }}
             whileTap={{ scale: 0.95 }}
@@ -98,7 +111,8 @@ export default function Header() {
               key={item.path}
               to={item.path}
               data-active={item.isActive}
-              className={`relative px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+              aria-current={item.isActive ? 'page' : undefined}
+              className={`relative px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 ${
                 item.isActive
                   ? 'text-stone-900 dark:text-stone-100'
                   : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
@@ -116,12 +130,23 @@ export default function Header() {
             whileTap={{ scale: 0.95 }}
             onClick={cycleTheme}
             aria-label="Đổi giao diện sáng hoặc tối"
-            className="w-11 h-11 flex items-center justify-center rounded-xl text-stone-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors"
+            className="w-11 h-11 flex items-center justify-center rounded-xl text-stone-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70"
             title="Đổi giao diện (Sáng/Tối/Vàng)"
           >
-            {themeMode === 'light' && <Sun className="w-4 h-4 sm:w-5 sm:h-5" />}
-            {themeMode === 'dark' && <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
-            {themeMode === 'sepia' && <Coffee className="w-4 h-4 sm:w-5 sm:h-5" />}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={themeMode}
+                initial={{ opacity: 0, rotate: -90, scale: 0.7 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 90, scale: 0.7 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center justify-center"
+              >
+                {themeMode === 'light' && <Sun className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {themeMode === 'dark' && <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {themeMode === 'sepia' && <Coffee className="w-4 h-4 sm:w-5 sm:h-5" />}
+              </motion.span>
+            </AnimatePresence>
           </motion.button>
           
           <div ref={fontMenuRef} className="relative">
@@ -132,7 +157,7 @@ export default function Header() {
                   onClick={() => setFontSize(option.value)}
                   aria-label={option.description}
                   aria-pressed={fontSize === option.value}
-                  className={`min-w-9 h-9 px-2 rounded-lg text-xs font-extrabold transition-all ${
+                  className={`min-w-9 h-9 px-2 rounded-lg text-xs font-extrabold transition-all outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 ${
                     fontSize === option.value
                       ? 'bg-white dark:bg-stone-700 text-amber-700 dark:text-amber-300 shadow-sm'
                       : 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
@@ -147,7 +172,7 @@ export default function Header() {
               onClick={() => setIsFontMenuOpen((open) => !open)}
               aria-label="Chọn cỡ chữ đọc"
               aria-expanded={isFontMenuOpen}
-              className={`lg:hidden w-11 h-11 flex items-center justify-center rounded-xl font-serif font-extrabold transition-colors ${
+              className={`lg:hidden w-11 h-11 flex items-center justify-center rounded-xl font-serif font-extrabold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 ${
                 isFontMenuOpen
                   ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
                   : 'text-stone-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30'
@@ -170,7 +195,7 @@ export default function Header() {
                       }}
                       aria-label={option.description}
                       aria-pressed={fontSize === option.value}
-                      className={`min-w-12 h-11 px-3 rounded-xl text-sm font-extrabold transition-all ${
+                      className={`min-w-12 h-11 px-3 rounded-xl text-sm font-extrabold transition-all outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 ${
                         fontSize === option.value
                           ? 'bg-amber-600 text-white shadow-sm'
                           : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300'
@@ -186,13 +211,15 @@ export default function Header() {
 
           <Link
             to="/bookmarks"
-            aria-label="Mở các bài đã lưu"
-            className="w-11 h-11 flex items-center justify-center rounded-xl text-stone-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors relative"
+            aria-label={bookmarks.length > 0 ? `Mở các bài đã lưu (${bookmarks.length})` : 'Mở các bài đã lưu'}
+            className="w-11 h-11 flex items-center justify-center rounded-xl text-stone-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors relative outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70"
             title="Bài đã lưu"
           >
             <Bookmark className="w-4 h-4 sm:w-5 sm:h-5" />
             {bookmarks.length > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-rose-500 rounded-full border-2 border-white dark:border-stone-900"></span>
+              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 flex items-center justify-center text-[9px] font-extrabold text-white bg-rose-500 rounded-full border-2 border-white dark:border-stone-900 leading-none">
+                {bookmarks.length > 9 ? '9+' : bookmarks.length}
+              </span>
             )}
           </Link>
         </div>

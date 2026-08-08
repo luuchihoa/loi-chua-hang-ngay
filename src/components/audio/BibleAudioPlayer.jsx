@@ -140,8 +140,8 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
                 <BookOpen size={18} />
               </div>
               <div className="min-w-0">
-                <div className="text-xs font-bold truncate text-stone-100 flex items-center gap-2">
-                  <span>{currentTrack.title || 'Kinh Thánh Audio'}</span>
+                <div className="text-xs font-bold text-stone-100 flex items-center gap-2 min-w-0">
+                  <span className="truncate min-w-0">{currentTrack.title || 'Kinh Thánh Audio'}</span>
                   {currentTrack.category && (
                     <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-[10px] uppercase font-mono shrink-0">
                       {currentTrack.category}
