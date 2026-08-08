@@ -115,8 +115,8 @@ export const getBibleAudioFilename = (bookIdOrShort, chapter) => {
   if (!bookIdOrShort) return '';
   const book = getBookById(bookIdOrShort);
   const shortCode = book?.short || bookIdOrShort;
-  const cleanCode = shortCode.toLowerCase().replace(/\s+/g, '');
-  return `${cleanCode}_c${chapter}.mp3`;
+  const cleanCode = shortCode.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return `${cleanCode}_${chapter}.mp3`;
 };
 
 const getAudioApiBase = () => {

@@ -17,12 +17,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { 
   getOldTestamentBooks, 
   getNewTestamentBooks, 
-  getAllBooks,
+  getAllBooks, 
   getBookById, 
   getChapterContent, 
   fetchBibleAudioAvailability,
   fetchAudioAccessStreamUrl,
+  getBibleAudioFilename,
 } from '../utils/bibleService.js';
+import { getAudioApiBase } from '../utils/audioLookup.js';
 import { getLiturgyInfo, getLiturgicalColor } from '../utils/liturgyCalendar.js';
 import { supabase } from '../lib/supabase.js';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
@@ -469,11 +471,10 @@ export default function BiblePage() {
         audioUrl = await fetchAudioAccessStreamUrl(activeChapterTrackId);
       }
       if (!audioUrl) {
-        const bookShort = activeBook.short.toLowerCase().replace(/\s+/g, '');
-        const fallbackFilename = `${bookShort}_c${chapterNum}.mp3`;
+        const filename = getBibleAudioFilename(activeBook.id, chapterNum);
         const apiBase = getAudioApiBase();
         if (apiBase) {
-          audioUrl = `${apiBase}/audio/bible/${fallbackFilename}`;
+          audioUrl = `${apiBase}/bible/${filename}`;
         }
       }
       if (!audioUrl) {
