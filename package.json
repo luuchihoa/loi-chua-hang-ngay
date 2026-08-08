@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:all": "node scripts/start_dev_all.js",
+    "audio": "node scripts/audio_server.js",
     "prebuild": "node scripts/assert_no_public_audio.js",
     "build": "vite build",
     "postbuild": "node scripts/assert_no_public_audio.js && cp dist/index.html dist/404.html",
