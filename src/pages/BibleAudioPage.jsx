@@ -69,9 +69,57 @@ export default function BibleAudioPage() {
     return () => clearTimeout(timer);
   }, [liturgySearchQuery]);
 
-  // 1. Tải Bài Đọc Phụng Vụ từ Server API
+  // 1. Tải Bài Đọc Phụng Vụ từ Server API hoặc R2 Static Storage Manifest
   const fetchLiturgyAudioInitial = useCallback(async (category, searchQuery) => {
     setIsLoadingLiturgy(true);
+
+    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
+
+    if (isStaticStorage) {
+      try {
+        let manifestRes = await fetch(`${AUDIO_API_BASE}/audioManifest.json`).catch(() => null);
+        if (!manifestRes || !manifestRes.ok) {
+          manifestRes = await fetch(`${AUDIO_API_BASE}/audio/audioManifest.json`).catch(() => null);
+        }
+        if (manifestRes && manifestRes.ok) {
+          const manifestData = await manifestRes.json();
+          const items = Object.entries(manifestData || {}).map(([key, relPath]) => {
+            let fullPath = relPath;
+            if (!fullPath.startsWith('http') && !fullPath.startsWith('/audio/') && !fullPath.startsWith('audio/')) {
+              fullPath = `/audio${fullPath.startsWith('/') ? '' : '/'}${fullPath}`;
+            }
+            fullPath = fullPath.replace('/audio/gospels/', '/audio/gospel/');
+            const streamUrl = fullPath.startsWith('http') ? fullPath : `${AUDIO_API_BASE}${fullPath.startsWith('/') ? '' : '/'}${fullPath}`;
+            
+            return {
+              trackId: key,
+              title: key.toUpperCase(),
+              category: key.startsWith('gospel') ? 'gospel' : key.startsWith('r2') ? 'r2' : 'r1',
+              streamUrl
+            };
+          });
+
+          const filtered = items.filter(item => {
+            const matchCat = category === 'all' || item.category === category;
+            const matchQ = !searchQuery || item.title.toLowerCase().includes(searchQuery.toLowerCase());
+            return matchCat && matchQ;
+          });
+
+          setLiturgyAudioList(filtered.slice(0, 12));
+          setTotalLiturgyCount(filtered.length);
+          setHasMoreLiturgy(filtered.length > 12);
+          setNextCursorLiturgy(filtered.length > 12 ? 12 : null);
+          return;
+        }
+      } catch (e) {}
+
+      setLiturgyAudioList([]);
+      setTotalLiturgyCount(0);
+      setHasMoreLiturgy(false);
+      setNextCursorLiturgy(null);
+      setIsLoadingLiturgy(false);
+      return;
+    }
 
     try {
       const params = new URLSearchParams();
@@ -93,7 +141,6 @@ export default function BibleAudioPage() {
         setNextCursorLiturgy(data.nextCursor ?? (data.hasMore ? 12 : null));
       }
     } catch (err) {
-      console.warn(`Lỗi nạp danh sách audio phụng vụ:`, err.message);
       setLiturgyAudioList([]);
       setTotalLiturgyCount(0);
       setHasMoreLiturgy(false);
@@ -106,6 +153,9 @@ export default function BibleAudioPage() {
   // 2. Tải Trang Tiếp Theo (Load More)
   const handleLoadMoreLiturgy = useCallback(async () => {
     if (!hasMoreLiturgy || nextCursorLiturgy === null || isLoadingMore) return;
+
+    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
+    if (isStaticStorage) return;
 
     setIsLoadingMore(true);
     try {

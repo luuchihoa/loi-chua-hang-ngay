@@ -153,6 +153,10 @@ export const fetchBibleAudioAvailability = async (bookId) => {
   if (!bookId) return [];
   const apiBase = getAudioApiBase();
   if (!apiBase) return [];
+
+  const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));
+  if (isStaticStorage) return [];
+
   try {
     const res = await fetch(`${apiBase}/api/bible-audio-availability?bookId=${encodeURIComponent(bookId)}`);
     if (res.ok) {
