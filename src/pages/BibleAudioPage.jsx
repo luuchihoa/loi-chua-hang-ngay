@@ -24,7 +24,7 @@ import {
   fetchBibleAudioAvailability,
   getBibleAudioFilename,
 } from '../utils/bibleService.js';
-import { loadAudioIndex, hasBibleChapterAudio } from '../utils/audioIndexService.js';
+import { loadAudioIndex, hasBibleChapterAudio, useAudioIndex } from '../utils/audioIndexService.js';
 
 const LITURGY_TABS = [
   { id: 'all', label: 'Tất Cả' },
@@ -39,6 +39,7 @@ const RAW_AUDIO_API_BASE = import.meta.env.VITE_AUDIO_API_BASE || import.meta.en
 const AUDIO_API_BASE = RAW_AUDIO_API_BASE.replace(/\/+$/, '');
 
 export default function BibleAudioPage() {
+  useAudioIndex();
   const [viewMode, setViewMode] = useState('liturgy');
 
   // ── States cho Nhóm A (Bài Đọc Phụng Vụ - Server Paginated 12 items/trang) ─

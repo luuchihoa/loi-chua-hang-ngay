@@ -25,7 +25,7 @@ import {
   getBibleAudioFilename,
 } from '../utils/bibleService.js';
 import { getAudioApiBase } from '../utils/audioLookup.js';
-import { loadAudioIndex, hasBibleChapterAudio } from '../utils/audioIndexService.js';
+import { loadAudioIndex, hasBibleChapterAudio, useAudioIndex } from '../utils/audioIndexService.js';
 import { getLiturgyInfo, getLiturgicalColor } from '../utils/liturgyCalendar.js';
 import { supabase } from '../lib/supabase.js';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
@@ -62,6 +62,7 @@ const LITURGY_ACCENT = {
 
 // ──────────────────────────────────────────────────────────────────
 export default function BiblePage() {
+  useAudioIndex();
   const { bookId: urlBookId, chapterNum: urlChapter } = useParams();
   const navigate = useNavigate();
   const allBooks = useMemo(() => getAllBooks(), []);

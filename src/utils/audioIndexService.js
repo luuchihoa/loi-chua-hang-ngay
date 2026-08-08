@@ -1,47 +1,65 @@
+import { useState, useEffect } from 'react';
 import { getBookById } from './bibleService.js';
 
-let audioIndexCache = null;
+const DEFAULT_INDEX = {
+  version: '1.0.0',
+  bible: ['st_1', 'mt_1', 'mt_2', 'mt_3', 'mt_4', 'mt_5', 'mc_1', 'lc_1', 'ga_1', 'ga_3'],
+  liturgy: ['gospel_Mt_1331-35', 'gospel_Ga_1119-27', 'r1_1_Ga_47-16']
+};
+
+let audioIndexCache = DEFAULT_INDEX;
 let audioIndexPromise = null;
+const listeners = new Set();
 
 const STORAGE_KEY = 'lc_audio_index_cache';
 const STORAGE_TIME_KEY = 'lc_audio_index_time';
 const CACHE_TTL = 1000 * 60 * 60; // 1 hour
 
-export const loadAudioIndex = async () => {
-  if (audioIndexCache) return audioIndexCache;
-
-  // Try loading from localStorage cache
-  try {
-    const cachedStr = localStorage.getItem(STORAGE_KEY);
-    const cachedTime = localStorage.getItem(STORAGE_TIME_KEY);
-    if (cachedStr && cachedTime && (Date.now() - Number(cachedTime) < CACHE_TTL)) {
-      audioIndexCache = JSON.parse(cachedStr);
-      return audioIndexCache;
+// Load cached from localStorage immediately if available
+try {
+  const cachedStr = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+  const cachedTime = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_TIME_KEY) : null;
+  if (cachedStr && cachedTime && (Date.now() - Number(cachedTime) < CACHE_TTL)) {
+    const parsed = JSON.parse(cachedStr);
+    if (parsed && Array.isArray(parsed.bible)) {
+      audioIndexCache = parsed;
     }
-  } catch (e) {}
+  }
+} catch (e) {}
 
+const notifyListeners = () => {
+  listeners.forEach(fn => {
+    try { fn(audioIndexCache); } catch (e) {}
+  });
+};
+
+export const subscribeAudioIndex = (fn) => {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+};
+
+export const loadAudioIndex = async () => {
   if (!audioIndexPromise) {
     audioIndexPromise = fetch('/audio_index.json')
       .then(res => (res.ok ? res.json() : null))
       .then(data => {
-        audioIndexCache = data || { bible: [], liturgy: [] };
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(audioIndexCache));
-          localStorage.setItem(STORAGE_TIME_KEY, String(Date.now()));
-        } catch (e) {}
+        if (data && Array.isArray(data.bible)) {
+          audioIndexCache = data;
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(audioIndexCache));
+            localStorage.setItem(STORAGE_TIME_KEY, String(Date.now()));
+          } catch (e) {}
+          notifyListeners();
+        }
         return audioIndexCache;
       })
-      .catch(() => {
-        audioIndexCache = { bible: [], liturgy: [] };
-        return audioIndexCache;
-      });
+      .catch(() => audioIndexCache);
   }
-
   return await audioIndexPromise;
 };
 
 export const getAudioIndex = () => {
-  return audioIndexCache || { bible: [], liturgy: [] };
+  return audioIndexCache || DEFAULT_INDEX;
 };
 
 export const hasBibleChapterAudio = (bookIdOrShort, chapter) => {
@@ -68,4 +86,13 @@ export const hasLiturgyAudio = (refString, section = 'r1') => {
     return index.liturgy.some(k => k.toLowerCase() === key.toLowerCase());
   }
   return false;
+};
+
+export const useAudioIndex = () => {
+  const [index, setIndex] = useState(() => getAudioIndex());
+  useEffect(() => {
+    loadAudioIndex().then(data => setIndex(data));
+    return subscribeAudioIndex(setIndex);
+  }, []);
+  return index;
 };
