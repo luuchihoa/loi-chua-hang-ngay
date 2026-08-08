@@ -26,9 +26,10 @@ export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
     try {
       if (!r2ManifestCache) {
         if (!r2ManifestFetching) {
-          r2ManifestFetching = fetch(`${apiBase}/audioManifest.json`)
-            .then(res => (res.ok ? res.json() : null))
-            .catch(() => null);
+          r2ManifestFetching = Promise.all([
+            fetch(`${apiBase}/audioManifest.json`).then(r => r.ok ? r.json() : null).catch(() => null),
+            fetch(`${apiBase}/audio/audioManifest.json`).then(r => r.ok ? r.json() : null).catch(() => null)
+          ]).then(([m1, m2]) => ({ ...(m1 || {}), ...(m2 || {}) }));
         }
         r2ManifestCache = await r2ManifestFetching;
         r2ManifestFetching = null;
@@ -36,8 +37,15 @@ export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
 
       if (r2ManifestCache) {
         const key = normalizeRefKey(section, refString);
-        const relPath = r2ManifestCache[key];
+        let relPath = r2ManifestCache[key];
         if (relPath) {
+          // Chuẩn hóa đường dẫn khớp cấu trúc R2: audio/gospel, audio/readings/r1, audio/readings/r2
+          if (!relPath.startsWith('http') && !relPath.startsWith('/audio/') && !relPath.startsWith('audio/')) {
+            relPath = `/audio${relPath.startsWith('/') ? '' : '/'}${relPath}`;
+          }
+          // Chuẩn hóa /gospels/ thành /gospel/ nếu R2 lưu thư mục dạng audio/gospel
+          relPath = relPath.replace('/audio/gospels/', '/audio/gospel/');
+
           const fullUrl = relPath.startsWith('http') ? relPath : `${apiBase}${relPath.startsWith('/') ? '' : '/'}${relPath}`;
           return { exists: true, streamUrl: fullUrl, trackId: key };
         }
