@@ -105,6 +105,9 @@ export function useLiturgyTTS() {
       };
 
       utterance.onerror = (err) => {
+        if (err && (err.error === 'canceled' || err.error === 'interrupted')) {
+          return;
+        }
         console.warn('⚠️ Lỗi phát Web Speech TTS:', err);
         if (onEndedCallback) {
           onEndedCallback();
