@@ -146,7 +146,7 @@ export default function AudioStudioPage() {
   const fileInputRef = useRef(null);
 
   const getAudioApiBase = useCallback(() => {
-    const base = import.meta.env.VITE_AUDIO_API_BASE || (import.meta.env.DEV ? 'http://localhost:5005' : '');
+    const base = import.meta.env.VITE_AUDIO_API_BASE || import.meta.env.VITE_AUDIO_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5005' : '');
     return base.replace(/\/+$/, '');
   }, []);
 

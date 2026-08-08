@@ -1,18 +1,31 @@
 import { fetchAudioAccessStreamUrl } from './bibleService.js';
 
-let r2ManifestCache = null;
-let r2ManifestFetching = null;
-
 export const getAudioApiBase = () => {
-  const base = import.meta.env.VITE_AUDIO_API_BASE || (import.meta.env.DEV ? 'http://localhost:5005' : '');
+  // Hỗ trợ tên cũ VITE_AUDIO_BASE_URL để các deploy R2 hiện có vẫn hoạt động.
+  const base = import.meta.env.VITE_AUDIO_API_BASE || import.meta.env.VITE_AUDIO_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5005' : '');
   return base.replace(/\/+$/, '');
 };
 
-const normalizeRefKey = (section, refStr) => {
+// Phải khớp với format_reading_filename() trong các script render Python.
+// Ví dụ: "1 Ga 4,7-16" -> "1_Ga_47-16".
+const formatRefForFilename = (refStr) => {
   if (!refStr) return '';
-  const cleanRef = refStr.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const prefix = (section || 'r1').toLowerCase().replace(/[^a-z0-9]/g, '');
-  return `${prefix}${cleanRef}`;
+  return refStr
+    .trim()
+    .replace(/[\.,:;()\\/*?"<>|]/g, '')
+    .replace(/\s*-\s*/g, '-')
+    .replace(/\s+/g, '_')
+    .replace(/_+/g, '_');
+};
+
+const getStaticAudioPath = (refString, section) => {
+  const ref = formatRefForFilename(refString);
+  if (!ref) return null;
+
+  const normalizedSection = (section || 'r1').toLowerCase();
+  if (normalizedSection === 'gospel') return `/gospels/gospel_${ref}.mp3`;
+  if (normalizedSection === 'r2') return `/readings/r2/r2_${ref}.mp3`;
+  return `/readings/r1/r1_${ref}.mp3`;
 };
 
 export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
@@ -23,37 +36,17 @@ export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
   const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));
 
   if (isStaticStorage) {
-    try {
-      if (!r2ManifestCache) {
-        if (!r2ManifestFetching) {
-          r2ManifestFetching = Promise.all([
-            fetch(`${apiBase}/audioManifest.json`).then(r => r.ok ? r.json() : null).catch(() => null),
-            fetch(`${apiBase}/audio/audioManifest.json`).then(r => r.ok ? r.json() : null).catch(() => null)
-          ]).then(([m1, m2]) => ({ ...(m1 || {}), ...(m2 || {}) }));
-        }
-        r2ManifestCache = await r2ManifestFetching;
-        r2ManifestFetching = null;
-      }
+    const path = getStaticAudioPath(refString, section);
+    if (!path) return { exists: false, streamUrl: null, trackId: null };
 
-      if (r2ManifestCache) {
-        const key = normalizeRefKey(section, refString);
-        let relPath = r2ManifestCache[key];
-        if (relPath) {
-          // Chuẩn hóa đường dẫn khớp cấu trúc R2: audio/gospel, audio/readings/r1, audio/readings/r2
-          if (!relPath.startsWith('http') && !relPath.startsWith('/audio/') && !relPath.startsWith('audio/')) {
-            relPath = `/audio${relPath.startsWith('/') ? '' : '/'}${relPath}`;
-          }
-          // Chuẩn hóa /gospels/ thành /gospel/ nếu R2 lưu thư mục dạng audio/gospel
-          relPath = relPath.replace('/audio/gospels/', '/audio/gospel/');
-
-          const fullUrl = relPath.startsWith('http') ? relPath : `${apiBase}${relPath.startsWith('/') ? '' : '/'}${relPath}`;
-          return { exists: true, streamUrl: fullUrl, trackId: key };
-        }
-      }
-    } catch (e) {
-      console.warn('⚠️ Lỗi nạp R2 Audio Manifest:', e.message);
-    }
-    return { exists: false, streamUrl: null, trackId: null };
+    // R2 không cung cấp API liệt kê object cho trình duyệt. Thay vì tải
+    // audioManifest.json, web suy ra URL trực tiếp từ quy ước tên file.
+    // Nếu object chưa tồn tại, Audio.onerror sẽ tự chuyển sang Web Speech.
+    return {
+      exists: true,
+      streamUrl: `${apiBase}${path}`,
+      trackId: `${section || 'r1'}:${refString}`
+    };
   }
 
   try {

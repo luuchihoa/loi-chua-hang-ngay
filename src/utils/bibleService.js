@@ -120,7 +120,9 @@ export const getBibleAudioFilename = (bookIdOrShort, chapter) => {
 };
 
 const getAudioApiBase = () => {
-  const base = import.meta.env.VITE_AUDIO_API_BASE || (import.meta.env.DEV ? 'http://localhost:5005' : '');
+  // VITE_AUDIO_BASE_URL được giữ để tương thích với các bản deploy R2 trước đây.
+  // VITE_AUDIO_API_BASE là tên biến chuẩn dùng cho cả API render và static R2.
+  const base = import.meta.env.VITE_AUDIO_API_BASE || import.meta.env.VITE_AUDIO_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5005' : '');
   return base.replace(/\/+$/, '');
 };
 

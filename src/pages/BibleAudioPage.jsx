@@ -30,7 +30,7 @@ const LITURGY_TABS = [
   { id: 'r2', label: 'Bài Đọc 2' },
 ];
 
-const RAW_AUDIO_API_BASE = import.meta.env.VITE_AUDIO_API_BASE || 
+const RAW_AUDIO_API_BASE = import.meta.env.VITE_AUDIO_API_BASE || import.meta.env.VITE_AUDIO_BASE_URL ||
   (import.meta.env.DEV ? 'http://localhost:5005' : '');
 
 const AUDIO_API_BASE = RAW_AUDIO_API_BASE.replace(/\/+$/, '');
