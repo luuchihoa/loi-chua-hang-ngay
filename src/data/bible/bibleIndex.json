@@ -1,0 +1,517 @@
+{
+  "old_testament": [
+    {
+      "id": "st",
+      "name": "Sáng Thế",
+      "short": "St",
+      "category": "Ngũ Kinh",
+      "chapters": 50
+    },
+    {
+      "id": "xh",
+      "name": "Xuất Hành",
+      "short": "Xh",
+      "category": "Ngũ Kinh",
+      "chapters": 40
+    },
+    {
+      "id": "lv",
+      "name": "Lê-vi",
+      "short": "Lv",
+      "category": "Ngũ Kinh",
+      "chapters": 27
+    },
+    {
+      "id": "ds",
+      "name": "Dân Số",
+      "short": "Ds",
+      "category": "Ngũ Kinh",
+      "chapters": 36
+    },
+    {
+      "id": "dnl",
+      "name": "Đệ Nhị Luật",
+      "short": "Đnl",
+      "category": "Ngũ Kinh",
+      "chapters": 34
+    },
+    {
+      "id": "gs",
+      "name": "Giô-suê",
+      "short": "Gs",
+      "category": "Lịch Sử",
+      "chapters": 24
+    },
+    {
+      "id": "tl",
+      "name": "Thủ Lãnh",
+      "short": "Tl",
+      "category": "Lịch Sử",
+      "chapters": 21
+    },
+    {
+      "id": "r",
+      "name": "Rút",
+      "short": "R",
+      "category": "Lịch Sử",
+      "chapters": 4
+    },
+    {
+      "id": "1sm",
+      "name": "1 Sa-mu-en",
+      "short": "1 Sm",
+      "category": "Lịch Sử",
+      "chapters": 31
+    },
+    {
+      "id": "2sm",
+      "name": "2 Sa-mu-en",
+      "short": "2 Sm",
+      "category": "Lịch Sử",
+      "chapters": 24
+    },
+    {
+      "id": "1v",
+      "name": "1 Các Vua",
+      "short": "1 V",
+      "category": "Lịch Sử",
+      "chapters": 22
+    },
+    {
+      "id": "2v",
+      "name": "2 Các Vua",
+      "short": "2 V",
+      "category": "Lịch Sử",
+      "chapters": 25
+    },
+    {
+      "id": "1sb",
+      "name": "1 Sử Biên Niên",
+      "short": "1 Sb",
+      "category": "Lịch Sử",
+      "chapters": 29
+    },
+    {
+      "id": "2sb",
+      "name": "2 Sử Biên Niên",
+      "short": "2 Sb",
+      "category": "Lịch Sử",
+      "chapters": 36
+    },
+    {
+      "id": "er",
+      "name": "Ét-ra",
+      "short": "Er",
+      "category": "Lịch Sử",
+      "chapters": 10
+    },
+    {
+      "id": "nhm",
+      "name": "Nê-he-mi-a",
+      "short": "Nhm",
+      "category": "Lịch Sử",
+      "chapters": 13
+    },
+    {
+      "id": "tb",
+      "name": "Tô-bi-a",
+      "short": "Tb",
+      "category": "Lịch Sử",
+      "chapters": 14
+    },
+    {
+      "id": "gdt",
+      "name": "Giu-đi-tha",
+      "short": "Gđt",
+      "category": "Lịch Sử",
+      "chapters": 16
+    },
+    {
+      "id": "et",
+      "name": "Ê-sơ-te",
+      "short": "Et",
+      "category": "Lịch Sử",
+      "chapters": 10
+    },
+    {
+      "id": "1mc",
+      "name": "1 Ma-ca-bê",
+      "short": "1 Mc",
+      "category": "Lịch Sử",
+      "chapters": 16
+    },
+    {
+      "id": "2mc",
+      "name": "2 Ma-ca-bê",
+      "short": "2 Mc",
+      "category": "Lịch Sử",
+      "chapters": 15
+    },
+    {
+      "id": "g",
+      "name": "Gióp",
+      "short": "G",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 42
+    },
+    {
+      "id": "tv",
+      "name": "Thánh Vịnh",
+      "short": "Tv",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 150
+    },
+    {
+      "id": "cn",
+      "name": "Châm Ngôn",
+      "short": "Cn",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 31
+    },
+    {
+      "id": "gv",
+      "name": "Giảng Viên",
+      "short": "Gv",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 12
+    },
+    {
+      "id": "dc",
+      "name": "Diễm Ca",
+      "short": "Dc",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 8
+    },
+    {
+      "id": "kn",
+      "name": "Khôn Ngoan",
+      "short": "Kn",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 19
+    },
+    {
+      "id": "hc",
+      "name": "Huấn Ca",
+      "short": "Hc",
+      "category": "Giáo Lý & Thơ Văn",
+      "chapters": 51
+    },
+    {
+      "id": "is",
+      "name": "I-sai-a",
+      "short": "Is",
+      "category": "Ngôn Sứ",
+      "chapters": 66
+    },
+    {
+      "id": "gr",
+      "name": "Giê-rê-mi-a",
+      "short": "Gr",
+      "category": "Ngôn Sứ",
+      "chapters": 52
+    },
+    {
+      "id": "ac",
+      "name": "Ai Ca",
+      "short": "Ac",
+      "category": "Ngôn Sứ",
+      "chapters": 5
+    },
+    {
+      "id": "br",
+      "name": "Ba-rúc",
+      "short": "Br",
+      "category": "Ngôn Sứ",
+      "chapters": 6
+    },
+    {
+      "id": "ed",
+      "name": "Ê-dê-ki-en",
+      "short": "Ed",
+      "category": "Ngôn Sứ",
+      "chapters": 48
+    },
+    {
+      "id": "dn",
+      "name": "Đa-ni-en",
+      "short": "Đn",
+      "category": "Ngôn Sứ",
+      "chapters": 14
+    },
+    {
+      "id": "hs",
+      "name": "Hô-sê",
+      "short": "Hs",
+      "category": "Ngôn Sứ",
+      "chapters": 14
+    },
+    {
+      "id": "ge",
+      "name": "Giô-en",
+      "short": "Ge",
+      "category": "Ngôn Sứ",
+      "chapters": 4
+    },
+    {
+      "id": "am",
+      "name": "A-mốt",
+      "short": "Am",
+      "category": "Ngôn Sứ",
+      "chapters": 9
+    },
+    {
+      "id": "ov",
+      "name": "Ô-va-đi-a",
+      "short": "Ôv",
+      "category": "Ngôn Sứ",
+      "chapters": 1
+    },
+    {
+      "id": "gn",
+      "name": "Giô-na",
+      "short": "Gn",
+      "category": "Ngôn Sứ",
+      "chapters": 4
+    },
+    {
+      "id": "mk",
+      "name": "Mi-kha",
+      "short": "Mk",
+      "category": "Ngôn Sứ",
+      "chapters": 7
+    },
+    {
+      "id": "nh",
+      "name": "Na-hum",
+      "short": "Nh",
+      "category": "Ngôn Sứ",
+      "chapters": 3
+    },
+    {
+      "id": "hb",
+      "name": "Ha-ba-cúc",
+      "short": "Hb",
+      "category": "Ngôn Sứ",
+      "chapters": 3
+    },
+    {
+      "id": "xp",
+      "name": "Xô-phô-ni-a",
+      "short": "Xp",
+      "category": "Ngôn Sứ",
+      "chapters": 3
+    },
+    {
+      "id": "kg",
+      "name": "Khắc-gai",
+      "short": "Kg",
+      "category": "Ngôn Sứ",
+      "chapters": 2
+    },
+    {
+      "id": "dcr",
+      "name": "Da-ca-ri-a",
+      "short": "Dcr",
+      "category": "Ngôn Sứ",
+      "chapters": 14
+    },
+    {
+      "id": "ml",
+      "name": "Ma-la-khi",
+      "short": "Ml",
+      "category": "Ngôn Sứ",
+      "chapters": 3
+    }
+  ],
+  "new_testament": [
+    {
+      "id": "mt",
+      "name": "Mát-thêu",
+      "short": "Mt",
+      "category": "Tin Mừng",
+      "chapters": 28
+    },
+    {
+      "id": "mc",
+      "name": "Mác-cô",
+      "short": "Mc",
+      "category": "Tin Mừng",
+      "chapters": 16
+    },
+    {
+      "id": "lc",
+      "name": "Lu-ca",
+      "short": "Lc",
+      "category": "Tin Mừng",
+      "chapters": 24
+    },
+    {
+      "id": "ga",
+      "name": "Gio-an",
+      "short": "Ga",
+      "category": "Tin Mừng",
+      "chapters": 21
+    },
+    {
+      "id": "cv",
+      "name": "Công Vụ Tông Đồ",
+      "short": "Cv",
+      "category": "Lịch Sử",
+      "chapters": 28
+    },
+    {
+      "id": "rm",
+      "name": "Rô-ma",
+      "short": "Rm",
+      "category": "Thư Tông Đồ",
+      "chapters": 16
+    },
+    {
+      "id": "1cr",
+      "name": "1 Cô-rin-tô",
+      "short": "1 Cr",
+      "category": "Thư Tông Đồ",
+      "chapters": 16
+    },
+    {
+      "id": "2cr",
+      "name": "2 Cô-rin-tô",
+      "short": "2 Cr",
+      "category": "Thư Tông Đồ",
+      "chapters": 13
+    },
+    {
+      "id": "gl",
+      "name": "Ga-la-ti",
+      "short": "Gl",
+      "category": "Thư Tông Đồ",
+      "chapters": 6
+    },
+    {
+      "id": "ep",
+      "name": "Ê-phê-xô",
+      "short": "Ep",
+      "category": "Thư Tông Đồ",
+      "chapters": 6
+    },
+    {
+      "id": "pl",
+      "name": "Phi-líp-phê",
+      "short": "Pl",
+      "category": "Thư Tông Đồ",
+      "chapters": 4
+    },
+    {
+      "id": "cl",
+      "name": "Cô-lô-xê",
+      "short": "Cl",
+      "category": "Thư Tông Đồ",
+      "chapters": 4
+    },
+    {
+      "id": "1tx",
+      "name": "1 Thê-xa-lô-ni-ca",
+      "short": "1 Tx",
+      "category": "Thư Tông Đồ",
+      "chapters": 5
+    },
+    {
+      "id": "2tx",
+      "name": "2 Thê-xa-lô-ni-ca",
+      "short": "2 Tx",
+      "category": "Thư Tông Đồ",
+      "chapters": 3
+    },
+    {
+      "id": "1tm",
+      "name": "1 Ti-mô-thê",
+      "short": "1 Tm",
+      "category": "Thư Tông Đồ",
+      "chapters": 6
+    },
+    {
+      "id": "2tm",
+      "name": "2 Ti-mô-thê",
+      "short": "2 Tm",
+      "category": "Thư Tông Đồ",
+      "chapters": 4
+    },
+    {
+      "id": "tt",
+      "name": "Ti-tô",
+      "short": "Tt",
+      "category": "Thư Tông Đồ",
+      "chapters": 3
+    },
+    {
+      "id": "plm",
+      "name": "Phi-lê-môn",
+      "short": "Plm",
+      "category": "Thư Tông Đồ",
+      "chapters": 1
+    },
+    {
+      "id": "dt",
+      "name": "Do Thái",
+      "short": "Dt",
+      "category": "Thư Tông Đồ",
+      "chapters": 13
+    },
+    {
+      "id": "gc",
+      "name": "Gia-cô-bê",
+      "short": "Gc",
+      "category": "Thư Tông Đồ",
+      "chapters": 5
+    },
+    {
+      "id": "1pr",
+      "name": "1 Phê-rô",
+      "short": "1 Pr",
+      "category": "Thư Tông Đồ",
+      "chapters": 5
+    },
+    {
+      "id": "2pr",
+      "name": "2 Phê-rô",
+      "short": "2 Pr",
+      "category": "Thư Tông Đồ",
+      "chapters": 3
+    },
+    {
+      "id": "1ga",
+      "name": "1 Gio-an",
+      "short": "1 Ga",
+      "category": "Thư Tông Đồ",
+      "chapters": 5
+    },
+    {
+      "id": "2ga",
+      "name": "2 Gio-an",
+      "short": "2 Ga",
+      "category": "Thư Tông Đồ",
+      "chapters": 1
+    },
+    {
+      "id": "3ga",
+      "name": "3 Gio-an",
+      "short": "3 Ga",
+      "category": "Thư Tông Đồ",
+      "chapters": 1
+    },
+    {
+      "id": "gd",
+      "name": "Giu-đa",
+      "short": "Gđ",
+      "category": "Thư Tông Đồ",
+      "chapters": 1
+    },
+    {
+      "id": "kh",
+      "name": "Khải Huyền",
+      "short": "Kh",
+      "category": "Khải Huyền",
+      "chapters": 22
+    }
+  ]
+}

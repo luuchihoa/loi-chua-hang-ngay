@@ -1,0 +1,42 @@
+{
+  "name": "loi-chua-hang-ngay",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "node scripts/assert_no_public_audio.js",
+    "build": "vite build",
+    "postbuild": "node scripts/assert_no_public_audio.js",
+    "preview": "vite preview",
+    "rebuild:bible-manifest": "node scripts/rebuild_bible_audio_manifest.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.0",
+    "@tanstack/react-query": "^5.101.4",
+    "amlich.js": "^1.0.6",
+    "canvas-confetti": "^1.9.4",
+    "cheerio": "^1.2.0",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "framer-motion": "^12.40.0",
+    "html-to-image": "^1.11.13",
+    "lucide-react": "^1.21.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.12.0",
+    "react-virtuoso": "^4.18.11",
+    "tailwind-merge": "^3.6.0",
+    "vite-plugin-pwa": "^1.3.0",
+    "workbox-window": "^7.4.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.2.0",
+    "tailwindcss": "^4.3.1",
+    "vite": "^6.4.3"
+  }
+}

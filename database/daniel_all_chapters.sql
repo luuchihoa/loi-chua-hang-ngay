@@ -1,0 +1,593 @@
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 1, '[PART] Chương 1
+[PART] I. CÁC TRÌNH THUẬT
+[PART] 1. TRẺ EM DO-THÁI TẠI TRIỀU ĐÌNH VUA NA-BU-CÔ-ĐÔ-NÔ-XO
+(1) Năm thứ ba, đời vua Giơ-hô-gia-kim cai trị xứ Giu-đa, vua xứ Ba-by-lon là Na-bu-cô-đô-nô-xo đến bao vây thành Giê-ru-sa-lem. (2) Chúa trao vua xứ Giu-đa là Giơ-hô-gia-kim cùng với tất cả đồ dùng của Nhà Chúa vào tay vua Na-bu-cô-đô-nô-xo. Ông này mang những thứ ấy về đền thờ các thần của ông ta ở xứ Sin-a và bỏ vào nhà kho của các thần.
+(3) Nhà vua truyền cho quan đứng đầu các thái giám là Át-pơ-nát chọn trong số con cái Ít-ra-en một vài đứa trẻ thuộc dòng dõi hoàng gia và hàng quý tộc mà dẫn về. (4) Những đứa trẻ này phải là những đứa không khuyết tật, diện mạo khôi ngô, đã được học mọi lẽ khôn ngoan, hiểu rộng biết nhiều, trí khôn sắc sảo, có khả năng đứng chầu trong điện vua. Ông Át-pơ-nát còn phải dạy cho chúng biết chữ viết và tiếng nói của người Can-đê. (5) Nhà vua dành cho chúng khẩu phần hằng ngày trong thức ăn rượu uống của nhà vua. Chúng phải được nuôi dạy ba năm, và sau thời hạn đó, phải ra mắt nhà vua. (6) Trong số các trẻ ấy có Đa-ni-en, Kha-na-ni-a, Mi-sa-ên và A-da-ri-a là những người Giu-đa. (7) Quan đứng đầu các thái giám đổi tên cho chúng: Đa-ni-en thành Bên-tơ-sát-xa, Kha-na-ni-a thành Sát-rác, Mi-sa-ên thành Mê-sác và A-da-ri-a thành A-vết Nơ-gô. (8) Phần Đa-ni-en, vì quyết tâm không để mình bị ô uế do thức ăn rượu uống của nhà vua, nên đã xin quan cho mình khỏi bị ô uế. (9) Chúa đã khiến cho Đa-ni-en được cảm tình của quan đứng đầu các thái giám. (10) Nhưng quan này nói với Đa-ni-en rằng: “Ta sợ đức vua; vua đã chỉ định đồ ăn thức uống cho các ngươi. Vua mà thấy mặt mũi các ngươi gầy ốm hơn các bạn cùng tuổi thì chính các ngươi sẽ khiến ta mang tội trước mặt vua.” (11) Đa-ni-en thưa với người được quan đứng đầu các thái giám chỉ định để trông coi Đa-ni-en, Kha-na-ni-a, Mi-sa-ên và A-da-ri-a: (12) “Xin quan cứ thử các tôi tớ của quan đây trong mười ngày: cứ cho chúng tôi ăn rau uống nước, (13) rồi quan nhìn sắc mặt chúng tôi và sắc mặt những đứa dùng thức ăn của nhà vua. Lúc đó quan thấy thế nào thì cứ xử với các tôi tớ của quan như vậy.” (14) Quan chấp nhận lời các cậu ấy xin và thử trong mười ngày. (15) Hết mười ngày, quan thấy các cậu sắc mặt hồng hào, da thịt đầy đặn hơn tất cả những đứa đã dùng thức ăn của nhà vua. (16) Thế là quan giám thị cất phần thức ăn rượu uống của các cậu đi và cứ cho ăn rau. (17) Bốn cậu bé này đều được Chúa ban ơn hiểu rộng biết nhiều về tất cả chữ nghĩa và lẽ khôn ngoan. Riêng Đa-ni-en còn được hiểu biết mọi thị kiến và điềm báo mộng. (18) Khi đến thời hạn phải đưa bọn trẻ ra như vua đã truyền, thì quan đứng đầu các thái giám đem chúng ra trước mặt vua Na-bu-cô-đô-nô-xo. (19) Nhà vua nói chuyện với chúng, và trong số các trẻ ấy không có đứa nào được như Đa-ni-en, Kha-na-ni-a, Mi-sa-ên và A-da-ri-a. Thế là bốn cậu này được đứng chầu vua, (20) và khi vua hỏi các cậu về bất cứ điều gì cần đến sự khôn ngoan và tài trí, thì đều thấy các cậu trổi vượt gấp mười lần hơn tất cả các thầy phù thủy và pháp sư trong toàn vương quốc. (21) Đa-ni-en ở lại đó cho đến năm thứ nhất triều vua Ky-rô.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 2, '[PART] 2. VUA NA-BU-CÔ-ĐÔ-NÔ-XO CHIÊM BAO: PHO TƯỢNG KỲ QUÁI
+[SECTION] Nhà vua hỏi các thầy pháp sư
+(1) Năm thứ hai triều vua Na-bu-cô-đô-nô-xo, vua đã thấy chiêm bao khiến vua bối rối trong tâm hồn, không sao ngủ được. (2) Vua cho vời tất cả những thầy phù thủy, pháp sư, đồng bóng và chiêm tinh đến nói cho vua biết vua đã thấy gì trong giấc chiêm bao. Họ vào chầu vua. (3) Vua nói với họ: “Ta đã thấy chiêm bao, và tâm hồn ta bối rối vì muốn biết mình đã thấy gì trong giấc chiêm bao.” (4) Và những nhà chiêm tinh ấy tâu vua bằng tiếng A-ram: “Thánh thượng vạn tuế. Xin thánh thượng kể cho các tôi tớ ngài giấc chiêm bao và bầy tôi sẽ giải nghĩa.” (5) Nhà vua trả lời họ rằng: “Các ngươi phải hiểu rõ lệnh ta. Nếu các ngươi không nói được cho ta biết ta đã thấy gì trong giấc chiêm bao và không giải nghĩa được cho ta, thì các ngươi sẽ bị xử lăng trì và nhà các ngươi sẽ trở thành đống bùn. (6) Còn nếu các ngươi cho ta biết ta đã thấy gì trong giấc chiêm bao và giải nghĩa được cho ta, thì các ngươi sẽ được ta ban quà, ban tặng vật và chức trọng quyền cao. Vậy các ngươi hãy nói cho ta biết ta đã thấy gì trong giấc chiêm bao và ý nghĩa của nó là thế nào.” (7) Họ lại đáp rằng: “Xin đức vua kể giấc chiêm bao cho các tôi tớ nghe, rồi chúng thần sẽ trình bày ý nghĩa giấc chiêm bao.” (8) Nhà vua đáp lại rằng: “Ta biết chắc chắn các ngươi đang tìm cách kéo dài thời gian vì biết lệnh ta đã ra là (9) nếu các ngươi không cho ta biết được giấc chiêm bao thì tất cả các ngươi sẽ chịu chung một án lệnh, nên các ngươi đã đem lời dối trá quanh co mà tâu trước mặt ta cho qua thời giờ. Vậy các ngươi hãy nói cho ta nghe giấc chiêm bao và như thế ta sẽ biết các ngươi có thể giải nghĩa cho ta được.” (10) Những nhà chiêm tinh đáp lời vua và tâu rằng: “Không có người nào trên mặt đất này có thể tỏ bày chuyện của nhà vua, bởi vì không có vị vua nào, dù cao cả quyền uy mấy đi nữa, lại đem một chuyện như thế ra hỏi nhà phù thủy, pháp sư và nhà chiêm tinh. (11) Chuyện vua hỏi đó là chuyện khó khăn và không ai có thể trình bày trước mặt vua ngoài các bậc thần linh, mà các bậc ấy thì không ở chung với người phàm.” (12) Nghe thế, nhà vua nổi cơn lôi đình và truyền tiêu diệt tất cả các người thông thái ở Ba-by-lon. (13) Thế là lệnh được ban ra truyền giết các nhà thông thái. Và người ta tìm Đa-ni-en với các bạn để đem đi giết.
+[SECTION] Ông Đa-ni-en can thiệp
+(14) Bấy giờ ông Đa-ni-en đem lời khôn khéo nói với quan A-ri-ốc là người chỉ huy đám thị vệ đang trên đường đi giết các nhà thông thái của Ba-by-lon. (15) Ông Đa-ni-en thưa với viên sĩ quan của nhà vua là A-ri-ốc rằng: “Tại sao vua lại ra lệnh vội vã thế?” Bấy giờ quan A-ri-ốc nói cho ông Đa-ni-en biết sự việc. (16) Ông Đa-ni-en liền vào xin vua cho triển hạn để ông tìm ra lời giải thích cho vua. (17) Rồi ông Đa-ni-en về nhà kể cho các bạn là Kha-na-ni-a, Mi-sa-ên và A-da-ri-a biết sự việc, (18) và bảo họ kêu xin Đức Chúa Trời rủ lòng thương cho biết điều bí nhiệm này, để Đa-ni-en và các bạn khỏi bị tiêu diệt cùng với các nhà thông thái của Ba-by-lon. (19) Bấy giờ ông Đa-ni-en được mặc khải điều bí nhiệm ấy trong giấc chiêm bao ban đêm. Ông Đa-ni-en liền chúc tụng Đức Chúa Trời (20) bằng những lời sau đây:
+“Chúc tụng danh Chúa
+muôn muôn đời,
+vì Người là Đấng khôn ngoan
+và quyền năng.
+(21) Người là Đấng
+làm cho tứ thời bát tiết chuyển vần,
+Người phế lập các vua,
+Người ban sự khôn ngoan
+cho các nhà thông thái,
+ban tri thức
+cho người hiểu rộng biết nhiều.
+(22) Người mặc khải
+điều thẳm sâu và bí ẩn:
+Người biết những gì
+ở trong cõi tối tăm,
+và ánh sáng ở với Người.
+(23) Lạy Ngài
+là Chúa của tổ tiên chúng con,
+con cảm tạ và ngợi khen Ngài,
+vì Ngài đã cho con
+sự khôn ngoan và sức mạnh.
+Và giờ đây, Ngài đã cho con biết
+điều chúng con xin Ngài:
+vì Ngài đã cho con biết
+chuyện của nhà vua.”
+(24) Thế rồi ông Đa-ni-en vào gặp quan A-ri-ốc là người đã nhận lệnh vua để tiêu diệt các nhà thông thái của Ba-by-lon. Ông Đa-ni-en đến và nói với ông ta thế này: “Đừng tiêu diệt các nhà thông thái của Ba-by-lon. Hãy đưa tôi vào bệ kiến nhà vua và tôi sẽ trình bày cho vua lời giải thích.” (25) Bấy giờ quan A-ri-ốc vội vã đưa ông Đa-ni-en vào chầu vua và tâu vua thế này: “Trong số con cái Giu-đa bị lưu đày, thần đã tìm thấy một người để trình bày cho bệ hạ lời giải mộng.” (26) Đáp lời ông Đa-ni-en, cũng gọi là Bên-tơ-sát-xa, nhà vua nói: “Liệu ngươi có thể cho ta biết giấc chiêm bao ta đã thấy và ý nghĩa giấc chiêm bao ấy không?” (27) Ông Đa-ni-en trả lời: “Điều bí nhiệm mà đức vua hỏi thì các nhà thông thái, các pháp sư, các thầy phù thủy và các thầy bói không thể nào trình bày cho đức vua được. (28) Nhưng có Đức Chúa Trời là Đấng mặc khải những điều bí nhiệm, chính Người cho đức vua Na-bu-cô-đô-nô-xo biết điều gì sẽ xảy ra sau này. Đang khi nằm trên giường, ngài đã chiêm bao và thấy trong đầu như thế này:
+(29) Tâu đức vua, khi nằm trên giường, ngài đã để trí suy nghĩ về những gì sẽ xảy ra sau này; và Đấng mặc khải các điều bí nhiệm đã cho ngài biết điều gì sẽ xảy ra. (30) Còn thần đây, dù chẳng thông thái hơn ai, nhưng điều bí nhiệm này đã được mặc khải cho thần, để thần trình bày cho đức vua lời giải nghĩa, ngõ hầu đức vua biết những ý nghĩ trong lòng đức vua.
+(31) Tâu bệ hạ, ngài đã có một giấc chiêm bao. Giấc chiêm bao ấy như thế này: một pho tượng, một pho tượng lớn, sáng chói, đứng sừng sững trước mặt ngài, coi thật dễ sợ. (32) Đầu pho tượng ấy bằng vàng ròng, ngực và hai cánh tay bằng bạc, bụng và hai bắp đùi bằng đồng, (33) hai bắp chân bằng sắt, hai bàn chân nửa sắt nửa sành. (34) Ngài đang mải nhìn thì bỗng có một tảng đá tách ra, dù không có bàn tay nào đụng tới, nó đập vào pho tượng trúng hai chân nửa sắt nửa sành, khiến hai bàn chân vỡ tan ra. (35) Bấy giờ tất cả cùng vỡ tan: cả sắt, sành, đồng, bạc lẫn vàng, giống như rơm rác trên sân phơi lúa mùa hè bị gió cuốn đi không để lại dấu vết gì. Còn tảng đá làm vỡ pho tượng thì trở thành một hòn núi lớn choán hết mặt đất. (36) Đó là giấc chiêm bao, còn ý nghĩa của nó thì xin tâu trước bệ hạ. (37) Tâu bệ hạ, ngài là vua các vua, Đức Chúa Trời đã ban cho ngài vương quốc, quyền hành, thế lực và vinh quang. (38) Con cái loài người, thú vật ngoài đồng, chim chóc trên trời, dù chúng ở đâu thì Đức Chúa Trời cũng giao vào tay ngài và đặt ngài làm chủ tể mọi loài. Cái đầu bằng vàng chính là ngài vậy. (39) Sau triều đại ngài, sẽ xuất hiện một vương quốc khác kém hơn ngài. Rồi một vương quốc thứ ba nữa, vương quốc bằng đồng, sẽ thống trị cả mặt đất. (40) Còn vương quốc thứ tư vững như sắt. Cũng như sắt nghiền nát và đập tan tất cả vương quốc đó –khác nào sắt phá vỡ– cũng sẽ nghiền nát và phá vỡ tất cả. (41) Bàn chân và các ngón chân mà ngài thấy nửa bằng đất sét, nửa bằng sắt là một vương quốc sẽ bị phân chia, nhưng sẽ có một phần sức mạnh của sắt, vì ngài thấy sắt pha lẫn với đất sét. (42) Các ngón chân phần bằng sắt, phần bằng đất sét là một vương quốc nửa mạnh nửa yếu. (43) Việc ngài thấy sắt pha với đất sét nghĩa là các vương quốc sẽ làm cho các chủng tộc pha lẫn với nhau, nhưng không gắn bó với nhau được, cũng như sắt không hòa lẫn được với đất sét. (44) Trong thời đại các vua này, Đức Chúa Trời sẽ lập một vương quốc không bao giờ bị tiêu diệt, vương quốc ấy không bị giao cho một dân khác, nhưng nó sẽ đập tan và tiêu diệt tất cả mọi vương quốc này, đến muôn đời nó sẽ đứng vững; (45) cũng như ngài đã thấy tảng đá bị tách khỏi núi dù không có bàn tay nào đụng tới, tảng đá ấy đập tan cả sắt, đồng, đất sét, bạc và vàng. Thiên Chúa cao cả đã cho đức vua biết chuyện gì sẽ xảy ra sau này. Giấc chiêm bao đúng là như thế và ý nghĩa chắc chắn là như vậy.”
+[SECTION] Vua tuyên xưng lòng tin
+(46) Bấy giờ vua Na-bu-cô-đô-nô-xo sấp mình phủ phục trước mặt ông Đa-ni-en rồi truyền dâng lễ phẩm và hương thơm cho ông. (47) Đáp lời ông Đa-ni-en vua nói: “Thiên Chúa của ngươi quả là Thần các thần, là Chúa Tể các vua, và là Đấng mặc khải những điều bí ẩn; nhờ thế ngươi mới có thể tỏ lộ điều bí ẩn này.” (48) Vua liền đặt ông Đa-ni-en lên chức cao và ban cho ông nhiều món quà lớn. Vua đặt ông làm người cai quản toàn tỉnh Ba-by-lon và làm người đứng đầu các nhà thông thái của Ba-by-lon. (49) Ông Đa-ni-en xin nhà vua đặt các ông Sát-rác, Mê-sác và A-vết Nơ-gô lên trông coi tỉnh Ba-by-lon. Còn ông Đa-ni-en thì túc trực trong đền vua.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 3, '[PART] 3. THỜ LẠY TƯỢNG VÀNG
+[SECTION] Vua Na-bu-cô-đô-nô-xo dựng tượng vàng
+(1) Vua Na-bu-cô-đô-nô-xo làm một pho tượng bằng vàng cao sáu mươi thước, ngang sáu thước, dựng trong cánh đồng Đu-ra thuộc tỉnh Ba-by-lon. (2) Rồi vua Na-bu-cô-đô-nô-xo sai người triệu tập các thống đốc, thủ lãnh, tổng trấn, các cố vấn, các quan coi ngân khố, các luật sĩ, thẩm phán và tất cả các quan chức hàng tỉnh đến khánh thành pho tượng vua Na-bu-cô-đô-nô-xo đã dựng. (3) Bấy giờ các thống đốc, thủ lãnh, tổng trấn, các cố vấn, các quan coi ngân khố, các luật sĩ, thẩm phán và tất cả các quan chức hàng tỉnh tập họp để khánh thành pho tượng vua Na-bu-cô-đô-nô-xo đã dựng, và họ đứng trước pho tượng vua Na-bu-cô-đô-nô-xo đã dựng. (4) Người đọc lệnh hô to: “Lệnh cho các ngươi, hỡi mọi người thuộc mọi dân tộc, giống nòi và ngôn ngữ: (5) Khi nghe tiếng tù và, tiếng sáo, tiếng đàn dây, đàn sắt, đàn cầm, tiếng kèn và đủ thứ nhạc cụ, các ngươi phải sấp mình thờ lạy pho tượng vàng vua Na-bu-cô-đô-nô-xo đã dựng. (6) Kẻ nào không sấp mình thờ lạy thì tức khắc sẽ bị ném vào đống lửa đang cháy phừng phực.” (7) Bởi vậy, khi các dân tộc vừa nghe tiếng tù và, tiếng sáo, tiếng đàn giây, đàn sắt, đàn cầm, tiếng kèn và đủ thứ nhạc cụ, thì mọi người thuộc mọi dân tộc, giống nòi và ngôn ngữ đều sấp mình thờ lạy pho tượng vàng vua Na-bu-cô-đô-nô-xo đã dựng.
+[SECTION] Người Do-thái bị tố cáo và kết án
+(8) Bấy giờ có những người Can-đê đến tố cáo người Do-thái. (9) Họ tâu vua Na-bu-cô-đô-nô-xo: “Đức vua vạn tuế! (10) Chính đức vua đã truyền rằng khi nghe tiếng tù và, tiếng sáo, tiếng đàn dây, đàn sắt, đàn cầm, tiếng kèn và đủ thứ nhạc cụ, mọi người phải sấp mình thờ lạy pho tượng vàng, (11) và kẻ nào không sấp mình thờ lạy sẽ bị ném vào đống lửa đang cháy phừng phực. (12) Vậy mà có mấy người Do-thái đức vua đã đặt lên trông coi tỉnh Ba-by-lon là Sát-rác, Mê-sác và A-vết Nơ-gô, tâu đức vua, mấy người này đã không để tâm đến ngài, chúng không phụng sự các thần của ngài, cũng không thờ lạy pho tượng vàng ngài đã dựng.” (13) Bấy giờ vua Na-bu-cô-đô-nô-xo thịnh nộ truyền điệu Sát-rác, Mê-sác và A-vết Nơ-gô tới. Họ liền điệu những người này ra trước mặt vua. (14) Vua Na-bu-cô-đô-nô-xo cất tiếng nói với họ: “Này Sát-rác, Mê-sác và A-vết Nơ-gô, các ngươi không phụng sự các thần của ta và không thờ lạy pho tượng vàng ta đã dựng nên, có đúng như vậy không? (15) Bây giờ khi nghe tiếng tù và, tiếng sáo, tiếng đàn dây, đàn sắt, đàn cầm, tiếng kèn và đủ thứ nhạc cụ, các ngươi có sẵn sàng sấp mình thờ lạy pho tượng ta đã làm không? Nếu các ngươi không thờ lạy thì tức khắc các ngươi sẽ bị ném vào lò lửa đang cháy phừng phực, liệu có Thiên Chúa nào cứu được các ngươi khỏi tay ta chăng?” (16) Sát-rác, Mê-sác và A-vết Nơ-gô trả lời vua Na-bu-cô-đô-nô-xo rằng: “Chúng tôi không cần trả lời ngài về chuyện này. (17) Nếu Thiên Chúa chúng tôi thờ có sức cứu chúng tôi thì tâu đức vua, Người sẽ cứu chúng tôi khỏi lò lửa đang cháy phừng phực và khỏi tay ngài. (18) Còn nếu Người không cứu, thì xin đức vua biết cho rằng chúng tôi cũng không phụng sự các thần của ngài, và cũng không thờ lạy pho tượng vàng ngài đã dựng đâu!” (19) Bấy giờ vua Na-bu-cô-đô-nô-xo đổi sắc mặt, nổi cơn lôi đình với Sát-rác, Mê-sác và A-vết Nơ-gô. Vua lên tiếng truyền đốt lò lửa mạnh hơn mọi khi gấp bảy lần. (20) Rồi vua ra lệnh cho những người lực lưỡng nhất trong quân đội của vua trói Sát-rác, Mê-sác và A-vết Nơ-gô và quăng họ vào lò lửa đang cháy phừng phực. (21) Bấy giờ những người này bị trói lại, vẫn mặc nguyên cả áo ngoài, áo trong, mũ nón, giày dép và bị quăng vào lò lửa đang cháy phừng phực. (22) Lệnh vua thúc bách, lửa bốc quá cao nên ngọn lửa giết chết chính những người đem Sát-rác, Mê-sác và A-vết Nơ-gô lên miệng lò. (23) Còn ba người ấy là Sát-rác, Mê-sác và A-vết Nơ-gô rơi xuống lò lửa đang cháy phừng phực, mình vẫn bị trói.
+[SECTION] Thánh ca của A-da-ri-a trong lò lửa
+(24-2) Rồi giữa ngọn lửa, họ vừa đi lại, vừa ngợi khen chúc tụng Thiên Chúa. (25-2) A-da-ri-a đứng giữa đám lửa và cất tiếng cầu nguyện rằng:
+(26-2) Lạy Chúa là Thiên Chúa tổ tiên chúng con,
+[SECTION] xin chúc tụng và ca ngợi Chúa,
+[SECTION] cùng tôn vinh Danh Thánh mãi muôn đời,
+(27-2) vì trong hết mọi việc Chúa làm cho chúng con,
+[SECTION] Chúa đã xử công minh chính trực.
+[SECTION] Mọi việc Chúa làm đều đáng cậy tin,
+[SECTION] đường lối Chúa quả là ngay thẳng,
+[SECTION] mọi phán quyết của Ngài thật công minh.
+(28-2) Ngài đã tuyên án theo công lý,
+[SECTION] qua mọi điều Ngài bắt chúng con phải chịu,
+[SECTION] chúng con cũng như Giê-ru-sa-lem
+[SECTION] là thành thánh của cha ông chúng con.
+[SECTION] Phải, Chúa đã phán quyết thật công minh
+[SECTION] khi bắt chúng con phải chịu mọi điều ấy,
+[SECTION] bởi vì chúng con đã phạm tội.
+(29-2) Quả chúng con đã phạm tội,
+[SECTION] đã làm điều gian ác khi dám lìa xa Ngài.
+[SECTION] Trong mọi sự, chúng con đã nặng nề sai lỗi,
+[SECTION] đã chẳng tuân theo mệnh lệnh Ngài.
+(30-2) Chúng con đã bất tuân,
+[SECTION] đã không hành động theo lệnh Ngài truyền,
+[SECTION] nên không được hưởng nhờ ơn phúc.
+(31-2) Phải, mọi sự Ngài đã bắt chúng con phải chịu,
+[SECTION] mọi sự Ngài đã làm cho chúng con,
+[SECTION] Ngài đã làm tất cả thật chính trực công minh.
+(32-2) Ngài đã nộp chúng con vào tay bọn địch thù gian ác
+[SECTION] là những kẻ ngoại giáo ác ôn.
+[SECTION] Ngài đã nộp chúng con cho một vua bất chính
+[SECTION] xấu xa nhất trên đời.
+(33-2) Bây giờ, chúng con đâu còn dám mở miệng,
+[SECTION] vì phải cùng chịu nhục nhằn xấu hổ
+[SECTION] với những ai phục vụ và phụng thờ Ngài.
+(34-2) Ôi! Vì danh thánh Chúa, xin đừng mãi mãi bỏ rơi chúng con,
+[SECTION] đừng hủy bỏ giao ước của Ngài!
+(35-2) Vì tình nghĩa với bạn thân Ngài là Áp-ra-ham,
+[SECTION] với tôi tớ Ngài là I-xa-ác, và kẻ Ngài thánh hóa là Ít-ra-en,
+[SECTION] xin Ngài đừng rút lại
+[SECTION] lòng thương xót đã dành cho chúng con.
+(36-2) Ngài đã hứa làm cho dòng dõi họ
+[SECTION] đông đảo như sao trên bầu trời,
+[SECTION] như cát ngoài bãi biển.
+(37-2) Thế mà hôm nay, lạy Chúa, vì tội lỗi chúng con,
+[SECTION] chúng con đã thành dân nhỏ nhất,
+[SECTION] đã nếm mùi ô nhục trên khắp hoàn cầu.
+(38-2) Ngày nay chẳng còn vị thủ lãnh,
+[SECTION] chẳng còn bậc ngôn sứ, chẳng còn người chỉ huy.
+[SECTION] Lễ toàn thiêu, lễ hy sinh đã hết,
+[SECTION] lễ tiến, lễ hương cũng chẳng còn,
+[SECTION] chẳng còn nơi dâng của đầu mùa lên Chúa
+[SECTION] để chúng con được Chúa xót thương.
+(39-2) Nhưng xin nhận tâm hồn thống hối
+[SECTION] và tinh thần khiêm nhượng của chúng con,
+[SECTION] thay của lễ toàn thiêu chiên bò, và ngàn vạn cừu non béo tốt.
+(40-2) Ước gì hy lễ chúng con thượng tiến Ngài hôm nay
+[SECTION] cũng làm đẹp ý Ngài như vậy.
+[SECTION] Ước gì chúng con theo Ngài mãi đến cùng,
+[SECTION] vì những ai tin cậy vào Ngài, đâu có phải ê chề thất vọng.
+(41-2) Và giờ đây, chúng con hết lòng đi theo Chúa,
+[SECTION] kính sợ Ngài và tìm kiếm Thánh Nhan.
+[SECTION] Xin đừng để chúng con phải thẹn thùng xấu hổ.
+(42-2) Nhưng xin Ngài tỏ lòng nhân hậu
+[SECTION] và lòng thương xót vô biên của Ngài
+[SECTION] khi Ngài đối xử với chúng con.
+(43-2) Xin làm những việc lạ lùng kỳ diệu
+[SECTION] mà giải thoát chúng con
+[SECTION] và tôn vinh danh Ngài, lạy Chúa.
+(44-2) Ước gì những kẻ gây tai họa cho các tôi tớ Ngài
+[SECTION] phải bẽ mặt hổ ngươi.
+[SECTION] Ước gì chúng phải xấu hổ thẹn thùng,
+[SECTION] mất hết mọi uy thế và quyền thống trị,
+[SECTION] và ước gì sức mạnh của chúng bị đập tan.
+(45-2) Ước gì chúng nhận biết Ngài chính là Chúa Tể,
+[SECTION] là Thiên Chúa duy nhất quang vinh trên khắp cõi trần gian.
+(46-2) Sau khi quăng ba thanh niên vào lò, các thuộc hạ của vua không ngừng đốt lò bằng dầu, nhựa, xơ gai và cành nho. (47-2) Ngọn lửa bốc lên trên lò hai mươi bốn thước rưỡi, (48-2) rồi lan ra, đốt cháy những người Can-đê đứng xung quanh lò. (49-2) Nhưng thiên sứ của ĐỨC CHÚA trước đây đã xuống trong lò cùng lúc với A-da-ri-a và các bạn, nay đẩy ngọn lửa ra khỏi lò. (50-2) Thiên sứ làm cho trung tâm lò thành nơi mát mẻ như có một làn gió nhẹ rì rào, khiến cho lửa không hề đụng tới họ và chẳng gây phiền hà đau đớn gì cho họ cả.
+[SECTION] Thánh ca của ba thanh niên trong lò lửa
+(51-2) Bấy giờ trong lò lửa, cả ba người đều đồng thanh ca ngợi, tôn vinh và chúc tụng Thiên Chúa rằng:
+(52-2) “Lạy Chúa, chúc tụng Ngài
+[SECTION] là Thiên Chúa tổ tiên chúng con,
+[SECTION] xin dâng lời khen ngợi suy tôn muôn đời.
+[SECTION] Chúc tụng danh thánh Ngài vinh hiển,
+[SECTION] xin dâng lời khen ngợi suy tôn muôn đời.
+(53-2) Chúc tụng Chúa trong thánh điện vinh quang,
+[SECTION] xin dâng lời ca tụng tôn vinh muôn đời.
+(54-2) Chúc tụng Chúa trên ngôi báu cửu trùng,
+[SECTION] xin dâng lời ca tụng suy tôn muôn đời.
+(55-2) Chúc tụng Chúa, Đấng ngự trên các Kê-ru-bim
+[SECTION] mà thấu nhìn vực thẳm,
+[SECTION] xin dâng lời khen ngợi suy tôn muôn đời.
+(56-2) Chúc tụng Chúa trên vòm trời tận chốn cao xanh,
+[SECTION] xin dâng lời ca tụng tôn vinh muôn đời.
+(57-2) Chúc tụng Chúa đi, mọi công trình của Chúa,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(58-2) Chúc tụng Chúa đi, các thiên sứ của Người,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(59-2) Chúc tụng Chúa đi, chín tầng trời thăm thẳm,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(60-2) Chúc tụng Chúa đi, nguồn nước tận cao xanh,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(61-2) Chúc tụng Chúa đi, mọi cơ binh thượng giới,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(62-2) Chúc tụng Chúa đi, mặt trời với mặt trăng,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(63-2) Chúc tụng Chúa đi, hỡi tinh tú trên trời,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(64-2) Chúc tụng Chúa đi, nào mưa sương tất cả,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(65-2) Chúc tụng Chúa đi, mọi luồng gió cơn dông,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(66-2) Chúc tụng Chúa đi, sức nóng với lửa hồng,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(67-2) Chúc tụng Chúa đi, trời nồng và khí lạnh,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(68-2) Chúc tụng Chúa đi, nào sương đọng mưa tuôn,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(69-2) Chúc tụng Chúa đi, kìa thời đông tiết giá,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(70-2) Chúc tụng Chúa đi, này băng phủ tuyết rơi,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(71-2) Chúc tụng Chúa đi, hỡi đêm ngày đắp đổi,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(72-2) Chúc tụng Chúa đi, ánh sáng và bóng tối,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(73-2) Chúc tụng Chúa đi, chớp giật với mây trôi,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(74-2) Chúc tụng Chúa đi, tất cả mười phương đất,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(75-2) Chúc tụng Chúa đi, này đồi xanh núi biếc,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(76-2) Chúc tụng Chúa đi, kìa hoa lá cỏ cây,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(77-2) Chúc tụng Chúa đi, hỡi suối nước tràn đầy,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(78-2) Chúc tụng Chúa đi, nào sông sâu biển cả,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(79-2) Chúc tụng Chúa đi, kình ngư cùng thủy tộc,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(80-2) Chúc tụng Chúa đi, hết mọi loài chim chóc,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(81-2) Chúc tụng Chúa đi, gia súc lẫn thú rừng,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(82-2) Chúc tụng Chúa đi, hỡi phàm nhân dương thế,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(83-2) Chúc tụng Chúa đi, dòng dõi Ít-ra-en,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(84-2) Chúc tụng Chúa đi, tư tế phụng thờ Chúa,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(85-2) Chúc tụng Chúa đi, tôi tớ phục vụ Người,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(86-2) Chúc tụng Chúa đi, hồn thiêng hàng công chính,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(87-2) Chúc tụng Chúa đi, người thánh kẻ khiêm nhường,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+(88-2) Chúc tụng Chúa đi, này Kha-na-ni-a,
+[SECTION] A-da-ri-a và Mi-sa-ên hỡi,
+[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+[SECTION] Vì Người đã kéo ta ra khỏi âm phủ, đã cứu ta khỏi tay tử thần,
+[SECTION] và đã giải thoát ta khỏi lò lửa nóng bừng,
+[SECTION] khỏi lửa hồng đốt cháy.
+(89-2) Hãy tạ ơn Chúa vì Chúa nhân từ,
+[SECTION] muôn ngàn đời Chúa vẫn trọn tình thương.
+(90-2) Hỡi tất cả những ai kính sợ Chúa,
+[SECTION] hãy chúc tụng Chúa là Thần các thần,
+[SECTION] hãy dâng lời tạ ơn và ca tụng,
+[SECTION] vì muôn ngàn đời Chúa vẫn trọn tình thương.”
+[SECTION] Vua nhìn nhận phép lạ
+(24) Vua Na-bu-cô-đô-nô-xo ngạc nhiên đứng bật dậy và cất tiếng nói với các quan cố vấn: “Chẳng phải chúng ta đã quăng ba người bị trói vào lửa sao?” Họ đáp rằng: “Tâu đức vua, đúng thế!” (25) Vua cất tiếng nói: “Nhưng ta thấy có bốn người đang tự do đi lại trong lò lửa mà không hề hấn gì, và dáng vẻ người thứ tư giống như con của thần minh.” (26) Bấy giờ vua Na-bu-cô-đô-nô-xo tới gần cửa lò đang cháy phừng phực, vua lên tiếng nói: “Hỡi Sát-rác, Mê-sác và A-vết Nơ-gô là tôi tớ của Thiên Chúa Tối Cao, hãy bước ra và tới đây.” Sát-rác, Mê-sác và A-vết Nơ-gô liền bước ra khỏi lò lửa. (27) Các thống đốc, thủ lãnh, tổng trấn và các cận thần của nhà vua xúm lại xem những người này, thấy lửa không làm gì được thân thể họ, sợi tóc trên đầu họ cũng không bị cháy sém, áo xống không hư hại, thậm chí mùi lửa cũng không bám vào họ. (28) Vua Na-bu-cô-đô-nô-xo cất tiếng nói: “Chúc tụng Thiên Chúa của Sát-rác, Mê-sác và A-vết Nơ-gô, Người đã sai thiên sứ đến giải thoát các tôi tớ của Người là những kẻ đã tin tưởng vào Người. Họ đã cưỡng lại lời vua, hy sinh tính mạng để khỏi phụng sự và thờ lạy một thần nào khác ngoài Thiên Chúa của họ. (29) Vậy ta truyền rằng bất cứ người nào thuộc bất cứ dân tộc, giống nòi, ngôn ngữ nào dám nói điều gì sai quấy, phạm đến Thiên Chúa của Sát-rác, Mê-sác và A-vết Nơ-gô, sẽ bị xử lăng trì, và nhà chúng sẽ trở thành đống bùn, bởi vì không có thần nào khác có thể cứu được như thế.” (30) Rồi vua thăng chức cho Sát-rác, Mê-sác và A-vết Nơ-gô trong tỉnh Ba-by-lon.
+[PART] 4. ĐIỀM BÁO MỘNG VÀ CƠN ĐIÊN CỦA VUA NA-BU-CÔ-ĐÔ-NÔ-XO
+(31) Vua Na-bu-cô-đô-nô-xo gửi cho những người thuộc mọi dân tộc, mọi giống nòi, mọi ngôn ngữ, đang sống trên khắp mặt đất: Chúc các ngươi vạn sự bình an! (32) Những điềm thiêng dấu lạ mà Thiên Chúa Tối Cao đã làm cho ta, thì nay ta thấy nên công bố:
+(33) Những điềm thiêng dấu lạ
+của Người thật lớn lao!
+Những dấu lạ
+của Người thật kỳ diệu!
+Vương quốc của Người
+là vương quốc vĩnh cửu!
+Quyền thống trị của Người
+bền vững muôn đời!') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 4, '[SECTION] Vua Na-bu-cô-đô-nô-xo kể lại giấc chiêm bao
+(1) Ta là Na-bu-cô-đô-nô-xo, đang lúc hưởng bình an dưới mái nhà, và thịnh vượng trong cung điện, (2) thì ta đã có một giấc chiêm bao khiến ta phải kinh hoàng; những nỗi lo âu trên giường nằm và những thị kiến trong đầu làm ta khiếp sợ. (3) Và ta đã truyền lệnh phải đưa tất cả các nhà thông thái của Ba-by-lon đến trước mặt ta, để họ cho ta biết ý nghĩa của giấc chiêm bao. (4) Bấy giờ tất cả các thầy phù thủy, pháp sư, những nhà chiêm tinh và các thầy bói vào chầu. Ta đã kể cho họ nghe giấc chiêm bao của ta, nhưng họ không thể cho ta biết được ý nghĩa của giấc chiêm bao ấy. (5) Sau hết có Đa-ni-en vào chầu, người này mang tên vị thần của ta là Bên-tơ-sát-xa, và cũng là người có thần khí của Thiên Chúa ở nơi mình. Ta đã kể cho người ấy giấc chiêm bao của ta:
+(6) “Hỡi Bên-tơ-sát-xa là người đứng đầu các thầy phù thủy, ta biết rằng có thần khí của các bậc thần thánh ở nơi ngươi, và không có điều bí ẩn nào làm cho ngươi phải lúng túng. Đây là những điều ta đã thấy trong chiêm bao. Hãy giải nghĩa cho ta.
+(7) “Nằm trên giường, ta đã thấy trong đầu ta như thế này:
+“Ta đang nhìn,
+bỗng thấy một cây ở giữa mặt đất,
+một cây cao lắm.
+(8) Cây ấy lớn lên và vững mạnh,
+ngọn cây chạm tới trời,
+và ở tận cùng mặt đất
+cũng thấy được.
+(9) Lá đẹp, trái nhiều,
+nó cung cấp thức ăn cho mọi loài.
+Thú vật ngoài đồng
+tìm bóng mát dưới gốc,
+chim trời trú ngụ trên cành.
+Mọi loài có xương thịt
+đều lấy nó làm thức ăn.
+(10) Nằm trên giường,
+ta đang nhìn xem
+thị kiến trong đầu,
+bỗng có một vị Canh thức,
+một vị thánh từ trời xuống.
+(11) Vị ấy kêu lớn tiếng
+và nói thế này:
+“Đốn cây xuống, chặt cành đi,
+giũ cho trụi lá, quăng trái nó đi;
+thú vật hãy rời xa bóng nó,
+và chim trời hãy lìa bỏ cành nó.
+(12) Nhưng gốc rễ nó,
+hãy để lại dưới đất,
+lấy đai sắt, đai đồng
+mà xiềng giữa cỏ xanh đồng nội.
+Nó phải chịu dầm sương
+và ăn cỏ
+chung với thú vật ngoài đồng.
+(13) Hãy lấy đi quả tim con người của nó,
+và thay vào đó một quả tim thú vật,
+cứ để nó như vậy suốt bảy thời.
+(14) Án phạt này
+là do lệnh của các vị Canh thức,
+quyết định này
+là do lời của các bậc thánh nhân,
+cốt cho mọi sinh linh biết rằng:
+Đấng Tối Cao
+cai trị vương quốc loài người
+và trao vương quốc ấy
+cho kẻ nào Người muốn.
+Người đặt kẻ hèn mọn nhất
+lên cầm đầu.
+(15) Ta, Na-bu-cô-đô-nô-xo, ta đã thấy giấc chiêm bao ấy. Còn ngươi, hỡi Bên-tơ-sát-xa, hãy công bố lời giải mộng, vì tất cả các nhà thông thái trong nước không giải được cho ta. Nhưng ngươi giải được, vì thần khí của các bậc thần linh ở nơi ngươi!”
+[SECTION] Ông Đa-ni-en giải mộng
+(16) Bấy giờ ông Đa-ni-en, cũng gọi là Bên-tơ-sát-xa, lặng người đi một lúc, tâm trí ông bàng hoàng. Nhà vua lên tiếng nói: “Hỡi Bên-tơ-sát-xa, đừng để giấc chiêm bao và lời giải mộng làm ngươi bàng hoàng.” Bên-tơ-sát-xa đáp: “Tâu chúa thượng, mong cho giấc chiêm bao ấy là của những kẻ ghét ngài, và lời giải mộng dành cho kẻ thù của ngài. (17) Cây ngài đã thấy lớn lên và vững mạnh, ngọn chạm tới trời, và cả mặt đất đều thấy được, (18) lá đẹp, trái nhiều, cung cấp thức ăn cho mọi loài, thú đồng núp dưới bóng, và chim trời đậu trên cành, (19) tâu đức vua, cây ấy chính là ngài. Ngài đã lớn lên và vững mạnh: sự cao cả của ngài chạm tới trời và quyền thống trị của ngài trải rộng đến tận cùng cõi đất.
+(20) “Sau đó ngài đã thấy một vị Canh thức, cũng là một vị thánh từ trời xuống, nói rằng: “Đốn cây xuống, hủy nó đi, nhưng gốc rễ nó thì để lại dưới đất, lấy đai sắt đai đồng mà xiềng giữa cỏ xanh đồng nội; nó phải chịu dầm sương và ăn cỏ chung với thú vật ngoài đồng. Nó phải chịu như vậy bảy thời.” (21) Tâu đức vua, đây là lời giải mộng và cũng là lệnh Đấng Tối Cao ban xuống cho ngài, chúa công của thần.
+(22) “Ngài sẽ bị đuổi,
+không được chung sống
+với người ta,
+nhưng phải sống chung
+với thú vật ngoài đồng,
+phải ăn cỏ như bò,
+và dầm sương suốt bảy năm ròng rã,
+cho tới lúc ngài chịu nhận ra
+rằng Đấng Tối Cao
+cai trị vương quốc loài người,
+và Người trao
+cho kẻ nào Người muốn.
+(23) “Còn lệnh phải để gốc rễ lại có nghĩa như sau: Vương quốc của ngài sẽ vẫn là của ngài, sau khi ngài chịu công nhận quyền cai trị của Trời. (24) Vì thế, tâu đức vua, xin vui lòng nghe theo lời thần đề nghị mà đái tội lập công, bằng cách làm việc nghĩa, là tỏ lòng từ bi đối với người nghèo, may ra thời thịnh vượng của ngài sẽ được kéo dài thêm chăng.”
+[SECTION] Giấc mơ thành hiện thực
+(25) Tất cả những điều trên đây đã xảy ra cho vua Na-bu-cô-đô-nô-xo đúng như vậy. (26) Mười hai tháng trôi qua, nhân lúc đi dạo trên sân thượng hoàng cung ở Ba-by-lon, (27) nhà vua lên tiếng nói: “Đây chẳng phải là Ba-by-lon vĩ đại, thành ta đã dùng quyền lực lớn lao mà xây dựng làm hoàng cung, để ta được vinh quang rạng rỡ đó sao?” (28) Vua còn đang nói thì có tiếng từ trời vọng xuống:
+“Nghe đây,
+hỡi vua Na-bu-cô-đô-nô-xo:
+Vương quyền ngươi nắm giữ
+đã vuột khỏi tay ngươi,
+(29) ngươi sẽ bị đuổi,
+không được chung sống
+với người ta,
+nhưng phải sống chung
+với thú vật ngoài đồng,
+phải ăn cỏ như bò.
+Ngươi phải chịu như thế
+suốt bảy thời ròng rã,
+cho tới lúc ngươi chịu nhận ra
+rằng Đấng Tối Cao
+cai trị vương quốc loài người,
+và Người trao
+cho kẻ nào Người muốn.”
+(30) Ngay lúc đó, những lời trên đây liên quan đến vua Na-bu-cô-đô-nô-xo đã nên ứng nghiệm. Ông bị đuổi, không được chung sống với người ta, phải ăn cỏ như bò, mình mẩy ướt đẫm sương trời, và rồi tóc tai dài dần ra như lông đại bàng, móng tay móng chân như thể móng chim.
+(31) “Khi mãn hạn, ta là Na-bu-cô-đô-nô-xo, ta ngước mắt lên trời; cùng lúc, ta tỉnh trí lại và chúc tụng Đấng Tối Cao. Ta ca ngợi, tôn vinh Đấng Hằng Sống:
+Người nắm quyền
+thống trị muôn đời,
+vương quốc của Người
+tồn tại thiên thu.
+(32) Trước nhan Người,
+dân cư trên mặt đất
+đều bị kể như không.
+Theo ý muốn của Người,
+Người điều khiển
+cả đạo binh trên trời,
+lẫn cư dân dưới đất.
+Chẳng có ai cản được tay Người,
+và dám hỏi rằng:
+Ngài làm gì thế?”
+(33) Cùng lúc ấy, ta tỉnh trí lại. Ta tìm lại được vinh quang huy hoàng thuở trước, nhờ đó, vương quốc của ta cũng sẽ vẻ vang rạng rỡ. Các cố vấn và đại thần đến thăm viếng ta. Ta phục hồi được quyền bính trên vương quốc, nhờ vậy, uy thế vốn lớn lao của ta càng gia tăng gấp bội. (34) Giờ đây, ta, Na-bu-cô-đô-nô-xo,
+ta ca ngợi, tán dương
+và tôn vinh Vua Trời,
+vì mọi việc Người làm
+đều chân thật,
+đường lối của Người
+vốn công minh.
+Người có quyền hạ bệ
+kẻ quen thói kiêu căng hống hách.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 5, '[PART] 5. BỮA TIỆC CỦA VUA BÊN-SÁT-XA
+(1) Vua Bên-sát-xa mở tiệc lớn khoản đãi một ngàn đại thần. Trước mặt những người này, vua uống rượu. (2) Khi đã thấm hơi men, vua truyền mang ly mang chén bằng vàng bằng bạc mà vua cha là Na-bu-cô-đô-nô-xo đã lấy ở đền thờ Giê-ru-sa-lem. Vua Bên-sát-xa định dùng những ly chén này để uống rượu cùng với các đại thần, cung phi và cung nữ. (3) Bấy giờ người ta mang ly chén bằng vàng đã lấy từ cung thánh Đền Thờ Thiên Chúa ở Giê-ru-sa-lem; vua và các đại thần, cung phi và cung nữ đều dùng mà uống. (4) Họ vừa uống rượu vừa ca ngợi các thần bằng vàng, bạc, đồng, sắt, gỗ và đá. (5) Ngay lúc ấy, những ngón tay người xuất hiện, viết lên vách tường quét vôi của hoàng cung ở phía sau trụ đèn. Vua nhìn thấy phần bàn tay đang viết. (6) Bấy giờ mặt vua biến sắc, tâm trí bàng hoàng, ruột gan đòi đoạn, gối run cầm cập. (7) Vua lên tiếng ra lệnh cho triệu các pháp sư, các nhà chiêm tinh và thầy bói. Rồi vua ngỏ lời với các nhà thông thái Ba-by-lon rằng: “Phàm ai đọc nổi hàng chữ ấy và giải thích được cho ta nghe, ta sẽ cho mặc cẩm bào đỏ thẫm, đeo vòng vàng vào cổ; người ấy sẽ là nhân vật thứ ba trong vương quốc.” (8) Lúc đó, tất cả các nhà thông thái của vua tiến vào, nhưng họ chẳng đọc được hàng chữ ấy, cũng không giải thích nổi cho vua hiểu. (9) Bấy giờ vua Bên-sát-xa hết sức bàng hoàng, mặt vua biến sắc. Các đại thần cũng hốt hoảng. (10) Nghe tiếng nói của vua và các đại thần, hoàng thái hậu đi vào phòng tiệc. Bà lên tiếng nói: “Thánh thượng vạn tuế! Xin thánh thượng đừng để cho tâm trí ra bàng hoàng, đừng để dung nhan ngài phải biến sắc! (11) Trong vương quốc của ngài, có một nhân vật mang nơi mình thần khí của các bậc thần thánh. Dưới thời phụ vương của ngài, người ta gặp thấy nơi nhân vật ấy sự sáng suốt, thông hiểu và khôn ngoan sánh được với sự khôn ngoan của các thần. Phụ vương của ngài là Na-bu-cô-đô-nô-xo đã đặt ông ấy đứng đầu các thầy phù thủy, pháp sư, chiêm tinh và thầy bói. (12) Bởi vì nơi ông ấy, tức là ông Đa-ni-en mà phụ vương đã đặt tên là Bên-tơ-sát-xa, người ta gặp thấy thần khí siêu phàm, tri thức, hiểu biết, tài giải mộng, tài cắt nghĩa điều bí nhiệm, tài tháo gỡ khó khăn, nên xin cho gọi ông ấy đến; ông ấy sẽ giải thích được.”
+(13) Bấy giờ ông Đa-ni-en được dẫn vào chầu vua. Vua ngỏ lời với ông rằng: “Ngươi có phải là Đa-ni-en, một người trong nhóm Giu-đa đi lưu đày mà phụ vương ta đã đưa từ Giu-đa về không? (14) Ta đã nghe đồn rằng thần khí của các bậc thần minh ở nơi ngươi, nên ngươi mới có sự sáng suốt, thông hiểu và khôn ngoan xuất chúng. (15) Người ta đã dẫn các nhà thông thái và pháp sư đến để đọc và giải thích hàng chữ kia cho ta; nhưng họ đều không giải thích được ý nghĩa. (16) Còn về ngươi, ta nghe nói rằng ngươi có tài giải thích và tháo gỡ khó khăn. Vậy, nếu ngươi đọc và giải thích được hàng chữ đó cho ta, thì ngươi sẽ được mặc cẩm bào đỏ thẫm, đeo vòng vàng vào cổ, và sẽ là nhân vật thứ ba trong vương quốc.”
+(17) Bấy giờ ông Đa-ni-en lên tiếng nói trước mặt vua: “Tâu đức vua, lộc vua ban, xin giữ lại cho ngài; quà vua tặng, xin dành cho người khác. Nhưng hàng chữ kia, thần xin đọc và giải thích hầu đức vua. (18) Thiên Chúa là Đấng Tối Cao, đã ban cho Na-bu-cô-đô-nô-xo, phụ vương ngài, vương quốc với chức cao quyền trọng, vinh dự và oai phong. (19) Chính vì chức cao quyền trọng Thiên Chúa ban cho phụ vương mà mọi dân tộc, quốc gia và ngôn ngữ đều run rẩy kính sợ trước mặt phụ vương. Người bắt ai phải chết hay cho ai được sống là tùy ý, người nâng ai lên hay hạ ai xuống cũng tùy ý. (20) Nhưng khi trở nên tự cao tự đại và sinh lòng kiêu căng quá mức, người đã bị truất ngôi và mất hết vinh dự. (21) Người đã bị đuổi, không được chung sống với người ta, bị mất trí, trở nên giống thú vật, phải chung sống với lừa hoang và ăn cỏ như bò, mình mẩy ướt đẫm sương trời, cho tới khi người nhận ra Thiên Chúa, Đấng Tối Cao, là Đấng cai trị vương quốc loài người, và Thiên Chúa ban quyền cai trị này cho ai là tùy ý. (22) Còn ngài, tâu đức vua Bên-sát-xa, ngài là con của phụ vương, dầu đã biết tất cả những điều trên, ngài vẫn không chịu hạ mình xuống. (23) Trái lại ngài đã tự cao tự đại, đã chống lại Chúa Tể trời cao: ly chén trong Đền Thờ của Chúa, người ta đã mang đến trước mặt ngài; ngài đã dùng các ly chén ấy mà uống cùng với các đại thần, cung phi và cung nữ. Ngài đã ngợi khen các thần bằng bạc, vàng, đồng, sắt, gỗ và đá là những vật không thấy, không nghe, không biết. Còn Thiên Chúa là Đấng nắm trong tay sinh khí của ngài và điều khiển mọi đường đi nước bước của ngài, ngài lại chẳng tôn vinh! (24) Vì thế, Thiên Chúa đã cho phần bàn tay ấy đến viết hàng chữ kia. (25) Đây là những chữ đã được viết ra: MƠ-NÊ, MƠ-NÊ, TƠ-KÊN, PÁC-XIN; (26) và đây là lời giải thích: MƠ-NÊ –có nghĩa là đếm–: Thiên Chúa đã đếm và chấm dứt những ngày của triều đại ngài; (27) TƠ-KÊN –có nghĩa là cân–: ngài đã bị đặt trên bàn cân và thấy là không đủ; (28) PƠ-RẾT –có nghĩa là phân chia–: vương quốc của ngài đã bị phân chia và trao cho các dân Mê-đi và Ba-tư.”
+(29) Bấy giờ vua Bên-sát-xa truyền mặc cẩm bào đỏ thẫm cho ông Đa-ni-en, đeo vòng vàng vào cổ ông và tuyên bố rằng, trong vương quốc, ông là nhân vật thứ ba.
+(30) Ngay đêm ấy, Bên-sát-xa, vua dân Can-đê, bị giết chết.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 6, '(1) Sau đó, ông Đa-ri-ô, người Mê-đi, lên ngôi vua năm sáu mươi hai tuổi.
+[PART] 6. ÔNG ĐA-NI-EN TRONG HẦM SƯ TỬ
+[SECTION] Lòng ganh tị của các thống đốc
+(2) Vua Đa-ri-ô quyết định đặt trên vương quốc của ông một trăm hai mươi thống đốc, để họ cai trị toàn vương quốc (3) dưới quyền ba tể tướng trong đó có ông Đa-ni-en. Họ phải phúc trình mọi việc cho ba vị này, để nhà vua khỏi bị thiệt hại. (4) Ông Đa-ni-en này vượt hẳn các tể tướng và thống đốc, nhờ có một thần khí siêu phàm, nên vua có ý định đặt ông đứng đầu cả vương quốc. (5) Do đó, các tể tướng và thống đốc cố tìm cách bắt lỗi ông Đa-ni-en về việc triều chính. Nhưng họ đã không thể tìm được một cớ hay một thiếu sót nào để bắt lỗi, vì ông Đa-ni-en vốn là người trung tín; họ đã không tìm được điều gì sơ suất hay thiếu sót nơi ông. (6) Vì thế, những người ấy mới nói với nhau: “Chúng ta sẽ chẳng tìm được một cớ nào để bắt lỗi tên Đa-ni-en này đâu, trừ phi tìm lý do tôn giáo để hại y.” (7) Bấy giờ các tể tướng và thống đốc ấy kéo nhau đến gặp vua và tâu rằng: “Đức vua Đa-ri-ô, vạn vạn tuế! (8) Tất cả các vị tể tướng của vương quốc, các thủ lãnh, thống đốc, cận thần và tổng trấn đều nhất trí thảo ra sắc chỉ và xin đức vua phê chuẩn lệnh cấm sau đây: Trong ba mươi ngày sắp tới, bất cứ ai cầu xin thần nào hay người nào ngoài đức vua thì sẽ bị quăng vào hầm sư tử. (9) Bấy giờ, tâu đức vua, xin ngài hạ lệnh cấm và châu phê văn kiện, để chiếu theo luật không thể hủy bỏ của dân Mê-đi và Ba-tư, lệnh cấm này trở nên bất di bất dịch.” (10) Do đó, vua Đa-ri-ô đã châu phê văn kiện và lệnh cấm.
+[SECTION] Ông Đa-ni-en cầu nguyện
+(11) Khi biết là văn kiện đã được châu phê, ông Đa-ni-en về nhà. Cửa sổ phòng trên nhà ông quay về hướng Giê-ru-sa-lem. Mỗi ngày ba lần, ông quỳ gối, cầu nguyện và ngợi khen Thiên Chúa của ông, y như ông đã làm từ trước đến nay. (12) Bấy giờ những người ấy đổ xô lại và bắt gặp ông Đa-ni-en đang cầu nguyện và thống thiết nài van Thiên Chúa của ông. (13) Rồi họ tới yết kiến vua và nhắc đến lệnh cấm của vua: “Đức vua đã chẳng châu phê lệnh cấm đó sao? Theo lệnh cấm này, trong ba mươi ngày sắp tới, bất cứ ai cầu xin thần nào hay người nào ngoài đức vua thì sẽ bị quăng vào hầm sư tử.” Vua đáp lại rằng: “Đúng vậy, chiếu theo luật không thể hủy bỏ của dân Mê-đi và Ba-tư thì đúng như vậy.” (14) Bấy giờ họ thưa với vua rằng: “Tâu đức vua, trong đám dân Giu-đa lưu đày, có tên Đa-ni-en không đếm xỉa gì tới đức vua cũng như tới giới lệnh đức vua đã châu phê. Ngày nào y cũng cầu nguyện đến ba lần.” (15) Nghe lời ấy, vua rất đau lòng và để tâm tìm cách cứu ông Đa-ni-en. Vua cố sức giải cứu ông Đa-ni-en mãi cho đến lúc mặt trời lặn. (16) Bấy giờ những người kia lại kéo nhau đến gặp vua và tâu rằng: “Tâu đức vua, xin đức vua biết cho rằng theo luật của dân Mê-đi và dân Ba-tư, thì mọi giới lệnh và sắc chỉ nhà vua đã ban đều bất di bất dịch.”
+[SECTION] Ông Đa-ni-en bị quăng vào hầm sư tử
+(17) Bấy giờ vua đành hạ lệnh, và người ta đưa ông Đa-ni-en đi quăng vào hầm sư tử. Vua lên tiếng nói với ông Đa-ni-en: “Vị thần mà ngươi bền lòng phụng sự, chính vị ấy sẽ cứu ngươi!” (18) Người ta đem một phiến đá tới đặt trên miệng hầm. Vua lấy ấn của mình và ấn của các đại thần niêm phiến đá lại để không còn thay đổi gì được nữa về vụ ông Đa-ni-en. (19) Rồi vua về cung, suốt đêm không ăn không uống, cũng chẳng cho các cung phi vào hầu. Vua không tài nào chợp mắt được. (20) Sáng sớm tinh sương, vua đã trỗi dậy, vội vã đi ra hầm sư tử. (21) Vừa tới gần, vua cất giọng đau đớn gọi vọng xuống ông Đa-ni-en. Vua lên tiếng nói với ông rằng: “Hỡi Đa-ni-en, người tôi tớ của Thần hằng sống, vị Thần mà ngươi bền lòng phụng sự, có cứu được ngươi thoát hàm sư tử không?” (22) Bấy giờ ông Đa-ni-en đáp lại: “Hoàng thượng, vạn vạn tuế! (23) Thiên Chúa của thần đã sai thiên sứ đến khóa hàm sư tử khiến chúng không hại được thần, bởi vì trước mặt Người, thần đã được nhìn nhận là vô tội, và, tâu đức vua, ngay trước nhan ngài, thần cũng chẳng làm điều gì ác.” (24) Lúc ấy, vua rất vui mừng, truyền kéo ông Đa-ni-en lên khỏi hầm. Và ông được kéo lên, không một vết thương trên mình, bởi vì ông đã tin cậy vào Thiên Chúa của ông. (25) Vua liền truyền điệu những người kia đến, họ là những kẻ đã vu khống cho ông Đa-ni-en; rồi vua ra lệnh quăng họ cùng với vợ con vào hầm sư tử. Những người này chưa đụng tới nền hầm, thì sư tử đã vồ lấy chúng mà nghiền nát xương.
+[SECTION] Lời tuyên xưng đức tin của vua Đa-ri-ô
+(26) Bấy giờ vua Đa-ri-ô viết cho tất cả những người thuộc các dân tộc, quốc gia và ngôn ngữ trên khắp cõi đất: “Chúc các ngươi vạn sự bình an! (27) Đây là lệnh ta truyền: trên toàn lãnh thổ vương quốc ta, mọi người phải run rẩy kính sợ trước mặt vị Thần của Đa-ni-en:
+bởi vì Người là vị Thần
+hằng sống và tồn tại muôn đời;
+vương quốc của Người
+sẽ chẳng hề suy vong,
+quyền thống trị của Người
+vô cùng vô tận.
+(28) Người giải thoát, giữ gìn,
+Người làm
+những dấu lạ điềm thiêng
+trên trời cùng dưới đất.
+Người đã giải cứu Đa-ni-en
+khỏi móng vuốt sư tử.”
+(29) Còn ông Đa-ni-en thì thành công rực rỡ dưới triều vua Đa-ri-ô cũng như dưới triều vua Ky-rô, người Ba-tư.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 7, '[PART] II. CÁC THỊ KIẾN
+[PART] 1. GIẤC MỘNG CỦA ÔNG ĐA-NI-EN: BỐN CON THÚ
+[SECTION] Thị kiến về các con thú
+(1) Năm thứ nhất đời Bên-sát-xa làm vua xứ Ba-by-lon, trong một giấc chiêm bao, khi đang nằm trên giường, ông Đa-ni-en thấy trong trí thị kiến sau đây. Ông đã viết lại giấc chiêm bao đó. Câu chuyện bắt đầu như sau, (2) theo như chính lời ông kể lại: Ban đêm, trong một thị kiến, tôi đang mải nhìn thì kìa: gió bốn phương trời khuấy động biển cả; (3) bốn con thú lớn từ biển lên, mỗi con mỗi khác: (4) Con thứ nhất giống như sư tử, lại mang cánh đại bàng. Tôi nhìn theo cho đến khi đôi cánh của nó bị giựt mất; nó được nhấc lên khỏi mặt đất và đặt đứng trên hai chân như một người; nó được ban cho một quả tim người. (5) Và này một con thú khác, con thứ hai, giống như con gấu. Nó được đặt trong tư thế chỉ đứng một bên, mõm ngậm ba khúc xương sườn giữa hai hàm răng. Người ta bảo nó như thế này: “Đứng lên, ăn thịt cho nhiều đi!” (6) Sau đó, tôi đang nhìn, thì kìa: một con thú khác giống như con beo; hai bên mình nó, có bốn cánh như cánh chim. Nó có bốn đầu, và được trao quyền thống trị. (7) Rồi vẫn trong thị kiến ban đêm, tôi đang nhìn thì kìa: con thú thứ tư đáng kinh đáng sợ và mạnh mẽ vô song; răng của nó bằng sắt và rất to. Nó ăn, nó nghiền, rồi lấy chân chà đạp những gì còn sót lại. Nó khác hẳn tất cả các con thú trước. Nó có những mười sừng.
+(8) Tôi đang chăm chú nhìn các sừng, thì kìa: giữa các sừng này, một sừng khác, nhỏ hơn, mọc lên; và ba cái trong các sừng trước bị nhổ đi trước mặt cái nhỏ. Và kìa: có những con mắt như mắt người trên sừng ấy, và có một cái mồm nói những điều quái gở.
+[SECTION] Thị kiến về Đấng Lão Thành và về Con Người
+(9) Tôi đang nhìn
+thì thấy đặt những chiếc ngai
+và một Đấng Lão Thành an tọa.
+Áo Người trắng như tuyết,
+tóc trên đầu Người
+tựa lông chiên tinh tuyền.
+Ngai của Người toàn là ngọn lửa,
+bánh xe của ngai
+cũng rừng rực lửa hồng.
+(10) Từ trước nhan Người,
+một sông lửa cuồn cuộn chảy ra.
+Ngàn ngàn hầu hạ Người,
+vạn vạn túc trực
+trước Thánh Nhan.
+Tòa bắt đầu xử,
+sổ sách được mở ra.
+(11) Bấy giờ tôi mải nhìn vì có tiếng ồn ào của cái sừng thốt ra những lời quái gở; tôi vẫn mải nhìn khi con thú bị giết, thây nó bị hủy diệt và làm mồi cho lửa. (12) Những con thú còn lại bị tước mất quyền thống trị, nhưng đời chúng được kéo dài thêm một thời và một kỳ hạn.
+(13) Trong những thị kiến ban đêm,
+tôi mải nhìn thì kìa:
+có ai như một Con Người
+đang ngự giá mây trời mà đến.
+Người tiến lại gần
+bên Đấng Lão Thành
+và được dẫn đưa tới trình diện.
+(14) Đấng Lão Thành trao cho Người
+quyền thống trị,
+vinh quang và vương vị;
+muôn người thuộc mọi dân tộc,
+quốc gia và ngôn ngữ
+đều phải phụng sự Người.
+Quyền thống trị của Người
+là quyền vĩnh cửu,
+không bao giờ mai một;
+vương quốc của Người
+sẽ chẳng hề suy vong.
+[SECTION] Giải thích thị kiến
+(15) Tôi là Đa-ni-en, tâm trí tôi hoang mang vì những điều ấy, và những thị kiến trong đầu làm tôi xao xuyến. (16) Tôi đến gần một trong những vị đứng túc trực và xin vị ấy cho biết sự thực chắc chắn về tất cả những điều ấy. Người đã nói với tôi và giải thích cho tôi ý nghĩa các sự việc: (17) “Bốn con thú to lớn ấy tức là bốn ông vua, từ đất trỗi dậy. (18) Rồi chư thánh của Đấng Tối Cao sẽ lãnh nhận vương quyền và nắm giữ vương quyền ấy mãi mãi muôn đời.” (19) Bấy giờ tôi muốn biết chắc chắn về con thú thứ tư là con thú khác hẳn với tất cả các con khác, nó rất đáng sợ, có răng bằng sắt và vuốt bằng đồng. Nó ăn, nó nghiền, rồi lấy chân chà đạp những gì còn sót lại. (20) Tôi cũng muốn biết chắc về mười cái sừng trên đầu nó và về cái sừng khác đã mọc lên, và ba cái đã rụng đi trước mặt cái sừng ấy; cái sừng này là cái sừng có mắt, và mồm nói những lời quái gở; nó có vẻ lớn hơn các sừng khác. (21) Tôi đang nhìn, thì cái sừng này đã giao chiến với chư thánh và đã thắng được các ngài, (22) cho tới khi Đấng Lão Thành đến và có cuộc xét xử nhằm bênh vực chư thánh của Đấng Tối Cao, cho tới khi thời đến, thời mà chư thánh nắm được vương quyền. (23) Vị đứng túc trực ấy lại nói với tôi thế này:
+“Con thú thứ tư
+là vương quốc thứ tư
+sẽ xuất hiện trên mặt đất,
+khác hẳn với mọi vương quốc.
+Nó sẽ ăn hết toàn cõi đất,
+sẽ giẫm nát và nghiền tan.
+(24) Còn mười cái sừng kia
+là mười ông vua
+từ vương quốc ấy trỗi dậy.
+Rồi một ông vua khác
+sẽ trỗi dậy sau mười ông kia.
+Vua này sẽ khác hẳn
+các vua trước và sẽ hạ ba vua.
+(25) Vua này sẽ thốt ra những lời
+phạm đến Đấng Tối Cao
+và ngược đãi chư thánh của Người.
+Vua định thay đổi lịch và Lề Luật.
+Chư thánh sẽ bị nộp vào tay vua
+một thời, hai thời và nửa thời.
+(26) Rồi sẽ có cuộc xét xử
+và người ta sẽ tước quyền
+thống trị của vua
+nhằm vĩnh viễn hủy bỏ
+và tiêu diệt quyền ấy.
+(27) Còn vương quốc
+với quyền thống trị
+cũng như địa vị cao cả
+của các vương quốc khắp thiên hạ
+sẽ được trao cho dân thánh
+của Đấng Tối Cao.
+Vương quyền của dân ấy
+là vương quyền vĩnh cửu,
+và mọi quyền thống trị
+sẽ phụng sự và vâng phục dân ấy.”
+(28) Đến đây câu chuyện kết thúc.
+Các tư tưởng của tôi, Đa-ni-en, làm tôi rất xao xuyến; mặt tôi biến sắc. Nhưng tôi giữ những sự ấy trong lòng.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 8, '[PART] 2. THỊ KIẾN CỦA ÔNG ĐA-NI-EN: CỪU ĐỰC VÀ DÊ ĐỰC
+[SECTION] Thị kiến
+(1) Năm thứ ba triều vua Bên-sát-xa, tôi là Đa-ni-en đã được một thị kiến sau một thị kiến khác trước đây. (2) Tôi nhìn vào cảnh thị kiến ấy, và đang nhìn thì bỗng thấy mình ở Su-san, một thành trong tỉnh Ê-lam. Tôi vẫn nhìn vào cảnh thị kiến ấy và thấy mình đang ở gần cổng U-lai. (3) Tôi ngước mắt lên nhìn thì này: một con cừu đực đứng trước cổng. Nó có hai sừng, hai sừng đều cao, nhưng sừng nọ cao hơn sừng kia; sừng cao hơn lại mọc lên sau. (4) Tôi thấy con cừu đực lấy sừng húc về phía tây, phía bắc và phía nam. Không loài thú nào chống lại nó được, và không ai cứu được chúng khỏi tay nó; nó tung hoành thỏa thích và ngày càng lớn mạnh.
+(5) Tôi đang mải nhìn, thì này một con dê đực từ phía mặt trời lặn đi đến; nó rảo khắp mặt đất mà chân không hề chạm đất. Con dê giương một cái sừng lớn giữa hai mắt. (6) Nó đến tận chỗ con cừu đực có hai sừng; con cừu này, tôi đã thấy đứng trước cổng. Con dê hùng hổ xông vào con cừu. (7) Tôi thấy nó đến sát bên con cừu. Nó hầm hầm nổi giận húc một cái làm con cừu gãy luôn hai sừng. Con cừu không đủ sức chống cự. Con dê quật con cừu xuống đất, rồi lấy chân đạp lên. Không ai cứu nổi con cừu khỏi tay nó. (8) Con dê đực trở nên cực kỳ lớn mạnh. Nhưng khi nó đang sung sức, thì cái sừng lớn lại bị gãy. Thay vào đó liền có bốn sừng khác mọc lên, theo hướng gió bốn phương trời.
+(9) Từ một trong các sừng ấy, một cái sừng rất nhỏ nhú ra, rồi lớn nhanh về phía nam, về phía đông và về phía xứ Huy Hoàng. (10) Nó vươn cao tới tận các đạo binh trên trời, làm cho một phần đạo binh đó và một phần các tinh tú phải nhào xuống đất, rồi nó đạp chân lên. (11) Nó còn vươn lên tận vị Thống Lãnh đạo binh, và của lễ thường tiến dâng lên Người bị tước đoạt, thánh điện của Người bị phá đổ. (12) Do tội ác mà đạo binh bị trao nộp cùng với của lễ thường tiến; cái sừng ấy đã quăng sự thật xuống đất. Nó đã làm và đã thành công.
+(13) Tôi đã nghe một vị thánh lên tiếng và một vị thánh khác bảo vị đã lên tiếng kia: “Thị kiến này còn kéo dài đến bao giờ: của lễ thường tiến bị tước đoạt, tội ác tàn phá hoành hành, nơi thánh và đạo binh bị chà đạp dưới chân?” (14) Vị ấy nói với tôi: “Cho đến hai nghìn ba trăm chiều và sáng; khi đó, thánh điện sẽ được phục hồi.”
+[SECTION] Thiên sứ Gáp-ri-en giải thích thị kiến
+(15) Trong lúc tôi là Đa-ni-en nhìn thị kiến và tìm hiểu, thì này: có ai đứng trước mặt tôi, trông như một người đàn ông. (16) Và tôi nghe có tiếng người từ giữa hai cánh cổng U-lai kêu lên rằng: “Gáp-ri-en, hãy cho người này hiểu thị kiến.” (17) Người đến sát nơi tôi đứng. Thấy người đến, tôi kinh hãi, ngã sấp mặt xuống. Người bảo tôi: “Hỡi con người, hãy hiểu là thị kiến này nói về thời cùng tận.” (18) Người còn đang nói thì tôi đã ngất xỉu, mặt chúi xuống đất. Người đụng vào tôi và dựng tôi đứng thẳng lên; (19) rồi người nói: “Này ta cho ngươi biết điều sẽ xảy ra vào cuối thời thịnh nộ, vì ngày cùng tận của thời ấy đã được ấn định rồi. (20) Con cừu đực có hai sừng mà ngươi đã thấy, đó là các vua Mê-đi và Ba-tư. (21) Con dê đực lông lá là vua xứ Gia-van; cái sừng lớn giữa hai mắt, đó là vua đầu tiên. (22) Sừng đó bị gãy, có bốn sừng mọc lên thay thế: đó là bốn vương quốc nổi lên từ dân nước ấy, nhưng không có sức mạnh của nước ấy.
+(23) Vào cuối triều đại chúng,
+khi tội lỗi chúng lên tới tột đỉnh
+sẽ xuất hiện một vua
+mặt mày cứng cỏi,
+thạo nghề nói dối.
+(24) Mãnh lực của nó gia tăng,
+nhưng không bởi
+sức riêng của mình.
+Nó sẽ gây nên
+những cuộc tiêu diệt khủng khiếp,
+sẽ thành công trong việc nó làm,
+sẽ tiêu diệt những kẻ hùng mạnh,
+cùng với đoàn dân thánh.
+(25) Nhờ khôn khéo, nó đủ khả năng
+làm cho xảo kế được thành công.
+Nó sinh lòng tự cao tự đại,
+và bất ngờ tiêu diệt một số đông.
+Nó sẽ vươn lên chống lại
+vị Thủ Lãnh tối cao,
+nhưng nó sẽ bị bẻ gãy,
+dầu không phải do tay người phàm.
+(26) Thị kiến về buổi chiều và buổi sáng
+đã nói đến ở trên,
+quả đúng là sự thật.
+Phần ngươi, hãy giữ kín thị kiến, vì còn phải đợi nhiều ngày.
+(27) Phần tôi, Đa-ni-en, tôi đuối sức và ốm đau nhiều ngày. Sau đó, tôi đứng dậy lo việc cho vua. Tôi bỡ ngỡ kinh hoàng vì thị kiến ấy và vẫn không hiểu.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 9, '[PART] 3. LỜI TIÊN TRI VỀ BẢY MƯƠI TUẦN
+[SECTION] Lời kinh của ông Đa-ni-en
+(1) Năm thứ nhất đời vua Đa-ri-ô, con ông A-suê-rô, thuộc dòng giống Mê-đi, cai trị nước Can-đê, (2) năm thứ nhất triều vua này, tôi, Đa-ni-en, tôi đọc Sách Thánh để tìm hiểu ý nghĩa con số những năm phải trôi qua trước khi mãn thời kỳ Giê-ru-sa-lem phải chịu cảnh điêu tàn, tức là bảy mươi năm, theo lời ĐỨC CHÚA phán với ngôn sứ Giê-rê-mi-a. (3) Tôi ăn chay, mặc áo vải thô và rắc tro lên đầu rồi ngẩng mặt lên Chúa Thượng là Thiên Chúa, để dâng lời khẩn nguyện nài van. (4) Tôi đã cầu xin ĐỨC CHÚA là Thiên Chúa của tôi, đã thú nhận và thưa Người rằng:
+“Ôi, lạy Chúa Thượng, Thiên Chúa cao cả và đáng sợ, Đấng giữ giao ước và tỏ lòng nhân nghĩa với những kẻ yêu mến Ngài và tuân giữ các mệnh lệnh của Ngài, (5) chúng con đã phạm tội, đã lỗi lầm, đã làm điều gian ác, chúng con đã phản nghịch và lìa xa các mệnh lệnh, phán quyết của Ngài. (6) Chúng con đã không nghe lời các tôi tớ Chúa là các ngôn sứ. Các ngài đã nhân danh Chúa mà nói với vua chúa quan quyền, với cha ông chúng con và toàn dân trong xứ. (7) Lạy Chúa Thượng, Chúa là Đấng Công Chính; còn chúng con thì đáng phải hổ mặt hổ mày như ngày hôm nay – chúng con là những người Giu-đa, cư dân thành Giê-ru-sa-lem và toàn thể Ít-ra-en, những người ở gần cũng như ở xa, trong mọi xứ Ngài đã đuổi đến vì tội bất trung đã phạm chống lại Ngài. (8) Lạy Đức Chúa, chúng con đáng phải hổ mặt hổ mày, cũng như vua chúa quan quyền và tổ tiên chúng con, vì chúng con đã đắc tội với Ngài. (9) Chúa Thượng là Thiên Chúa chúng con có lòng xót thương và hay tha thứ, vì chúng con đã phản nghịch cùng Ngài. (10) Chúng con đã không nghe tiếng của ĐỨC CHÚA là Thiên Chúa chúng con, để sống theo các luật lệ Ngài đã ban cho chúng con nhờ các tôi tớ Ngài là các vị ngôn sứ. (11) Toàn thể Ít-ra-en đã vi phạm Lề Luật của Ngài và đã rời xa không chịu nghe tiếng Ngài. Bấy giờ lời nguyền rủa và lời thề ghi trong luật Mô-sê, tôi trung của Thiên Chúa, đã trút xuống chúng con vì chúng con đã đắc tội với Ngài. (12) Ngài thực hiện những lời Ngài đã răn đe chúng con và những thủ lãnh cai trị chúng con, khi giáng xuống chúng con tại Giê-ru-sa-lem một đại họa chưa hề xảy ra dưới gầm trời. (13) Tất cả những tai họa này đã giáng xuống chúng con đúng như đã chép trong Luật Mô-sê. Thế mà chúng con vẫn không chịu lìa bỏ lỗi lầm để trở lại và chú tâm suy niệm về lòng thành tín của ĐỨC CHÚA là Thiên Chúa chúng con, hầu làm cho nét mặt của Ngài dịu lại. (14) ĐỨC CHÚA đã tỉnh thức trông chừng, đã giáng tai họa xuống trên chúng con, vì ĐỨC CHÚA, Thiên Chúa chúng con, là Đấng công minh chính trực trong mọi việc Ngài làm, và chúng con đã không nghe tiếng Ngài. (15) Giờ đây, lạy Chúa là Thiên Chúa chúng con, Đấng đã dùng cánh tay mạnh mẽ đem dân Ngài ra khỏi xứ Ai-cập và đã làm cho danh Ngài lừng lẫy như ngày nay, chúng con đã phạm tội, chúng con đã làm điều gian ác. (16) Lạy Chúa, chiếu theo mọi hành động chính trực của Ngài, xin nguôi cơn giận, xin ngừng cơn thịnh nộ đối với Giê-ru-sa-lem là thành đô, là núi thánh của Ngài, bởi vì tội của chúng con và lỗi của cha ông chúng con đã khiến Giê-ru-sa-lem và dân Ngài trở thành mối sỉ nhục đối với hết mọi kẻ sống chung quanh chúng con. (17) Giờ đây, lạy Thiên Chúa chúng con, xin nghe lời tôi tớ Ngài khẩn nguyện nài van. Lạy Chúa, vì danh Ngài, xin tỏa ánh Tôn Nhan trên thánh điện của Ngài đang phải tan hoang. (18) Lạy Thiên Chúa của con, xin lắng tai nghe, xin ghé mắt nhìn cảnh hoang tàn của chúng con và thành đô đã được thánh hiến cho Ngài. Chúng con không dựa vào những hành động chính trực của chúng con, nhưng dựa vào lượng hải hà của Ngài mà dâng lời khẩn nguyện lên trước Tôn Nhan. (19) Lạy Chúa, xin khấng nghe! Lạy Chúa, xin tha thứ! Lạy Chúa, xin đoái thương! Vì danh Ngài, xin ra tay và đừng trì hoãn, lạy Thiên Chúa của con, bởi vì thành và dân của Ngài đã được thánh hiến cho Ngài.”
+[SECTION] Thiên sứ Gáp-ri-en cắt nghĩa lời tiên tri
+(20) Bấy giờ tôi đang nói, đang cầu nguyện và thú nhận tội lỗi của tôi cũng như tội lỗi của Ít-ra-en, dân tôi, đang giãi bày trước nhan ĐỨC CHÚA là Thiên Chúa của tôi, lời khẩn nguyện cho núi thánh của Người. (21) Tôi còn đang dâng lời cầu nguyện, thì Gáp-ri-en, nhân vật tôi đã thấy trong thị kiến ban đầu, bay sà xuống sát bên tôi vào lúc dâng hiến lễ ban chiều. (22) Ngài đến ngỏ lời với tôi và nói: “Này Đa-ni-en, nay ta đi ra để giúp ngươi được am tường. (23) Khi ngươi vừa bắt đầu khẩn nguyện, thì lời đã ban ra và ta đến đây để loan báo, vì ngươi là người được quý mến. Hãy thấu triệt lời ấy, hãy am hiểu thị kiến:
+(24) Bảy mươi tuần đã được ấn định
+cho dân và thành thánh của ngươi,
+để chấm dứt gian tà,
+xóa sạch tội ác, đền xong lỗi lầm,
+để đem lại sự công chính vĩnh cửu,
+để thị kiến và lời ngôn sứ
+được ứng nghiệm,
+và để xức dầu Nơi Cực Thánh.
+(25) Vậy ngươi hãy biết và hiểu:
+từ khi lời được ban ra
+nhằm xây dựng lại Giê-ru-sa-lem
+cho tới khi vị thủ lãnh
+được xức dầu xuất hiện,
+thì có bảy tuần.
+Trong sáu mươi hai tuần, phố xá
+và thành lũy sẽ được tái thiết,
+nhưng được tái thiết
+trong thời buổi cùng quẫn.
+(26) Sau sáu mươi hai tuần,
+một vị được xức dầu
+sẽ bị thủ tiêu;
+vị ấy sẽ không có...
+Thành đô và thánh điện
+sẽ bị dân của một thủ lãnh
+đến phá tan.
+Nhưng thủ lãnh này
+sẽ bị cuốn đi mất.
+Cho đến cùng, sẽ diễn ra
+chiến tranh
+và những cảnh tàn phá
+đã được quyết định.
+(27) Nội một tuần, nó sẽ củng cố
+minh ước với số người đông đảo.
+Trong nửa tuần,
+nó bắt phải ngưng
+hy lễ và hiến lễ,
+nó đặt bên cánh Đền Thờ
+đồ ghê tởm khốc hại
+cho đến khi lệnh tiêu hủy
+đã được quyết định
+giáng xuống kẻ tàn phá.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 10, '[PART] 4. THỊ KIẾN LỚN
+[SECTION] Thị kiến về người mặc áo vải gai
+(1) Năm thứ ba đời vua Ky-rô nước Ba-tư, có lời mặc khải cho ông Đa-ni-en cũng gọi là Bên-tơ-sát-xa: đó là lời chân thật loan báo một cuộc chiến lớn. Ông đã hiểu lời ấy; ông đã được ơn am hiểu như vậy là nhờ thị kiến.
+(2) Trong những ngày ấy, tôi là Đa-ni-en, đã ăn chay đền tội suốt ba tuần như thể chịu tang: (3) tôi không ăn đồ cao lương mỹ vị; thịt và rượu, tôi không hề nếm chút nào; tôi cũng chẳng xức dầu thơm trong suốt ba tuần đó. (4) Ngày hai mươi bốn tháng giêng, đang ở ven sông Cả, tức là sông Tích-ra, (5) tôi ngước mắt nhìn lên, thì này:
+Một người mặc áo vải gai,
+lưng thắt đai vàng U-phát,
+(6) thân mình giống kim lục thạch,
+dung mạo ví như ánh chớp,
+đôi mắt tựa ngọn đuốc hồng,
+cánh tay và đôi chân
+trông như đồng đánh bóng,
+tiếng người vang dội
+như tiếng đám đông.
+(7) Tôi là Đa-ni-en, người duy nhất đã thấy thị kiến, còn những người ở bên tôi thì không. Dầu vậy, họ vẫn khiếp đảm kinh hồn chạy trốn tìm chỗ ẩn. (8) Chỉ còn lại có một mình tôi, và tôi đã thấy thị kiến lớn ấy. Tôi không còn sức nữa. Thể lực tôi giảm sút thảm hại. Tôi đã kiệt sức rồi.
+[SECTION] Thiên sứ hiện ra
+(9) Tôi nghe tiếng người vang dội. Vừa nghe thấy, tôi liền ngất xỉu, chúi mặt xuống đất. (10) Này đây một bàn tay đụng đến tôi, nâng tôi dậy đang khi đầu gối và tay tôi run rẩy. (11) Người nói với tôi: “Hỡi Đa-ni-en là người được quý mến, hãy hiểu rõ các lời ta sắp nói với ngươi. Hãy đứng yên tại chỗ ngươi đang đứng, vì giờ đây ta được sai đến với ngươi.” Trong lúc người nói với tôi điều ấy, thì tôi đứng run cầm cập. (12) Người còn bảo tôi: “Đa-ni-en, đừng sợ, bởi vì ngay từ hôm đầu, khi ngươi đem hết lòng tìm hiểu và ăn chay hãm mình trước nhan Thiên Chúa của ngươi, thì Thiên Chúa đã nghe những lời ngươi nói, và chính vì những lời ấy mà ta đến. (13) Thiên sứ lãnh đạo vương quốc Ba-tư đứng chống lại ta hai mươi mốt ngày. Và này Mi-ca-en, một trong các thiên sứ lãnh đạo cao cấp, đã đến trợ lực ta. Ta để người ở đó, bên cạnh các vua Ba-tư, (14) và ta đến cho ngươi hiểu rõ sự việc sẽ xảy ra nơi dân ngươi vào thời sau hết, bởi vì đây còn là một thị kiến về thời đó.”
+(15) Nghe những lời người nói đó, tôi cúi mặt xuống đất, không nói nên lời. (16) Và này có cái gì đó giống như một người trong con cái loài người chạm vào môi tôi. Tôi liền mở miệng và nói được. Tôi thưa với vị đứng trước mặt tôi: “Thưa ngài, thị kiến đã làm cho tôi phải quằn quại đớn đau khiến tôi kiệt sức. (17) Tôi tớ của ngài đây sẽ ăn nói làm sao với ngài, khi mà từ nay tôi chẳng còn hơi còn sức nào nữa?” (18) Bấy giờ đấng giống như con người lại đụng đến tôi một lần nữa và làm cho tôi nên can đảm. (19) Người nói: “Hỡi người được quý mến, đừng sợ. Cứ an tâm. Can đảm lên! Can đảm nữa lên!” Trong khi người nói với tôi như thế, tôi lấy lại được can đảm và đáp lại rằng: “Xin ngài cứ nói, vì ngài đã làm cho tôi nên can đảm.”
+[SECTION] Lời báo trước
+(20) Bấy giờ người nói: “Ngươi có biết tại sao ta đến cùng ngươi không? Bây giờ ta phải quay lại nghênh chiến với thiên sứ lãnh đạo Ba-tư. Ta vừa đi ra thì thiên sứ lãnh đạo Gia-van đến. (21) Nhưng ta sắp báo cho ngươi biết điều đã ghi chép trong sách sự thật. Không một ai hiệp lực với ta chống lại các vị đó, ngoại trừ thiên sứ Mi-ca-en, tướng lãnh của các ngươi.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 11, '(1) Phần ta, năm thứ nhất đời vua Đa-ri-ô, người Mê-đi, ta đứng để trợ lực và bảo vệ người. (2) Này ta sắp báo cho ngươi biết sự thật.
+[SECTION] Những cuộc chiến đầu tiên giữa nhà Xê-lêu-cô và nhà La-gô
+“Này đây sẽ còn có ba vua xuất hiện ở Ba-tư. Vua thứ tư sẽ trở nên giàu có, nhiều của cải hơn mọi người. Và khi của cải đã làm cho ông nên mạnh thì ông sẽ xúi giục mọi người chống lại vương quốc Gia-van. (3) Một vị vua hùng mạnh sẽ đứng lên thống trị một vương quốc rộng lớn, và sẽ mặc sức tung hoành. (4) Nhưng ông vừa đứng lên thì vương quốc của ông đã bị tan vỡ và phân chia theo hướng gió bốn phương trời, song không phải cho dòng dõi ông, và cũng không rộng lớn như khi ông cai trị, vì vương quốc của ông sẽ bị nhổ tận rễ mà trao cho những người khác không thuộc dòng dõi ông.
+(5) Vua Phương Nam sẽ nên hùng mạnh. Nhưng một trong số các tướng lãnh của ông sẽ hùng mạnh hơn ông và thống trị một vương quốc rộng lớn hơn vương quốc của ông. (6) Ít năm sau, họ kết ước với nhau. Và để thi hành hiệp ước, công chúa Phương Nam được gả cho vua Phương Bắc. Nhưng công chúa sẽ không giữ vững được quyền lực, và cả dòng dõi nàng cũng sẽ không đứng vững. Chính nàng sẽ bị trao nộp cùng với những người đã đưa nàng tới, cả vua cha và chồng nàng nữa. Khi đến thời đến buổi, (7) một mầm non cùng gốc với nàng sẽ mọc lên thay thế vua cha. Nó sẽ tiến đánh đạo binh, vào thành trì kiên cố của vua Phương Bắc. Nó sẽ tấn công họ và chiến thắng. (8) Ngay cả các thần của họ, nó cũng bắt làm tù binh đem về Ai-cập cùng với các tượng đúc và những đồ vàng, bạc quý giá. Nó sẽ đứng xa vua Phương Bắc, án binh bất động vài năm. (9) Vua này sẽ đến vương quốc của vua Phương Nam, rồi trở về xứ mình. (10) Các con ông sẽ chuẩn bị lâm chiến: họ chiêu mộ nhiều đoàn quân đông đúc. Một trong những người con đó sẽ kéo quân tràn xuống như nước lũ, dìm ngập hết, rồi quay trở lại. Và họ sẽ tấn công vào tận thành trì kiên cố của vua Phương Nam. (11) Bấy giờ vua Phương Nam phẫn nộ, xông ra giao chiến với vua Phương Bắc. Vua Phương Bắc chiêu mộ một đoàn quân đông đúc. Nhưng đám đông này lại rơi vào tay vua Phương Nam (12) và bị tiêu diệt. Vua Phương Nam sẽ sinh lòng kiêu ngạo. Ông hạ được hàng ngàn hàng vạn địch quân, nhưng không chiến thắng. (13) Vua Phương Bắc lại chiêu mộ một đoàn quân đông đúc hơn trước. Sau đó vài năm, ông đến, kéo theo một đạo binh lớn cùng với thật nhiều quân trang. (14) Vào thời ấy, nhiều người đứng lên chống lại vua Phương Nam. Những kẻ bạo động trong dân ngươi sẽ nổi lên để làm ứng nghiệm thị kiến, nhưng sẽ thất bại. (15) Vua Phương Bắc sẽ đến; ông sẽ xây tường đắp lũy và chiếm được một thành kiên cố. Các lực lượng Phương Nam sẽ không đương đầu nổi, đoàn quân tinh nhuệ cũng chẳng có sức đương đầu. (16) Vua Phương Bắc đến đánh sẽ mặc sức tung hoành; không có ai đương đầu nổi với ông. Ông sẽ dừng lại ở Xứ Huy Hoàng và nắm quyền sinh sát trong tay. (17) Ông có ý định dùng vũ lực chiếm toàn vương quốc ấy, nên mới ký hòa ước với vua Phương Nam và gả công chúa cho vua này nhằm hủy diệt vương quốc ấy. Nhưng chuyện đó sẽ không thành, sẽ không xảy ra cho ông. (18) Ông sẽ quay mặt hướng về miền duyên hải và sẽ chiếm được nhiều vùng. Nhưng một tướng lãnh sẽ chấm dứt hành động xấc xược của ông mà không để cho ông trả đũa.
+(19) Ông sẽ quay mặt hướng về các thành trì kiên cố của xứ ông, nhưng ông sẽ lảo đảo, rồi té nhào, người ta không còn gặp thấy ông nữa. (20) Sẽ có người đứng lên thay ông. Người ấy sẽ phái kẻ thu thuế đến nơi vinh quang của vương quốc. Nhưng một vài ngày sau, người ấy sẽ bị bẻ gãy, không phải vì giận dữ cũng không phải vì chiến trận.
+[SECTION] An-ti-ô-khô Ê-pi-pha-nê
+(21) “Kẻ đứng lên thay ông là một tên bỉ ổi. Người ta sẽ không trao vương quyền cho y, nhưng y sẽ đến bất ngờ và dùng xảo kế đoạt ngai vua. (22) Quân xâm lăng như nước lũ tràn vào lại bị cuốn trôi đi trước mặt y và bị tan rã; ngay cả người đứng đầu giao ước cũng chịu chung một số phận. (23) Nhờ những cuộc liên minh với y, y sẽ dùng mưu mà hành động, và ngày càng mạnh thêm dù chỉ có ít thuộc hạ. (24) Y sẽ bất ngờ đi đến những vùng phì nhiêu trong tỉnh và làm những gì mà cha ông và tổ tiên chẳng hề làm. Chiến lợi phẩm, của đã chiếm đoạt và tài sản, y sẽ đem phân phát cho các thuộc hạ; y mưu tính đánh các thành trì, nhưng chỉ được một thời gian thôi.
+(25) Y dốc toàn tâm toàn lực, đem một đạo quân lớn chống lại vua Phương Nam. Vua này cũng sẽ dẫn một đạo quân lớn, hết sức hùng hậu, sẵn sàng lâm chiến, nhưng không đương đầu nổi, vì người ta mưu tính chống lại ông. (26) Những kẻ hưởng lộc của ông lại hại ông. Đạo quân của ông sẽ bị đè bẹp. Những kẻ bị thương vong nằm la liệt ngổn ngang.
+(27) Cả hai vua đều tính chuyện gian ác trong lòng, nên tuy đồng bàn, họ cứ nói những lời dối trá với nhau. Nhưng chuyện đó sẽ không thành, vì còn phải chờ thời cùng tận vào lúc ấn định. (28) Vua Phương Bắc sẽ trở về xứ, mang theo một tài sản lớn, nhưng lòng y thì chống lại Giao Ước thánh. Y tung hoành, rồi trở về xứ. (29) Đến thời đến buổi, y sẽ trở lại Phương Nam. Nhưng thời cuối sẽ không như thời đầu. (30) Tàu bè từ Kít-tim sẽ đến tấn công y. Y sẽ hoảng sợ, quay trở về và giận dữ chống lại Giao Ước thánh. Y sẽ tung hoành và một lần nữa lại thông đồng với những kẻ bỏ Giao Ước thánh.
+(31) Các lực lượng do y gửi đi sẽ xuất hiện và xúc phạm đến thánh điện vốn là thành trì kiên cố. Ở đó chúng sẽ bãi bỏ lễ tế thường tiến và đặt đồ ghê tởm khốc hại. (32) Những kẻ lơ là với Giao Ước thì bị y dùng xảo kế mà làm cho ra ô uế. Còn những con dân nhận biết Thiên Chúa của mình thì sẽ vững mạnh và ra tay hành động. (33) Những kẻ hiểu biết trong dân sẽ dạy dỗ nhiều người; nhưng họ sẽ ngã gục vì gươm đâm lửa đốt, sẽ bị đày ải, bị cướp bóc trong một thời gian. (34) Khi họ ngã gục, những kẻ đến trợ giúp họ thì ít, còn những kẻ liên kết với họ vì xảo quyệt thì nhiều. (35) Trong hàng những người hiểu biết, một số sẽ ngã gục để có những người được thử bằng lửa, được thanh luyện và tẩy trắng, cho đến thời cùng tận, vì còn phải chờ lúc đã ấn định.
+(36) Vua này sẽ mặc sức hoành hành, sẽ tự cao tự đại, tôn mình lên trên hết các thần. Y sẽ nói những điều kỳ quặc chống lại Thiên Chúa của chư thần. Y sẽ thành công cho đến khi thời thịnh nộ chấm dứt, vì điều đã quyết ắt sẽ thành. (37) Y sẽ không coi trọng các thần của tổ tiên, cũng như thần mà nữ giới sùng mộ, cũng không coi trọng bất cứ thần nào khác, vì y tôn mình lên trên hết tất cả. (38) Thay vào đó, y tôn kính thần của các thành trì kiên cố; thần mà tổ tiên y không biết đến, thì y lại dùng vàng bạc, đá quý và báu vật mà tôn kính. (39) Y sẽ củng cố các thành trì nhờ sự trợ giúp của thần xa lạ. Ai nhìn nhận thần đó thì y cho hưởng vinh hoa phú quý. Y đặt họ cai trị nhiều người và phân chia đất đai cho họ để thưởng công.
+[SECTION] Ngày tận số của kẻ bách hại
+(40) “Đến thời cùng tận, vua Phương Nam sẽ chiến đấu chống lại tên bỉ ổi ấy. Vua Phương Bắc sẽ xông vào y như vũ bão cùng với chiến xa, kỵ binh và đông đảo tàu bè. Nhưng y sẽ kéo quân đến các nước, tràn ngập tất cả như thác lũ. (41) Y sẽ đến Xứ Huy Hoàng, và nhiều người sẽ ngã gục. Nhưng sẽ có những người thoát khỏi tay y, đó là người Ê-đôm, người Mô-áp và các phần tử ưu tú trong số con cái Am-mon. (42) Y sẽ tra tay hại các nước, ngay Ai-cập cũng không thoát khỏi. (43) Y sẽ chiếm lấy các kho vàng bạc và mọi đồ có giá của Ai-cập. Dân Li-by-a và dân Cút sẽ đi theo y. (44) Nhưng các tin đồn từ phương đông và phương bắc sẽ làm y khiếp sợ. Y giận dữ lên đường để tàn sát, hủy diệt nhiều sinh mạng. (45) Y sẽ dựng lều tại bản doanh trong một vùng nằm giữa biển và núi thánh của Xứ Huy Hoàng. Nhưng ngày tận số của y đã tới rồi mà chẳng có ai cứu giúp.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 12, '(1) “Thời đó, Mi-ca-en sẽ đứng lên. Người là vị chỉ huy tối cao, là đấng vẫn thường che chở dân ngươi. Đó sẽ là thời ngặt nghèo chưa từng thấy, từ khi có các dân cho đến bấy giờ. Thời đó, dân ngươi sẽ thoát nạn, nghĩa là tất cả những ai được ghi tên trong cuốn sách của Thiên Chúa.
+[SECTION] Sống lại và thưởng phạt
+(2) “Trong số những kẻ an nghỉ trong bụi đất, nhiều người sẽ trỗi dậy: người thì để hưởng phúc trường sinh, kẻ thì để chịu ô nhục và bị ghê tởm muôn đời. (3) Các hiền sĩ sẽ chói lọi như bầu trời rực rỡ, những ai làm cho người người nên công chính, sẽ chiếu sáng muôn đời như những vì sao.
+(4) Phần ngươi, Đa-ni-en, hãy giấu những lời này, hãy niêm cuốn sách lại cho đến thời cùng tận. Bấy giờ nhiều người sẽ đọc, và được hiểu biết thêm.”
+[SECTION] Lời sấm được niêm phong
+(5) Tôi là Đa-ni-en, tôi nhìn xem, thì này: hai người khác đứng hai bên bờ sông, một người bên này, một người bên kia. (6) Một trong hai người nói với người kia mặc áo vải gai đứng trên mặt sông: “Cho đến bao giờ những điều kỳ lạ ấy mới chấm dứt?” (7) Tôi nghe tiếng nói của người mặc áo vải gai đứng trên mặt sông. Người ấy giơ tay phải, tay trái lên trời mà thề nhân danh Đấng Hằng Sống: “Cho đến một thời, hai thời và nửa thời. Khi nào sức mạnh của dân thánh hết bị bẻ gãy, thì tất cả các điều ấy cũng sẽ hoàn tất.” (8) Tôi nghe mà không hiểu. Tôi liền nói: “Thưa ngài, cuối cùng những điều ấy sẽ như thế nào?” (9) Người đáp: “Không sao, Đa-ni-en, những lời ấy được giữ kín và niêm phong cho đến thời cùng tận. (10) Nhiều kẻ sẽ được thanh luyện, tẩy trắng và thử bằng lửa. Ác nhân tiếp tục làm điều ác và không ai trong họ sẽ hiểu, còn hiền sĩ thì sẽ hiểu. (11) Từ thời lễ thường tiến bị bãi và đồ ghê tởm khốc hại được đặt lên, sẽ có một ngàn hai trăm chín mươi ngày. (12) Phúc thay ai kiên tâm chờ đợi suốt một ngàn ba trăm ba mươi lăm ngày. (13) Phần ngươi, hãy đi cho tới cùng. Ngươi sẽ được an nghỉ, rồi sẽ đứng lên lãnh phần dành cho ngươi khi thời gian chấm dứt.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 13, '[PART] III. PHỤ TRƯƠNG
+[PART] 1. BÀ SU-SAN-NA VÀ PHÁN QUYẾT CỦA ÔNG ĐA-NI-EN
+(1) Có một người ở tại Ba-by-lon, tên là Giô-gia-kim. (2) Ông lấy vợ tên là Su-san-na. Bà là con gái ông Khen-ki-gia; bà rất xinh đẹp và kính sợ Chúa. (3) Cha mẹ bà là người công chính, đã dạy dỗ con gái theo Luật Mô-sê. (4) Ông Giô-gia-kim là người rất giàu, ông có một khu vườn bên cạnh nhà. Người Do-thái thường đến nhà ông, vì ông có thế giá hơn mọi người. (5) Năm ấy, người ta đặt hai kỳ mục chọn trong dân làm thẩm phán. Đấng Chí Tôn đã phán về họ rằng: “Từ Ba-by-lon, đã phát xuất sự gian tà do những kỳ mục, những thẩm phán có vẻ như cai trị dân.” (6) Những kỳ mục này thường lui tới nhà ông Giô-gia-kim. Tất cả những ai có việc gì cần xét xử thì đến gặp họ. (7) Giữa trưa, khi dân đã rút lui, bà Su-san-na vào đi dạo trong vườn của chồng. (8) Hai kỳ mục thấy bà mỗi ngày vào đi dạo, thì sinh lòng ham muốn. (9) Họ để tâm trí ra đồi bại, quay mắt đi để khỏi nhìn lên trời cao và chẳng nhớ đến những phán quyết công minh của Thiên Chúa. (10) Cả hai người đều đắm đuối say mê bà, nhưng họ không cho nhau biết vết thương lòng của mình, (11) bởi vì họ xấu hổ không dám tỏ bày lòng ham muốn chiếm được bà. (12) Ngày ngày, họ nôn nao rình rập, mong nhìn thấy bà. (13) Một hôm, họ nói với nhau: “Đến giờ ăn trưa rồi, ta đi về nhà thôi!” Thế rồi họ bước ra và chia tay. (14) Nhưng sau đó, ông nào cũng trở lui và cả hai lại gặp nhau ở chỗ cũ. Khi đôi bên gạn hỏi nhau, họ mới thú nhận lòng ham muốn của mình. Và bấy giờ họ đồng lòng tìm dịp gặp bà lúc bà ở một mình. (15) Họ đang nóng lòng chờ dịp thuận lợi, thì một hôm, bà Su-san-na đi vào vườn như các ngày trước, chỉ có hai tớ gái theo hầu. Vì trời nóng, bà muốn tắm trong vườn. (16) Ở đó, chẳng có ai, ngoại trừ hai kỳ mục đang ẩn núp và rình xem. (17) Bà bảo các tớ gái: “Đem cho ta dầu và thuốc thơm, rồi đóng cửa vườn lại để ta tắm.” (18) Các tớ gái làm như bà nói: các cô đóng cửa lại, đi ra phía cửa hông để lấy những thứ bà yêu cầu. Nhưng các cô không biết là các kỳ mục đang ẩn núp trong vườn.
+(19) Các cô vừa ra khỏi đó, thì hai kỳ lão liền chồm dậy, nhào tới chỗ bà (20) và nói: “Này cửa vườn đã đóng; chẳng ai thấy chúng ta đâu. Chúng tôi thèm muốn bà, bằng lòng trao thân cho chúng tôi đi! (21) Nếu không, chúng tôi sẽ làm chứng tố cáo rằng có một thanh niên ở với bà, và vì thế bà đã cho các tớ gái đi khỏi đây.” (22) Bà Su-san-na thở dài não nuột và nói: “Tôi bị khốn tứ bề! Quả thật, nếu làm thế, tôi sẽ phải chết; còn nếu không làm, tôi cũng không thoát khỏi tay các ông. (23) Nhưng thà không làm gì cả mà sa vào tay các ông, còn hơn là phạm tội trước mặt Chúa!” (24) Bà Su-san-na liền kêu lớn tiếng và hai kỳ lão cũng la lên để hại bà. (25) Một ông chạy ra mở cửa vườn. (26) Khi nghe tiếng kêu trong vườn, các gia nhân đổ xô vào cửa bên hông, để xem sự gì đã xảy ra cho bà. (27) Và sau khi các kỳ lão kể lại chuyện đó, các tôi tớ rất lấy làm hổ thẹn, vì chưa bao giờ nghe nói như thế về bà Su-san-na.
+(28) Hôm sau, dân chúng tụ họp ở nhà ông Giô-gia-kim chồng bà. Hai kỳ lão kia cũng đến đó, lòng đầy gian ý hại bà, để làm cho bà phải chết. (29) Họ nói trước mặt dân chúng: “Hãy sai người đi tìm Su-san-na, con gái ông Khen-ki-gia, vợ ông Giô-gia-kim.” Rồi người ta cho người đi tìm bà. (30) Bà cũng đến đó với cha mẹ, con cái và tất cả thân nhân. (31) Bà Su-san-na rất là duyên dáng, nhan sắc mặn mà. (32) Vì bà che khăn, nên các tên khốn kiếp đó bắt phải lột khăn ra để ngắm nhan sắc của bà cho thỏa. (33) Mọi người thân cũng như tất cả những ai thấy bà, đều khóc. (34) Từ giữa đám dân, hai kỳ lão đó đứng dậy đặt tay lên đầu bà. (35) Còn bà thì vừa khóc vừa ngước mắt lên trời, vì bà đầy lòng trông cậy vào Chúa. (36) Các kỳ lão nói: “Chúng tôi đang dạo chơi một mình trong vườn, thì mụ này đã vào với hai tớ gái, đóng cửa vườn lại, rồi cho các tớ gái đi ra. (37) Một gã thanh niên núp sẵn ở đó, đến bên mụ và nằm với mụ. (38) Lúc ấy, chúng tôi đang ở một góc vườn, thấy chuyện đồi bại, liền chạy tới. (39) Chúng tôi thấy chúng ăn nằm với nhau, nhưng không tóm được gã thanh niên, vì hắn khỏe hơn chúng tôi, và đã mở cửa chạy mất. (40) Còn mụ này, chúng tôi bắt được và hỏi mụ ta xem gã thanh niên kia là ai. (41) Nhưng mụ không chịu nói cho chúng tôi. Chúng tôi xin làm chứng về những điều ấy.”
+Cộng đồng tin họ, vì họ là những kỳ mục trong dân và là những thẩm phán. Rồi người ta kết án tử hình bà Su-san-na. (42) Nhưng bà Su-san-na kêu lớn tiếng rằng: “Lạy Thiên Chúa hằng hữu, Đấng am tường những điều bí ẩn và thấy hết mọi sự trước khi chúng xảy ra, (43) Ngài biết là họ đã làm chứng gian hại con. Này con phải chết, tuy chẳng làm điều gì trong những điều họ đã vu cho con.”
+(44) Chúa đã nghe tiếng bà kêu. (45) Trong lúc bà bị điệu đi hành hình, Thiên Chúa đã đánh động tâm trí thánh thiện của một thiếu niên tên là Đa-ni-en. (46) Thiếu niên đó kêu lớn tiếng rằng: “Tôi vô can trong vụ đổ máu người phụ nữ này!” (47) Toàn dân đều quay về phía cậu thiếu niên và hỏi: “Lời cậu vừa nói có nghĩa gì?” (48) Cậu đứng giữa họ và nói: “Các người ngu xuẩn đến thế sao, hỡi con cái Ít-ra-en? Các người đã lên án một người con gái Ít-ra-en mà không xét hỏi và cũng không biết rõ sự việc ra sao! (49) Hãy trở lại nơi xét xử, vì những người kia đã làm chứng gian để hại người phụ nữ này.”
+(50) Toàn dân vội vàng trở lại đó, và các kỳ mục nói với Đa-ni-en: “Đến đây, hãy ngồi giữa chúng tôi và cho chúng tôi biết ý kiến, vì Thiên Chúa đã cho cậu được khôn ngoan như bậc lão thành.” (51) Đa-ni-en nói: “Hãy tách riêng họ ra, rồi tôi sẽ xét hỏi.” (52) Sau khi họ đã bị tách ra rồi, Đa-ni-en gọi một trong hai kỳ mục lại và nói: “Hỡi con người già đời trong đường gian ác, tội lỗi xưa ông đã phạm, nay lại tái diễn: (53) ông đã xử bất công, kết án người vô can, tha bổng kẻ đắc tội, bất kể lời Chúa dạy: ‘Ngươi chớ giết người vô tội và người công chính.’ (54) Vậy bây giờ, nếu quả thật ông đã thấy bà kia, thì hãy nói ông đã thấy họ thông gian với nhau dưới cây nào?” Người ấy đáp: “Dưới cây trắc.” (55) Đa-ni-en nói: “Ông đã nói dối trắng trợn khiến ông phải mất mạng, vì thiên sứ của Thiên Chúa đã nhận được án lệnh của Người là chặt ông làm đôi.” (56) Sau khi cho người này ra, Đa-ni-en truyền dẫn người kia vào, rồi nói: “Hỡi nòi giống Ca-na-an, chứ không phải nòi giống Giu-đa, sắc đẹp đã mê hoặc ông, và tình dục đã làm cho ông ra hư hỏng. (57) Các ông đã hành động như thế với các con gái Ít-ra-en. Vì sợ, họ đã thông gian với các ông. Nhưng người con gái Giu-đa này đã không chịu nổi sự gian tà của các ông. (58) Vậy bây giờ, hãy nói cho tôi biết ông đã bắt quả tang họ thông gian với nhau dưới cây nào?” – Người ấy đáp: “Dưới cây dẻ.” (59) Đa-ni-en mới bảo: “Cả ông nữa, ông cũng nói dối trắng trợn khiến ông phải mất mạng, vì thiên sứ của Thiên Chúa, tay cầm gươm, đang chờ để xẻ ông làm đôi nhằm tiêu diệt các ông.”
+(60) Bấy giờ toàn thể cộng đồng lớn tiếng reo hò và chúc tụng Thiên Chúa, Đấng cứu những kẻ trông cậy vào Người. (61) Rồi người ta quay lại chống hai kỳ lão, vì Đa-ni-en đã dựa vào lời chính miệng các ông nói mà thuyết phục họ là các ông đã làm chứng gian. (62) Theo luật Mô-sê, người ta giáng cho các ông hình phạt mà các ông định bắt người khác phải chịu, đó là giết các ông. Ngày ấy, máu người vô tội khỏi bị đổ oan. (63) Vợ chồng ông Khen-ki-gia cùng với con rể là Giô-gia-kim và mọi người thân thuộc đều ca ngợi Thiên Chúa về bà Su-san-na, con gái của họ, vì người ta đã không thấy điều gì bất xứng nơi bà.
+(64) Từ ngày ấy trở đi, cậu Đa-ni-en nên cao trọng trước mặt dân.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 14, '[PART] 2. THẦN BEN VÀ CON RẮN
+[SECTION] Ông Đa-ni-en và các tư tế của thần Ben
+(1) Sau khi vua Át-ty-a-ghê về sum họp với tổ tiên, Ky-rô, vua Ba-tư, lên trị vì vương quốc. (2) Ông Đa-ni-en là cận thần của vua và được vua nể vì hơn mọi thân hữu khác. (3) Người Ba-by-lon có một tượng thần tên là Ben. Mỗi ngày, người ta phải tốn mất hơn sáu tạ bột mì thượng hảo hạng, bốn mươi con chiên và chừng hai trăm năm mươi lít rượu cho tượng thần đó. (4) Nhà vua sùng bái tượng thần và ngày ngày vẫn đến thờ lạy. Còn ông Đa-ni-en thì thờ lạy Thiên Chúa của mình. (5) Vua nói với ông: “Tại sao ngươi không thờ lạy thần Ben?” Ông đáp: “Bởi vì hạ thần không sùng bái những tượng thần do bàn tay con người làm ra, mà chỉ sùng bái Thiên Chúa hằng sống, Đấng đã tạo dựng trời đất và nắm chủ quyền trên mọi xác phàm.” (6) Vua liền nói: “Ngươi không tin rằng thần Ben là một vị thần hằng sống sao? Ngươi chẳng thấy tất cả những gì ngài ăn, ngài uống mỗi ngày sao?” (7) Ông Đa-ni-en vừa cười vừa nói: “Tâu đức vua, xin ngài chớ lầm! Thần ấy bên trong là đất sét, bên ngoài là đồng và chẳng bao giờ ăn uống.” (8) Vua giận dữ, triệu các tư tế lại và bảo: “Nếu các ngươi không nói cho ta biết ai ăn của cúng đó, thì các ngươi sẽ phải chết; còn nếu các ngươi chứng minh được là thần Ben dùng những của ấy, thì Đa-ni-en sẽ phải chết, vì y đã nói phạm đến thần Ben.” (9) Ông Đa-ni-en thưa với vua: “Xin đức vua cứ làm như lời ngài đã nói!” Số các tư tế của thần Ben là bảy mươi, không kể vợ con họ. (10) Vua cùng với ông Đa-ni-en tới đền thờ thần Ben. (11) Các tư tế của thần Ben thưa với vua: “Bây giờ các bề tôi đây xin ra ngoài. Còn ngài, tâu đức vua, xin ngài cho dọn các thức ăn và cho đem rượu pha tới, rồi xin ngài đóng cửa và lấy ấn của đức vua mà niêm phong lại. Sáng mai khi ngài đến mà không thấy là thần Ben đã dùng mọi của cúng rồi, thì các bề tôi đây sẽ phải chết; bằng không, thì tên Đa-ni-en, kẻ nói dối nhằm hại các bề tôi đây, sẽ phải chết.” (12) Họ vững tâm khi nghĩ đến con đường bí mật đã được mở ra ở dưới bàn, là con đường họ vẫn quen vào để mang của cúng đi. (13) Khi những người ấy đã ra ngoài và vua đã cho dọn thức ăn dâng thần Ben, (14) thì ông Đa-ni-en truyền cho các tiểu đồng của ông đem tro rải khắp đền thờ, chỉ một mình vua thấy mà thôi. Sau đó, họ đi ra, đóng cửa lại, lấy ấn của vua mà niêm phong, rồi ra về. (15) Đêm ấy, theo thói quen, các tư tế đã cùng với vợ con tới đó và ăn uống sạch. (16) Sáng hôm sau, vua cùng với ông Đa-ni-en đến sớm. (17) Vua hỏi: “Này Đa-ni-en, dấu niêm phong có còn nguyên không?” Ông đáp: “Thưa đức vua, vẫn còn nguyên.” (18) Khi vừa mở cửa ra và nhìn lên bàn, vua liền kêu lớn tiếng: “Lạy thần Ben, ngài thật cao cả! Ngài chẳng lừa dối ai bao giờ!” (19) Ông Đa-ni-en cười và giữ vua lại, không để vua đi vào bên trong. Rồi ông nói: “Xin đức vua coi nền nhà và xem đây là những vết chân của ai.” (20) Vua nói: “Ta thấy vết chân đàn ông, đàn bà và con trẻ.” (21) Bấy giờ vua nổi cơn thịnh nộ, truyền bắt giữ các tư tế và vợ con họ. Họ chỉ cho vua thấy những cửa bí mật đưa họ vào dùng những thức ăn đặt trên bàn. (22) Vua ra lệnh giết họ, rồi giao tượng thần Ben cho ông Đa-ni-en. Ông đã phá hủy tượng và đền thờ thần Ben.
+[SECTION] Ông Đa-ni-en giết con rắn
+(23) Bấy giờ có một con rắn lớn được dân Ba-by-lon sùng bái. (24) Vua nói với ông Đa-ni-en: “Ngươi không thể nói rằng đây không phải là một vị thần hằng sống! Vậy hãy thờ lạy ngài đi!” (25) Ông Đa-ni-en thưa: “Hạ thần thờ lạy Chúa là Thiên Chúa của hạ thần, vì Người mới là Thần Hằng Sống. Phần ngài, tâu đức vua, nếu ngài cho phép, thần sẽ giết con rắn mà chẳng cần gươm đao hay gậy gộc.” (26) Vua nói: “Ta cho phép nhà ngươi.” (27) Ông Đa-ni-en lấy nhựa dính, mỡ và lông thú, nấu tất cả với nhau, vo thành những viên nhỏ, rồi ném vào miệng con rắn. Ăn xong, con rắn liền bể bụng. Bấy giờ ông Đa-ni-en nói: “Hãy coi, đồ các ngươi sùng bái đó!” (28) Nghe thế, dân Ba-by-lon hết sức giận dữ; họ hợp nhau chống lại nhà vua và nói: “Nhà vua đã trở thành người Do-thái mất rồi! Ông ta đã phá hủy tượng thần Ben, giết xà thần và hạ sát các tư tế.” (29) Họ đến gặp vua và nói: “Yêu cầu vua nộp Đa-ni-en cho chúng tôi; nếu không, chúng tôi sẽ giết vua và cả hoàng gia nữa.” (30) Vua thấy mình bị dồn ép quá mức, nên buộc lòng phải nộp ông Đa-ni-en cho họ.
+[SECTION] Ông Đa-ni-en trong hầm sư tử
+(31) Họ đẩy ông Đa-ni-en vào hầm sư tử và ông đã ở đó sáu ngày. (32) Trong hầm, có bảy con sư tử. Trước kia, mỗi ngày người ta vất cho chúng hai xác người và hai con cừu. Nhưng nay người ta không vất gì cho chúng nữa, để chúng ăn thịt ông Đa-ni-en.
+(33) Bấy giờ ngôn sứ Kha-ba-cúc đang ở Giu-đê. Ông nấu canh, bẻ nhỏ bánh cho vào giỏ, rồi đem ra đồng cho thợ gặt. (34) Thiên sứ của Đức Chúa bảo ông Kha-ba-cúc: “Hãy đem bữa ăn của ngươi đến Ba-by-lon cho Đa-ni-en đang ở trong hầm sư tử.” (35) Ông Kha-ba-cúc nói: “Thưa ngài, tôi chưa hề thấy Ba-by-lon bao giờ, cũng chẳng biết hầm sư tử ở đâu?” (36) Thiên sứ của Đức Chúa nắm đầu, túm lấy tóc ông, rồi dùng sức mạnh của thần khí, đem ông đến Ba-by-lon, để trên miệng hầm. (37) Ông Kha-ba-cúc gọi to: “Đa-ni-en, Đa-ni-en, hãy nhận lấy bữa ăn Thiên Chúa gửi đến cho ông đây!” (38) Ông Đa-ni-en nói: “Lạy Thiên Chúa, Ngài đã nhớ đến con và không bỏ rơi những kẻ yêu mến Ngài.” (39) Ông Đa-ni-en đứng dậy ăn. Còn Thiên sứ của Thiên Chúa thì tức khắc đưa ông Kha-ba-cúc trở về nơi ông ở.
+(40) Ngày thứ bảy, vua đến khóc ông Đa-ni-en. Vua tới miệng hầm và ngó vào, thì thấy ông Đa-ni-en đang ngồi ở đó. (41) Vua liền kêu lớn tiếng rằng: “Lạy Chúa là Thiên Chúa của Đa-ni-en, Ngài là Đấng Cao Cả. Ngoài Ngài ra, chẳng có thần nào khác!” (42) Rồi vua cho người kéo ông Đa-ni-en ra khỏi hầm. Còn những kẻ toan hại ông, thì vua cho tống vào đó. Tức thì chúng bị sư tử xé xác trước mặt vua.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
