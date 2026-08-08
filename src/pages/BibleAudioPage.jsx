@@ -20,7 +20,8 @@ import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
 import { 
   getAllBooks, 
   fetchAudioAccessStreamUrl, 
-  fetchBibleAudioAvailability 
+  fetchBibleAudioAvailability,
+  getBibleAudioFilename,
 } from '../utils/bibleService.js';
 
 const LITURGY_TABS = [
@@ -76,43 +77,6 @@ export default function BibleAudioPage() {
     const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
 
     if (isStaticStorage) {
-      try {
-        let manifestRes = await fetch(`${AUDIO_API_BASE}/audioManifest.json`).catch(() => null);
-        if (!manifestRes || !manifestRes.ok) {
-          manifestRes = await fetch(`${AUDIO_API_BASE}/audio/audioManifest.json`).catch(() => null);
-        }
-        if (manifestRes && manifestRes.ok) {
-          const manifestData = await manifestRes.json();
-          const items = Object.entries(manifestData || {}).map(([key, relPath]) => {
-            let fullPath = relPath;
-            if (!fullPath.startsWith('http') && !fullPath.startsWith('/audio/') && !fullPath.startsWith('audio/')) {
-              fullPath = `/audio${fullPath.startsWith('/') ? '' : '/'}${fullPath}`;
-            }
-            fullPath = fullPath.replace('/audio/gospels/', '/audio/gospel/');
-            const streamUrl = fullPath.startsWith('http') ? fullPath : `${AUDIO_API_BASE}${fullPath.startsWith('/') ? '' : '/'}${fullPath}`;
-            
-            return {
-              trackId: key,
-              title: key.toUpperCase(),
-              category: key.startsWith('gospel') ? 'gospel' : key.startsWith('r2') ? 'r2' : 'r1',
-              streamUrl
-            };
-          });
-
-          const filtered = items.filter(item => {
-            const matchCat = category === 'all' || item.category === category;
-            const matchQ = !searchQuery || item.title.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchCat && matchQ;
-          });
-
-          setLiturgyAudioList(filtered.slice(0, 12));
-          setTotalLiturgyCount(filtered.length);
-          setHasMoreLiturgy(filtered.length > 12);
-          setNextCursorLiturgy(filtered.length > 12 ? 12 : null);
-          return;
-        }
-      } catch (e) {}
-
       setLiturgyAudioList([]);
       setTotalLiturgyCount(0);
       setHasMoreLiturgy(false);
@@ -261,6 +225,36 @@ export default function BibleAudioPage() {
       setLoadingTrackId(null);
     }
   }, [loadingTrackId]);
+
+  const handlePlayBibleChapter = useCallback((chapNum) => {
+    if (!selectedBook) return;
+    const filename = getBibleAudioFilename(selectedBook.id, chapNum);
+    const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
+    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
+
+    if (isStaticStorage || !AUDIO_API_BASE.includes('localhost:5005')) {
+      const streamUrl = `${AUDIO_API_BASE}/bible/${filename}`;
+      setCurrentTrack({
+        trackId,
+        title: `${selectedBook.name} · Chương ${chapNum}`,
+        subtitle: `Kinh Thánh 73 Sách • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
+        category: `Kinh Thánh - ${selectedBook.name}`,
+        url: streamUrl,
+        filename,
+        bookId: selectedBook.id,
+        chapter: chapNum
+      });
+      return;
+    }
+
+    handlePlayTrack({ trackId, filename }, {
+      title: `${selectedBook.name} - Chương ${chapNum}`,
+      subtitle: `Kinh Thánh 73 Sách • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
+      category: `Kinh Thánh - ${selectedBook.name}`,
+      bookId: selectedBook.id,
+      chapter: chapNum
+    });
+  }, [selectedBook, availableChaptersMap, handlePlayTrack]);
 
   return (
     <main className="min-h-screen pb-28 pt-4 sm:pt-6 px-3 sm:px-6 max-w-5xl mx-auto space-y-5 sm:space-y-7 font-sans text-stone-800 dark:text-stone-200">
@@ -753,15 +747,7 @@ export default function BibleAudioPage() {
 
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-mono shrink-0">
                       <Volume2 size={13} className="text-amber-700 shrink-0" aria-hidden="true" />
-                      <span>
-                        {isBibleAvailabilityLoading ? (
-                          'Đang kiểm tra dữ liệu audio...'
-                        ) : availableChaptersMap.size > 0 ? (
-                          `${availableChaptersMap.size}/${selectedBook.chapters} chương có audio`
-                        ) : (
-                          'Chưa có audio chương nào'
-                        )}
-                      </span>
+                      <span>{selectedBook.chapters} chương sẵn sàng phát</span>
                     </div>
                   </div>
 
@@ -772,49 +758,16 @@ export default function BibleAudioPage() {
                         Danh sách chương ({selectedBook.chapters} chương):
                       </h4>
                       <span className="text-[11px] text-stone-400 dark:text-stone-500">
-                        {isBibleAvailabilityLoading ? (
-                          '* Đang kiểm tra danh mục audio...'
-                        ) : availableChaptersMap.size > 0 ? (
-                          '* Nhấn chương để xin token & nghe audio'
-                        ) : (
-                          '* Nguồn audio cho các chương hiện chưa có sẵn'
-                        )}
+                        * Nhấn nút chương để phát audio trực tiếp
                       </span>
                     </div>
 
                     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-1.5">
                       {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
-                        const trackId = availableChaptersMap.get(chapNum);
-                        const isAvailable = !isBibleAvailabilityLoading && Boolean(trackId);
-                        const isPlayingThisChap = isAvailable && Boolean(currentTrack && currentTrack.trackId === trackId);
+                        const filename = getBibleAudioFilename(selectedBook.id, chapNum);
+                        const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
+                        const isPlayingThisChap = Boolean(currentTrack && (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`)));
                         const isLoadingThisChap = loadingTrackId === trackId;
-
-                        if (isBibleAvailabilityLoading) {
-                          return (
-                            <div
-                              key={chapNum}
-                              className="py-2 px-1 rounded-lg text-xs font-semibold font-mono flex flex-col items-center justify-center gap-0.5 bg-stone-100/60 dark:bg-stone-900/60 border border-stone-200/50 dark:border-stone-800/50 animate-pulse text-stone-400"
-                            >
-                              <div className="w-3 h-3 rounded-full bg-stone-200 dark:bg-stone-800" />
-                              <span>{chapNum}</span>
-                            </div>
-                          );
-                        }
-
-                        if (!isAvailable) {
-                          return (
-                            <button
-                              key={chapNum}
-                              type="button"
-                              disabled={true}
-                              aria-label={`Chưa có audio cho ${selectedBook.name} chương ${chapNum}`}
-                              className="py-2 px-1 rounded-lg text-xs font-semibold font-mono flex flex-col items-center justify-center gap-0.5 bg-stone-100/50 dark:bg-stone-950/30 text-stone-400 dark:text-stone-600 border border-stone-200/40 dark:border-stone-800/40 cursor-not-allowed opacity-50 select-none"
-                            >
-                              <Lock size={11} className="text-stone-400 dark:text-stone-600" aria-hidden="true" />
-                              <span>{chapNum}</span>
-                            </button>
-                          );
-                        }
 
                         return (
                           <button
@@ -822,13 +775,7 @@ export default function BibleAudioPage() {
                             type="button"
                             disabled={isLoadingThisChap}
                             aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
-                            onClick={() => handlePlayTrack({ trackId, filename: `${selectedBook.id}_c${chapNum}.mp3` }, {
-                              title: `${selectedBook.name} - Chương ${chapNum}`,
-                              subtitle: `Kinh Thánh 73 Sách • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
-                              category: `Kinh Thánh - ${selectedBook.name}`,
-                              bookId: selectedBook.id,
-                              chapter: chapNum
-                            })}
+                            onClick={() => handlePlayBibleChapter(chapNum)}
                             className={`py-2 px-1 rounded-lg text-xs font-semibold font-mono transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                               isPlayingThisChap
                                 ? 'bg-amber-700 text-white shadow-xs scale-105 font-bold'
