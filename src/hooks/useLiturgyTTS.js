@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { checkAndGetAudioStreamUrl } from '../utils/audioLookup.js';
-import { cleanScriptureTextOnUI } from '../utils/scriptureCleaner.js';
+import { cleanScriptureTextOnUI, cleanScriptureTextForTTS } from '../utils/scriptureCleaner.js';
 
 export function useLiturgyTTS() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -69,9 +69,11 @@ export function useLiturgyTTS() {
       return;
     }
 
-    window.speechSynthesis.cancel();
+    try {
+      window.speechSynthesis.cancel();
+    } catch (e) {}
 
-    const cleanText = cleanScriptureTextOnUI(text);
+    const cleanText = cleanScriptureTextForTTS(text) || cleanScriptureTextOnUI(text);
     if (!cleanText) {
       stop();
       return;
@@ -81,33 +83,52 @@ export function useLiturgyTTS() {
     utterance.lang = 'vi-VN';
     utterance.rate = rate;
 
-    const voices = window.speechSynthesis.getVoices();
-    const viVoice = voices.find(v => v.lang.includes('vi') || v.lang.includes('VI'));
-    if (viVoice) utterance.voice = viVoice;
+    const applyVoiceAndSpeak = () => {
+      try {
+        const voices = window.speechSynthesis.getVoices();
+        const viVoice = voices.find(v => v.lang.toLowerCase().includes('vi'));
+        if (viVoice) utterance.voice = viVoice;
+      } catch (e) {}
 
-    utterance.onstart = () => {
-      setIsPlaying(true);
-      setIsPaused(false);
-      setCurrentSection(`${sectionTitle}`);
-    };
+      utterance.onstart = () => {
+        setIsPlaying(true);
+        setIsPaused(false);
+        setCurrentSection(`${sectionTitle}`);
+      };
 
-    utterance.onend = () => {
-      if (onEndedCallback) {
-        onEndedCallback();
-      } else {
-        stop();
+      utterance.onend = () => {
+        if (onEndedCallback) {
+          onEndedCallback();
+        } else {
+          stop();
+        }
+      };
+
+      utterance.onerror = (err) => {
+        console.warn('⚠️ Lỗi phát Web Speech TTS:', err);
+        if (onEndedCallback) {
+          onEndedCallback();
+        } else {
+          stop();
+        }
+      };
+
+      window.speechSynthesis.speak(utterance);
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
       }
     };
 
-    utterance.onerror = () => {
-      if (onEndedCallback) {
-        onEndedCallback();
-      } else {
-        stop();
-      }
-    };
-
-    window.speechSynthesis.speak(utterance);
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.onvoiceschanged = null;
+        applyVoiceAndSpeak();
+      };
+      // Vẫn gọi speak dự phòng nếu onvoiceschanged không trigger
+      applyVoiceAndSpeak();
+    } else {
+      applyVoiceAndSpeak();
+    }
   };
 
   const playAudioOrMp3 = useCallback(async (text, sectionTitle = 'Bài Đọc', refString = null, prefix = 'gospel') => {
