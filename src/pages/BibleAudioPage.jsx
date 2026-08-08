@@ -1,915 +1,446 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { 
-  Volume2, 
-  Play, 
-  Search, 
-  X, 
-  RefreshCw, 
-  Info, 
-  Radio, 
-  FilterX,
-  BookOpen,
-  ChevronRight,
-  Layers,
-  Calendar,
-  ChevronDown,
+import React, { useState, useMemo, useCallback } from 'react';
+import {
+  Play,
+  Search,
+  X,
+  Radio,
   Lock,
   Loader2,
-  Bot
+  Volume2,
+  BookOpen,
+  Headphones,
+  ChevronRight,
+  BookMarked,
+  Sparkles,
 } from 'lucide-react';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
-import { 
-  getAllBooks, 
-  fetchAudioAccessStreamUrl, 
-  fetchBibleAudioAvailability,
+import {
+  getAllBooks,
+  fetchAudioAccessStreamUrl,
   getBibleAudioFilename,
 } from '../utils/bibleService.js';
-import { loadAudioIndex, hasBibleChapterAudio, useAudioIndex } from '../utils/audioIndexService.js';
+import { hasBibleChapterAudio, useAudioIndex } from '../utils/audioIndexService.js';
 
-const LITURGY_TABS = [
-  { id: 'all', label: 'Tất Cả' },
-  { id: 'gospel', label: 'Tin Mừng' },
-  { id: 'r1', label: 'Bài Đọc 1' },
-  { id: 'r2', label: 'Bài Đọc 2' },
-];
-
-const RAW_AUDIO_API_BASE = import.meta.env.VITE_AUDIO_API_BASE || import.meta.env.VITE_AUDIO_BASE_URL ||
+const RAW_AUDIO_API_BASE =
+  import.meta.env.VITE_AUDIO_API_BASE ||
+  import.meta.env.VITE_AUDIO_BASE_URL ||
   (import.meta.env.DEV ? 'http://localhost:5005' : '');
-
 const AUDIO_API_BASE = RAW_AUDIO_API_BASE.replace(/\/+$/, '');
+
+const TESTAMENT_TABS = [
+  {
+    id: 'old',
+    label: 'Cựu Ước',
+    count: 46,
+    description: '46 Sách',
+    gradient: 'from-amber-500 to-orange-600',
+    activeBg: 'bg-gradient-to-r from-amber-500 to-orange-600',
+    icon: BookMarked,
+  },
+  {
+    id: 'new',
+    label: 'Tân Ước',
+    count: 27,
+    description: '27 Sách',
+    gradient: 'from-blue-500 to-indigo-600',
+    activeBg: 'bg-gradient-to-r from-blue-500 to-indigo-600',
+    icon: Sparkles,
+  },
+];
 
 export default function BibleAudioPage() {
   useAudioIndex();
-  const [viewMode, setViewMode] = useState('liturgy');
 
-  // ── States cho Nhóm A (Bài Đọc Phụng Vụ - Server Paginated 12 items/trang) ─
-  const [liturgyAudioList, setLiturgyAudioList] = useState([]);
-  const [activeLiturgyTab, setActiveLiturgyTab] = useState('all');
-  const [liturgySearchQuery, setLiturgySearchQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [isLoadingLiturgy, setIsLoadingLiturgy] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [totalLiturgyCount, setTotalLiturgyCount] = useState(0);
-  const [hasMoreLiturgy, setHasMoreLiturgy] = useState(false);
-  const [nextCursorLiturgy, setNextCursorLiturgy] = useState(null);
-
-  // ── States cho Nhóm B (Kinh Thánh 73 Sách & Per-Book Availability) ────────
   const allBibleBooks = useMemo(() => getAllBooks(), []);
-  const [testamentFilter, setTestamentFilter] = useState('all');
+  const [testamentFilter, setTestamentFilter] = useState('old');
   const [bibleSearchQuery, setBibleSearchQuery] = useState('');
-  const [selectedBookId, setSelectedBookId] = useState('mat');
-  const [availableChaptersMap, setAvailableChaptersMap] = useState(new Map()); // chapNum -> trackId
-  const [isBibleAvailabilityLoading, setIsBibleAvailabilityLoading] = useState(false);
-
-  // ── Player & Token Loading State ─────────────────────────────────
+  const [selectedBookId, setSelectedBookId] = useState('st');
   const [currentTrack, setCurrentTrack] = useState(null);
   const [loadingTrackId, setLoadingTrackId] = useState(null);
 
-  // Debounce Search Input (300ms)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(liturgySearchQuery);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [liturgySearchQuery]);
-
-const formatLiturgyItemFromKey = (key, apiBase) => {
-  let category = 'gospel';
-  let categoryLabel = 'Tin Mừng';
-  let badgeColor = 'bg-amber-100/90 text-amber-900 border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800';
-
-  if (key.startsWith('r1_') || key.startsWith('r1')) {
-    category = 'r1';
-    categoryLabel = 'Bài Đọc 1';
-    badgeColor = 'bg-emerald-100/90 text-emerald-900 border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800';
-  } else if (key.startsWith('r2_') || key.startsWith('r2')) {
-    category = 'r2';
-    categoryLabel = 'Bài Đọc 2';
-    badgeColor = 'bg-purple-100/90 text-purple-900 border-purple-300 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-800';
-  } else if (key.startsWith('psalm_') || key.startsWith('psalm')) {
-    category = 'psalm';
-    categoryLabel = 'Đáp Ca';
-    badgeColor = 'bg-rose-100/90 text-rose-900 border-rose-300 dark:bg-rose-950/70 dark:text-rose-300 dark:border-rose-800';
-  }
-
-  let formattedRef = '';
-  const parts = key.split('_');
-
-  if (category === 'gospel') {
-    const book = parts[1] || '';
-    const rawRef = parts.slice(2).join(' ');
-    formattedRef = `${book} ${rawRef.replace(/(\d+)(\d{2})/g, '$1,$2')}`;
-  } else {
-    if (parts.length >= 3 && !isNaN(parts[1])) {
-      const numPrefix = parts[1];
-      const book = parts[2];
-      const rawRef = parts.slice(3).join(' ');
-      formattedRef = `${numPrefix} ${book} ${rawRef.replace(/(\d+)(\d{2})/g, '$1,$2')}`;
-    } else if (parts.length >= 2) {
-      const book = parts[1];
-      const rawRef = parts.slice(2).join(' ');
-      formattedRef = `${book} ${rawRef.replace(/(\d+)(\d{2})/g, '$1,$2')}`;
-    }
-  }
-
-  const fullScriptureTitle = `${categoryLabel} (${formattedRef || key})`;
-
-  let relPath = key;
-  if (category === 'gospel') {
-    relPath = `/audio/gospel/${key}.mp3`;
-  } else if (category === 'r1') {
-    relPath = `/audio/readings/r1/${key}.mp3`;
-  } else if (category === 'r2') {
-    relPath = `/audio/readings/r2/${key}.mp3`;
-  } else {
-    relPath = `/audio/readings/psalm/${key}.mp3`;
-  }
-
-  const streamUrl = `${apiBase}${relPath}`;
-
-  return {
-    trackId: key,
-    title: fullScriptureTitle,
-    fullScriptureTitle,
-    categoryLabel,
-    category,
-    badgeColor,
-    formattedRef,
-    streamUrl,
-    filename: `${key}.mp3`,
-    hasMetadataMatch: true,
-    primaryUsage: {
-      title: 'Phụng Vụ Hằng Ngày'
-    }
-  };
-};
-
-  // 1. Tải Bài Đọc Phụng Vụ từ Server API hoặc R2 Static Storage Manifest
-  const fetchLiturgyAudioInitial = useCallback(async (category, searchQuery) => {
-    setIsLoadingLiturgy(true);
-
-    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
-
-    if (isStaticStorage) {
-      const index = await loadAudioIndex();
-      const liturgyKeys = index?.liturgy || [];
-      const items = liturgyKeys.map(k => formatLiturgyItemFromKey(k, AUDIO_API_BASE));
-
-      const filtered = items.filter(item => {
-        const matchCat = category === 'all' || item.category === category;
-        const matchQ = !searchQuery || item.title.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchCat && matchQ;
-      });
-
-      setLiturgyAudioList(filtered);
-      setTotalLiturgyCount(filtered.length);
-      setHasMoreLiturgy(false);
-      setNextCursorLiturgy(null);
-      setIsLoadingLiturgy(false);
-      return;
-    }
-
-    try {
-      const params = new URLSearchParams();
-      params.set('category', category);
-      if (searchQuery) params.set('q', searchQuery);
-      params.set('limit', '12');
-      params.set('offset', '0');
-
-      const res = await fetch(`${AUDIO_API_BASE}/api/list-audio?${params.toString()}`);
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-      const data = await res.json();
-
-      if (data && Array.isArray(data.files)) {
-        setLiturgyAudioList(data.files);
-        setTotalLiturgyCount(data.total || data.files.length);
-        setHasMoreLiturgy(Boolean(data.hasMore));
-        setNextCursorLiturgy(data.nextCursor ?? (data.hasMore ? 12 : null));
-      }
-    } catch (err) {
-      setLiturgyAudioList([]);
-      setTotalLiturgyCount(0);
-      setHasMoreLiturgy(false);
-      setNextCursorLiturgy(null);
-    } finally {
-      setIsLoadingLiturgy(false);
-    }
-  }, []);
-
-  // 2. Tải Trang Tiếp Theo (Load More)
-  const handleLoadMoreLiturgy = useCallback(async () => {
-    if (!hasMoreLiturgy || nextCursorLiturgy === null || isLoadingMore) return;
-
-    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
-    if (isStaticStorage) return;
-
-    setIsLoadingMore(true);
-    try {
-      const params = new URLSearchParams();
-      params.set('category', activeLiturgyTab);
-      if (debouncedQuery) params.set('q', debouncedQuery);
-      params.set('limit', '12');
-      params.set('offset', String(nextCursorLiturgy));
-
-      const res = await fetch(`${AUDIO_API_BASE}/api/list-audio?${params.toString()}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data && Array.isArray(data.files)) {
-          setLiturgyAudioList((prev) => {
-            const existingIds = new Set(prev.map(item => item.trackId));
-            const newFiles = data.files.filter(item => !existingIds.has(item.trackId));
-            return [...prev, ...newFiles];
-          });
-          setTotalLiturgyCount(data.total || 0);
-          setHasMoreLiturgy(Boolean(data.hasMore));
-          setNextCursorLiturgy(data.nextCursor);
-        }
-      }
-    } catch (err) {
-      console.warn('Lỗi tải thêm bài đọc:', err.message);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  }, [hasMoreLiturgy, nextCursorLiturgy, isLoadingMore, activeLiturgyTab, debouncedQuery]);
-
-  useEffect(() => {
-    fetchLiturgyAudioInitial(activeLiturgyTab, debouncedQuery);
-  }, [activeLiturgyTab, debouncedQuery, fetchLiturgyAudioInitial]);
-
-  // 3. Nạp danh mục chương khả dụng cho duy nhất Sách đang chọn (Nhóm B)
-  const fetchBookAvailability = useCallback(async (bookId) => {
-    setIsBibleAvailabilityLoading(true);
-    try {
-      const chaptersList = await fetchBibleAudioAvailability(bookId);
-      const map = new Map();
-      chaptersList.forEach(item => {
-        if (item.chapter && item.trackId) {
-          map.set(item.chapter, item.trackId);
-        }
-      });
-      setAvailableChaptersMap(map);
-    } catch (err) {
-      setAvailableChaptersMap(new Map());
-    } finally {
-      setIsBibleAvailabilityLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (selectedBookId) {
-      fetchBookAvailability(selectedBookId);
-    }
-  }, [selectedBookId, fetchBookAvailability]);
-
-  // Lọc 73 sách Kinh Thánh
   const filteredBibleBooks = useMemo(() => {
     const query = bibleSearchQuery.trim().toLowerCase();
     return allBibleBooks.filter((book) => {
-      const matchesTestament = testamentFilter === 'all' || book.testament === testamentFilter;
+      const matchesTestament = book.testament === testamentFilter;
       const matchesSearch =
         !query ||
         book.name.toLowerCase().includes(query) ||
         book.short.toLowerCase().includes(query) ||
-        book.category.toLowerCase().includes(query);
-
+        (book.category || '').toLowerCase().includes(query);
       return matchesTestament && matchesSearch;
     });
   }, [allBibleBooks, testamentFilter, bibleSearchQuery]);
 
   const selectedBook = useMemo(() => {
-    return allBibleBooks.find(b => b.id === selectedBookId) || filteredBibleBooks[0] || allBibleBooks[0];
+    const found = allBibleBooks.find((b) => b.id === selectedBookId);
+    if (found) return found;
+    return filteredBibleBooks[0] || allBibleBooks[0];
   }, [allBibleBooks, selectedBookId, filteredBibleBooks]);
 
-  // Thao tác Xin Token & Phát Track
-  const handlePlayTrack = useCallback(async (item, trackMeta = {}) => {
-    if (!item || loadingTrackId) return;
-
-    if (item.streamUrl) {
-      setCurrentTrack({
-        trackId: item.trackId || item.filename,
-        title: trackMeta?.title || item.title,
-        subtitle: trackMeta?.subtitle || 'Bài Đọc Phụng Vụ Audio',
-        category: trackMeta?.category || item.category || 'Phụng Vụ',
-        url: item.streamUrl,
-        filename: item.filename,
-        bookId: trackMeta?.bookId,
-        chapter: trackMeta?.chapter
-      });
-      return;
-    }
-
-    if (!item.trackId) return;
-    setLoadingTrackId(item.trackId);
-    try {
-      const signedStreamUrl = await fetchAudioAccessStreamUrl(item.trackId);
-      if (signedStreamUrl) {
-        setCurrentTrack({
-          trackId: item.trackId,
-          title: trackMeta.title,
-          subtitle: trackMeta.subtitle,
-          category: trackMeta.category,
-          url: signedStreamUrl,
-          filename: item.filename,
-          bookId: trackMeta.bookId,
-          chapter: trackMeta.chapter
-        });
-      } else {
-        alert('Không thể xin token bảo mật để phát bài đọc này.');
+  const handlePlayBibleChapter = useCallback(
+    (chapNum) => {
+      if (!selectedBook) return;
+      const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
+      if (!isMp3Available) {
+        alert(
+          `Chương ${chapNum} hiện chưa có bản thu Audio Studio MP3.\nBan biên tập đang cập nhật!`
+        );
+        return;
       }
-    } catch (err) {
-      console.error('Lỗi khi tải stream URL:', err);
-    } finally {
-      setLoadingTrackId(null);
+
+      const filename = getBibleAudioFilename(selectedBook.id, chapNum);
+      const trackId = `bible_${selectedBook.id}_${chapNum}`;
+      const isStaticStorage =
+        AUDIO_API_BASE.includes('.r2.dev') ||
+        AUDIO_API_BASE.includes('r2.cloudflarestorage.com');
+
+      if (isStaticStorage) {
+        const streamUrl = `${AUDIO_API_BASE}/bible/${filename}`;
+        setCurrentTrack({
+          trackId,
+          title: `${selectedBook.name} · Chương ${chapNum}`,
+          subtitle: `${selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
+          category: `Kinh Thánh - ${selectedBook.name}`,
+          url: streamUrl,
+          filename,
+          bookId: selectedBook.id,
+          chapter: chapNum,
+        });
+        return;
+      }
+
+      if (loadingTrackId) return;
+      setLoadingTrackId(trackId);
+      fetchAudioAccessStreamUrl(trackId)
+        .then((signedUrl) => {
+          if (signedUrl) {
+            setCurrentTrack({
+              trackId,
+              title: `${selectedBook.name} · Chương ${chapNum}`,
+              subtitle: `${selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
+              category: `Kinh Thánh - ${selectedBook.name}`,
+              url: signedUrl,
+              filename,
+              bookId: selectedBook.id,
+              chapter: chapNum,
+            });
+          }
+        })
+        .finally(() => setLoadingTrackId(null));
+    },
+    [selectedBook, loadingTrackId]
+  );
+
+  const activeTabMeta = TESTAMENT_TABS.find((t) => t.id === testamentFilter);
+
+  // Count available MP3 for selected book
+  const availableCount = useMemo(() => {
+    if (!selectedBook) return 0;
+    let count = 0;
+    for (let i = 1; i <= selectedBook.chapters; i++) {
+      if (hasBibleChapterAudio(selectedBook.id, i)) count++;
     }
-  }, [loadingTrackId]);
-
-  const handlePlayBibleChapter = useCallback((chapNum) => {
-    if (!selectedBook) return;
-    const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
-    if (!isMp3Available) {
-      alert(`Chương ${chapNum} hiện chưa có bản thu Audio Studio MP3. Ban biên tập đang cập nhật!`);
-      return;
-    }
-
-    const filename = getBibleAudioFilename(selectedBook.id, chapNum);
-    const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
-    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com');
-
-    if (isStaticStorage) {
-      // Chế độ Public R2 Storage: Tải trực tiếp file tĩnh công khai
-      const streamUrl = `${AUDIO_API_BASE}/bible/${filename}`;
-      setCurrentTrack({
-        trackId,
-        title: `${selectedBook.name} · Chương ${chapNum}`,
-        subtitle: `Kinh Thánh 73 Sách • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
-        category: `Kinh Thánh - ${selectedBook.name}`,
-        url: streamUrl,
-        filename,
-        bookId: selectedBook.id,
-        chapter: chapNum
-      });
-      return;
-    }
-
-    handlePlayTrack({ trackId, filename }, {
-      title: `${selectedBook.name} - Chương ${chapNum}`,
-      subtitle: `Kinh Thánh 73 Sách • ${selectedBook.name} (${selectedBook.short}) • Chương ${chapNum}`,
-      category: `Kinh Thánh - ${selectedBook.name}`,
-      bookId: selectedBook.id,
-      chapter: chapNum
-    });
-  }, [selectedBook, availableChaptersMap, handlePlayTrack]);
+    return count;
+  }, [selectedBook]);
 
   return (
-    <main className="min-h-screen pb-28 pt-4 sm:pt-6 px-3 sm:px-6 max-w-5xl mx-auto space-y-5 sm:space-y-7 font-sans text-stone-800 dark:text-stone-200">
-      
-      {/* ── 1. COMPACT SACRED HERO SECTION ─────────────────────────── */}
-      <header className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-amber-100/70 via-amber-50/40 to-stone-50/20 dark:from-stone-900/90 dark:via-stone-900/60 dark:to-stone-950/40 border border-amber-200/70 dark:border-amber-900/40 p-5 sm:p-6 text-center space-y-2 shadow-xs">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-900/10 dark:bg-amber-400/10 text-amber-900 dark:text-amber-200 text-xs font-semibold tracking-wide border border-amber-900/15 dark:border-amber-400/20">
-          <Volume2 size={13} aria-hidden="true" />
-          <span>Thư Viện Âm Thanh Lời Chúa (Protected Stream)</span>
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-stone-100 tracking-tight">
-          Lắng Nghe Lời Chúa &amp; Phụng Vụ
-        </h1>
-        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-lg mx-auto leading-relaxed">
-          Không gian thanh tĩnh thưởng thức các bài đọc Phụng Vụ thu sẵn và tra cứu danh mục 73 sách Kinh Thánh Công Giáo.
-        </p>
-      </header>
+    <main className="min-h-screen pb-40 font-sans">
 
-      {/* ── 2. ELEGANT MODE SWITCHER SEGMENTED CONTROL ─────────────── */}
-      <div className="flex justify-center">
-        <div 
-          role="tablist" 
-          aria-label="Chuyển thư viện Audio"
-          className="inline-flex p-1 bg-stone-200/60 dark:bg-stone-950 rounded-xl border border-stone-300/60 dark:border-stone-800 shadow-inner"
-        >
-          <button
-            type="button"
-            role="tab"
-            id="mode-tab-liturgy"
-            aria-selected={viewMode === 'liturgy'}
-            aria-controls="mode-section-liturgy"
-            onClick={() => setViewMode('liturgy')}
-            className={`py-2 px-4 rounded-lg font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-              viewMode === 'liturgy'
-                ? 'bg-white dark:bg-stone-800 text-amber-950 dark:text-amber-200 shadow-xs border border-amber-300/40 dark:border-amber-700/40 font-bold'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
-            }`}
-          >
-            <Radio size={15} aria-hidden="true" />
-            <span>Bài Đọc Phụng Vụ ({totalLiturgyCount})</span>
-          </button>
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 px-4 pt-10 pb-8 sm:px-8">
+        {/* Decorative orbs */}
+        <div className="pointer-events-none absolute -top-20 -right-20 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-10 -left-10 w-56 h-56 rounded-full bg-orange-500/10 blur-2xl" />
 
-          <button
-            type="button"
-            role="tab"
-            id="mode-tab-bible"
-            aria-selected={viewMode === 'bible'}
-            aria-controls="mode-section-bible"
-            onClick={() => setViewMode('bible')}
-            className={`py-2 px-4 rounded-lg font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-              viewMode === 'bible'
-                ? 'bg-white dark:bg-stone-800 text-amber-950 dark:text-amber-200 shadow-xs border border-amber-300/40 dark:border-amber-700/40 font-bold'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
-            }`}
-          >
-            <BookOpen size={15} aria-hidden="true" />
-            <span>Kinh Thánh 73 Sách</span>
-          </button>
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 text-[11px] font-semibold tracking-widest uppercase">
+            <Headphones size={12} />
+            <span>Thư Viện Audio Kinh Thánh</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight leading-tight">
+            Lắng Nghe <span className="text-amber-400">Lời Chúa</span>
+          </h1>
+          <p className="text-sm text-stone-400 max-w-sm mx-auto">
+            Bản thu Studio chất lượng cao từ 73 Sách Kinh Thánh Công Giáo
+          </p>
+
+          {/* ── TESTAMENT TAB SWITCHER ─────────────────────────────────────── */}
+          <div className="flex justify-center pt-2">
+            <div className="inline-flex p-1 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 gap-1">
+              {TESTAMENT_TABS.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = testamentFilter === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => {
+                      setTestamentFilter(tab.id);
+                      setBibleSearchQuery('');
+                      const first = allBibleBooks.find((b) => b.testament === tab.id);
+                      if (first) setSelectedBookId(first.id);
+                    }}
+                    className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${
+                      isActive
+                        ? `${tab.activeBg} text-white shadow-lg scale-[1.02]`
+                        : 'text-white/60 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <Icon size={15} aria-hidden="true" />
+                    <span>{tab.label}</span>
+                    <span
+                      className={`text-[10px] font-mono px-1.5 py-0.5 rounded-md ${
+                        isActive
+                          ? 'bg-white/25 text-white'
+                          : 'bg-white/10 text-white/50'
+                      }`}
+                    >
+                      {tab.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          CHẾ ĐỘ 1: BÀI ĐỌC PHỤNG VỤ (NHÓM A - PAGINATED API 12 ITEMS/PAGE)
-         ───────────────────────────────────────────────────────────── */}
-      {viewMode === 'liturgy' && (
-        <section 
-          id="mode-section-liturgy" 
-          aria-labelledby="mode-tab-liturgy"
-          className="space-y-4"
-        >
-          {/* Thanh Công Cụ Toolbar Filter & Search */}
-          <div className="bg-white/90 dark:bg-stone-900/90 rounded-2xl p-4 border border-stone-200/80 dark:border-stone-800/80 shadow-xs space-y-3">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-              
-              {/* Filter Pills */}
-              <nav 
-                aria-label="Phân loại bài đọc Phụng Vụ"
-                className="flex items-center gap-1 p-1 bg-stone-100 dark:bg-stone-950 rounded-xl border border-stone-200/80 dark:border-stone-800/80 w-full sm:w-auto overflow-x-auto"
-              >
-                {LITURGY_TABS.map((tab) => {
-                  const isActive = activeLiturgyTab === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      role="tab"
-                      id={`liturgy-tab-${tab.id}`}
-                      aria-selected={isActive}
-                      aria-controls="liturgy-playlist"
-                      onClick={() => setActiveLiturgyTab(tab.id)}
-                      className={`px-3.5 py-1.5 rounded-lg font-semibold text-xs transition-all cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                        isActive
-                          ? 'bg-amber-700 text-white shadow-xs font-bold'
-                          : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </nav>
+      {/* ── MAIN CONTENT ────────────────────────────────────────────────────── */}
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 -mt-2 space-y-4 pb-6 pt-4">
 
-              {/* Ô tìm kiếm bài đọc */}
-              <div className="relative w-full sm:w-64 shrink-0">
-                <label htmlFor="liturgy-search-input" className="sr-only">
-                  Tìm kiếm bài đọc phụng vụ
-                </label>
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" size={14} aria-hidden="true" />
-                <input
-                  id="liturgy-search-input"
-                  type="text"
-                  value={liturgySearchQuery}
-                  onChange={(e) => setLiturgySearchQuery(e.target.value)}
-                  placeholder="Tìm tên sách, trích đoạn, tên lễ..."
-                  className="w-full pl-8 pr-8 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/50"
-                />
-                {liturgySearchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setLiturgySearchQuery('')}
-                    aria-label="Xóa từ khóa tìm kiếm"
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 cursor-pointer"
-                  >
-                    <X size={13} />
-                  </button>
-                )}
-              </div>
-
-            </div>
-
-            {/* Track List Server-Side Enriched & Paginated */}
-            <div 
-              id="liturgy-playlist"
-              aria-live="polite"
-              aria-label="Danh sách phát audio phụng vụ"
-              className="space-y-2.5 pt-1"
+        {/* ── SEARCH BAR ──────────────────────────────────────────────────── */}
+        <div className="relative">
+          <Search
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
+            size={15}
+            aria-hidden="true"
+          />
+          <input
+            type="text"
+            value={bibleSearchQuery}
+            onChange={(e) => setBibleSearchQuery(e.target.value)}
+            placeholder={`Tìm trong ${activeTabMeta?.label}... (tên sách, viết tắt)`}
+            className="w-full pl-10 pr-10 py-3 rounded-2xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400/60 transition"
+          />
+          {bibleSearchQuery && (
+            <button
+              type="button"
+              onClick={() => setBibleSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded-lg cursor-pointer"
             >
-              {isLoadingLiturgy ? (
-                <div className="space-y-2 py-2">
-                  {[1, 2, 3].map((n) => (
-                    <div 
-                      key={n} 
-                      className="p-3.5 rounded-xl border border-stone-100 dark:border-stone-800 bg-stone-50/60 dark:bg-stone-950/40 animate-pulse flex items-center justify-between gap-4"
-                    >
-                      <div className="space-y-1.5 flex-1">
-                        <div className="h-4 bg-stone-200 dark:bg-stone-800 rounded-md w-1/3" />
-                        <div className="h-3 bg-stone-200 dark:bg-stone-800 rounded-md w-1/4" />
-                      </div>
-                      <div className="w-16 h-8 bg-stone-200 dark:bg-stone-800 rounded-lg shrink-0" />
-                    </div>
-                  ))}
-                </div>
-              ) : liturgyAudioList.length === 0 ? (
-                <div className="text-center py-10 px-4 rounded-xl border border-dashed border-stone-200 dark:border-stone-800 bg-stone-50/40 dark:bg-stone-950/40 space-y-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-amber-100/60 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 flex items-center justify-center mx-auto">
-                    <FilterX size={20} aria-hidden="true" />
-                  </div>
-                  <p className="text-xs text-stone-500 dark:text-stone-400">
-                    {liturgySearchQuery
-                      ? `Không tìm thấy bài đọc nào khớp với từ khóa "${liturgySearchQuery}".`
-                      : `Chưa có bài đọc nào trong mục này.`}
-                  </p>
-                  {(liturgySearchQuery || activeLiturgyTab !== 'all') && (
-                    <button
-                      type="button"
-                      onClick={() => { setLiturgySearchQuery(''); setActiveLiturgyTab('all'); }}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-700 text-white font-semibold text-xs cursor-pointer"
-                    >
-                      <RefreshCw size={12} aria-hidden="true" />
-                      <span>Xóa lọc</span>
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <>
-                  {liturgyAudioList.map((item, idx) => {
-                    const isSelected = Boolean(currentTrack && currentTrack.trackId === item.trackId);
-                    const isLoadingThisTrack = loadingTrackId === item.trackId;
-                    const trackPlayerTitle = item.fullScriptureTitle;
-                    const trackPlayerSubtitle = item.hasMetadataMatch 
-                      ? `${item.primaryUsage?.title} (${item.category})`
-                      : `${item.category} • Chưa gắn ngày/lễ`;
+              <X size={14} />
+            </button>
+          )}
+        </div>
 
-                    return (
-                      <article
-                        key={item.trackId}
-                        tabIndex={0}
-                        role="button"
-                        aria-pressed={isSelected}
-                        aria-label={`Phát bài ${item.fullScriptureTitle}`}
-                        onClick={() => handlePlayTrack(item, {
-                          title: trackPlayerTitle,
-                          subtitle: trackPlayerSubtitle,
-                          category: item.category
-                        })}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handlePlayTrack(item, {
-                              title: trackPlayerTitle,
-                              subtitle: trackPlayerSubtitle,
-                              category: item.category
-                            });
-                          }
-                        }}
-                        className={`p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 sm:gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                          isSelected
-                            ? 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 shadow-xs'
-                            : 'bg-white dark:bg-stone-900 border-stone-200/70 dark:border-stone-800/80 hover:border-amber-300/80 dark:hover:border-amber-700/80 hover:bg-stone-50/60 dark:hover:bg-stone-950/40'
-                        }`}
-                      >
-                        {/* Left Track Info */}
-                        <div className="flex items-start gap-3 min-w-0 flex-1">
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-mono text-xs font-bold mt-0.5 ${
-                            isSelected
-                              ? 'bg-amber-700 text-white'
-                              : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400'
-                          }`}>
-                            {isLoadingThisTrack ? (
-                              <Loader2 size={15} className="animate-spin text-amber-700" />
-                            ) : isSelected ? (
-                              <Radio size={15} className="animate-pulse" aria-hidden="true" />
-                            ) : (
-                              idx + 1
-                            )}
-                          </div>
+        {/* ── DUAL PANEL ──────────────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-start">
 
-                          <div className="min-w-0 flex-1 space-y-1">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h2 className="text-sm font-bold text-stone-950 dark:text-stone-50 font-serif tracking-tight leading-snug">
-                                {item.fullScriptureTitle || item.title}
-                              </h2>
-                            </div>
-
-                            <div className="flex items-center gap-2 flex-wrap text-xs">
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold border shrink-0 ${
-                                item.badgeColor || 'bg-amber-100/70 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border-amber-300/40'
-                              }`}>
-                                {item.categoryLabel || item.category}
-                              </span>
-
-                              <span className="text-stone-700 dark:text-stone-300 font-medium flex items-center gap-1 truncate">
-                                <Calendar size={12} className="text-amber-700 shrink-0" aria-hidden="true" />
-                                <span className="truncate">{item.primaryUsage?.title || 'Phụng Vụ Hằng Ngày'}</span>
-                              </span>
-                            </div>
-
-                            <div className="text-[11px] text-stone-400 dark:text-stone-500 font-mono truncate flex items-center gap-2 pt-0.5">
-                              <span className="truncate" title={item.filename}>Cloudflare R2 • {item.filename}</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Right Play Action */}
-                        <button
-                          type="button"
-                          tabIndex={-1}
-                          disabled={isLoadingThisTrack}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 flex items-center gap-1.5 transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-amber-800 text-white font-bold'
-                              : 'bg-amber-700 hover:bg-amber-800 text-white'
-                          }`}
-                        >
-                          {isLoadingThisTrack ? (
-                            <>
-                              <Loader2 size={13} className="animate-spin" aria-hidden="true" />
-                              <span>Đang xin token...</span>
-                            </>
-                          ) : isSelected ? (
-                            <>
-                              <Radio size={13} className="animate-pulse" aria-hidden="true" />
-                              <span>Đang phát</span>
-                            </>
-                          ) : (
-                            <>
-                              <Play size={13} className="fill-current" aria-hidden="true" />
-                              <span>Phát</span>
-                            </>
-                          )}
-                        </button>
-                      </article>
-                    );
-                  })}
-
-                  {/* Nút Xem Thêm (Load More Pagination) */}
-                  {hasMoreLiturgy && (
-                    <div className="text-center pt-3 pb-1">
-                      <button
-                        type="button"
-                        onClick={handleLoadMoreLiturgy}
-                        disabled={isLoadingMore}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-100 dark:hover:bg-amber-950/60 text-stone-800 dark:text-stone-200 hover:text-amber-900 dark:hover:text-amber-200 border border-stone-200 dark:border-stone-700 font-bold text-xs transition-all shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50"
-                      >
-                        {isLoadingMore ? (
-                          <>
-                            <RefreshCw size={14} className="animate-spin text-amber-700" aria-hidden="true" />
-                            <span>Đang tải thêm...</span>
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown size={15} className="text-amber-700" aria-hidden="true" />
-                            <span>Xem thêm ({totalLiturgyCount - liturgyAudioList.length} bài đọc khác)</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ─────────────────────────────────────────────────────────────
-          CHẾ ĐỘ 2: KINH THÁNH 73 SÁCH (NHÓM B) - PER-BOOK AVAILABILITY
-         ───────────────────────────────────────────────────────────── */}
-      {viewMode === 'bible' && (
-        <section 
-          id="mode-section-bible" 
-          aria-labelledby="mode-tab-bible"
-          className="space-y-4"
-        >
-          {/* Status Banner */}
-          <div 
-            role="status"
-            aria-live="polite"
-            className="bg-stone-100/90 dark:bg-stone-900/90 border border-stone-200/90 dark:border-stone-800/90 rounded-xl p-3.5 text-xs text-stone-600 dark:text-stone-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 shadow-xs"
-          >
-            <div className="flex items-center gap-2">
-              <Info size={15} className="text-amber-700 dark:text-amber-400 shrink-0" aria-hidden="true" />
-              <span>
-                <strong>Kinh Thánh 73 Sách:</strong> Duyệt danh mục 73 sách (1.328 chương). Kiểm tra khả dụng từng sách thực tế từ server.
+          {/* LEFT: Book List ──────────────────────────────────────────────── */}
+          <div className="lg:col-span-2 rounded-2xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
+            <div className={`px-4 py-3 bg-gradient-to-r ${activeTabMeta?.gradient} flex items-center gap-2`}>
+              <BookOpen size={14} className="text-white/90" />
+              <span className="text-xs font-bold text-white uppercase tracking-widest">
+                {activeTabMeta?.label} · {filteredBibleBooks.length} Sách
               </span>
             </div>
-            <div className="font-mono text-[11px] bg-amber-100/80 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 px-2.5 py-1 rounded-md shrink-0 font-medium border border-amber-200/60 dark:border-amber-800/60">
-              73 Sách • Protected Streaming
-            </div>
-          </div>
 
-          {/* Controls: Testament Filter & Search */}
-          <div className="bg-white/90 dark:bg-stone-900/90 rounded-2xl p-4 border border-stone-200/80 dark:border-stone-800/80 shadow-xs space-y-3">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-              <nav aria-label="Bộ lọc Ước Kinh Thánh" className="flex items-center gap-1 p-1 bg-stone-100 dark:bg-stone-950 rounded-xl border border-stone-200/80 dark:border-stone-800/80">
-                <button
-                  type="button"
-                  onClick={() => setTestamentFilter('all')}
-                  className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all cursor-pointer ${
-                    testamentFilter === 'all'
-                      ? 'bg-amber-700 text-white font-bold'
-                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
-                  }`}
-                >
-                  Tất Cả (73)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTestamentFilter('old')}
-                  className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all cursor-pointer ${
-                    testamentFilter === 'old'
-                      ? 'bg-amber-700 text-white font-bold'
-                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
-                  }`}
-                >
-                  Cựu Ước (46)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTestamentFilter('new')}
-                  className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all cursor-pointer ${
-                    testamentFilter === 'new'
-                      ? 'bg-amber-700 text-white font-bold'
-                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
-                  }`}
-                >
-                  Tân Ước (27)
-                </button>
-              </nav>
-
-              <div className="relative w-full sm:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" size={14} aria-hidden="true" />
-                <input
-                  type="text"
-                  value={bibleSearchQuery}
-                  onChange={(e) => setBibleSearchQuery(e.target.value)}
-                  placeholder="Tìm tên sách (Mát-thêu, St, 2 Sm...)"
-                  className="w-full pl-8 pr-8 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500/50"
-                />
-                {bibleSearchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setBibleSearchQuery('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-stone-400 hover:text-stone-600 cursor-pointer"
-                  >
-                    <X size={13} />
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Dual Panel Duyệt Sách & Bảng Chương */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-            
-            {/* Cột Trái: Danh mục Sách */}
-            <div className="lg:col-span-5 bg-white/90 dark:bg-stone-900/90 rounded-2xl p-3.5 border border-stone-200/80 dark:border-stone-800/80 shadow-xs space-y-2.5 max-h-[560px] overflow-y-auto">
-              <div className="flex items-center justify-between border-b border-stone-100 dark:border-stone-800/80 pb-2 px-1">
-                <h3 className="text-xs font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Layers size={13} className="text-amber-700" />
-                  <span>Danh Mục Sách ({filteredBibleBooks.length})</span>
-                </h3>
-              </div>
-
+            <div className="overflow-y-auto max-h-[520px] divide-y divide-stone-100 dark:divide-stone-800/60">
               {filteredBibleBooks.length === 0 ? (
-                <div className="text-center py-6 text-xs text-stone-400">
+                <div className="py-10 text-center text-sm text-stone-400">
                   Không tìm thấy sách phù hợp.
                 </div>
               ) : (
-                <div className="space-y-1">
-                  {filteredBibleBooks.map((book) => {
-                    const isSelected = selectedBook?.id === book.id;
-                    return (
-                      <div
-                        key={book.id}
-                        onClick={() => setSelectedBookId(book.id)}
-                        className={`p-2.5 rounded-xl border transition-all flex items-center justify-between gap-2 cursor-pointer ${
+                filteredBibleBooks.map((book) => {
+                  const isSelected = selectedBook?.id === book.id;
+                  const mp3Count = (() => {
+                    let n = 0;
+                    for (let i = 1; i <= book.chapters; i++) {
+                      if (hasBibleChapterAudio(book.id, i)) n++;
+                    }
+                    return n;
+                  })();
+                  const hasAny = mp3Count > 0;
+
+                  return (
+                    <button
+                      key={book.id}
+                      type="button"
+                      onClick={() => setSelectedBookId(book.id)}
+                      className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-amber-400 ${
+                        isSelected
+                          ? 'bg-amber-50 dark:bg-amber-950/40 border-r-[3px] border-amber-500'
+                          : 'hover:bg-stone-50 dark:hover:bg-stone-800/50'
+                      }`}
+                    >
+                      {/* Short code badge */}
+                      <span
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center text-[11px] font-extrabold font-mono shrink-0 ${
                           isSelected
-                            ? 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700 shadow-xs'
-                            : 'bg-white dark:bg-stone-900 border-stone-200/60 dark:border-stone-800/60 hover:border-amber-300/60 dark:hover:border-amber-700/60 hover:bg-stone-50/60 dark:hover:bg-stone-950/40'
+                            ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-sm`
+                            : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                          <span className={`min-w-[2rem] px-1.5 py-0.5 rounded-lg font-bold font-mono text-xs flex items-center justify-center shrink-0 whitespace-nowrap text-center ${
-                            isSelected ? 'bg-amber-700 text-white' : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400'
-                          }`}>
-                            {book.short}
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <h4 className="text-xs font-bold text-stone-900 dark:text-stone-100 truncate font-sans">
-                              {book.name}
-                            </h4>
-                            <p className="text-[10px] text-stone-400 dark:text-stone-500">
-                              {book.category} • {book.chapters} chương
-                            </p>
-                          </div>
-                        </div>
+                        {book.short}
+                      </span>
 
-                        <ChevronRight size={14} className={`shrink-0 transition-transform ${isSelected ? 'text-amber-700' : 'text-stone-400'}`} />
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-semibold truncate ${isSelected ? 'text-amber-900 dark:text-amber-200' : 'text-stone-800 dark:text-stone-200'}`}>
+                          {book.name}
+                        </p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[10px] text-stone-400 dark:text-stone-500">
+                            {book.chapters} chương
+                          </span>
+                          {hasAny && (
+                            <span className="flex items-center gap-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400">
+                              <Volume2 size={9} />
+                              {mp3Count} MP3
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
+
+                      <ChevronRight
+                        size={14}
+                        className={`shrink-0 transition-transform ${isSelected ? 'text-amber-500 translate-x-0.5' : 'text-stone-300 dark:text-stone-600'}`}
+                      />
+                    </button>
+                  );
+                })
               )}
             </div>
+          </div>
 
-            {/* Cột Phải: Bảng Chương Sách Được Chọn */}
-            <div className="lg:col-span-7 bg-white/90 dark:bg-stone-900/90 rounded-2xl p-4 sm:p-5 border border-stone-200/80 dark:border-stone-800/80 shadow-xs space-y-4">
-              {selectedBook ? (
-                <>
-                  <div className="border-b border-stone-100 dark:border-stone-800/80 pb-3 flex items-center justify-between gap-3 flex-wrap">
-                    <div className="min-w-0 flex-1">
+          {/* RIGHT: Chapter Grid ─────────────────────────────────────────── */}
+          <div className="lg:col-span-3 rounded-2xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-sm overflow-hidden">
+            {selectedBook ? (
+              <>
+                {/* Book Header */}
+                <div className="px-5 py-4 border-b border-stone-100 dark:border-stone-800 bg-stone-50/60 dark:bg-stone-800/30">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="min-w-[2rem] px-2 py-0.5 rounded-lg bg-amber-100/80 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 text-xs font-mono font-bold border border-amber-200 dark:border-amber-800 whitespace-nowrap shrink-0 flex items-center justify-center text-center">
+                        <span className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold font-mono bg-gradient-to-br ${activeTabMeta?.gradient} text-white`}>
                           {selectedBook.short}
                         </span>
-                        <h2 className="text-base sm:text-lg font-serif font-bold text-stone-900 dark:text-stone-100 truncate">
+                        <h2 className="text-base font-serif font-bold text-stone-900 dark:text-stone-100">
                           Sách {selectedBook.name}
                         </h2>
                       </div>
-                      <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-                        {selectedBook.category} • {selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • {selectedBook.chapters} Chương
+                      <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-1">
+                        {selectedBook.category} · {selectedBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} · {selectedBook.chapters} chương
                       </p>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-mono shrink-0">
-                      <Volume2 size={13} className="text-amber-700 shrink-0" aria-hidden="true" />
-                      <span>{selectedBook.chapters} chương sẵn sàng phát</span>
+                    {/* MP3 progress badge */}
+                    <div className="shrink-0 text-right">
+                      <div className="text-lg font-extrabold font-mono leading-none text-stone-900 dark:text-stone-100">
+                        {availableCount}
+                        <span className="text-xs font-normal text-stone-400 dark:text-stone-500">/{selectedBook.chapters}</span>
+                      </div>
+                      <p className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-0.5">MP3 sẵn sàng</p>
                     </div>
                   </div>
 
-                  {/* Grid chọn Chương */}
-                  <div className="space-y-2.5">
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400">
-                        Danh sách chương ({selectedBook.chapters} chương):
-                      </h4>
-                      <span className="text-[11px] text-stone-400 dark:text-stone-500">
-                        * Nhấn nút chương để phát audio trực tiếp
-                      </span>
+                  {/* Progress bar */}
+                  {availableCount > 0 && (
+                    <div className="mt-3 h-1.5 w-full bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full bg-gradient-to-r ${activeTabMeta?.gradient} transition-all duration-700`}
+                        style={{ width: `${(availableCount / selectedBook.chapters) * 100}%` }}
+                      />
                     </div>
-
-                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-1.5">
-                      {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
-                        const filename = getBibleAudioFilename(selectedBook.id, chapNum);
-                        const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
-                        const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
-                        const isPlayingThisChap = Boolean(currentTrack && (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`)));
-                        const isLoadingThisChap = loadingTrackId === trackId;
-
-                        return (
-                          <button
-                            key={chapNum}
-                            type="button"
-                            disabled={isLoadingThisChap}
-                            aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
-                            title={isMp3Available ? `Bản thu Studio MP3: ${selectedBook.name} chương ${chapNum}` : `Chưa có bản thu MP3: ${selectedBook.name} chương ${chapNum}`}
-                            onClick={() => handlePlayBibleChapter(chapNum)}
-                            className={`py-2 px-1 rounded-lg text-xs font-semibold font-mono transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                              isPlayingThisChap
-                                ? 'bg-amber-700 text-white shadow-xs scale-105 font-bold'
-                                : isMp3Available
-                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 hover:bg-amber-100/70 font-bold'
-                                  : 'bg-stone-100/60 dark:bg-stone-950/30 text-stone-400 dark:text-stone-500 border border-stone-200/50 dark:border-stone-800/50 opacity-60'
-                            }`}
-                          >
-                            {isLoadingThisChap ? (
-                              <Loader2 size={12} className="animate-spin text-amber-700 dark:text-amber-400" />
-                            ) : isPlayingThisChap ? (
-                              <Radio size={13} className="animate-pulse" aria-hidden="true" />
-                            ) : isMp3Available ? (
-                              <Play size={11} className="fill-current text-amber-700 dark:text-amber-400" aria-hidden="true" />
-                            ) : (
-                              <Lock size={11} className="text-stone-400 dark:text-stone-500" aria-hidden="true" />
-                            )}
-                            <span>{chapNum}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-10 text-xs text-stone-400">
-                  Vui lòng chọn một sách bên danh mục để xem danh sách chương.
+                  )}
                 </div>
-              )}
-            </div>
 
+                {/* Legend */}
+                <div className="px-5 py-2.5 flex items-center gap-4 border-b border-stone-100 dark:border-stone-800 bg-white dark:bg-stone-900">
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-500 dark:text-stone-400">
+                    <span className="w-5 h-5 rounded-md bg-amber-500/20 border border-amber-400/50 flex items-center justify-center">
+                      <Play size={8} className="fill-amber-600 text-amber-600" />
+                    </span>
+                    <span>Có MP3</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400 dark:text-stone-500">
+                    <span className="w-5 h-5 rounded-md bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
+                      <Lock size={8} className="text-stone-400" />
+                    </span>
+                    <span>Đang cập nhật</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-amber-700 dark:text-amber-400 ml-auto font-semibold">
+                    <Radio size={10} className="animate-pulse" />
+                    <span>Nhấn để nghe</span>
+                  </div>
+                </div>
+
+                {/* Chapter Grid */}
+                <div className="p-4 grid grid-cols-5 sm:grid-cols-7 md:grid-cols-8 gap-2">
+                  {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
+                    const filename = getBibleAudioFilename(selectedBook.id, chapNum);
+                    const trackId = `bible_${selectedBook.id}_${chapNum}`;
+                    const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
+                    const isPlayingThisChap = Boolean(
+                      currentTrack &&
+                        (currentTrack.trackId === trackId ||
+                          currentTrack.url?.includes(`/${filename}`))
+                    );
+                    const isLoadingThisChap = loadingTrackId === trackId;
+
+                    return (
+                      <button
+                        key={chapNum}
+                        type="button"
+                        disabled={isLoadingThisChap}
+                        aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
+                        title={
+                          isMp3Available
+                            ? `Studio MP3: ${selectedBook.name} chương ${chapNum}`
+                            : `Chưa có MP3: ${selectedBook.name} chương ${chapNum}`
+                        }
+                        onClick={() => handlePlayBibleChapter(chapNum)}
+                        className={`group relative aspect-square rounded-xl flex flex-col items-center justify-center gap-0.5 font-mono text-xs font-bold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 overflow-hidden ${
+                          isPlayingThisChap
+                            ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-md scale-110 ring-2 ring-amber-400/60`
+                            : isMp3Available
+                            ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/60 hover:scale-105 hover:shadow-md hover:bg-amber-100 dark:hover:bg-amber-950/50'
+                            : 'bg-stone-50 dark:bg-stone-800/30 text-stone-300 dark:text-stone-600 border border-stone-200/50 dark:border-stone-700/30'
+                        }`}
+                      >
+                        {/* playing glow ring */}
+                        {isPlayingThisChap && (
+                          <span className="absolute inset-0 rounded-xl ring-4 ring-amber-400/40 animate-ping pointer-events-none" />
+                        )}
+
+                        {isLoadingThisChap ? (
+                          <Loader2 size={13} className="animate-spin" />
+                        ) : isPlayingThisChap ? (
+                          <Radio size={13} className="animate-pulse" aria-hidden="true" />
+                        ) : isMp3Available ? (
+                          <Play size={10} className="fill-current opacity-70 group-hover:opacity-100" aria-hidden="true" />
+                        ) : (
+                          <Lock size={9} className="opacity-40" aria-hidden="true" />
+                        )}
+                        <span className={`text-[11px] leading-none ${!isMp3Available && !isPlayingThisChap ? 'opacity-40' : ''}`}>
+                          {chapNum}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div className="py-20 text-center text-sm text-stone-400">
+                Chọn một sách bên trái để xem danh sách chương.
+              </div>
+            )}
           </div>
-        </section>
-      )}
+        </div>
+      </div>
 
-      {/* Trình Phát Audio Nổi (BibleAudioPlayer) */}
+      {/* ── FLOATING AUDIO PLAYER ─────────────────────────────────────────── */}
       {currentTrack && (
-        <BibleAudioPlayer
-          currentTrack={currentTrack}
-          onClose={() => setCurrentTrack(null)}
-        />
+        <BibleAudioPlayer currentTrack={currentTrack} onClose={() => setCurrentTrack(null)} />
       )}
     </main>
   );
