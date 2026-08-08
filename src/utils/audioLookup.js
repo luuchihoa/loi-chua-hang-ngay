@@ -8,6 +8,7 @@ export const getAudioApiBase = () => {
 export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
   if (!refString) return { exists: false, streamUrl: null, trackId: null };
   const apiBase = getAudioApiBase();
+  if (!apiBase) return { exists: false, streamUrl: null, trackId: null };
 
   try {
     const res = await fetch(`${apiBase}/api/check-audio`, {

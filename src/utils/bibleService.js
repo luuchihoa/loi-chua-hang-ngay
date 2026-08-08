@@ -128,6 +128,7 @@ const getAudioApiBase = () => {
 export const fetchAudioAccessStreamUrl = async (trackId) => {
   if (!trackId) return null;
   const apiBase = getAudioApiBase();
+  if (!apiBase) return null;
   try {
     const res = await fetch(`${apiBase}/api/audio-access`, {
       method: 'POST',
@@ -149,6 +150,7 @@ export const fetchAudioAccessStreamUrl = async (trackId) => {
 export const fetchBibleAudioAvailability = async (bookId) => {
   if (!bookId) return [];
   const apiBase = getAudioApiBase();
+  if (!apiBase) return [];
   try {
     const res = await fetch(`${apiBase}/api/bible-audio-availability?bookId=${encodeURIComponent(bookId)}`);
     if (res.ok) {
