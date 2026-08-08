@@ -31,17 +31,16 @@ export default function ChapterNavigationCard({
               <ChevronLeft size={18} />
             </button>
 
-            {hasAudio && (
-              <button
-                type="button"
-                onClick={onPlayAudio}
-                disabled={isAudioLoading}
-                className="reader-nav-button bg-stone-900 text-white hover:bg-amber-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-amber-200"
-                aria-label={`Nghe ${book.name} chương ${chapter}`}
-              >
-                {isAudioLoading ? <Loader2 size={18} className="animate-spin" /> : <Headphones size={18} />}
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={onPlayAudio}
+              disabled={isAudioLoading}
+              className="reader-nav-button bg-stone-900 text-white hover:bg-amber-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-amber-200 transition-all hover:scale-105"
+              aria-label={`Nghe ${book.name} chương ${chapter}`}
+              title={`Nghe ${book.name} chương ${chapter}`}
+            >
+              {isAudioLoading ? <Loader2 size={18} className="animate-spin" /> : <Headphones size={18} />}
+            </button>
 
             {chapter < book.chapters ? (
               <button type="button" onClick={onNext} className="inline-flex min-h-12 items-center gap-1.5 rounded-2xl bg-amber-700 px-4 text-xs font-bold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-amber-800 hover:shadow-md sm:text-sm">

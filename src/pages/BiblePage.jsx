@@ -461,12 +461,23 @@ export default function BiblePage() {
   };
 
   const handlePlayAudio = async () => {
-    if (!activeChapterTrackId || isAudioLoading) return;
+    if (isAudioLoading) return;
     setIsAudioLoading(true);
     try {
-      const audioUrl = await fetchAudioAccessStreamUrl(activeChapterTrackId);
+      let audioUrl = null;
+      if (activeChapterTrackId) {
+        audioUrl = await fetchAudioAccessStreamUrl(activeChapterTrackId);
+      }
       if (!audioUrl) {
-        triggerToast('Chưa thể cấp quyền phát audio. Vui lòng thử lại.');
+        const bookShort = activeBook.short.toLowerCase().replace(/\s+/g, '');
+        const fallbackFilename = `${bookShort}_c${chapterNum}.mp3`;
+        const apiBase = getAudioApiBase();
+        if (apiBase) {
+          audioUrl = `${apiBase}/audio/bible/${fallbackFilename}`;
+        }
+      }
+      if (!audioUrl) {
+        triggerToast(`Chưa có bản thu audio cho ${activeBook.name} chương ${chapterNum}`);
         return;
       }
       setCurrentAudioTrack({
@@ -475,6 +486,8 @@ export default function BiblePage() {
         category: activeBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước',
         url: audioUrl,
       });
+    } catch (err) {
+      triggerToast(`Không thể tải audio ${activeBook.name} chương ${chapterNum}`);
     } finally {
       setIsAudioLoading(false);
     }
