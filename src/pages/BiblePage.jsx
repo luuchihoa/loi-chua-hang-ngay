@@ -464,6 +464,12 @@ export default function BiblePage() {
   };
 
   const handlePlayAudio = async () => {
+    const isMp3Available = hasBibleChapterAudio(activeBook.id, chapterNum);
+    if (!isMp3Available) {
+      triggerToast(`Chương ${chapterNum} hiện chưa có bản thu Audio Studio MP3. Ban biên tập đang cập nhật!`);
+      return;
+    }
+
     if (isAudioLoading) return;
     setIsAudioLoading(true);
     try {

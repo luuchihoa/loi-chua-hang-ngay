@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Headphones, Loader2, Bot } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Headphones, Loader2, Lock } from 'lucide-react';
 
 export default function ChapterNavigationCard({
   book,
@@ -38,17 +38,17 @@ export default function ChapterNavigationCard({
               className={`reader-nav-button transition-all hover:scale-105 ${
                 hasAudio
                   ? 'bg-amber-700 text-white hover:bg-amber-800 dark:bg-amber-600 dark:hover:bg-amber-500 shadow-sm'
-                  : 'bg-stone-800 text-stone-200 hover:bg-stone-700 dark:bg-stone-200 dark:text-stone-900 dark:hover:bg-white'
+                  : 'bg-stone-200 text-stone-500 hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-400 dark:hover:bg-stone-700'
               }`}
-              aria-label={hasAudio ? `Nghe bản thu Studio ${book.name} chương ${chapter}` : `Nghe bằng Giọng đọc AI ${book.name} chương ${chapter}`}
-              title={hasAudio ? `Bản thu Studio MP3: ${book.name} chương ${chapter}` : `Giọng đọc AI (TTS): ${book.name} chương ${chapter}`}
+              aria-label={hasAudio ? `Nghe bản thu Studio ${book.name} chương ${chapter}` : `Chưa có MP3 ${book.name} chương ${chapter}`}
+              title={hasAudio ? `Bản thu Studio MP3: ${book.name} chương ${chapter}` : `Chưa có bản thu MP3: ${book.name} chương ${chapter}`}
             >
               {isAudioLoading ? (
                 <Loader2 size={18} className="animate-spin" />
               ) : hasAudio ? (
                 <Headphones size={18} />
               ) : (
-                <Bot size={18} />
+                <Lock size={18} />
               )}
             </button>
 

@@ -230,6 +230,12 @@ export default function BibleAudioPage() {
 
   const handlePlayBibleChapter = useCallback((chapNum) => {
     if (!selectedBook) return;
+    const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
+    if (!isMp3Available) {
+      alert(`Chương ${chapNum} hiện chưa có bản thu Audio Studio MP3. Ban biên tập đang cập nhật!`);
+      return;
+    }
+
     const filename = getBibleAudioFilename(selectedBook.id, chapNum);
     const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
     const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com');
@@ -779,14 +785,14 @@ export default function BibleAudioPage() {
                             type="button"
                             disabled={isLoadingThisChap}
                             aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
-                            title={isMp3Available ? `Bản thu Studio MP3: ${selectedBook.name} chương ${chapNum}` : `Giọng đọc AI (TTS): ${selectedBook.name} chương ${chapNum}`}
+                            title={isMp3Available ? `Bản thu Studio MP3: ${selectedBook.name} chương ${chapNum}` : `Chưa có bản thu MP3: ${selectedBook.name} chương ${chapNum}`}
                             onClick={() => handlePlayBibleChapter(chapNum)}
                             className={`py-2 px-1 rounded-lg text-xs font-semibold font-mono transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                               isPlayingThisChap
                                 ? 'bg-amber-700 text-white shadow-xs scale-105 font-bold'
                                 : isMp3Available
-                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 hover:bg-amber-100/70'
-                                  : 'bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 hover:border-stone-400 hover:bg-stone-100/50'
+                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 hover:bg-amber-100/70 font-bold'
+                                  : 'bg-stone-100/60 dark:bg-stone-950/30 text-stone-400 dark:text-stone-500 border border-stone-200/50 dark:border-stone-800/50 opacity-60'
                             }`}
                           >
                             {isLoadingThisChap ? (
@@ -796,7 +802,7 @@ export default function BibleAudioPage() {
                             ) : isMp3Available ? (
                               <Play size={11} className="fill-current text-amber-700 dark:text-amber-400" aria-hidden="true" />
                             ) : (
-                              <Bot size={11} className="text-stone-500 dark:text-stone-400" aria-hidden="true" />
+                              <Lock size={11} className="text-stone-400 dark:text-stone-500" aria-hidden="true" />
                             )}
                             <span>{chapNum}</span>
                           </button>
