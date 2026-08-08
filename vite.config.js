@@ -6,7 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { BRAND } from './src/config/brand.js';
 
 export default defineConfig({
-  base: './',
+  base: '/loi-chua-hang-ngay/',
   plugins: [
     react(), 
     tailwindcss(),
