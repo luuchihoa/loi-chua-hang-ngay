@@ -25,6 +25,7 @@ import {
   getBibleAudioFilename,
 } from '../utils/bibleService.js';
 import { getAudioApiBase } from '../utils/audioLookup.js';
+import { loadAudioIndex, hasBibleChapterAudio } from '../utils/audioIndexService.js';
 import { getLiturgyInfo, getLiturgicalColor } from '../utils/liturgyCalendar.js';
 import { supabase } from '../lib/supabase.js';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
@@ -1169,7 +1170,7 @@ export default function BiblePage() {
           onPrevious={handlePrevChapter}
           onNext={handleNextChapter}
           onPlayAudio={handlePlayAudio}
-          hasAudio={Boolean(activeChapterTrackId)}
+          hasAudio={hasBibleChapterAudio(activeBook.id, chapterNum)}
           isAudioLoading={isAudioLoading}
         />
       </main>

@@ -14,7 +14,8 @@ import {
   Calendar,
   ChevronDown,
   Lock,
-  Loader2
+  Loader2,
+  Bot
 } from 'lucide-react';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
 import { 
@@ -23,6 +24,7 @@ import {
   fetchBibleAudioAvailability,
   getBibleAudioFilename,
 } from '../utils/bibleService.js';
+import { loadAudioIndex, hasBibleChapterAudio } from '../utils/audioIndexService.js';
 
 const LITURGY_TABS = [
   { id: 'all', label: 'Tất Cả' },
@@ -767,6 +769,7 @@ export default function BibleAudioPage() {
                       {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
                         const filename = getBibleAudioFilename(selectedBook.id, chapNum);
                         const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
+                        const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
                         const isPlayingThisChap = Boolean(currentTrack && (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`)));
                         const isLoadingThisChap = loadingTrackId === trackId;
 
@@ -776,19 +779,24 @@ export default function BibleAudioPage() {
                             type="button"
                             disabled={isLoadingThisChap}
                             aria-label={`Phát ${selectedBook.name} chương ${chapNum}`}
+                            title={isMp3Available ? `Bản thu Studio MP3: ${selectedBook.name} chương ${chapNum}` : `Giọng đọc AI (TTS): ${selectedBook.name} chương ${chapNum}`}
                             onClick={() => handlePlayBibleChapter(chapNum)}
                             className={`py-2 px-1 rounded-lg text-xs font-semibold font-mono transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                               isPlayingThisChap
                                 ? 'bg-amber-700 text-white shadow-xs scale-105 font-bold'
-                                : 'bg-stone-50 dark:bg-stone-950 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-800 hover:border-amber-400 hover:bg-amber-50/50'
+                                : isMp3Available
+                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 hover:bg-amber-100/70'
+                                  : 'bg-stone-50 dark:bg-stone-950 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 hover:border-stone-400 hover:bg-stone-100/50'
                             }`}
                           >
                             {isLoadingThisChap ? (
                               <Loader2 size={12} className="animate-spin text-amber-700 dark:text-amber-400" />
                             ) : isPlayingThisChap ? (
                               <Radio size={13} className="animate-pulse" aria-hidden="true" />
-                            ) : (
+                            ) : isMp3Available ? (
                               <Play size={11} className="fill-current text-amber-700 dark:text-amber-400" aria-hidden="true" />
+                            ) : (
+                              <Bot size={11} className="text-stone-500 dark:text-stone-400" aria-hidden="true" />
                             )}
                             <span>{chapNum}</span>
                           </button>
