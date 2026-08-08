@@ -230,9 +230,10 @@ export default function BibleAudioPage() {
     if (!selectedBook) return;
     const filename = getBibleAudioFilename(selectedBook.id, chapNum);
     const trackId = availableChaptersMap.get(chapNum) || `bible_${selectedBook.id}_${chapNum}`;
-    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com') || (!AUDIO_API_BASE.includes('localhost:5005') && !AUDIO_API_BASE.includes('/api'));
+    const isStaticStorage = AUDIO_API_BASE.includes('.r2.dev') || AUDIO_API_BASE.includes('r2.cloudflarestorage.com');
 
-    if (isStaticStorage || !AUDIO_API_BASE.includes('localhost:5005')) {
+    if (isStaticStorage) {
+      // Chế độ Public R2 Storage: Tải trực tiếp file tĩnh công khai
       const streamUrl = `${AUDIO_API_BASE}/bible/${filename}`;
       setCurrentTrack({
         trackId,
