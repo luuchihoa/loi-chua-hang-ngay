@@ -217,7 +217,7 @@ export default function Header() {
           >
             <Bookmark className="w-4 h-4 sm:w-5 sm:h-5" />
             {bookmarks.length > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 flex items-center justify-center text-[9px] font-extrabold text-white bg-rose-500 rounded-full border-2 border-white dark:border-stone-900 leading-none">
+              <span className="theme-invariant absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 flex items-center justify-center text-[9px] font-extrabold text-white bg-rose-500 rounded-full border-2 border-white dark:border-stone-900 leading-none">
                 {bookmarks.length > 9 ? '9+' : bookmarks.length}
               </span>
             )}

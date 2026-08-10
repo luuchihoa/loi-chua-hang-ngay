@@ -35,18 +35,18 @@ export default function VerseActionBar({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.95 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="flex items-center gap-1.5 p-2 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-xl"
+              className="flex items-center gap-2 p-2 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 shadow-xl"
             >
               {/* Nút xóa highlight (nếu đang có) */}
               {currentHighlight && (
                 <button
                   type="button"
                   onClick={() => { onHighlight(null); setShowHighlightPicker(false); }}
-                  className="w-7 h-7 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer"
+                  className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors cursor-pointer"
                   title="Xóa tô sáng"
                   aria-label="Xóa tô sáng"
                 >
-                  <X size={12} className="text-stone-500" />
+                  <X size={14} className="text-stone-500" />
                 </button>
               )}
               {/* 5 Màu */}
@@ -55,7 +55,7 @@ export default function VerseActionBar({
                   key={colorKey}
                   type="button"
                   onClick={() => { onHighlight(colorKey); setShowHighlightPicker(false); }}
-                  className={`w-7 h-7 rounded-full transition-transform hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-offset-1 ring-offset-white dark:ring-offset-stone-900 ${
+                  className={`w-9 h-9 min-w-[36px] min-h-[36px] rounded-full transition-transform hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-offset-1 ring-offset-white dark:ring-offset-stone-900 ${
                     currentHighlight === colorKey ? 'ring-stone-600 dark:ring-stone-300 scale-110' : 'ring-transparent'
                   }`}
                   style={{ backgroundColor: colorDef.dot }}
@@ -74,7 +74,7 @@ export default function VerseActionBar({
           <button 
             type="button"
             onClick={() => setShowHighlightPicker(prev => !prev)}
-            className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all cursor-pointer ${
+            className={`flex flex-col items-center justify-center gap-1 min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl transition-all cursor-pointer ${
               showHighlightPicker || currentHighlight
                 ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300'
                 : 'text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800'
@@ -90,7 +90,7 @@ export default function VerseActionBar({
           <button 
             type="button"
             onClick={() => onBookmark(verseNum)}
-            className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all cursor-pointer ${
+            className={`flex flex-col items-center justify-center gap-1 min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl transition-all cursor-pointer ${
               isBookmarked 
                 ? 'text-amber-600 bg-amber-50 dark:bg-amber-900/30' 
                 : 'text-stone-500 hover:text-amber-600 hover:bg-stone-100 dark:hover:bg-stone-800'
@@ -106,7 +106,7 @@ export default function VerseActionBar({
           <button 
             type="button"
             onClick={() => onNote?.(verseNum)}
-            className="flex flex-col items-center gap-1 p-2 rounded-xl text-stone-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/30 transition-all cursor-pointer"
+            className="flex flex-col items-center justify-center gap-1 min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl text-stone-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/30 transition-all cursor-pointer"
             title="Ghi chú"
             aria-label="Thêm ghi chú cho câu này"
           >
@@ -118,7 +118,7 @@ export default function VerseActionBar({
           <button 
             type="button"
             onClick={onMultiSelect}
-            className="flex flex-col items-center gap-1 p-2 rounded-xl text-stone-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all cursor-pointer"
+            className="flex flex-col items-center justify-center gap-1 min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl text-stone-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all cursor-pointer"
             title="Chọn nhiều câu"
             aria-label="Chọn nhiều câu"
           >
@@ -130,7 +130,7 @@ export default function VerseActionBar({
           <button 
             type="button"
             onClick={() => onShare(verseNum)}
-            className="flex flex-col items-center gap-1 p-2 rounded-xl text-stone-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all cursor-pointer"
+            className="flex flex-col items-center justify-center gap-1 min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl text-stone-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all cursor-pointer"
             title="Chia sẻ / Sao chép"
             aria-label="Sao chép câu này vào clipboard"
           >

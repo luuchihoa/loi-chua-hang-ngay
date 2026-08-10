@@ -1,37 +1,123 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack, X, BookOpen } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack, X, BookOpen, Moon, Clock, Check, RotateCcw, RotateCw, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
- * BibleAudioPlayer — Trình phát audio Kinh Thánh với tính năng Audio-Text Sync.
+ * BibleAudioPlayer — Trình phát audio Kinh Thánh với Audio-Text Sync, Continuous Auto Play, Sleep Timer & MediaSession API.
  *
  * Props:
- *  - currentTrack: { title, subtitle, category, url }
+ *  - currentTrack: { title, subtitle, category, url, bookId, chapter }
  *  - onClose: () => void
- *  - verses: Array<{ num: number }> — danh sách câu của chương đang phát (để tính sync)
- *  - onActiveVerse: (verseNum: number | null) => void — callback khi câu đang đọc thay đổi
+ *  - verses: Array<{ num: number }> — danh sách câu của chương đang phát
+ *  - onActiveVerse: (verseNum: number | null) => void
+ *  - onTrackEnd: () => void — callback khi nghe xong chương để tự phát chương kế tiếp
+ *  - onNextChapter: () => void — callback chuyển chương tiếp theo
+ *  - onPrevChapter: () => void — callback lùi về chương trước
  */
-export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], onActiveVerse }) {
+export default function BibleAudioPlayer({
+  currentTrack,
+  onClose,
+  verses = [],
+  onActiveVerse,
+  onTrackEnd,
+  onNextChapter,
+  onPrevChapter,
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
-  const audioRef = useRef(null);
+  
+  // Sleep Timer State (minutes or 'chapter')
+  const [sleepTimerMinutes, setSleepTimerMinutes] = useState(null);
+  const [isSleepModalOpen, setIsSleepModalOpen] = useState(false);
+  const [sleepRemainingSeconds, setSleepRemainingSeconds] = useState(null);
 
-  // Load & autoplay khi track mới
+  const audioRef = useRef(null);
+  const sleepIntervalRef = useRef(null);
+
+  // ── Load & Autoplay khi đổi track ──────────────────────────────
   useEffect(() => {
     if (currentTrack && audioRef.current) {
       audioRef.current.src = currentTrack.url;
       audioRef.current.load();
+      audioRef.current.playbackRate = playbackRate;
       audioRef.current.play()
         .then(() => setIsPlaying(true))
         .catch(err => console.log('Audio autoplay prevented:', err));
     }
-    // Reset active verse khi đổi track
     onActiveVerse?.(null);
   }, [currentTrack]);
 
-  // Audio-Text Sync: tính câu đang đọc theo thời gian
+  // ── Lock Screen Controls (MediaSession API) ────────────────────
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !currentTrack) return;
+
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentTrack.title || 'Kinh Thánh Audio',
+        artist: 'Lời Chúa Hằng Ngày',
+        album: currentTrack.subtitle || currentTrack.category || 'Kinh Thánh Phụng Vụ',
+        artwork: [
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => {
+        audioRef.current?.play();
+        setIsPlaying(true);
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        audioRef.current?.pause();
+        setIsPlaying(false);
+      });
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        onPrevChapter ? onPrevChapter() : skipTime(-10);
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        onNextChapter ? onNextChapter() : skipTime(10);
+      });
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime && audioRef.current) {
+          audioRef.current.currentTime = details.seekTime;
+          setCurrentTime(details.seekTime);
+        }
+      });
+    } catch (e) {
+      // Browser Unsupported MediaSession actions fallback
+    }
+  }, [currentTrack, onNextChapter, onPrevChapter]);
+
+  // ── Sleep Timer Logic ──────────────────────────────────────────
+  useEffect(() => {
+    if (sleepIntervalRef.current) clearInterval(sleepIntervalRef.current);
+
+    if (typeof sleepTimerMinutes === 'number' && sleepTimerMinutes > 0) {
+      setSleepRemainingSeconds(sleepTimerMinutes * 60);
+
+      sleepIntervalRef.current = setInterval(() => {
+        setSleepRemainingSeconds((prev) => {
+          if (prev <= 1) {
+            clearInterval(sleepIntervalRef.current);
+            audioRef.current?.pause();
+            setIsPlaying(false);
+            setSleepTimerMinutes(null);
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      setSleepRemainingSeconds(null);
+    }
+
+    return () => {
+      if (sleepIntervalRef.current) clearInterval(sleepIntervalRef.current);
+    };
+  }, [sleepTimerMinutes]);
+
+  // ── Audio-Text Sync ────────────────────────────────────────────
   const computeActiveVerse = useCallback((time, totalDuration) => {
     if (!verses.length || !totalDuration || totalDuration === 0) return null;
     const verseDuration = totalDuration / verses.length;
@@ -49,7 +135,6 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
     setCurrentTime(t);
     setDuration(d);
 
-    // Gọi callback để highlight câu đang đọc
     const activeVerse = computeActiveVerse(t, d);
     onActiveVerse?.(activeVerse);
   };
@@ -57,6 +142,17 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
   const handleEnded = () => {
     setIsPlaying(false);
     onActiveVerse?.(null);
+
+    // Sleep Timer: 'chapter' option -> pause on chapter end
+    if (sleepTimerMinutes === 'chapter') {
+      setSleepTimerMinutes(null);
+      return;
+    }
+
+    // Continuous Auto Play: Auto play next chapter!
+    if (onTrackEnd) {
+      onTrackEnd();
+    }
   };
 
   const togglePlay = () => {
@@ -107,18 +203,14 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  // Progress percentage cho progress bar visualizer
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
-
-  // Tính câu hiện tại để hiển thị trong player
   const currentVerseNum = computeActiveVerse(currentTime, duration);
   const currentVerseIdx = verses.findIndex(v => v.num === currentVerseNum);
 
   if (!currentTrack) return null;
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl">
-      <div className="bg-stone-900/97 backdrop-blur-xl text-white p-3.5 sm:p-4 rounded-3xl border border-amber-500/30 shadow-2xl shadow-stone-950/80">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl theme-invariant">
+      <div className="bg-stone-900/97 backdrop-blur-2xl text-white p-3.5 sm:p-4.5 rounded-3xl border border-amber-500/35 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
         <audio
           ref={audioRef}
           preload="none"
@@ -131,16 +223,15 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
           {/* Track Header */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              {/* Animated waveform icon when playing */}
-              <div className={`w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 shadow-md transition-all ${
+              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-md transition-all ${
                 isPlaying 
                   ? 'bg-gradient-to-tr from-amber-600 to-amber-400 shadow-amber-600/40' 
                   : 'bg-stone-700'
               }`}>
-                <BookOpen size={18} />
+                <BookOpen size={19} />
               </div>
               <div className="min-w-0">
-                <div className="text-xs font-bold text-stone-100 flex items-center gap-2 min-w-0">
+                <div className="text-xs sm:text-sm font-bold text-stone-100 flex items-center gap-2 min-w-0">
                   <span className="truncate min-w-0">{currentTrack.title || 'Kinh Thánh Audio'}</span>
                   {currentTrack.category && (
                     <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-[10px] uppercase font-mono shrink-0">
@@ -148,7 +239,7 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
                     </span>
                   )}
                 </div>
-                {/* Hiển thị câu đang đọc */}
+                {/* Active Verse or Subtitle */}
                 {isPlaying && currentVerseNum && verses.length > 0 ? (
                   <p className="text-[11px] font-semibold text-amber-400 truncate animate-pulse">
                     ▸ Câu {currentVerseNum}
@@ -166,29 +257,55 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Quick Actions (Speed, Sleep, Mute, Close) */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              {/* Sleep Timer Trigger */}
+              <button
+                type="button"
+                onClick={() => setIsSleepModalOpen(!isSleepModalOpen)}
+                className={`min-w-[38px] h-9 px-2 rounded-xl flex items-center justify-center gap-1 text-xs font-bold transition-colors cursor-pointer border ${
+                  sleepTimerMinutes
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                    : 'bg-stone-800 hover:bg-stone-700 text-stone-300 border-stone-700'
+                }`}
+                title="Hẹn giờ tắt"
+                aria-label="Hẹn giờ tắt audio"
+              >
+                <Moon size={14} />
+                {sleepRemainingSeconds && (
+                  <span className="text-[10px] font-mono text-amber-300">
+                    {Math.ceil(sleepRemainingSeconds / 60)}m
+                  </span>
+                )}
+              </button>
+
+              {/* Speed Button */}
               <button
                 type="button"
                 onClick={cycleSpeed}
-                className="px-2 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-amber-400 font-mono text-[11px] font-bold border border-stone-700 transition-colors cursor-pointer"
+                className="min-w-[38px] h-9 px-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-400 font-mono text-xs font-bold border border-stone-700 transition-colors cursor-pointer flex items-center justify-center"
                 title="Tốc độ phát"
                 aria-label={`Tốc độ phát: ${playbackRate}x`}
               >
                 {playbackRate}x
               </button>
+
+              {/* Mute Button */}
               <button
                 type="button"
                 onClick={toggleMute}
-                className="p-1.5 rounded-lg text-stone-400 hover:text-white transition-colors cursor-pointer"
+                className="min-w-[38px] h-9 rounded-xl text-stone-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center"
                 aria-label={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
               >
-                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
               </button>
+
+              {/* Close Player */}
               {onClose && (
                 <button
                   type="button"
                   onClick={() => { onClose(); onActiveVerse?.(null); }}
-                  className="p-1.5 rounded-lg text-stone-400 hover:text-rose-400 transition-colors cursor-pointer"
+                  className="min-w-[38px] h-9 rounded-xl text-stone-400 hover:text-rose-400 transition-colors cursor-pointer flex items-center justify-center"
                   title="Đóng trình phát"
                   aria-label="Đóng trình phát audio"
                 >
@@ -198,9 +315,44 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
             </div>
           </div>
 
-          {/* Verse Progress Indicators — mini dots */}
+          {/* Sleep Timer Popup */}
+          {isSleepModalOpen && (
+            <div className="bg-stone-950/95 border border-stone-800 p-3 rounded-2xl shadow-xl flex flex-wrap items-center justify-between gap-2 text-xs">
+              <span className="text-stone-400 font-medium flex items-center gap-1.5">
+                <Clock size={13} className="text-amber-400" />
+                Hẹn giờ tắt:
+              </span>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {[
+                  { label: 'Tắt', value: null },
+                  { label: '15 phút', value: 15 },
+                  { label: '30 phút', value: 30 },
+                  { label: '45 phút', value: 45 },
+                  { label: 'Hết chương', value: 'chapter' },
+                ].map((opt) => (
+                  <button
+                    key={String(opt.value)}
+                    type="button"
+                    onClick={() => {
+                      setSleepTimerMinutes(opt.value);
+                      setIsSleepModalOpen(false);
+                    }}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                      sleepTimerMinutes === opt.value
+                        ? 'bg-amber-600 text-white'
+                        : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Verse Progress Indicators */}
           {verses.length > 0 && verses.length <= 30 && (
-            <div className="flex items-center gap-0.5 px-1">
+            <div className="flex items-center gap-0.5 px-1 py-0.5">
               {verses.map((v, idx) => {
                 const isActive = v.num === currentVerseNum;
                 const isPast = currentVerseIdx > idx;
@@ -220,56 +372,87 @@ export default function BibleAudioPlayer({ currentTrack, onClose, verses = [], o
             </div>
           )}
 
-          {/* Timeline Slider */}
-          <div className="flex items-center gap-2">
+          {/* Timeline Slider with expanded touch area */}
+          <div className="flex items-center gap-2 py-1">
             <span className="text-[10px] font-mono text-stone-400 w-9 text-right">{formatTime(currentTime)}</span>
-            <input
-              type="range"
-              min={0}
-              max={duration || 100}
-              value={currentTime}
-              onChange={handleSeek}
-              className="flex-1 h-1.5 bg-stone-700 accent-amber-500 rounded-lg cursor-pointer"
-              aria-label="Thanh tua audio"
-            />
+            <div className="flex-1 relative flex items-center min-h-[32px]">
+              <input
+                type="range"
+                min={0}
+                max={duration || 100}
+                value={currentTime}
+                onChange={handleSeek}
+                className="w-full h-2 bg-stone-700 accent-amber-500 rounded-lg cursor-pointer"
+                aria-label="Thanh tua audio"
+              />
+            </div>
             <span className="text-[10px] font-mono text-stone-400 w-9">{formatTime(duration)}</span>
           </div>
 
-          {/* Player Controls */}
-          <div className="flex items-center justify-center gap-4 pt-0.5">
+          {/* Player Main Controls — Tách biệt nút tua ±10s với nút chuyển chương */}
+          <div className="flex items-center justify-center gap-3 sm:gap-5 pt-0.5 pb-1">
+            {/* Prev Chapter Button */}
+            {onPrevChapter && (
+              <button
+                type="button"
+                onClick={onPrevChapter}
+                className="min-w-[40px] min-h-[40px] rounded-xl text-stone-400 hover:text-white hover:bg-stone-800 transition-colors flex items-center justify-center cursor-pointer"
+                title="Chương trước"
+                aria-label="Chương trước"
+              >
+                <ChevronLeft size={22} />
+              </button>
+            )}
+
+            {/* Skip -10s Button */}
             <button
               type="button"
               onClick={() => skipTime(-10)}
-              className="text-stone-400 hover:text-white transition-colors text-xs font-semibold flex items-center gap-0.5 cursor-pointer"
+              className="min-w-[40px] min-h-[40px] px-2 rounded-xl text-stone-300 hover:text-amber-400 hover:bg-stone-800 transition-colors text-xs font-semibold flex items-center justify-center gap-1 cursor-pointer"
               title="Lùi 10 giây"
               aria-label="Lùi 10 giây"
             >
-              <SkipBack size={16} />
-              <span>-10s</span>
+              <RotateCcw size={16} />
+              <span className="text-[11px] font-mono font-bold">-10s</span>
             </button>
 
+            {/* Play/Pause Button (w-12 h-12 = 48px Touch Target) */}
             <button
               type="button"
               onClick={togglePlay}
-              className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold flex items-center justify-center shadow-lg shadow-amber-500/25 transition-transform active:scale-95 cursor-pointer"
+              className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold flex items-center justify-center shadow-lg shadow-amber-500/25 transition-transform active:scale-95 cursor-pointer"
               aria-label={isPlaying ? 'Tạm dừng' : 'Phát'}
             >
               {isPlaying 
-                ? <Pause size={20} className="fill-current" /> 
-                : <Play size={20} className="fill-current ml-0.5" />
+                ? <Pause size={22} className="fill-current" /> 
+                : <Play size={22} className="fill-current ml-0.5" />
               }
             </button>
 
+            {/* Skip +10s Button */}
             <button
               type="button"
               onClick={() => skipTime(10)}
-              className="text-stone-400 hover:text-white transition-colors text-xs font-semibold flex items-center gap-0.5 cursor-pointer"
+              className="min-w-[40px] min-h-[40px] px-2 rounded-xl text-stone-300 hover:text-amber-400 hover:bg-stone-800 transition-colors text-xs font-semibold flex items-center justify-center gap-1 cursor-pointer"
               title="Tới 10 giây"
               aria-label="Tới 10 giây"
             >
-              <span>+10s</span>
-              <SkipForward size={16} />
+              <span className="text-[11px] font-mono font-bold">+10s</span>
+              <RotateCw size={16} />
             </button>
+
+            {/* Next Chapter Button */}
+            {onNextChapter && (
+              <button
+                type="button"
+                onClick={onNextChapter}
+                className="min-w-[40px] min-h-[40px] rounded-xl text-stone-400 hover:text-white hover:bg-stone-800 transition-colors flex items-center justify-center cursor-pointer"
+                title="Chương tiếp theo"
+                aria-label="Chương tiếp theo"
+              >
+                <ChevronRight size={22} />
+              </button>
+            )}
           </div>
         </div>
       </div>

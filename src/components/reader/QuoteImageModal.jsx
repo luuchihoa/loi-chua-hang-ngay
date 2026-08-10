@@ -49,17 +49,19 @@ export default function QuoteImageModal({ isOpen, onClose, versesData, citation 
         <motion.div 
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           onClick={onClose}
+          data-ui-layer="modal-backdrop"
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          data-ui-layer="modal-content"
           className="relative w-full max-w-xl bg-stone-100 dark:bg-stone-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         >
           <div className="flex items-center justify-between p-4 border-b border-stone-200 dark:border-stone-800">
             <h3 className="font-bold flex items-center gap-2">
               <ImageIcon size={20} className="text-amber-600" /> Tạo ảnh Lời Chúa
             </h3>
-            <button onClick={onClose} className="p-2 hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors cursor-pointer">
+            <button onClick={onClose} className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors cursor-pointer">
               <X size={20} className="text-stone-500" />
             </button>
           </div>
@@ -68,18 +70,20 @@ export default function QuoteImageModal({ isOpen, onClose, versesData, citation 
             {/* The Card to capture */}
             <div 
               ref={cardRef}
-              className={`w-full aspect-square max-w-sm sm:max-w-md p-8 sm:p-12 flex flex-col justify-center rounded-2xl shadow-xl transition-all duration-300 relative overflow-hidden ${bg.class}`}
+              className={`w-full aspect-square max-w-sm sm:max-w-md p-6 sm:p-10 flex flex-col justify-center rounded-2xl shadow-xl transition-all duration-300 relative overflow-hidden ${bg.class}`}
             >
               {/* Decorative elements */}
               <div className="absolute top-4 left-4 text-4xl opacity-20 font-serif">"</div>
               <div className="absolute bottom-4 right-4 text-4xl opacity-20 font-serif rotate-180">"</div>
 
-              <div className="relative z-10 space-y-6">
-                <p className="font-serif-reading text-lg sm:text-xl md:text-2xl leading-relaxed font-medium text-center">
+              <div className="relative z-10 space-y-4">
+                <p className={`font-serif-reading leading-relaxed font-medium text-center line-clamp-6 ${
+                  textContent.length > 250 ? 'text-xs sm:text-sm' : textContent.length > 120 ? 'text-sm sm:text-base' : 'text-base sm:text-xl md:text-2xl'
+                }`}>
                   {textContent}
                 </p>
                 <div className="text-center">
-                  <p className="font-bold tracking-widest text-sm uppercase opacity-90">{citation}</p>
+                  <p className="font-bold tracking-widest text-xs sm:text-sm uppercase opacity-90">{citation}</p>
                   <p className="text-[10px] uppercase tracking-widest opacity-60 mt-1 font-sans">Kinh Thánh Công Giáo</p>
                 </div>
               </div>
@@ -105,7 +109,7 @@ export default function QuoteImageModal({ isOpen, onClose, versesData, citation 
             <button
               onClick={handleDownload}
               disabled={isGenerating}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-xl shadow-lg transition-all font-bold text-sm cursor-pointer"
+              className="theme-invariant w-full flex items-center justify-center gap-2 min-h-[44px] py-3.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white rounded-xl shadow-lg transition-all font-bold text-sm cursor-pointer"
             >
               <Download size={18} />
               {isGenerating ? 'Đang tạo ảnh...' : 'Lưu Ảnh Về Máy'}

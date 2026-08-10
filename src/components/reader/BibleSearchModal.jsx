@@ -197,7 +197,7 @@ export default function BibleSearchModal({ isOpen, onClose, allBooks }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-stone-200 text-stone-700 transition-colors hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-200 dark:hover:bg-stone-700 sm:w-auto sm:px-4"
+                className="flex h-12 w-12 min-w-[44px] min-h-[44px] shrink-0 items-center justify-center rounded-2xl bg-stone-200 text-stone-700 transition-colors hover:bg-stone-300 dark:bg-stone-800 dark:text-stone-200 dark:hover:bg-stone-700 sm:w-auto sm:px-4"
                 aria-label="Đóng tìm kiếm"
               >
                 <X size={18} className="sm:hidden" />

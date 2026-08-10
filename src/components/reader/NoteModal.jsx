@@ -42,7 +42,7 @@ export default function NoteModal({ isOpen, onClose, verseNum, initialNote, onSa
               <h3 className="font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
                 <span className="text-xl">📝</span> Ghi chú Câu {verseNum}
               </h3>
-              <button onClick={onClose} className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full transition-colors">
+              <button onClick={onClose} className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-full transition-colors">
                 <X size={20} className="text-stone-500" />
               </button>
             </div>
@@ -61,7 +61,7 @@ export default function NoteModal({ isOpen, onClose, verseNum, initialNote, onSa
               {initialNote ? (
                 <button
                   onClick={handleDelete}
-                  className="flex items-center gap-2 px-4 py-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-xl transition-colors font-medium text-sm"
+                  className="flex items-center gap-2 min-h-[44px] px-4 py-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-xl transition-colors font-medium text-sm"
                 >
                   <Trash2 size={16} /> Xóa
                 </button>
@@ -72,13 +72,13 @@ export default function NoteModal({ isOpen, onClose, verseNum, initialNote, onSa
               <div className="flex gap-2">
                 <button
                   onClick={onClose}
-                  className="px-4 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 rounded-xl transition-colors font-medium text-sm"
+                  className="min-h-[44px] px-4 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 rounded-xl transition-colors font-medium text-sm"
                 >
                   Hủy
                 </button>
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl shadow-md transition-colors font-medium text-sm"
+                  className="theme-invariant flex items-center gap-2 min-h-[44px] px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl shadow-md transition-colors font-medium text-sm"
                 >
                   <Save size={16} /> Lưu lại
                 </button>

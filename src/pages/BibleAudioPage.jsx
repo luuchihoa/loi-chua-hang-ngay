@@ -38,18 +38,18 @@ const TESTAMENT_TABS = [
     id: 'old',
     label: 'Cựu Ước',
     count: 46,
-    gradient: 'from-amber-500 to-orange-600',
+    gradient: 'from-amber-600 to-orange-700',
     ringColor: 'ring-amber-400/60',
-    chipActiveBg: 'bg-gradient-to-br from-amber-500 to-orange-600',
+    chipActiveBg: 'bg-gradient-to-br from-amber-600 to-orange-700',
     icon: BookMarked,
   },
   {
     id: 'new',
     label: 'Tân Ước',
     count: 27,
-    gradient: 'from-blue-500 to-indigo-600',
-    ringColor: 'ring-blue-400/60',
-    chipActiveBg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
+    gradient: 'from-rose-600 to-red-700',
+    ringColor: 'ring-rose-400/60',
+    chipActiveBg: 'bg-gradient-to-br from-rose-600 to-red-700',
     icon: Sparkles,
   },
 ];
@@ -72,13 +72,8 @@ function saveRecent(list) {
   }
 }
 
-/* ── Toast Component ──────────────────────────────────────────────────────────
-   Thiết kế lại theo tông giấy da/ấm của trang thay vì hộp tối chung chung:
-   nền sáng + viền hổ phách bên trái, có thanh đếm ngược thời gian tự ẩn
-   (để người dùng biết còn bao lâu, không bị bất ngờ khi nó biến mất), tự
-   né trình phát mini ở dưới khi đang phát một track, và có hiệu ứng
-   trượt-vào/mờ-dần bằng transition thuần thay vì phụ thuộc keyframe tuỳ biến. */
-function Toast({ toast, onDismiss, avoidPlayer }) {
+/* ── Toast Component — Top-down position để không bị che bởi Player ──── */
+function Toast({ toast, onDismiss }) {
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
@@ -97,9 +92,9 @@ function Toast({ toast, onDismiss, avoidPlayer }) {
     <div
       role="status"
       aria-live="polite"
-      className={`fixed left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 transition-all duration-300 ease-out ${
-        avoidPlayer ? 'bottom-24' : 'bottom-6'
-      } ${entered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+      className={`fixed top-20 left-1/2 z-[60] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 transition-all duration-300 ease-out ${
+        entered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+      }`}
     >
       <div className="relative flex overflow-hidden rounded-2xl border border-amber-200/70 dark:border-amber-800/40 bg-white/97 dark:bg-stone-900/97 backdrop-blur-md shadow-2xl">
         <span className="w-1 shrink-0 bg-gradient-to-b from-amber-400 to-orange-500" aria-hidden="true" />
@@ -415,6 +410,22 @@ export default function BibleAudioPage() {
     [selectedBook, loadingTrackId, triggerToast, pushRecent]
   );
 
+  const handleNextChapter = useCallback(() => {
+    if (!selectedBook || !currentTrack) return;
+    const currentChap = currentTrack.chapter || 1;
+    if (currentChap < selectedBook.chapters) {
+      handlePlayBibleChapter(currentChap + 1, selectedBook);
+    }
+  }, [selectedBook, currentTrack, handlePlayBibleChapter]);
+
+  const handlePrevChapter = useCallback(() => {
+    if (!selectedBook || !currentTrack) return;
+    const currentChap = currentTrack.chapter || 1;
+    if (currentChap > 1) {
+      handlePlayBibleChapter(currentChap - 1, selectedBook);
+    }
+  }, [selectedBook, currentTrack, handlePlayBibleChapter]);
+
   const activeTabMeta = TESTAMENT_TABS.find((t) => t.id === testamentFilter);
 
   const availableCount = useMemo(() => {
@@ -497,7 +508,6 @@ export default function BibleAudioPage() {
         </div>
       </div>
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <div className="relative">
         <div className="theme-invariant relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-amber-950 px-4 pt-10 pb-36 sm:pb-40 sm:px-8">
           <div className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl" />
@@ -515,7 +525,6 @@ export default function BibleAudioPage() {
               Bản thu Studio chất lượng cao từ 73 Sách Kinh Thánh Công Giáo
             </p>
 
-            {/* Testament tabs */}
             <div className="bible-enter-4 flex justify-center pt-2">
               <TestamentToggle active={testamentFilter} onChange={handleTabSwitch} variant="full" />
             </div>
@@ -523,9 +532,7 @@ export default function BibleAudioPage() {
         </div>
         <div ref={sentinelRef} className="h-px" />
 
-        {/* ── CONTENT — floated up over hero ─────────────────────────────── */}
         <div className="relative z-10 -mt-28 max-w-4xl mx-auto px-3 sm:px-6 space-y-4">
-          {/* ── TIẾP TỤC NGHE ─────────────────────────────────────────────── */}
           {recentWithBooks.length > 0 && (
             <div className="bible-enter-5 rounded-2xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-xl p-3">
               <div className="flex items-center gap-1.5 text-xs font-semibold text-stone-500 dark:text-stone-400 mb-2 px-1">
@@ -579,7 +586,6 @@ export default function BibleAudioPage() {
             key={testamentFilter}
             className="bible-fade-card rounded-3xl border border-stone-200 dark:border-stone-700/80 bg-white dark:bg-stone-900 shadow-2xl overflow-hidden"
           >
-            {/* Search bar */}
             <div className={`theme-invariant bg-gradient-to-r ${activeTabMeta?.gradient} px-4 py-3`}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none" size={14} />
@@ -602,7 +608,6 @@ export default function BibleAudioPage() {
               </div>
             </div>
 
-            {/* ── BOOK CHIPS — cuộn ngang có fade cạnh báo còn nội dung ẩn ──── */}
             <div className="px-3 py-3 border-b border-stone-100 dark:border-stone-800 bg-stone-50/40 dark:bg-stone-800/20">
               {filteredBibleBooks.length === 0 ? (
                 <div className="flex flex-col items-center gap-2 py-6 text-center">
@@ -657,7 +662,6 @@ export default function BibleAudioPage() {
               )}
             </div>
 
-            {/* ── SELECTED BOOK HEADER ────────────────────────────────────────── */}
             {selectedBook && (
               <>
                 <div className="px-4 sm:px-5 py-4 border-b border-stone-100 dark:border-stone-800 bg-stone-50/30 dark:bg-stone-800/10">
@@ -687,7 +691,6 @@ export default function BibleAudioPage() {
                     </div>
                   </div>
 
-                  {/* Progress bar */}
                   <div className="mt-3 h-1.5 w-full bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full bg-gradient-to-r ${activeTabMeta?.gradient} transition-all duration-700`}
@@ -696,12 +699,7 @@ export default function BibleAudioPage() {
                   </div>
                 </div>
 
-                {/* ── CHAPTER — lưới bọc dòng, cuộn dọc trong khung cố định ────
-                    Trước đây là dải cuộn ngang: với sách 150 chương (Thánh
-                    Vịnh) người dùng phải vuốt hàng chục lần. Lưới bọc dòng +
-                    khung cuộn dọc giúp quét mắt và bấm trực tiếp chương cần. */}
                 <div className="px-4 py-3 border-b border-stone-100 dark:border-stone-800">
-                  {/* Legend row */}
                   <div className="flex items-center gap-3 mb-3">
                     <div className="flex items-center gap-1.5 text-[11px] text-stone-500 dark:text-stone-400">
                       <span className="w-4 h-4 rounded-md bg-amber-100 dark:bg-amber-950/40 border border-amber-300/70 flex items-center justify-center">
@@ -801,7 +799,13 @@ export default function BibleAudioPage() {
 
       {/* ── AUDIO PLAYER ─────────────────────────────────────────────────────── */}
       {currentTrack && (
-        <BibleAudioPlayer currentTrack={currentTrack} onClose={() => setCurrentTrack(null)} />
+        <BibleAudioPlayer
+          currentTrack={currentTrack}
+          onClose={() => setCurrentTrack(null)}
+          onTrackEnd={handleNextChapter}
+          onNextChapter={handleNextChapter}
+          onPrevChapter={handlePrevChapter}
+        />
       )}
     </main>
   );

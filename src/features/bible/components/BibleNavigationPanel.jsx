@@ -164,9 +164,9 @@ function BibleNavigationPanel({
               type="button"
               onClick={() => setSearchQuery('')}
               aria-label="Xóa nội dung tìm kiếm"
-              className="absolute right-2.5 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-stone-200/80 text-stone-500 transition-colors hover:bg-stone-300 hover:text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:bg-stone-700/80 dark:text-stone-400 dark:hover:bg-stone-600 dark:hover:text-stone-200"
+              className="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-stone-200/80 text-stone-500 transition-colors hover:bg-stone-300 hover:text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:bg-stone-700/80 dark:text-stone-400 dark:hover:bg-stone-600 dark:hover:text-stone-200"
             >
-              <X size={11} strokeWidth={2.5} />
+              <X size={13} strokeWidth={2.5} />
             </button>
           )}
         </label>
@@ -180,7 +180,7 @@ function BibleNavigationPanel({
         </div>
         <div
           ref={bookListContainerRef}
-          className="scrollbar-thin flex-1 space-y-1 overflow-y-auto px-2.5 pb-3 pt-0.5 [mask-image:linear-gradient(to_bottom,black,black_calc(100%-14px),transparent)]"
+          className="scrollbar-thin flex-1 min-h-0 space-y-1 overflow-y-auto px-2.5 pb-3 pt-0.5 [mask-image:linear-gradient(to_bottom,black,black_calc(100%-14px),transparent)]"
         >
           {filteredBooks.length === 0 ? (
             <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
@@ -197,33 +197,43 @@ function BibleNavigationPanel({
               </button>
             </div>
           ) : (
-            filteredBooks.map((book) => {
+            filteredBooks.map((book, index) => {
               const isActive = activeBook.id === book.id;
+              const showCategoryHeader = index === 0 || book.category !== filteredBooks[index - 1].category;
+
               return (
-                <button
-                  key={book.id}
-                  ref={isActive ? activeBookButtonRef : null}
-                  onClick={() => handleSelectBook(book.id)}
-                  title={book.name}
-                  className={`group flex min-h-12 w-full items-center gap-2.5 rounded-[17px] px-2.5 py-1.5 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900 ${
-                    isActive
-                      ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-[0_10px_22px_-14px_rgba(180,83,9,.75)] dark:from-amber-400 dark:to-amber-500 dark:text-stone-950'
-                      : 'text-stone-700 hover:bg-white/80 hover:shadow-sm dark:text-stone-300 dark:hover:bg-stone-800/80'
-                  }`}
-                >
-                  <span className={`flex h-8 min-w-9 shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-1.5 font-mono text-[11px] font-black ${
-                    isActive
-                      ? 'bg-black/15 text-white dark:bg-stone-950/15 dark:text-stone-950'
-                      : 'bg-stone-200/75 text-stone-600 group-hover:bg-amber-100 group-hover:text-amber-800 dark:bg-stone-800 dark:text-stone-300 dark:group-hover:bg-amber-900/50 dark:group-hover:text-amber-200'
-                  }`}>
-                    {book.short}
-                  </span>
-                  <span className="min-w-0 flex-1 leading-tight">
-                    <span className="block truncate text-[13px] font-extrabold leading-snug">{book.name}</span>
-                    <span className={`mt-0.5 block truncate text-[10px] font-semibold leading-snug ${isActive ? 'text-amber-50/90' : 'text-stone-400'}`}>{book.category}</span>
-                  </span>
-                  <ChevronRight size={14} className={`shrink-0 transition-all ${isActive ? 'text-white/80' : 'translate-x-1 text-stone-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 dark:text-stone-600'}`} />
-                </button>
+                <React.Fragment key={book.id}>
+                  {showCategoryHeader && (
+                    <div className="sticky top-0 z-10 bg-[#faf8f3]/90 dark:bg-[#1c1917]/90 backdrop-blur-xs px-2 py-1 mt-2 mb-1 border-b border-amber-900/10 dark:border-amber-700/20">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                        {book.category}
+                      </span>
+                    </div>
+                  )}
+                  <button
+                    ref={isActive ? activeBookButtonRef : null}
+                    onClick={() => handleSelectBook(book.id)}
+                    title={book.name}
+                    className={`group flex min-h-12 w-full items-center gap-2.5 rounded-r-[16px] rounded-l-[4px] px-2.5 py-1.5 text-left transition-all border-l-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900 ${
+                      isActive
+                        ? 'border-amber-500 bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-[0_10px_22px_-14px_rgba(180,83,9,.75)] dark:from-amber-400 dark:to-amber-500 dark:text-stone-950'
+                        : 'border-transparent text-stone-700 hover:bg-white/80 hover:border-amber-300 dark:text-stone-300 dark:hover:bg-stone-800/80'
+                    }`}
+                  >
+                    <span className={`flex h-8 min-w-9 shrink-0 items-center justify-center whitespace-nowrap rounded-xl px-1.5 font-mono text-[11px] font-black ${
+                      isActive
+                        ? 'bg-black/15 text-white dark:bg-stone-950/15 dark:text-stone-950'
+                        : 'bg-stone-200/75 text-stone-600 group-hover:bg-amber-100 group-hover:text-amber-800 dark:bg-stone-800 dark:text-stone-300 dark:group-hover:bg-amber-900/50 dark:group-hover:text-amber-200'
+                    }`}>
+                      {book.short}
+                    </span>
+                    <span className="min-w-0 flex-1 leading-tight">
+                      <span className="block truncate text-[13px] font-extrabold leading-snug">{book.name}</span>
+                      <span className={`mt-0.5 block truncate text-[10px] font-semibold leading-snug ${isActive ? 'text-amber-50/90' : 'text-stone-400'}`}>{book.category}</span>
+                    </span>
+                    <ChevronRight size={14} className={`shrink-0 transition-all ${isActive ? 'text-white/80' : 'translate-x-1 text-stone-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 dark:text-stone-600'}`} />
+                  </button>
+                </React.Fragment>
               );
             })
           )}
@@ -231,11 +241,14 @@ function BibleNavigationPanel({
       </div>
 
       {/* ── Chapter Selector ─────────────────────────────────────── */}
-      <div className="relative bg-white/40 p-2.5 backdrop-blur-sm dark:bg-stone-950/30">
+      <div className="sticky bottom-0 z-20 shrink-0 mt-auto bg-white/40 p-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] md:pb-2.5 backdrop-blur-md dark:bg-stone-950/40 shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
         <div className="rounded-[22px] border border-stone-200/80 bg-white/85 p-2.5 shadow-sm dark:border-stone-700/80 dark:bg-stone-900/90">
           <div className="mb-2 flex items-end justify-between gap-2 px-0.5">
             <span className="min-w-0">
-              <span className="block text-[10px] font-extrabold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-400">Chọn chương</span>
+              <span className="flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-400">
+                <Sparkles size={10} className="shrink-0" />
+                Chọn chương, lắng nghe Lời Chúa
+              </span>
               <span className="mt-0.5 block truncate text-[12px] font-black leading-snug text-stone-900 dark:text-stone-100">{activeBook.name}</span>
             </span>
             <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-[10px] font-black tabular-nums text-stone-600 dark:bg-stone-800 dark:text-stone-300">
@@ -250,7 +263,7 @@ function BibleNavigationPanel({
           </div>
           <div
             ref={chapterGridContainerRef}
-            className="scrollbar-thin grid grid-flow-col auto-cols-[38px] gap-1.5 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,transparent,black_12px,black_calc(100%-12px),transparent)]"
+            className="scrollbar-thin grid grid-cols-4 md:grid-cols-5 gap-1.5 max-h-[160px] overflow-y-auto p-1"
           >
             {Array.from({ length: activeBook.chapters }, (_, i) => i + 1).map((ch) => (
               <button
@@ -259,10 +272,10 @@ function BibleNavigationPanel({
                 onClick={() => { setChapterNum(ch); setIsMobileNavOpen(false); setSelectedVerses([]); setIsMultiSelect(false); }}
                 aria-label={`Chương ${ch}`}
                 aria-current={chapterNum === ch ? 'page' : undefined}
-                className={`h-9 rounded-xl font-mono text-[12px] font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900 ${
+                className={`h-10 min-h-[40px] md:h-9 w-full rounded-xl font-mono text-xs font-extrabold flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-900 border ${
                   chapterNum === ch
-                    ? 'bg-amber-700 text-white shadow-md shadow-amber-800/25 ring-2 ring-amber-200 dark:bg-amber-400 dark:text-stone-950 dark:ring-amber-900'
-                    : 'bg-stone-100/90 text-stone-600 hover:bg-amber-100 hover:text-amber-800 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-amber-900/45 dark:hover:text-amber-200'
+                    ? 'border-amber-600 bg-amber-700 text-white shadow-md shadow-amber-800/25 ring-2 ring-amber-200 dark:bg-amber-400 dark:text-stone-950 dark:ring-amber-900'
+                    : 'border-stone-200/90 bg-stone-100/90 text-stone-600 hover:bg-amber-100 hover:text-amber-800 dark:border-stone-700/80 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-amber-900/45 dark:hover:text-amber-200'
                 }`}
               >
                 {ch}

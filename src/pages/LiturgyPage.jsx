@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BookOpen, Calendar, ChevronLeft, ChevronRight, Loader2, PlayCircle, 
   PauseCircle, CalendarDays, Copy, Share2, Check, Sparkles, Volume2, Square, ArrowUp,
-  Maximize2, Minimize2, Search, X, Command, Tag, Bookmark, CalendarHeart, PenLine
+  Maximize2, Minimize2, Search, X, Command, Tag, Bookmark, CalendarHeart, PenLine, Info
 } from 'lucide-react';
 import { usePageMotion } from '../hooks/usePageMotion.js';
 import { getLiturgyInfo, getLiturgicalYear, getLiturgicalColor, findDateForLiturgyKey } from '../utils/liturgyCalendar.js';
@@ -34,10 +34,10 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-amber-500 dark:border-amber-500',
     bgHover: 'hover:bg-amber-100/50 dark:hover:bg-amber-900/30',
-    btnBg: 'bg-amber-600 hover:bg-amber-700 text-white shadow-amber-900/20',
-    activeDay: 'bg-amber-600 text-white shadow-md shadow-amber-900/20 font-bold',
+    btnBg: 'theme-invariant bg-amber-600 hover:bg-amber-700 text-white shadow-amber-900/20',
+    activeDay: 'theme-invariant bg-amber-600 text-white shadow-md shadow-amber-900/20 font-bold',
     todayDay: 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100 font-bold',
-    gospelCardBg: 'bg-white dark:bg-stone-900 border-amber-400/50 dark:border-amber-700/50',
+    gospelCardBg: 'sm:bg-amber-50/40 sm:dark:bg-amber-950/20 sm:border-amber-400/50 sm:dark:border-amber-700/50',
     icon: 'text-amber-600 dark:text-amber-400',
     navBg: 'glass-panel border-amber-900/10 dark:border-amber-100/10',
     supColor: 'text-amber-600 dark:text-amber-400',
@@ -49,10 +49,10 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-emerald-500 dark:border-emerald-500',
     bgHover: 'hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30',
-    btnBg: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-900/20',
-    activeDay: 'bg-emerald-600 text-white shadow-md shadow-emerald-900/20 font-bold',
+    btnBg: 'theme-invariant bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-900/20',
+    activeDay: 'theme-invariant bg-emerald-600 text-white shadow-md shadow-emerald-900/20 font-bold',
     todayDay: 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100 font-bold',
-    gospelCardBg: 'bg-white dark:bg-stone-900 border-emerald-400/50 dark:border-emerald-700/50',
+    gospelCardBg: 'sm:bg-emerald-50/40 sm:dark:bg-emerald-950/20 sm:border-emerald-400/50 sm:dark:border-emerald-700/50',
     icon: 'text-emerald-600 dark:text-emerald-400',
     navBg: 'glass-panel border-emerald-900/10 dark:border-emerald-100/10',
     supColor: 'text-emerald-600 dark:text-emerald-400',
@@ -64,10 +64,10 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-purple-500 dark:border-purple-500',
     bgHover: 'hover:bg-purple-100/50 dark:hover:bg-purple-900/30',
-    btnBg: 'bg-purple-600 hover:bg-purple-700 text-white shadow-purple-900/20',
-    activeDay: 'bg-purple-600 text-white shadow-md shadow-purple-900/20 font-bold',
+    btnBg: 'theme-invariant bg-purple-600 hover:bg-purple-700 text-white shadow-purple-900/20',
+    activeDay: 'theme-invariant bg-purple-600 text-white shadow-md shadow-purple-900/20 font-bold',
     todayDay: 'bg-purple-100 text-purple-900 dark:bg-purple-900/40 dark:text-purple-100 font-bold',
-    gospelCardBg: 'bg-white dark:bg-stone-900 border-purple-400/50 dark:border-purple-700/50',
+    gospelCardBg: 'sm:bg-purple-50/40 sm:dark:bg-purple-950/20 sm:border-purple-400/50 sm:dark:border-purple-700/50',
     icon: 'text-purple-600 dark:text-purple-400',
     navBg: 'glass-panel border-purple-900/10 dark:border-purple-100/10',
     supColor: 'text-purple-600 dark:text-purple-400',
@@ -79,10 +79,10 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-rose-500 dark:border-rose-500',
     bgHover: 'hover:bg-rose-100/50 dark:hover:bg-rose-900/30',
-    btnBg: 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-900/20',
-    activeDay: 'bg-rose-600 text-white shadow-md shadow-rose-900/20 font-bold',
+    btnBg: 'theme-invariant bg-rose-600 hover:bg-rose-700 text-white shadow-rose-900/20',
+    activeDay: 'theme-invariant bg-rose-600 text-white shadow-md shadow-rose-900/20 font-bold',
     todayDay: 'bg-rose-100 text-rose-900 dark:bg-rose-900/40 dark:text-rose-100 font-bold',
-    gospelCardBg: 'bg-white dark:bg-stone-900 border-rose-400/50 dark:border-rose-700/50',
+    gospelCardBg: 'sm:bg-rose-50/40 sm:dark:bg-rose-950/20 sm:border-rose-400/50 sm:dark:border-rose-700/50',
     icon: 'text-rose-600 dark:text-rose-400',
     navBg: 'glass-panel border-rose-900/10 dark:border-rose-100/10',
     supColor: 'text-rose-600 dark:text-rose-400',
@@ -110,6 +110,28 @@ export default function LiturgyPage() {
   const [liturgyInfo, setLiturgyInfo] = useState(null);
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // State quản lý tùy chọn Bài đọc Ngày Thường & Bài đọc Lễ Nhớ
+  const [readingModes, setReadingModes] = useState({ weekday: null, feast: null });
+  const [activeReadingMode, setActiveReadingMode] = useState('weekday'); // 'weekday' | 'feast'
+  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
+  const tooltipRef = useRef(null);
+
+  // Lắng nghe sự kiện chạm/bấm ra ngoài khoảng trống (Click / Touch Outside) để tự động đóng Popover chú thích
+  useEffect(() => {
+    if (!showInfoTooltip) return;
+    const handleClickOutside = (e) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(e.target)) {
+        setShowInfoTooltip(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [showInfoTooltip]);
   
   // Custom Controls State & TTS Audio
   const tts = useLiturgyTTS();
@@ -742,8 +764,47 @@ export default function LiturgyPage() {
           }
 
           if (!selectedData) {
-            if (feastData) {
-              // Ưu tiên bài đọc từ feastData, trường nào feastData trống mới bù từ weekdayData
+            const hasFeastReadings = feastData && (
+              (feastData.gospel_ref && feastData.gospel_ref.trim() !== '') || 
+              (feastData.r1_ref && feastData.r1_ref.trim() !== '') ||
+              (feastData.gospel_content && feastData.gospel_content.trim() !== '')
+            );
+
+            const hasWeekdayReadings = weekdayData && (
+              (weekdayData.gospel_ref && weekdayData.gospel_ref.trim() !== '') || 
+              (weekdayData.r1_ref && weekdayData.r1_ref.trim() !== '')
+            );
+
+            const isMemorialFeast = info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional';
+
+            if (isMemorialFeast && hasFeastReadings && hasWeekdayReadings) {
+              // CẢ 2 BÀI ĐỌC ĐỀU TỒN TẠI TRONG NGÀY LỄ NHỚ: TẠO 2 OPTION CHO NGƯỜI DÙNG CHỌN TAB
+              const saintName = info.displayName || feastData.title || weekdayData.title || 'Lễ Nhớ';
+
+              const weekdayOption = {
+                ...weekdayData,
+                title: `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`,
+                saintName
+              };
+
+              const mergedFeast = { ...weekdayData };
+              for (let k in feastData) {
+                if (feastData[k] && feastData[k].toString().trim() !== "") {
+                  mergedFeast[k] = feastData[k];
+                }
+              }
+
+              const feastOption = {
+                ...mergedFeast,
+                title: `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`,
+                saintName
+              };
+
+              setReadingModes({ weekday: weekdayOption, feast: feastOption });
+              setActiveReadingMode('weekday'); // MẶC ĐỊNH LÀ Bài đọc Lễ Thường DÀNH CHO LỄ NHỚ
+              selectedData = weekdayOption;
+            } else if (feastData) {
+              setReadingModes({ weekday: null, feast: null });
               const mergedContent = { ...(weekdayData || {}) };
               for (let k in feastData) {
                 if (feastData[k] && feastData[k].toString().trim() !== "") {
@@ -761,7 +822,7 @@ export default function LiturgyPage() {
                 title: displayTitle
               };
             } else if (weekdayData) {
-              // Không có dữ liệu Lễ trong DB: dùng Bài đọc Ngày Thường
+              setReadingModes({ weekday: null, feast: null });
               const saintName = info.displayName || weekdayData.title || 'Lễ Nhớ';
               const displayTitle = (info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional')
                 ? `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`
@@ -771,7 +832,11 @@ export default function LiturgyPage() {
                 ...weekdayData,
                 title: displayTitle
               };
+            } else {
+              setReadingModes({ weekday: null, feast: null });
             }
+          } else {
+            setReadingModes({ weekday: null, feast: null });
           }
 
           if (selectedData && !overrideLiturgyItem) {
@@ -791,6 +856,17 @@ export default function LiturgyPage() {
 
     fetchFullReading();
   }, [selectedDate]);
+
+  const handleSwitchReadingMode = (mode) => {
+    if (readingModes && readingModes[mode]) {
+      setActiveReadingMode(mode);
+      const targetContent = readingModes[mode];
+      setContent(targetContent);
+      if (!overrideLiturgyItem) {
+        setCachedLiturgy(selectedDate, targetContent, 'page');
+      }
+    }
+  };
 
   // Phân loại các Thánh Lễ khác nhau trong cùng 1 ngày (VD: 24/12 Lễ Sáng vs Lễ Vọng Ban Tối)
   const fullMassReadings = useMemo(() => {
@@ -989,8 +1065,43 @@ export default function LiturgyPage() {
     }
   };
 
+  // Class điều chỉnh phông chữ thân bài đọc (Đồng bộ tỉ lệ mới)
+  const fontClasses = {
+    normal: fontStyle === 'serif' ? 'font-serif text-[16px] sm:text-[17px]' : 'font-sans text-[16px] sm:text-[17px]',
+    medium: fontStyle === 'serif' ? 'font-serif text-[19px] sm:text-[20px]' : 'font-sans text-[19px] sm:text-[20px]',
+    large:  fontStyle === 'serif' ? 'font-serif text-[23px] sm:text-[24px]' : 'font-sans text-[22px] sm:text-[23px]',
+  }[fontSize];
+
+  // Class điều chỉnh cỡ chữ Tiêu đề các mục bài đọc (Bài Đọc 1, Đáp Ca, Bài Đọc 2, Tin Mừng...)
+  const sectionTitleClasses = {
+    normal: 'text-[17px] sm:text-[20px]',
+    medium: 'text-[20px] sm:text-[23px]',
+    large:  'text-[23px] sm:text-[26px]',
+  }[fontSize];
+
+  // Class điều chỉnh cỡ chữ Trích dẫn Kinh Thánh (ref)
+  const refFontClasses = {
+    normal: 'text-[12px] sm:text-[14px]',
+    medium: 'text-[14px] sm:text-[16px]',
+    large:  'text-[16px] sm:text-[18px]',
+  }[fontSize];
+
+  // Class điều chỉnh cỡ chữ Dòng Câu Đáp (Đ.) trong Đáp Ca
+  const refrainFontClasses = {
+    normal: 'text-[16px] sm:text-[18px]',
+    medium: 'text-[19px] sm:text-[21px]',
+    large:  'text-[22px] sm:text-[24px]',
+  }[fontSize];
+
+  // Class điều chỉnh cỡ chữ Alleluia
+  const alleluiaFontClasses = {
+    normal: 'text-[14px] sm:text-[17px]',
+    medium: 'text-[16px] sm:text-[19px]',
+    large:  'text-[19px] sm:text-[22px]',
+  }[fontSize];
+
   // Định dạng số câu Kinh Thánh & Đoạn Đáp Ca tối ưu giao diện (Sacred Flow Layout - Phương án 1 Liền Mạch)
-  const formatLiturgyText = (text) => {
+  const formatLiturgyText = (text, customRefrainClass = refrainFontClasses) => {
     if (!text) return '';
     
     // Tách văn bản thành các đoạn văn lớn dựa theo \n\n (xuống 2 dòng)
@@ -1062,7 +1173,7 @@ export default function LiturgyPage() {
             `<span class="font-serif font-bold text-red-600 dark:text-red-400 mx-1 select-none">(Đ.)</span>`
           );
 
-          resultHtml += `<div class="my-2.5 sm:my-3.5 font-serif font-bold text-stone-900 dark:text-stone-100 text-[16px] sm:text-[18px] leading-relaxed sm:leading-loose text-left pl-7 sm:pl-8 -indent-7 sm:-indent-8">${prefixHtml}<span class="font-serif font-extrabold text-red-600 dark:text-red-400 mr-1.5 select-none">Đ.</span><span>${refrainContent}</span></div>`;
+          resultHtml += `<div class="my-2.5 sm:my-3.5 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-loose text-left pl-7 sm:pl-8 -indent-7 sm:-indent-8">${prefixHtml}<span class="font-serif font-extrabold text-red-600 dark:text-red-400 mr-1.5 select-none">Đ.</span><span>${refrainContent}</span></div>`;
           continue;
         }
 
@@ -1088,13 +1199,6 @@ export default function LiturgyPage() {
       return resultHtml;
     }).join('');
   };
-
-  // Class điều chỉnh phông chữ
-  const fontClasses = {
-    normal: fontStyle === 'serif' ? 'font-serif text-[16px] sm:text-[17px]' : 'font-sans text-[15px] sm:text-[16px]',
-    medium: fontStyle === 'serif' ? 'font-serif text-[18px] sm:text-[19px]' : 'font-sans text-[17px] sm:text-[18px]',
-    large: fontStyle === 'serif' ? 'font-serif text-[21px] sm:text-[22px]' : 'font-sans text-[19px] sm:text-[20px]',
-  }[fontSize];
 
   return (
     <div className="min-h-screen bg-[#FDFCF9] dark:bg-[#12100E] text-stone-800 dark:text-stone-200 transition-colors duration-500 fade-in-up pb-32 overflow-x-hidden">
@@ -1398,6 +1502,66 @@ export default function LiturgyPage() {
                 </div>
               )}
 
+              {/* Bộ Chọn Tab Bài Đọc (Cân bằng 50/50 tuyệt đối - Tối ưu Mobile & Desktop) */}
+              {readingModes.weekday && readingModes.feast && !overrideLiturgyItem && (
+                <div className="mb-5 sm:mb-8 flex flex-col items-center justify-center relative px-2">
+                  
+                  {/* Thanh Pill Switcher chứa ĐÚNG 2 NÚT (Chia 50% - 50% đối xứng) */}
+                  <div className="inline-flex items-center justify-between bg-stone-200/80 dark:bg-stone-800/80 p-1 sm:p-1.5 rounded-full shadow-inner border border-stone-300/50 dark:border-stone-700/50 w-full max-w-[360px] sm:max-w-md">
+                    
+                    {/* Tab 1: Bài đọc Lễ Thường (50% Width) */}
+                    <button
+                      onClick={() => handleSwitchReadingMode('weekday')}
+                      className={`w-1/2 py-1.5 sm:py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 ${
+                        activeReadingMode === 'weekday'
+                          ? `${theme.btnBg} text-white shadow-md scale-102`
+                          : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <span className="text-[12px] sm:text-[14px]">📘</span>
+                      <span className="truncate">Bài đọc Lễ Thường</span>
+                    </button>
+
+                    {/* Tab 2: Bài đọc Lễ Nhớ (50% Width) */}
+                    <button
+                      onClick={() => handleSwitchReadingMode('feast')}
+                      className={`w-1/2 py-1.5 sm:py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 ${
+                        activeReadingMode === 'feast'
+                          ? `${theme.btnBg} text-white shadow-md scale-102`
+                          : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <span className="text-[12px] sm:text-[14px]">🌹</span>
+                      <span className="truncate">Bài đọc Lễ Nhớ</span>
+                    </button>
+                  </div>
+
+                  {/* Nút Hướng Dẫn Quy Tắc Phụng Vụ (Desktop tự Hover hiện, Mobile 1 Chạm hiện & Click Outside tự ẩn) */}
+                  <div className="relative mt-2 inline-block group" ref={tooltipRef}>
+                    <button 
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowInfoTooltip((prev) => !prev);
+                      }}
+                      className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-amber-700 dark:text-stone-400 dark:hover:text-amber-300 transition-colors py-1 px-2.5 rounded-full bg-stone-200/50 dark:bg-stone-800/50 hover:bg-stone-200 dark:hover:bg-stone-700 font-sans cursor-pointer active:scale-95"
+                    >
+                      <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                      <span className="underline underline-offset-2 decoration-dashed decoration-stone-400 dark:decoration-stone-600 font-medium">Quy tắc Phụng vụ</span>
+                    </button>
+
+                    {/* Popover Chú Thích Bật Ra */}
+                    <div className={`absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-64 p-3 bg-stone-900/95 dark:bg-stone-950/95 text-stone-100 text-[11px] rounded-2xl shadow-xl backdrop-blur-md border border-stone-700/80 z-50 leading-relaxed text-left animate-in fade-in zoom-in-95 duration-150 font-sans pointer-events-none ${showInfoTooltip ? 'block' : 'hidden group-hover:block'}`}>
+                      <p className="font-semibold text-amber-400 mb-1 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" /> Quy Tắc Phụng Vụ:
+                      </p>
+                      Ngày thường có Lễ Nhớ mặc định cử hành <b>Bài đọc Ngày Thường</b>, ngoại trừ trường hợp Giáo xứ cử hành riêng <b>Bài đọc Lễ Nhớ</b>.
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
               {/* Bộ Chọn Thánh Lễ (Dùng khi 1 ngày có từ 2 Thánh Lễ trở lên, VD: 24/12 Lễ Sáng vs Lễ Vọng Ban Tối) */}
               {fullMassReadings.length > 0 && (
                 <div className="mb-6 sm:mb-8 bg-amber-50/80 dark:bg-stone-900/90 border border-amber-200/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-4 text-center shadow-sm">
@@ -1440,10 +1604,10 @@ export default function LiturgyPage() {
                     <Sparkles className="w-3 h-3" /> {extra.title || "Tin Mừng - Kiệu Lá"}
                   </div>
 
-                  <h3 className={`font-serif text-[18px] sm:text-[24px] ${theme.headingText} mb-1 uppercase tracking-wider text-center font-bold`}>
+                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.headingText} mb-1 uppercase tracking-wider text-center font-bold`}>
                     {extra.title || "Tin Mừng - Kiệu Lá"}
                   </h3>
-                  {extra.ref && <p className="text-center text-[12px] sm:text-[14px] text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans">{extra.ref}</p>}
+                  {extra.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{extra.ref}</p>}
 
                   {/* Nút nghe riêng Tin Mừng Kiệu Lá */}
                   {renderSectionAudioBadge(
@@ -1478,7 +1642,7 @@ export default function LiturgyPage() {
                 <div id="sec-r1" className="mb-8 sm:mb-12 scroll-mt-24">
                   <div className="flex items-center justify-center gap-3 mb-2">
                     <div className="h-px bg-stone-200 dark:bg-stone-800 flex-1 max-w-[80px]" />
-                    <h3 className={`font-serif text-[17px] sm:text-[20px] font-bold ${theme.accentText} uppercase tracking-wider text-center`}>Bài Đọc 1</h3>
+                    <h3 className={`font-serif ${sectionTitleClasses} font-bold ${theme.accentText} uppercase tracking-wider text-center`}>Bài Đọc 1</h3>
                     <div className="h-px bg-stone-200 dark:bg-stone-800 flex-1 max-w-[80px]" />
                   </div>
 
@@ -1501,7 +1665,7 @@ export default function LiturgyPage() {
                     </div>
                   )}
 
-                  {r1Options[r1AltIdx]?.ref && <p className="text-center text-[12px] sm:text-[14px] text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans">{r1Options[r1AltIdx].ref}</p>}
+                  {r1Options[r1AltIdx]?.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{r1Options[r1AltIdx].ref}</p>}
 
                   {/* Nút nghe riêng Bài Đọc 1 */}
                   {renderSectionAudioBadge(
@@ -1534,9 +1698,9 @@ export default function LiturgyPage() {
               {/* Đáp Ca */}
               {activeContent.psalm_content && (
                 <div id="sec-psalm" className="mb-8 sm:mb-12 pl-3.5 sm:pl-8 border-l-4 border-amber-400 dark:border-amber-600 scroll-mt-24">
-                  <h3 className={`font-serif text-[15px] sm:text-[18px] ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
+                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
                     <span className="font-bold">Đáp Ca</span> 
-                    {activeContent.psalm_ref && <span className="text-[12px] sm:text-[13px] text-stone-500 font-bold not-italic font-sans">- {activeContent.psalm_ref}</span>}
+                    {activeContent.psalm_ref && <span className={`${refFontClasses} text-stone-500 font-bold not-italic font-sans`}>- {activeContent.psalm_ref}</span>}
                   </h3>
                   
                   <div className={`${fontClasses} italic text-stone-700 dark:text-stone-300`}>
@@ -1550,7 +1714,7 @@ export default function LiturgyPage() {
                 <div id="sec-r2" className="mb-8 sm:mb-12 scroll-mt-24">
                   <div className="flex items-center justify-center gap-3 mb-2">
                     <div className="h-px bg-stone-200 dark:bg-stone-800 flex-1 max-w-[80px]" />
-                    <h3 className={`font-serif text-[17px] sm:text-[20px] font-bold ${theme.accentText} uppercase tracking-wider text-center`}>Bài Đọc 2</h3>
+                    <h3 className={`font-serif ${sectionTitleClasses} font-bold ${theme.accentText} uppercase tracking-wider text-center`}>Bài Đọc 2</h3>
                     <div className="h-px bg-stone-200 dark:bg-stone-800 flex-1 max-w-[80px]" />
                   </div>
 
@@ -1573,7 +1737,7 @@ export default function LiturgyPage() {
                     </div>
                   )}
 
-                  {r2Options[r2AltIdx]?.ref && <p className="text-center text-[12px] sm:text-[14px] text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans">{r2Options[r2AltIdx].ref}</p>}
+                  {r2Options[r2AltIdx]?.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{r2Options[r2AltIdx].ref}</p>}
 
                   {/* Nút nghe riêng Bài Đọc 2 */}
                   {renderSectionAudioBadge(
@@ -1606,10 +1770,10 @@ export default function LiturgyPage() {
               {/* Đáp ca bổ sung (Đặc biệt Đáp ca sau Bài Đọc 2 trong Lễ Vọng Phục Sinh...) */}
               {extraPsalms.map((psalmItem, pIdx) => (
                 <div key={`extra-psalm-${pIdx}`} id="sec-r2-psalm" className="mb-8 sm:mb-12 pl-3.5 sm:pl-8 border-l-4 border-amber-400 dark:border-amber-600 scroll-mt-24">
-                  <h3 className={`font-serif text-[15px] sm:text-[18px] ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
+                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
                     <span className="font-bold">{psalmItem.title || "Đáp Ca"}</span> 
                     {(psalmItem.psalm_ref || psalmItem.ref) && (
-                      <span className="text-[12px] sm:text-[13px] text-stone-500 font-bold not-italic font-sans">
+                      <span className={`${refFontClasses} text-stone-500 font-bold not-italic font-sans`}>
                         - {psalmItem.psalm_ref || psalmItem.ref}
                       </span>
                     )}
@@ -1626,14 +1790,14 @@ export default function LiturgyPage() {
                 <div key={`seq-${seqIdx}`} id="sec-sequence" className="mb-8 sm:mb-12 p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-amber-50/70 dark:bg-amber-950/30 border-2 border-amber-300/80 dark:border-amber-700/60 shadow-sm scroll-mt-24">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                    <h3 className={`font-serif text-[17px] sm:text-[20px] font-bold ${theme.accentText} uppercase tracking-wider text-center`}>
+                    <h3 className={`font-serif ${sectionTitleClasses} font-bold ${theme.accentText} uppercase tracking-wider text-center`}>
                       {seq.title || "Ca Tiếp Liên"}
                     </h3>
                     <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   </div>
 
                   {seq.quote && (
-                    <p className="italic text-center text-[13px] sm:text-[15px] text-stone-600 dark:text-stone-400 mb-4 px-2 font-serif leading-relaxed">
+                    <p className={`italic text-center ${fontClasses} text-stone-600 dark:text-stone-400 mb-4 px-2 font-serif leading-relaxed`}>
                       "{seq.quote}"
                     </p>
                   )}
@@ -1701,7 +1865,7 @@ export default function LiturgyPage() {
 
               {/* Tin Mừng Card Highlight */}
               {gospelOptions.length > 0 && (
-                <div id="sec-gospel" className={`mb-8 sm:mb-12 p-0 sm:p-8 rounded-none sm:rounded-3xl border-0 sm:border ${theme.gospelCardBg} shadow-none sm:shadow-sm bg-transparent sm:bg-auto scroll-mt-24 relative overflow-hidden`}>
+                <div id="sec-gospel" className={`mb-8 sm:mb-12 p-0 sm:p-8 rounded-none sm:rounded-3xl border-0 sm:border ${theme.gospelCardBg} shadow-none sm:shadow-sm scroll-mt-24 relative overflow-hidden`}>
                   
                   {/* Decorative Gospel Badge */}
                   <div className="hidden sm:flex absolute top-0 right-0 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-4 py-1 rounded-bl-2xl text-[11px] font-bold uppercase tracking-widest font-sans items-center gap-1">
@@ -1728,15 +1892,15 @@ export default function LiturgyPage() {
                   )}
 
                   {(gospelOptions[gospelAltIdx]?.alleluia || activeContent.gospel_alleluia) && (
-                    <div className="mb-5 sm:mb-8 text-center text-[14px] sm:text-[17px] font-serif italic text-amber-900 dark:text-amber-300 px-1 sm:px-12 leading-relaxed">
+                    <div className={`mb-5 sm:mb-8 text-center ${alleluiaFontClasses} font-serif italic text-amber-900 dark:text-amber-300 px-1 sm:px-12 leading-relaxed`}>
                       <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(gospelOptions[gospelAltIdx]?.alleluia || activeContent.gospel_alleluia) }} />
                     </div>
                   )}
 
-                  <h3 className={`font-serif text-[20px] sm:text-[26px] ${theme.headingText} uppercase tracking-wider text-center font-bold mb-1`}>
+                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.headingText} uppercase tracking-wider text-center font-bold mb-1`}>
                     {gospelOptions[gospelAltIdx]?.title || "Tin Mừng"}
                   </h3>
-                  {gospelOptions[gospelAltIdx]?.ref && <p className="text-center text-[12px] sm:text-[14px] text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans">{gospelOptions[gospelAltIdx].ref}</p>}
+                  {gospelOptions[gospelAltIdx]?.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{gospelOptions[gospelAltIdx].ref}</p>}
 
                   {/* Nút nghe riêng Tin Mừng */}
                   {renderSectionAudioBadge(

@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, Book, Headphones, Sparkles, Bookmark, Calendar } from 'lucide-react';
@@ -58,8 +59,13 @@ export default function MobileNavDock() {
     }
   }, [location.pathname]);
 
-  return (
-    <nav data-ui-layer="mobile-dock" aria-label="Điều hướng chính" className="fixed bottom-[max(12px,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-40 w-[calc(100%-24px)] max-w-md block md:hidden pointer-events-auto">
+  const dockContent = (
+    <nav 
+      data-ui-layer="mobile-dock" 
+      aria-label="Điều hướng chính" 
+      className="fixed left-1/2 -translate-x-1/2 z-[45] w-[calc(100%-24px)] max-w-md block md:hidden pointer-events-auto"
+      style={{ bottom: 'calc(14px + env(safe-area-inset-bottom, 0px))' }}
+    >
       <div ref={dockRef} className="relative glass-dock rounded-[22px] px-1.5 py-1.5 flex items-center justify-around shadow-[0_16px_50px_-18px_rgba(28,25,23,.45)]">
         {/* Bulletproof sliding pill */}
         <motion.div
@@ -123,4 +129,6 @@ export default function MobileNavDock() {
       </div>
     </nav>
   );
+
+  return typeof document !== 'undefined' ? createPortal(dockContent, document.body) : dockContent;
 }

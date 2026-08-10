@@ -521,11 +521,30 @@ export default function BiblePage() {
     setTimeout(() => setCopiedVerse(null), 2000);
   };
 
-  const copyChapterLink = () => {
+  const shareChapter = async () => {
     const link = `${window.location.origin}/bible/${activeBook.id}/${chapterNum}`;
-    navigator.clipboard.writeText(link);
-    triggerToast('Đã sao chép liên kết chương Kinh Thánh!');
+    const shareData = {
+      title: `Kinh Thánh - ${activeBook.name} Chương ${chapterNum}`,
+      text: `Đọc Kinh Thánh: ${activeBook.name} Chương ${chapterNum} trên ứng dụng Lời Chúa Hằng Ngày.`,
+      url: link,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          navigator.clipboard.writeText(link);
+          triggerToast('Đã sao chép liên kết chương Kinh Thánh!');
+        }
+      }
+    } else {
+      navigator.clipboard.writeText(link);
+      triggerToast('Đã sao chép liên kết chương Kinh Thánh!');
+    }
   };
+
+  const copyChapterLink = shareChapter;
 
   const toggleBookmarkVerse = (vNum, text) => {
     toggleBookmark(
@@ -655,6 +674,28 @@ export default function BiblePage() {
   const FONT_SIZE_CLASSES = { normal: 'text-sm sm:text-base', medium: 'text-base sm:text-lg', large: 'text-lg sm:text-xl' };
   const getFontSizeClass = () => FONT_SIZE_CLASSES[fontSize] || FONT_SIZE_CLASSES.medium;
 
+  const TYPOGRAPHY_SCALE = {
+    normal: {
+      part: 'text-sm sm:text-base md:text-lg',
+      section: 'text-sm sm:text-base md:text-lg',
+      verseNum: 'text-[10px] sm:text-[11px]',
+      footnotePopover: 'text-xs sm:text-sm',
+    },
+    medium: {
+      part: 'text-base sm:text-lg md:text-xl',
+      section: 'text-base sm:text-lg md:text-xl',
+      verseNum: 'text-xs sm:text-[13px]',
+      footnotePopover: 'text-sm sm:text-base',
+    },
+    large: {
+      part: 'text-lg sm:text-xl md:text-2xl',
+      section: 'text-lg sm:text-xl md:text-2xl',
+      verseNum: 'text-sm sm:text-[15px]',
+      footnotePopover: 'text-base sm:text-lg',
+    },
+  };
+  const typographyScale = TYPOGRAPHY_SCALE[fontSize] || TYPOGRAPHY_SCALE.medium;
+
   const LINE_HEIGHT_CLASSES = { compact: 'leading-snug', normal: 'leading-normal', relaxed: 'leading-loose sm:leading-[2.5]' };
   const getLineHeightClass = () => LINE_HEIGHT_CLASSES[lineHeight] || LINE_HEIGHT_CLASSES.normal;
 
@@ -681,7 +722,7 @@ export default function BiblePage() {
             const partText = trimmed.replace('[PART]', '').trim();
             return (
               <div key={idx} className="mt-8 mb-6 text-center border-y border-amber-300/40 dark:border-amber-700/40 py-3.5 bg-amber-50/50 dark:bg-amber-950/20 rounded-2xl shadow-2xs">
-                <h3 className="text-base sm:text-lg md:text-xl font-black uppercase tracking-widest text-amber-900 dark:text-amber-200 font-serif">
+                <h3 className={`${typographyScale.part} font-black uppercase tracking-widest text-amber-900 dark:text-amber-200 font-serif`}>
                   {partText}
                 </h3>
               </div>
@@ -693,7 +734,7 @@ export default function BiblePage() {
             const sectionText = trimmed.replace('[SECTION]', '').trim();
             return (
               <div key={idx} className="mt-6 mb-3 pt-2">
-                <p className="text-sm sm:text-base md:text-lg font-bold italic text-amber-800 dark:text-amber-300 font-serif tracking-wide border-l-4 border-amber-500 pl-3.5 py-0.5">
+                <p className={`${typographyScale.section} font-bold italic text-amber-800 dark:text-amber-300 font-serif tracking-wide border-l-4 border-amber-500 pl-3.5 py-0.5`}>
                   {sectionText}
                 </p>
               </div>
@@ -723,9 +764,9 @@ export default function BiblePage() {
               );
             }
             return (
-              <span key={i} className="font-serif">
+              <React.Fragment key={i}>
                 {part}
-              </span>
+              </React.Fragment>
             );
           });
 
@@ -736,8 +777,7 @@ export default function BiblePage() {
           return (
             <p
               key={idx}
-              className={`${getLineHeightClass()} text-stone-800 dark:text-stone-200 ${getFontSizeClass()} my-1.5 px-1 py-0.5 rounded-xl hover:bg-amber-50/50 dark:hover:bg-stone-800/30 transition-colors`}
-              style={{ textAlign: 'justify', textAlignLast: 'left' }}
+              className={`${getLineHeightClass()} text-stone-800 dark:text-stone-200 ${getFontSizeClass()} mb-3 sm:mb-4 text-left sm:text-justify leading-relaxed transition-colors`}
             >
               {leadingMatch ? (
                 <sup className={`${VERSE_NUMBER_CLASS} ${VERSE_INDENT_CLASS} inline-block text-[0.7em] text-left mr-1`}>
@@ -746,7 +786,7 @@ export default function BiblePage() {
               ) : (
                 <span className={`${VERSE_INDENT_CLASS} inline-block pointer-events-none`}>&nbsp;</span>
               )}
-              <span className="font-serif">{contentElements}</span>
+              {contentElements}
             </p>
           );
         })}
@@ -762,7 +802,7 @@ export default function BiblePage() {
       return (
         <span className="inline-block align-top w-full">
           {content.split('\n').map((line, lIdx) => (
-            <span key={lIdx} className={`block ${lIdx > 0 ? 'pl-4 sm:pl-6 text-stone-700 dark:text-stone-300 font-serif leading-relaxed' : 'font-serif leading-relaxed'}`}>
+            <span key={lIdx} className={`block ${lIdx > 0 ? 'pl-4 sm:pl-6 text-stone-700 dark:text-stone-300 leading-relaxed' : 'leading-relaxed'}`}>
               {line}
             </span>
           ))}
@@ -778,7 +818,7 @@ export default function BiblePage() {
         {footnotes.map((fn, idx) => (
           <span key={idx} className="relative inline-block">
             <sup
-              className="text-[0.65em] text-amber-600 dark:text-amber-400 font-bold ml-0.5 cursor-pointer p-1 rounded hover:bg-amber-100 dark:hover:bg-amber-900/40"
+              className="text-[0.7em] text-amber-600 dark:text-amber-400 font-bold ml-0.5 cursor-pointer inline-flex items-center justify-center min-w-[28px] min-h-[28px] px-1 py-0.5 rounded-md hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
               onClick={(e) => { e.stopPropagation(); setActiveFootnote(activeFootnote === fn.marker ? null : fn.marker); }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -797,13 +837,13 @@ export default function BiblePage() {
               {activeFootnote === fn.marker && (
                 <motion.div
                   initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }}
-                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 sm:w-64 p-3 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs rounded-xl shadow-xl z-50 font-sans footnote-popover"
+                  className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 sm:w-64 max-w-[calc(100vw-2rem)] p-3 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 ${typographyScale.footnotePopover} rounded-xl shadow-xl z-50 font-sans footnote-popover`}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="font-bold mb-1 text-amber-400 dark:text-amber-700 flex items-center justify-between">
                     <span>Chú giải {fn.marker}</span>
-                    <button onClick={() => setActiveFootnote(null)} className="p-1 text-stone-400 hover:text-white dark:hover:text-stone-900" aria-label="Đóng chú giải">
-                      <X size={12} />
+                    <button onClick={() => setActiveFootnote(null)} className="min-w-[32px] min-h-[32px] flex items-center justify-center p-1 text-stone-400 hover:text-white dark:hover:text-stone-900" aria-label="Đóng chú giải">
+                      <X size={14} />
                     </button>
                   </div>
                   <div className="leading-relaxed">{fn.text}</div>
@@ -918,7 +958,7 @@ export default function BiblePage() {
                   <X size={18} />
                 </button>
               </div>
-              <div className="flex-1 overflow-hidden">
+              <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
                 <BibleNavigationPanel
                   testament={testament}
                   setTestament={setTestament}
@@ -1000,7 +1040,7 @@ export default function BiblePage() {
                 chapter={chapterNum}
                 title={chapterData?.title}
                 isLoading={isLoadingChapter}
-                onShare={copyChapterLink}
+                onShare={shareChapter}
               />
 
               {/* Verses Area */}
@@ -1072,7 +1112,7 @@ export default function BiblePage() {
                           {/* Part Title / Heading lớn (VD: ĐỀ TỰA TỔNG QUÁT, I. PHẦN MỞ ĐẦU...) */}
                           {v.partTitle && (
                             <div className="mt-8 mb-4 text-center border-y border-amber-300/40 dark:border-amber-700/40 py-3 bg-amber-50/50 dark:bg-amber-950/20 rounded-xl">
-                              <h3 className="text-sm sm:text-base md:text-lg font-black uppercase tracking-widest text-amber-900 dark:text-amber-200 font-serif">
+                              <h3 className={`${typographyScale.part} font-black uppercase tracking-widest text-amber-900 dark:text-amber-200 font-serif`}>
                                 {v.partTitle}
                               </h3>
                             </div>
@@ -1081,7 +1121,7 @@ export default function BiblePage() {
                           {/* Section Title / Tiêu đề tiểu mục (VD: Người khôn tránh bạn xấu) */}
                           {v.sectionTitle && (
                             <div className="mt-6 mb-3 px-2">
-                              <p className="text-sm sm:text-base font-bold italic text-amber-800 dark:text-amber-300 font-serif tracking-wide border-l-3 border-amber-500 pl-3">
+                              <p className={`${typographyScale.section} font-bold italic text-amber-800 dark:text-amber-300 font-serif tracking-wide border-l-3 border-amber-500 pl-3`}>
                                 {v.sectionTitle}
                               </p>
                             </div>
@@ -1104,7 +1144,7 @@ export default function BiblePage() {
                                 : 'hover:bg-white/70 dark:hover:bg-stone-800/45'
                             }`}
                           >
-                            <div className={`font-mono text-[10px] sm:w-7 pt-1.5 sm:pt-2 select-none flex flex-col items-center gap-1.5 ${
+                            <div className={`font-mono ${typographyScale.verseNum} sm:w-7 pt-1.5 sm:pt-2 select-none flex flex-col items-center gap-1.5 ${
                               isSelected ? 'text-amber-800 dark:text-amber-300 font-bold' : 'text-stone-500 dark:text-stone-400'
                             }`}>
                               <span className={isBm ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded-full font-bold' : ''}>
