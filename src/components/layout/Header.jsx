@@ -80,9 +80,9 @@ export default function Header() {
           <motion.div
             whileHover={{ scale: 1.08, rotate: 2 }}
             whileTap={{ scale: 0.95 }}
-            className="w-11 h-11 rounded-[15px] overflow-hidden bg-[#600b14] ring-1 ring-amber-500/35 shadow-md shadow-amber-900/20 shrink-0"
+            className="w-11 h-11 rounded-[15px] overflow-hidden bg-[#600b14] ring-1 ring-amber-500/35 shadow-md shadow-amber-900/20 shrink-0 flex items-center justify-center"
           >
-            <img src={BRAND.logoPath} alt="" className="w-full h-full object-cover object-center scale-[1.12]" />
+            <img src={BRAND.logoPath} alt="" className="w-full h-full object-cover object-center" />
           </motion.div>
           <div className="min-w-0">
             <h1 className="font-extrabold text-[15px] sm:text-lg leading-tight tracking-tight text-stone-900 dark:text-stone-100 truncate">
