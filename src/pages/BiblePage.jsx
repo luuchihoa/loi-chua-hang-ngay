@@ -78,7 +78,7 @@ export default function BiblePage() {
     }
     const last = getLastReadingPosition();
     if (last && getBookById(last.bookId)) return last;
-    return { bookId: 'mat', chapter: 15, verse: 1 };
+    return { bookId: 'mat', chapter: 1, verse: 1 };
   };
 
   const initial = useMemo(getInitialState, []); // only once on mount
