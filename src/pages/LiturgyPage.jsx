@@ -108,7 +108,8 @@ export default function LiturgyPage() {
     toggleBookmark
   } = useLiturgy();
 
-  const [liturgyInfo, setLiturgyInfo] = useState(null);
+  const liturgyInfo = useMemo(() => getLiturgyInfo(selectedDate), [selectedDate]);
+  const info = liturgyInfo;
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   
@@ -575,9 +576,6 @@ export default function LiturgyPage() {
     const fetchFullReading = async () => {
       setLoading(true);
       try {
-        const info = getLiturgyInfo(selectedDate);
-        setLiturgyInfo(info);
-
         // ⚡ Kiểm tra Cache theo Ngày (chỉ dùng cache nếu người dùng không bấm kết quả tìm kiếm)
         if (!overrideLiturgyItem) {
           const cached = getCachedLiturgy(selectedDate, 'page');

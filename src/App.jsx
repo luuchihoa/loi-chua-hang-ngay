@@ -12,7 +12,7 @@ export default function App() {
     <LiturgyProvider>
       <Router>
         <ScrollToTop />
-        <div className="min-h-screen flex flex-col justify-between bg-stone-50 dark:bg-stone-950 transition-colors duration-300 relative">
+        <div className="min-h-screen flex flex-col justify-between bg-stone-50 dark:bg-stone-950 relative">
           <Header />
           <main className="flex-1 pt-16">
             <AppRoutes />
