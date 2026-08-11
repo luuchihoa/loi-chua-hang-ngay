@@ -1211,27 +1211,27 @@ export default function LiturgyPage() {
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://loichuamoinngay.com/#organization",
+              "@id": "https://loichuamoingay.org/#organization",
               "name": "Lời Chúa Mỗi Ngày",
-              "url": "https://loichuamoinngay.com",
-              "logo": "https://loichuamoinngay.com/logo_loi_chua_moi_ngay.png"
+              "url": "https://loichuamoingay.org",
+              "logo": "https://loichuamoingay.org/logo_loi_chua_moi_ngay.png"
             },
             {
               "@type": "BreadcrumbList",
-              "@id": "https://loichuamoinngay.com/liturgy#breadcrumb",
+              "@id": "https://loichuamoingay.org/liturgy#breadcrumb",
               "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoinngay.com" },
-                { "@type": "ListItem", "position": 2, "name": "Phụng Vụ Hàng Ngày", "item": "https://loichuamoinngay.com/liturgy" }
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" },
+                { "@type": "ListItem", "position": 2, "name": "Phụng Vụ Hàng Ngày", "item": "https://loichuamoingay.org/liturgy" }
               ]
             },
             {
               "@type": "Article",
-              "@id": "https://loichuamoinngay.com/liturgy#article",
+              "@id": "https://loichuamoingay.org/liturgy#article",
               "headline": liturgyInfo.title || `Lời Chúa Ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}`,
               "description": `Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}. Tin Mừng: ${content?.gospel_ref || ''}`,
               "inLanguage": "vi",
-              "publisher": { "@id": "https://loichuamoinngay.com/#organization" },
-              "mainEntityOfPage": "https://loichuamoinngay.com/liturgy"
+              "publisher": { "@id": "https://loichuamoingay.org/#organization" },
+              "mainEntityOfPage": "https://loichuamoingay.org/liturgy"
             }
           ]
         } : null}

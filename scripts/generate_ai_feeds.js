@@ -59,7 +59,7 @@ Trở nên như trẻ nhỏ không phải là ngây thơ khờ dại, mà là đ
     liturgicalColor: 'amber',
     gospelRef: 'Mt 18, 1-5.10.12-14',
     summary: 'Chúa Giêsu dạy chúng ta trở nên khiêm nhường như trẻ thơ để đón nhận Nước Trời với lòng tin kính đơn sơ.',
-    canonicalUrl: 'https://loichuamoinngay.com/liturgy'
+    canonicalUrl: 'https://loichuamoingay.org/liturgy'
   };
   fs.writeFileSync(path.join(apiDir, 'today.json'), JSON.stringify(jsonContent, null, 2), 'utf-8');
 
@@ -67,13 +67,13 @@ Trở nên như trẻ nhỏ không phải là ngây thơ khờ dại, mà là đ
   const jsonFeed = {
     version: 'https://jsonfeed.org/version/1.1',
     title: 'Lời Chúa Mỗi Ngày - Phụng Vụ Công Giáo',
-    home_page_url: 'https://loichuamoinngay.com',
-    feed_url: 'https://loichuamoinngay.com/feed.json',
+    home_page_url: 'https://loichuamoingay.org',
+    feed_url: 'https://loichuamoingay.org/feed.json',
     description: 'Kênh phát sóng bài đọc Phụng Vụ và Suy niệm Lời Chúa mỗi ngày.',
     items: [
       {
         id: `liturgy-${todayStr}`,
-        url: 'https://loichuamoinngay.com/liturgy',
+        url: 'https://loichuamoingay.org/liturgy',
         title: `Lời Chúa Phụng Vụ Ngày ${todayStr}`,
         summary: jsonContent.summary,
         content_text: markdownContent,

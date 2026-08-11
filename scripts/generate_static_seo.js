@@ -36,11 +36,11 @@ function createStaticPage(routePath, title, description, jsonLdSchema = null) {
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta property="og:title" content="${title} | Lời Chúa Mỗi Ngày" />
     <meta property="og:description" content="${description}" />
-    <meta property="og:url" content="https://loichuamoinngay.com${routePath}" />
-    <meta property="og:image" content="https://loichuamoinngay.com/logo_loi_chua_moi_ngay.png" />
+    <meta property="og:url" content="https://loichuamoingay.org${routePath}" />
+    <meta property="og:image" content="https://loichuamoingay.org/logo_loi_chua_moi_ngay.png" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Lời Chúa Mỗi Ngày" />
-    <link rel="canonical" href="https://loichuamoinngay.com${routePath}" />
+    <link rel="canonical" href="https://loichuamoingay.org${routePath}" />
   `;
 
   if (jsonLdSchema) {
@@ -73,7 +73,7 @@ allBooks.forEach((book) => {
       "name": book.name,
       "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
       "numberOfPages": book.chapters,
-      "url": `https://loichuamoinngay.com/bible/${book.id}`
+      "url": `https://loichuamoingay.org/bible/${book.id}`
     }
   );
 

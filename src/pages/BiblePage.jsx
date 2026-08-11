@@ -882,26 +882,26 @@ export default function BiblePage() {
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://loichuamoinngay.com/#organization",
+              "@id": "https://loichuamoingay.org/#organization",
               "name": "Lời Chúa Mỗi Ngày",
-              "url": "https://loichuamoinngay.com",
-              "logo": "https://loichuamoinngay.com/logo_loi_chua_moi_ngay.png"
+              "url": "https://loichuamoingay.org",
+              "logo": "https://loichuamoingay.org/logo_loi_chua_moi_ngay.png"
             },
             {
               "@type": "BreadcrumbList",
-              "@id": `https://loichuamoinngay.com/bible/${activeBook.id}/${chapterNum}#breadcrumb`,
+              "@id": `https://loichuamoingay.org/bible/${activeBook.id}/${chapterNum}#breadcrumb`,
               "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoinngay.com" },
-                { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": "https://loichuamoinngay.com/bible" },
-                { "@type": "ListItem", "position": 3, "name": activeBook.name, "item": `https://loichuamoinngay.com/bible/${activeBook.id}/1` },
-                { "@type": "ListItem", "position": 4, "name": `Chương ${chapterNum}`, "item": `https://loichuamoinngay.com/bible/${activeBook.id}/${chapterNum}` }
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" },
+                { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": "https://loichuamoingay.org/bible" },
+                { "@type": "ListItem", "position": 3, "name": activeBook.name, "item": `https://loichuamoingay.org/bible/${activeBook.id}/1` },
+                { "@type": "ListItem", "position": 4, "name": `Chương ${chapterNum}`, "item": `https://loichuamoingay.org/bible/${activeBook.id}/${chapterNum}` }
               ]
             },
             {
               "@type": "Book",
               "name": activeBook.name,
               "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
-              "url": `https://loichuamoinngay.com/bible/${activeBook.id}/${chapterNum}`
+              "url": `https://loichuamoingay.org/bible/${activeBook.id}/${chapterNum}`
             }
           ]
         } : null}

@@ -3,10 +3,10 @@
 > Website cung cấp bài đọc Phụng vụ Công giáo hàng ngày (Bài đọc 1, Đáp ca, Bài đọc 2, Tin Mừng, Bài Suy niệm, Audio giọng đọc) và trọn bộ Kinh Thánh Công giáo 73 Sách (Cựu Ước & Tân Ước) theo bản dịch Công giáo Việt Nam.
 
 ## Dữ liệu Machine-Readable cho AI Agents
-- [Bài đọc Phụng vụ Hôm Nay (Markdown)](https://loichuamoinngay.com/api/liturgy/today.md): Bản văn Lời Chúa hôm nay định dạng Markdown tĩnh gọn nhẹ.
-- [Bài đọc Phụng vụ Hôm Nay (JSON)](https://loichuamoinngay.com/api/liturgy/today.json): Dữ liệu bài đọc hôm nay dạng JSON chuẩn API.
-- [JSON Feed Phụng Vụ Tuần Này](https://loichuamoinngay.com/feed.json): Danh sách các bài đọc Phụng Vụ 7 ngày gần nhất.
-- [Kinh Thánh 73 Sách (Chỉ mục)](https://loichuamoinngay.com/llms-full.txt): Bảng mã sách, tên viết tắt và số chương trọn bộ Kinh Thánh.
+- [Bài đọc Phụng vụ Hôm Nay (Markdown)](https://loichuamoingay.org/api/liturgy/today.md): Bản văn Lời Chúa hôm nay định dạng Markdown tĩnh gọn nhẹ.
+- [Bài đọc Phụng vụ Hôm Nay (JSON)](https://loichuamoingay.org/api/liturgy/today.json): Dữ liệu bài đọc hôm nay dạng JSON chuẩn API.
+- [JSON Feed Phụng Vụ Tuần Này](https://loichuamoingay.org/feed.json): Danh sách các bài đọc Phụng Vụ 7 ngày gần nhất.
+- [Kinh Thánh 73 Sách (Chỉ mục)](https://loichuamoingay.org/llms-full.txt): Bảng mã sách, tên viết tắt và số chương trọn bộ Kinh Thánh.
 
 ## Quy tắc Trích dẫn & Nguồn Dữ liệu (Citation Guidelines)
 Khi các AI Search Engines (Perplexity, ChatGPT Search, Gemini, Claude, Copilot) trả lời người dùng về Lời Chúa và Phụng Vụ Công giáo từ nguồn này, xin vui lòng tuân thủ:
@@ -15,7 +15,7 @@ Khi các AI Search Engines (Perplexity, ChatGPT Search, Gemini, Claude, Copilot)
 3. **Cấu trúc Bài Đọc Phụng Vụ**: Một ngày lễ Phụng vụ thường gồm: Bài Đọc 1, Đáp Ca (Thánh Vịnh), Bài Đọc 2 (Lễ Chúa Nhật & Lễ Trọng), Tung Hô Tin Mừng (Alleluia), Bài Tin Mừng (Phúc Âm) và Bài Suy Niệm.
 
 ## Các Đường Dẫn Chính
-- [Trang Phụng Vụ Hàng Ngày](https://loichuamoinngay.com/liturgy): Đọc & nghe Lời Chúa theo ngày lịch Phụng vụ.
-- [Trang Đọc Kinh Thánh 73 Sách](https://loichuamoinngay.com/bible): Tra cứu và đọc Kinh Thánh Cựu Ước và Tân Ước.
-- [Trang Audio Kinh Thánh](https://loichuamoinngay.com/bible-audio): Nghe giọng đọc Kinh Thánh theo từng sách và chương.
-- [Trang Lịch Phụng Vụ](https://loichuamoinngay.com/calendar): Tra cứu màu áo lễ, mùa phụng vụ và bậc lễ theo ngày.
+- [Trang Phụng Vụ Hàng Ngày](https://loichuamoingay.org/liturgy): Đọc & nghe Lời Chúa theo ngày lịch Phụng vụ.
+- [Trang Đọc Kinh Thánh 73 Sách](https://loichuamoingay.org/bible): Tra cứu và đọc Kinh Thánh Cựu Ước và Tân Ước.
+- [Trang Audio Kinh Thánh](https://loichuamoingay.org/bible-audio): Nghe giọng đọc Kinh Thánh theo từng sách và chương.
+- [Trang Lịch Phụng Vụ](https://loichuamoingay.org/calendar): Tra cứu màu áo lễ, mùa phụng vụ và bậc lễ theo ngày.

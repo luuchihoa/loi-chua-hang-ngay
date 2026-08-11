@@ -38,5 +38,5 @@ User-agent: Amazonbot
 Allow: /
 
 # Sitemap và LLM Text Specification
-Sitemap: https://loichuamoinngay.com/sitemap.xml
-# LLM-text: https://loichuamoinngay.com/llms.txt
+Sitemap: https://loichuamoingay.org/sitemap.xml
+# LLM-text: https://loichuamoingay.org/llms.txt

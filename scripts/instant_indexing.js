@@ -2,14 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 
-const DOMAIN = 'https://loichuamoinngay.com';
+const DOMAIN = 'https://loichuamoingay.org';
 const INDEXNOW_KEY = '4c9d8a1b2e3f4051a67890bcdef12345';
 
 async function sendIndexNowPING(urls) {
   console.log('⚡ Đang phát thông báo PING Instant Indexing tới IndexNow API (Bing/Yandex)...');
   
   const payload = JSON.stringify({
-    host: 'loichuamoinngay.com',
+    host: 'loichuamoingay.org',
     key: INDEXNOW_KEY,
     keyLocation: `${DOMAIN}/${INDEXNOW_KEY}.txt`,
     urlList: urls
