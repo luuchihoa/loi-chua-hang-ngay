@@ -35,8 +35,8 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-amber-500 dark:border-amber-500',
     bgHover: 'hover:bg-amber-100/50 dark:hover:bg-amber-900/30',
-    btnBg: 'theme-invariant bg-amber-600 hover:bg-amber-700 text-white shadow-amber-900/20',
-    activeDay: 'theme-invariant bg-amber-600 text-white shadow-md shadow-amber-900/20 font-bold',
+    btnBg: 'theme-invariant bg-amber-700 hover:bg-amber-800 text-white shadow-amber-900/20',
+    activeDay: 'theme-invariant bg-amber-700 text-white shadow-md shadow-amber-900/20 font-bold',
     todayDay: 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100 font-bold',
     gospelCardBg: 'sm:bg-amber-50/40 sm:dark:bg-amber-950/20 sm:border-amber-400/50 sm:dark:border-amber-700/50',
     icon: 'text-amber-600 dark:text-amber-400',
@@ -50,8 +50,8 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-emerald-500 dark:border-emerald-500',
     bgHover: 'hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30',
-    btnBg: 'theme-invariant bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-900/20',
-    activeDay: 'theme-invariant bg-emerald-600 text-white shadow-md shadow-emerald-900/20 font-bold',
+    btnBg: 'theme-invariant bg-emerald-700 hover:bg-emerald-800 text-white shadow-emerald-900/20',
+    activeDay: 'theme-invariant bg-emerald-700 text-white shadow-md shadow-emerald-900/20 font-bold',
     todayDay: 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100 font-bold',
     gospelCardBg: 'sm:bg-emerald-50/40 sm:dark:bg-emerald-950/20 sm:border-emerald-400/50 sm:dark:border-emerald-700/50',
     icon: 'text-emerald-600 dark:text-emerald-400',
@@ -65,8 +65,8 @@ const LITURGICAL_THEMES = {
     headingText: 'text-stone-900 dark:text-stone-100',
     borderAccent: 'border-purple-500 dark:border-purple-500',
     bgHover: 'hover:bg-purple-100/50 dark:hover:bg-purple-900/30',
-    btnBg: 'theme-invariant bg-purple-600 hover:bg-purple-700 text-white shadow-purple-900/20',
-    activeDay: 'theme-invariant bg-purple-600 text-white shadow-md shadow-purple-900/20 font-bold',
+    btnBg: 'theme-invariant bg-purple-700 hover:bg-purple-800 text-white shadow-purple-900/20',
+    activeDay: 'theme-invariant bg-purple-700 text-white shadow-md shadow-purple-900/20 font-bold',
     todayDay: 'bg-purple-100 text-purple-900 dark:bg-purple-900/40 dark:text-purple-100 font-bold',
     gospelCardBg: 'sm:bg-purple-50/40 sm:dark:bg-purple-950/20 sm:border-purple-400/50 sm:dark:border-purple-700/50',
     icon: 'text-purple-600 dark:text-purple-400',
@@ -2117,7 +2117,7 @@ export default function LiturgyPage() {
                 aria-label="Kết quả tìm kiếm"
               >
                 {searchQuery.trim().length === 1 && (
-                  <div className="py-2 text-center text-[13px] text-stone-400 dark:text-stone-500">
+                  <div className="py-2 text-center text-[13px] text-stone-500 dark:text-stone-400">
                     Gõ thêm ít nhất 1 ký tự để bắt đầu tìm kiếm...
                   </div>
                 )}
@@ -2125,9 +2125,9 @@ export default function LiturgyPage() {
                 {searchQuery.trim().length < 2 ? (
                   <div className="space-y-5">
                     <div>
-                      <h4 className="text-[12px] font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500 mb-3 flex items-center gap-1.5">
+                      <p className="text-[12px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-3 flex items-center gap-1.5">
                         <Tag className="w-3.5 h-3.5 text-amber-500" /> Gợi Ý Tra Cứu Nhanh
-                      </h4>
+                      </p>
                       <div className="flex flex-wrap gap-2">
                         {QUICK_SEARCH_CHIPS.map((chip, idx) => (
                           <button

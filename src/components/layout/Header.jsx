@@ -76,13 +76,13 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         
         {/* Logo & Application Name */}
-        <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0 outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 rounded-xl" aria-label={`${BRAND.name} — Trang chủ`}>
+        <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group min-w-0 outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 rounded-xl" aria-label={`${BRAND.name} — ${BRAND.slogan}`}>
           <motion.div
             whileHover={{ scale: 1.08, rotate: 2 }}
             whileTap={{ scale: 0.95 }}
             className="w-11 h-11 rounded-[15px] overflow-hidden bg-[#600b14] ring-1 ring-amber-500/35 shadow-md shadow-amber-900/20 shrink-0 flex items-center justify-center"
           >
-            <img src={BRAND.logoPath} alt="Logo Lời Chúa Mỗi Ngày" width="44" height="44" loading="eager" decoding="async" className="w-full h-full object-contain p-1" />
+            <img src="/logo_48.png" srcSet="/logo_48.png 1x, /logo_96.png 2x" alt="Logo Lời Chúa Mỗi Ngày" width="44" height="44" loading="eager" decoding="async" className="w-full h-full object-contain p-1" />
           </motion.div>
           <div className="min-w-0">
             <span className="font-extrabold text-[15px] sm:text-lg leading-tight tracking-tight text-stone-900 dark:text-stone-100 truncate block">
