@@ -7,6 +7,21 @@ import { BRAND } from './src/config/brand.js';
 
 export default defineConfig({
   base: '/',
+  build: {
+    target: 'esnext',
+    cssCodeSplit: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-query': ['@tanstack/react-query'],
+          'vendor-supabase': ['@supabase/supabase-js'],
+          'vendor-ui': ['framer-motion', 'lucide-react', 'clsx', 'tailwind-merge'],
+          'vendor-virtuoso': ['react-virtuoso']
+        }
+      }
+    }
+  },
   plugins: [
     react(), 
     tailwindcss(),

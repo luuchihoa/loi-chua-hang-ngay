@@ -4,35 +4,35 @@
       "id": "st",
       "name": "Sáng Thế",
       "short": "St",
-      "category": "Ngũ Kinh",
+      "category": "Ngũ Thư",
       "chapters": 50
     },
     {
       "id": "xh",
       "name": "Xuất Hành",
       "short": "Xh",
-      "category": "Ngũ Kinh",
+      "category": "Ngũ Thư",
       "chapters": 40
     },
     {
       "id": "lv",
       "name": "Lê-vi",
       "short": "Lv",
-      "category": "Ngũ Kinh",
+      "category": "Ngũ Thư",
       "chapters": 27
     },
     {
       "id": "ds",
       "name": "Dân Số",
       "short": "Ds",
-      "category": "Ngũ Kinh",
+      "category": "Ngũ Thư",
       "chapters": 36
     },
     {
       "id": "dnl",
       "name": "Đệ Nhị Luật",
       "short": "Đnl",
-      "category": "Ngũ Kinh",
+      "category": "Ngũ Thư",
       "chapters": 34
     },
     {
@@ -151,49 +151,49 @@
       "id": "g",
       "name": "Gióp",
       "short": "G",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 42
     },
     {
       "id": "tv",
       "name": "Thánh Vịnh",
       "short": "Tv",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 150
     },
     {
       "id": "cn",
       "name": "Châm Ngôn",
       "short": "Cn",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 31
     },
     {
       "id": "gv",
       "name": "Giảng Viên",
       "short": "Gv",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 12
     },
     {
       "id": "dc",
       "name": "Diễm Ca",
       "short": "Dc",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 8
     },
     {
       "id": "kn",
       "name": "Khôn Ngoan",
       "short": "Kn",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 19
     },
     {
       "id": "hc",
       "name": "Huấn Ca",
       "short": "Hc",
-      "category": "Giáo Lý & Thơ Văn",
+      "category": "Giáo Huấn",
       "chapters": 51
     },
     {
@@ -382,7 +382,7 @@
     },
     {
       "id": "gl",
-      "name": "Ga-la-ti",
+      "name": "Ga-lát",
       "short": "Gl",
       "category": "Thư Tông Đồ",
       "chapters": 6

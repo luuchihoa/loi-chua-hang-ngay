@@ -28,6 +28,7 @@ import { getAudioApiBase } from '../utils/audioLookup.js';
 import { loadAudioIndex, hasBibleChapterAudio, useAudioIndex } from '../utils/audioIndexService.js';
 import { getLiturgyInfo, getLiturgicalColor } from '../utils/liturgyCalendar.js';
 import { supabase } from '../lib/supabase.js';
+import SEO from '../components/seo/SEO.jsx';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
 import VerseActionBar from '../components/reader/VerseActionBar.jsx';
 import { useLiturgy } from '../context/LiturgyContext.jsx';
@@ -873,6 +874,38 @@ export default function BiblePage() {
   // ─────────────────────────────────────────────────────────────────
   return (
     <div className={`bible-reader-page min-h-screen flex flex-col md:flex-row pb-[calc(7rem+env(safe-area-inset-bottom,0px))] md:pb-0 ${getThemeClass()}`}>
+      <SEO 
+        title={`Sách ${activeBook?.name || ''} - Chương ${chapterNum}`}
+        description={`Đọc Kinh Thánh Công giáo: Sách ${activeBook?.name || ''} chương ${chapterNum}. Trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.`}
+        jsonLd={activeBook ? {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://loichuamoinngay.com/#organization",
+              "name": "Lời Chúa Mỗi Ngày",
+              "url": "https://loichuamoinngay.com",
+              "logo": "https://loichuamoinngay.com/logo_loi_chua_moi_ngay.png"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": `https://loichuamoinngay.com/bible/${activeBook.id}/${chapterNum}#breadcrumb`,
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoinngay.com" },
+                { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": "https://loichuamoinngay.com/bible" },
+                { "@type": "ListItem", "position": 3, "name": activeBook.name, "item": `https://loichuamoinngay.com/bible/${activeBook.id}/1` },
+                { "@type": "ListItem", "position": 4, "name": `Chương ${chapterNum}`, "item": `https://loichuamoinngay.com/bible/${activeBook.id}/${chapterNum}` }
+              ]
+            },
+            {
+              "@type": "Book",
+              "name": activeBook.name,
+              "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
+              "url": `https://loichuamoinngay.com/bible/${activeBook.id}/${chapterNum}`
+            }
+          ]
+        } : null}
+      />
 
       {/* Desktop Sidebar */}
       <aside aria-label="Mục lục Kinh Thánh" className="hidden md:block w-[240px] lg:w-[260px] h-[calc(100vh-4rem)] sticky top-16 shrink-0 border-r border-stone-200 dark:border-stone-800">

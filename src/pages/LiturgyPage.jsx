@@ -16,6 +16,7 @@ import WeekRibbon from '../features/liturgy/components/WeekRibbon.jsx';
 import DatePicker from '../features/liturgy/components/DatePicker.jsx';
 import SearchResultItem from '../features/liturgy/components/SearchResultItem.jsx';
 import { LITURGICAL_SYNONYMS, QUICK_SEARCH_CHIPS } from '../features/liturgy/config/search.js';
+import SEO from '../components/seo/SEO.jsx';
 
 function getLiturgicalCycles(year) {
   const sundayCycle = ["C", "A", "B"][year % 3];
@@ -1125,7 +1126,7 @@ export default function LiturgyPage() {
         if (chapterVerseMatch) {
           const [fullMatch, chap, verse] = chapterVerseMatch;
           hasStartNumber = true;
-          prefixHtml = `<span class="inline-flex items-baseline gap-1 ${theme.supColor} mr-2 select-none"><span class="text-[1em] font-sans font-normal leading-none">${chap}</span><sup class="text-[0.68em] font-sans font-normal leading-none">${verse}</sup></span>`;
+          prefixHtml = `<span class="inline-flex items-baseline gap-1 ${theme.supColor} mr-2 select-none"><span class="text-[0.9em] font-sans font-normal leading-none">${chap}</span><sup class="text-[0.5em] font-sans font-normal leading-none">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         } else {
           // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "21b Hồi ấy...", "5 Đức Giê-su...")
@@ -1133,7 +1134,7 @@ export default function LiturgyPage() {
           if (singleVerseMatch) {
             const [fullMatch, verse] = singleVerseMatch;
             hasStartNumber = true;
-            prefixHtml = `<sup class="inline-block font-normal ${theme.supColor} text-[0.68em] font-sans px-1 mr-1.5 select-none">${verse}</sup>`;
+            prefixHtml = `<sup class="inline-block font-normal ${theme.supColor} text-[0.5em] font-sans px-1 mr-1.5 select-none">${verse}</sup>`;
             restOfLine = restOfLine.slice(fullMatch.length).trimStart();
           }
         }
@@ -1163,7 +1164,7 @@ export default function LiturgyPage() {
           // Đổi màu số câu ở giữa dòng
           refrainContent = refrainContent.replace(
             /(\d{1,4}[a-d]{0,4})/g,
-            `<sup class="font-normal ${theme.supColor} text-[10px] font-sans ml-1 select-none">$1</sup>`
+            `<sup class="font-normal ${theme.supColor} text-[0.5em] font-sans ml-1 select-none">$1</sup>`
           );
           refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
 
@@ -1180,7 +1181,7 @@ export default function LiturgyPage() {
         // Dòng văn bản bình thường (Không phải câu đáp)
         restOfLine = restOfLine.replace(
           /(\d{1,4}[a-d]{0,4})/g,
-          `<sup class="font-normal ${theme.supColor} text-[10px] font-sans ml-1 select-none">$1</sup>`
+          `<sup class="font-normal ${theme.supColor} text-[0.5em] font-sans ml-1 select-none">$1</sup>`
         );
         restOfLine = restOfLine.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
         restOfLine = restOfLine.replace(
@@ -1202,6 +1203,39 @@ export default function LiturgyPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFCF9] dark:bg-[#12100E] text-stone-800 dark:text-stone-200 transition-colors duration-500 fade-in-up pb-32 overflow-x-hidden">
+      <SEO 
+        title={liturgyInfo?.title ? `${liturgyInfo.title} (${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''})` : `Lời Chúa Ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}`}
+        description={`Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}. Tin Mừng: ${content?.gospel_ref || ''}`}
+        jsonLd={liturgyInfo ? {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://loichuamoinngay.com/#organization",
+              "name": "Lời Chúa Mỗi Ngày",
+              "url": "https://loichuamoinngay.com",
+              "logo": "https://loichuamoinngay.com/logo_loi_chua_moi_ngay.png"
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://loichuamoinngay.com/liturgy#breadcrumb",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoinngay.com" },
+                { "@type": "ListItem", "position": 2, "name": "Phụng Vụ Hàng Ngày", "item": "https://loichuamoinngay.com/liturgy" }
+              ]
+            },
+            {
+              "@type": "Article",
+              "@id": "https://loichuamoinngay.com/liturgy#article",
+              "headline": liturgyInfo.title || `Lời Chúa Ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}`,
+              "description": `Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}. Tin Mừng: ${content?.gospel_ref || ''}`,
+              "inLanguage": "vi",
+              "publisher": { "@id": "https://loichuamoinngay.com/#organization" },
+              "mainEntityOfPage": "https://loichuamoinngay.com/liturgy"
+            }
+          ]
+        } : null}
+      />
       {/* Dynamic Background Mesh Grid */}
       <div className="fixed inset-0 w-full h-screen bg-[radial-gradient(circle_at_50%_-10%,rgba(245,158,11,.10),transparent_32%),linear-gradient(to_right,#8881_1px,transparent_1px),linear-gradient(to_bottom,#8881_1px,transparent_1px)] bg-[size:auto,32px_32px,32px_32px] pointer-events-none z-0" />
       

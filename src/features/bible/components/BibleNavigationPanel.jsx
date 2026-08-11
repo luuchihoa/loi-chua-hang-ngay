@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BookOpen, CalendarDays, ChevronRight, ChevronUp, ChevronDown, Search, Sparkles, X } from 'lucide-react';
 import { getBookById } from '../../../utils/bibleService.js';
 import { parseBibleReference } from '../utils/referenceParser.js';
@@ -213,7 +214,9 @@ function BibleNavigationPanel({
                       </span>
                     </div>
                   )}
-                  <button
+                  <Link
+                    key={book.id}
+                    to={`/bible/${book.id}/1`}
                     ref={isActive ? activeBookButtonRef : null}
                     onClick={() => handleSelectBook(book.id)}
                     title={book.name}
@@ -235,7 +238,7 @@ function BibleNavigationPanel({
                       <span className={`block truncate text-[9px] sm:text-[10px] font-semibold leading-snug ${isActive ? 'text-amber-50/90' : 'text-stone-400'}`}>{book.category}</span>
                     </span>
                     <ChevronRight size={13} className={`shrink-0 transition-all ${isActive ? 'text-white/80' : 'translate-x-1 text-stone-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 dark:text-stone-600'}`} />
-                  </button>
+                  </Link>
                 </React.Fragment>
               );
             })
@@ -263,7 +266,7 @@ function BibleNavigationPanel({
                 Sách {activeBook.name} · Chương {chapterNum}/{activeBook.chapters}
               </span>
             </span>
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="md:hidden flex items-center gap-1.5 shrink-0">
               <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-extrabold text-amber-700 dark:bg-amber-500/20 dark:text-amber-300">
                 {isChapterGridOpen ? 'Gập lại' : 'Đổi chương'}
               </span>
@@ -288,8 +291,9 @@ function BibleNavigationPanel({
           >
             <div className="grid grid-cols-5 xs:grid-cols-6 sm:grid-cols-7 md:grid-cols-5 gap-1.5 p-0.5">
               {Array.from({ length: activeBook.chapters }, (_, i) => i + 1).map((ch) => (
-                <button
+                <Link
                   key={ch}
+                  to={`/bible/${activeBook.id}/${ch}`}
                   ref={chapterNum === ch ? activeChapterButtonRef : null}
                   onClick={() => {
                     setChapterNum(ch);
@@ -306,7 +310,7 @@ function BibleNavigationPanel({
                   }`}
                 >
                   {ch}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
