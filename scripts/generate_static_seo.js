@@ -48,6 +48,18 @@ function createStaticPage(routePath, title, description, jsonLdSchema = null) {
   }
 
   html = html.replace(/<meta name="description" content=".*?" \/>/, metaTags);
+
+  // Chèn nội dung Static HTML Skeleton vào trong <div id="root"></div> giúp Googlebot và Lighthouse render văn bản ngay lập tức
+  const staticSkeleton = `
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 p-4">
+      <header className="max-w-4xl mx-auto py-6 border-b border-stone-200 dark:border-stone-800">
+        <h1 className="text-2xl md:text-3xl font-serif font-bold text-amber-900 dark:text-amber-100">${title}</h1>
+        <p className="text-sm text-stone-600 dark:text-stone-400 mt-2">${description}</p>
+      </header>
+    </div>
+  `;
+  html = html.replace('<div id="root"></div>', `<div id="root">${staticSkeleton}</div>`);
+
   fs.writeFileSync(path.join(targetDir, 'index.html'), html, 'utf8');
 }
 
