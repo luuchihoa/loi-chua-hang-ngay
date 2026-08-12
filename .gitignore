@@ -34,3 +34,8 @@ dist-ssr
 public/audio/
 **/*.mp3
 **/*.wav
+
+# Scratch temp files
+scratch/
+
+

@@ -44,6 +44,7 @@ export default function MobileNavDock() {
   ];
 
   const dockRef = useRef(null);
+  const navElRef = useRef(null); // ref riêng cho thẻ <nav> ngoài cùng, dùng để đo kích thước thật
   const [dockActiveRect, setDockActiveRect] = useState({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
@@ -59,8 +60,60 @@ export default function MobileNavDock() {
     }
   }, [location.pathname]);
 
+  // ── Publish chiều cao thật của dock ra CSS variable toàn cục ─────────────
+  // Thay vì để các component khác (LiturgyPage, hoặc bất kỳ thanh nổi nào
+  // trong tương lai) phải tự đoán breakpoint nào dock biến mất, ta đo trực
+  // tiếp khoảng trống dock đang chiếm (kể cả khi ẩn hẳn do `md:hidden`) và
+  // publish thành `--mobile-dock-h`. Mọi thanh nổi khác chỉ cần cộng thêm
+  // biến này vào offset đáy của chính nó, luôn đúng bất kể breakpoint nào
+  // đang dùng ở đây, kể cả khi ta đổi `md:hidden` thành `lg:hidden` sau này.
+  useEffect(() => {
+    const updateDockHeight = () => {
+      const el = navElRef.current;
+      if (!el) return;
+
+      // `md:hidden` set display:none khi ẩn — lúc đó không chiếm chỗ, trả về 0
+      const isHidden = window.getComputedStyle(el).display === 'none';
+      if (isHidden) {
+        document.documentElement.style.setProperty('--mobile-dock-h', '0px');
+        return;
+      }
+
+      // Khoảng cách từ mép trên của dock tới đáy viewport = đúng phần không
+      // gian dock đang "chiếm dụng" ở đáy màn hình, đã bao gồm offset
+      // `bottom: 14px + safe-area` và chiều cao thật của dock.
+      const rect = el.getBoundingClientRect();
+      const spaceFromBottom = Math.max(0, window.innerHeight - rect.top);
+      document.documentElement.style.setProperty('--mobile-dock-h', `${spaceFromBottom}px`);
+    };
+
+    updateDockHeight();
+
+    window.addEventListener('resize', updateDockHeight);
+    window.addEventListener('orientationchange', updateDockHeight);
+
+    // ResizeObserver bắt các thay đổi kích thước không đến từ resize cửa sổ,
+    // ví dụ khi badge số lượng bookmark đổi từ 1 chữ số sang "9+" làm dock
+    // co giãn nhẹ, hoặc font hệ thống thay đổi.
+    let ro;
+    if (typeof ResizeObserver !== 'undefined' && navElRef.current) {
+      ro = new ResizeObserver(updateDockHeight);
+      ro.observe(navElRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateDockHeight);
+      window.removeEventListener('orientationchange', updateDockHeight);
+      ro?.disconnect();
+      // Dọn biến khi dock unmount, tránh các thanh nổi khác cộng nhầm
+      // khoảng trống của một dock không còn tồn tại trên DOM.
+      document.documentElement.style.setProperty('--mobile-dock-h', '0px');
+    };
+  }, []);
+
   const dockContent = (
     <nav 
+      ref={navElRef}
       data-ui-layer="mobile-dock" 
       aria-label="Điều hướng chính" 
       className="fixed left-1/2 -translate-x-1/2 z-[45] w-[calc(100%-24px)] max-w-md block md:hidden pointer-events-auto"

@@ -720,61 +720,60 @@ export default function BibleAudioPage() {
                   </div>
 
                   <div
-                    ref={chapterScrollRef}
-                    className="grid grid-cols-6 xs:grid-cols-7 sm:grid-cols-9 md:grid-cols-11 gap-2 max-h-72 overflow-y-auto pr-1"
-                    role="group"
-                    aria-label={`Chương sách ${selectedBook.name}`}
-                  >
-                    {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
-                      const filename = getBibleAudioFilename(selectedBook.id, chapNum);
-                      const trackId = `bible_${selectedBook.id}_${chapNum}`;
-                      const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
-                      const isPlayingThisChap = Boolean(
-                        currentTrack &&
-                          (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`))
-                      );
-                      const isLoadingThisChap = loadingTrackId === trackId;
+  ref={chapterScrollRef}
+  className="grid gap-2.5 sm:gap-2 max-h-72 overflow-y-auto pr-1"
+  style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(2.75rem, 1fr))', gridAutoRows: '2.75rem' }}
+  role="group"
+  aria-label={`Chương sách ${selectedBook.name}`}
+  aria-busy={Boolean(loadingTrackId)}
+>
+  {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((chapNum) => {
+    const filename = getBibleAudioFilename(selectedBook.id, chapNum);
+    const trackId = `bible_${selectedBook.id}_${chapNum}`;
+    const isMp3Available = hasBibleChapterAudio(selectedBook.id, chapNum);
+    const isPlayingThisChap = Boolean(
+      currentTrack && (currentTrack.trackId === trackId || currentTrack.url?.includes(`/${filename}`))
+    );
+    const isLoadingThisChap = loadingTrackId === trackId;
+    const isBlockedByOtherLoad = Boolean(loadingTrackId) && !isLoadingThisChap;
 
-                      return (
-                        <button
-                          key={chapNum}
-                          type="button"
-                          disabled={isLoadingThisChap}
-                          aria-label={
-                            isMp3Available
-                              ? `Phát ${selectedBook.name} chương ${chapNum}`
-                              : `Chương ${chapNum} chưa có bản thu`
-                          }
-                          onClick={() => handlePlayBibleChapter(chapNum)}
-                          className={`group relative aspect-square flex flex-col items-center justify-center gap-0.5 rounded-xl font-mono font-bold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 overflow-hidden ${
-                            isPlayingThisChap
-                              ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-lg scale-105 ring-2 ${activeTabMeta?.ringColor}`
-                              : isMp3Available
-                              ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/60 hover:scale-105 hover:shadow-md hover:bg-amber-100 dark:hover:bg-amber-900/50'
-                              : 'bg-stone-50 dark:bg-stone-800/20 text-stone-300 dark:text-stone-600 border border-stone-150/50 dark:border-stone-700/20'
-                          }`}
-                        >
-                          {isPlayingThisChap && (
-                            <span className="absolute inset-0 rounded-xl ring-4 ring-amber-400/25 animate-ping pointer-events-none" />
-                          )}
-                          <span className="text-xs leading-none">
-                            {isLoadingThisChap ? (
-                              <Loader2 size={14} className="animate-spin" />
-                            ) : isPlayingThisChap ? (
-                              <Radio size={14} className="animate-pulse" />
-                            ) : isMp3Available ? (
-                              <span className="font-extrabold">{chapNum}</span>
-                            ) : (
-                              <span className="flex flex-col items-center gap-0.5">
-                                <Lock size={9} className="opacity-60" />
-                                <span className="opacity-50">{chapNum}</span>
-                              </span>
-                            )}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
+    return (
+      <button
+        key={chapNum}
+        type="button"
+        disabled={isLoadingThisChap || isBlockedByOtherLoad}
+        aria-label={
+          isMp3Available
+            ? `Phát ${selectedBook.name} chương ${chapNum}`
+            : `Chương ${chapNum} chưa có bản thu`
+        }
+        onClick={() => handlePlayBibleChapter(chapNum)}
+        className={`group relative flex flex-col items-center justify-center gap-0.5 rounded-xl font-mono font-bold transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+          isPlayingThisChap
+            ? `bg-gradient-to-br ${activeTabMeta?.gradient} text-white shadow-md`
+            : isMp3Available
+            ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/60 hover:bg-amber-100 dark:hover:bg-amber-900/50 active:scale-95'
+            : 'bg-stone-50 dark:bg-stone-800/20 text-stone-300 dark:text-stone-600 border border-stone-150/50 dark:border-stone-700/20'
+        }`}
+      >
+        <span className="text-xs leading-none">
+          {isLoadingThisChap ? (
+            <Loader2 size={14} className="animate-spin" />
+          ) : isPlayingThisChap ? (
+            <Radio size={14} className="animate-pulse" />
+          ) : isMp3Available ? (
+            <span className="font-extrabold">{chapNum}</span>
+          ) : (
+            <span className="flex flex-col items-center gap-0.5">
+              <Lock size={9} className="opacity-60" />
+              <span className="opacity-50">{chapNum}</span>
+            </span>
+          )}
+        </span>
+      </button>
+    );
+  })}
+</div>
                 </div>
 
                 {/* Desktop spacer */}

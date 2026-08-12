@@ -706,7 +706,7 @@ export default function BiblePage() {
   // trái nội dung luôn thẳng hàng tuyệt đối.
   const VERSE_INDENT_CLASS = 'w-4 sm:w-5 shrink-0';
   const VERSE_NUMBER_CLASS =
-    'font-mono font-bold text-amber-700 dark:text-amber-400 select-none';
+    'font-mono text-amber-700 dark:text-amber-400 select-none';
 
   const renderFullChapterContent = (rawContent) => {
     if (!rawContent) return null;
@@ -758,7 +758,7 @@ export default function BiblePage() {
               return (
                 <sup
                   key={i}
-                  className={`${VERSE_NUMBER_CLASS} text-[0.65em] mr-0.5 ml-0.5`}
+                  className={`${VERSE_NUMBER_CLASS} text-[0.6em] mr-0.5 ml-0.5`}
                 >
                   {markerMatch[1]}
                 </sup>
@@ -781,7 +781,7 @@ export default function BiblePage() {
               className={`${getLineHeightClass()} text-stone-800 dark:text-stone-200 ${getFontSizeClass()} mb-3 sm:mb-4 text-left sm:text-justify leading-relaxed transition-colors`}
             >
               {leadingMatch ? (
-                <sup className={`${VERSE_NUMBER_CLASS} ${VERSE_INDENT_CLASS} inline-block text-[0.7em] text-left mr-1`}>
+                <sup className={`${VERSE_NUMBER_CLASS} ${VERSE_INDENT_CLASS} inline-block text-[0.6em] text-left mr-1`}>
                   {leadingMatch[1]}
                 </sup>
               ) : (
@@ -819,7 +819,7 @@ export default function BiblePage() {
         {footnotes.map((fn, idx) => (
           <span key={idx} className="relative inline-block">
             <sup
-              className="text-[0.7em] text-amber-600 dark:text-amber-400 font-bold ml-0.5 cursor-pointer inline-flex items-center justify-center min-w-[28px] min-h-[28px] px-1 py-0.5 rounded-md hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
+              className="text-[0.6em] text-amber-600 dark:text-amber-400 ml-0.5 cursor-pointer inline-flex items-center justify-center min-w-[28px] min-h-[28px] px-1 py-0.5 rounded-md hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
               onClick={(e) => { e.stopPropagation(); setActiveFootnote(activeFootnote === fn.marker ? null : fn.marker); }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {

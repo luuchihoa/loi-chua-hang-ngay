@@ -1124,7 +1124,7 @@ export default function LiturgyPage() {
         if (chapterVerseMatch) {
           const [fullMatch, chap, verse] = chapterVerseMatch;
           hasStartNumber = true;
-          prefixHtml = `<span class="inline-flex items-baseline gap-1 ${theme.supColor} mr-2 select-none"><span class="text-[0.9em] font-sans font-normal leading-none">${chap}</span><sup class="text-[0.5em] font-sans font-normal leading-none">${verse}</sup></span>`;
+          prefixHtml = `<span class="inline-flex items-baseline gap-1 ${theme.supColor} mr-2 select-none"><span class="text-[0.9em] font-sans font-normal leading-none">${chap}</span><sup class="text-[0.6em] font-sans font-normal leading-none">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         } else {
           // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "21b Hồi ấy...", "5 Đức Giê-su...")
@@ -1132,7 +1132,7 @@ export default function LiturgyPage() {
           if (singleVerseMatch) {
             const [fullMatch, verse] = singleVerseMatch;
             hasStartNumber = true;
-            prefixHtml = `<sup class="inline-block font-normal ${theme.supColor} text-[0.5em] font-sans px-1 mr-1.5 select-none">${verse}</sup>`;
+            prefixHtml = `<sup class="inline-block font-normal ${theme.supColor} text-[0.6em] font-sans px-1 mr-1.5 select-none">${verse}</sup>`;
             restOfLine = restOfLine.slice(fullMatch.length).trimStart();
           }
         }
@@ -1162,7 +1162,7 @@ export default function LiturgyPage() {
           // Đổi màu số câu ở giữa dòng
           refrainContent = refrainContent.replace(
             /(\d{1,4}[a-d]{0,4})/g,
-            `<sup class="font-normal ${theme.supColor} text-[0.5em] font-sans ml-1 select-none">$1</sup>`
+            `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
           );
           refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
 
@@ -1179,7 +1179,7 @@ export default function LiturgyPage() {
         // Dòng văn bản bình thường (Không phải câu đáp)
         restOfLine = restOfLine.replace(
           /(\d{1,4}[a-d]{0,4})/g,
-          `<sup class="font-normal ${theme.supColor} text-[0.5em] font-sans ml-1 select-none">$1</sup>`
+          `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
         );
         restOfLine = restOfLine.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
         restOfLine = restOfLine.replace(
@@ -1991,7 +1991,10 @@ export default function LiturgyPage() {
 
       {/* Sticky Bottom Quick Navigation Bar */}
       {activeContent && (
-        <div className="fixed bottom-20 sm:bottom-5 left-1/2 -translate-x-1/2 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-xl border border-stone-200/90 dark:border-stone-800/90 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-2xl flex items-center gap-1 sm:gap-2 text-[11px] sm:text-[12px] font-bold text-stone-600 dark:text-stone-300 max-w-[94vw] overflow-x-auto no-scrollbar">
+        <div
+          className="fixed left-1/2 -translate-x-1/2 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-xl border border-stone-200/90 dark:border-stone-800/90 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-2xl flex items-center gap-1 sm:gap-2 text-[11px] sm:text-[12px] font-bold text-stone-600 dark:text-stone-300 max-w-[94vw] overflow-x-auto no-scrollbar"
+          style={{ bottom: 'max(1.25rem, calc(var(--mobile-dock-h, 0px) + 0.75rem))' }}
+        >
           {processionReadings.length > 0 && (
             <button onClick={() => scrollToSection('sec-procession')} className="px-2 sm:px-2.5 py-1 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors whitespace-nowrap text-emerald-700 dark:text-emerald-400 font-bold">
               Kiệu Lá
