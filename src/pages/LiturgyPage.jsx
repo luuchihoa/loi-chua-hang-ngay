@@ -656,7 +656,7 @@ export default function LiturgyPage() {
 
             const merged = {};
             const allFields = [
-              'title', 'quote', 
+              'title', 'mass_title', 'quote', 
               'r1_ref', 'r1_quote', 'r1_intro', 'r1_content', 
               'psalm_ref', 'psalm_content', 
               'r2_ref', 'r2_quote', 'r2_intro', 'r2_content', 
@@ -1120,15 +1120,15 @@ export default function LiturgyPage() {
         let hasStartNumber = false;
 
         // TH1: Đầu dòng có cả Số Chương + Số Câu (Ví dụ: "11 21b Hồi ấy...", "2 1 Khi ấy...")
-        const chapterVerseMatch = restOfLine.match(/^(\d{1,3})\s+(\d{1,3}[a-d]{0,4})(?=\s*[\p{L}"“'‘(]|$)/u);
+        const chapterVerseMatch = restOfLine.match(/^(\d{1,3})\s+(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
         if (chapterVerseMatch) {
           const [fullMatch, chap, verse] = chapterVerseMatch;
           hasStartNumber = true;
           prefixHtml = `<span class="inline-flex items-baseline gap-1 ${theme.supColor} mr-2 select-none"><span class="text-[0.9em] font-sans font-normal leading-none">${chap}</span><sup class="text-[0.6em] font-sans font-normal leading-none">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         } else {
-          // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "21b Hồi ấy...", "5 Đức Giê-su...")
-          const singleVerseMatch = restOfLine.match(/^(\d{1,3}[a-d]{0,4})(?=\s*[\p{L}"“'‘(]|$)/u);
+          // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "18bcde Này...", "21b Hồi ấy...", "5 Đức Giê-su...")
+          const singleVerseMatch = restOfLine.match(/^(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
           if (singleVerseMatch) {
             const [fullMatch, verse] = singleVerseMatch;
             hasStartNumber = true;
@@ -1147,7 +1147,7 @@ export default function LiturgyPage() {
           while (i < rawLines.length) {
             const nextLine = rawLines[i];
             // Dừng gom dòng nếu gặp số câu ở đầu dòng hoặc gặp chữ Đ. mới
-            const isNextStartNum = /^\d{1,3}[a-d]{0,4}/.test(nextLine);
+            const isNextStartNum = /^\d{1,3}[a-h]{0,6}/.test(nextLine);
             const isNextRefrain = /^(Đ\.|Đ:|Đ\/|Đáp:)/i.test(nextLine);
             if (isNextStartNum || isNextRefrain) break;
 
@@ -1161,7 +1161,7 @@ export default function LiturgyPage() {
 
           // Đổi màu số câu ở giữa dòng
           refrainContent = refrainContent.replace(
-            /(\d{1,4}[a-d]{0,4})/g,
+            /(\d{1,4}[a-h]{0,6})/g,
             `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
           );
           refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
@@ -1178,7 +1178,7 @@ export default function LiturgyPage() {
 
         // Dòng văn bản bình thường (Không phải câu đáp)
         restOfLine = restOfLine.replace(
-          /(\d{1,4}[a-d]{0,4})/g,
+          /(\d{1,4}[a-h]{0,6})/g,
           `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
         );
         restOfLine = restOfLine.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
@@ -1531,6 +1531,14 @@ export default function LiturgyPage() {
                         </h2>
                       );
                     })}
+
+                  {/* 4. Hàng Mass Title (Tên Thánh Lễ: Lễ Vọng, Lễ Ban Ngày...) */}
+                  {activeContent.mass_title && (
+                    <div className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[12px] sm:text-[13.5px] font-bold font-sans bg-amber-100/90 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border border-amber-300/70 dark:border-amber-700/70 shadow-sm animate-in fade-in duration-200">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                      <span>{activeContent.mass_title}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -1609,7 +1617,7 @@ export default function LiturgyPage() {
                           : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700'
                       }`}
                     >
-                      {content?.title.split('\n')[1].trim() || "Thánh Lễ Chính"}
+                      {content?.mass_title || content?.title?.split('\n')?.[1]?.trim() || content?.title || "Thánh Lễ Chính"}
                     </button>
 
                     {fullMassReadings.map((m, idx) => (

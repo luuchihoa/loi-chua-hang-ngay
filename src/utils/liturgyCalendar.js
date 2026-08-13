@@ -69,6 +69,7 @@ const FIXED_FEASTS = {
   "0501": { key: "feast_05_01",  name: "Thánh Giu-se thợ", rank: 14 },
   "0502": { key: "feast_05_02",  name: "Thánh Athanaxiô, giám mục, tiến sĩ Hội Thánh", rank: 13 },
   "0503": { key: "feast_05_03",  name: "Lễ Thánh Philípphê và thánh Giacôbê, tông đồ", rank: 10 },
+  "0513": { key: "feast_05_13",  name: "Đức Mẹ Fa-ti-ma", rank: 14 },
   "0514": { key: "feast_05_14",  name: "Lễ Thánh Matthia tông đồ", rank: 10 },
   "0526": { key: "feast_05_26",  name: "Thánh Philípphê Nêri, linh mục", rank: 13 },
   "0531": { key: "feast_05_31",  name: "Lễ Đức Mẹ thăm viếng bà Êlisabét", rank: 10 },
