@@ -632,9 +632,17 @@ export default function LiturgyPage() {
         const mNum = String(selectedDate.getMonth() + 1);
         const dNum = String(selectedDate.getDate());
 
+        const is30TetDate = (
+          info.key === 'feast_tat_nien' || 
+          info.key === 'feast_giao_thua' || 
+          (info.displayName && (info.displayName.includes('Tất Niên') || info.displayName.includes('Giao Thừa')))
+        );
+
         const keysToFetch = Array.from(new Set([
           overrideLiturgyItem?.liturgy_key,
           info.key,
+          is30TetDate ? 'feast_tat_nien' : null,
+          is30TetDate ? 'feast_giao_thua' : null,
           `feast_${mPadded}_${dPadded}`,
           `feast_${mNum}_${dNum}`,
           `fixed_${mPadded}_${dPadded}`,
