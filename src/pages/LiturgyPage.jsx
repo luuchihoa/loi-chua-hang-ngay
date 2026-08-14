@@ -113,11 +113,24 @@ export default function LiturgyPage() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // State quản lý tùy chọn Bài đọc Ngày Thường & Bài đọc Lễ Nhớ
+  // State quản lý tùy chọn Bài đọc (Lễ Thường, Lễ Nhớ, Tất Niên, Giao Thừa...)
   const [readingModes, setReadingModes] = useState({ weekday: null, feast: null });
-  const [activeReadingMode, setActiveReadingMode] = useState('weekday'); // 'weekday' | 'feast'
+  const [activeReadingMode, setActiveReadingMode] = useState('weekday');
   const [showInfoTooltip, setShowInfoTooltip] = useState(false);
   const tooltipRef = useRef(null);
+
+  const modeList = useMemo(() => {
+    if (!readingModes || typeof readingModes !== 'object') return [];
+    return Object.keys(readingModes).map(k => {
+      const item = readingModes[k];
+      if (!item) return null;
+      return {
+        key: k,
+        label: item.tabLabel || (k === 'weekday' ? 'Bài đọc Lễ Thường' : k === 'feast' ? 'Bài đọc Lễ Nhớ' : item.title),
+        icon: item.tabIcon || (k === 'sunday' ? '✝️' : k === 'tat_nien' ? '🧧' : k === 'giao_thua' ? '🎆' : k === 'feast' ? '🌹' : '📘')
+      };
+    }).filter(Boolean);
+  }, [readingModes]);
 
   // Lắng nghe sự kiện chạm/bấm ra ngoài khoảng trống (Click / Touch Outside) để tự động đóng Popover chú thích
   useEffect(() => {
@@ -776,7 +789,92 @@ export default function LiturgyPage() {
 
             const isMemorialFeast = info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional';
 
-            if (isMemorialFeast && hasFeastReadings && hasWeekdayReadings) {
+            // XỬ LÝ ĐẶC BIỆT CHO NGÀY 30 TẾT (TẤT NIÊN VÀ GIAO THỪA)
+            const tatNienData = getDataForKey('feast_tat_nien');
+            const giaoThuaData = getDataForKey('feast_giao_thua');
+            const is30TetDay = !!(tatNienData || giaoThuaData);
+
+            if (is30TetDay) {
+              const isSunday = info.isSunday;
+
+              if (isSunday) {
+                // TRƯỜNG HỢP 1: RƠI VÀO CHÚA NHẬT
+                // Tab 1: Chúa Nhật (Mặc định)
+                const sundayOption = {
+                  ...(weekdayData || {}),
+                  modeKey: 'sunday',
+                  tabLabel: 'Thánh Lễ Chúa Nhật',
+                  tabIcon: '✝️',
+                  title: `${datePrefix} - ${weekdayData?.title || info.displayName || 'Chúa Nhật'}`
+                };
+
+                // Tab 2: Chiều Tất Niên
+                const tatNienOption = tatNienData ? {
+                  ...tatNienData,
+                  modeKey: 'tat_nien',
+                  tabLabel: 'Chiều Tất Niên',
+                  tabIcon: '🧧',
+                  title: `${datePrefix} - Chiều Tất Niên - Thánh lễ Tạ Ơn Cuối Năm`
+                } : null;
+
+                // Tab 3: Đêm Giao Thừa
+                const giaoThuaOption = giaoThuaData ? {
+                  ...giaoThuaData,
+                  modeKey: 'giao_thua',
+                  tabLabel: 'Đêm Giao Thừa',
+                  tabIcon: '🎆',
+                  title: `${datePrefix} - Đêm Giao Thừa - Thánh lễ Cầu Bình An`
+                } : null;
+
+                const modesMap = {};
+                if (sundayOption) modesMap.sunday = sundayOption;
+                if (tatNienOption) modesMap.tat_nien = tatNienOption;
+                if (giaoThuaOption) modesMap.giao_thua = giaoThuaOption;
+
+                setReadingModes(modesMap);
+                setActiveReadingMode('sunday'); // MẶC ĐỊNH LÀ CHÚA NHẬT
+                selectedData = sundayOption;
+
+              } else {
+                // TRƯỜNG HỢP 2: RƠI VÀO NGÀY THƯỜNG
+                // Tab 1: Chiều Tất Niên (Mặc định)
+                const tatNienOption = tatNienData ? {
+                  ...tatNienData,
+                  modeKey: 'tat_nien',
+                  tabLabel: 'Chiều Tất Niên',
+                  tabIcon: '🧧',
+                  title: `${datePrefix} - Chiều Tất Niên - Thánh lễ Tạ Ơn Cuối Năm`
+                } : null;
+
+                // Tab 2: Đêm Giao Thừa
+                const giaoThuaOption = giaoThuaData ? {
+                  ...giaoThuaData,
+                  modeKey: 'giao_thua',
+                  tabLabel: 'Đêm Giao Thừa',
+                  tabIcon: '🎆',
+                  title: `${datePrefix} - Đêm Giao Thừa - Thánh lễ Cầu Bình An`
+                } : null;
+
+                // Tab 3: Bài đọc Ngày Thường
+                const weekdayOption = weekdayData ? {
+                  ...weekdayData,
+                  modeKey: 'weekday',
+                  tabLabel: 'Thánh Lễ Ngày Thường',
+                  tabIcon: '📘',
+                  title: `${datePrefix} - ${weekdayData?.title || 'Ngày Thường'}`
+                } : null;
+
+                const modesMap = {};
+                if (tatNienOption) modesMap.tat_nien = tatNienOption;
+                if (giaoThuaOption) modesMap.giao_thua = giaoThuaOption;
+                if (weekdayOption) modesMap.weekday = weekdayOption;
+
+                setReadingModes(modesMap);
+                const defaultKey = tatNienOption ? 'tat_nien' : (giaoThuaOption ? 'giao_thua' : 'weekday');
+                setActiveReadingMode(defaultKey); // MẶC ĐỊNH LÀ TẤT NIÊN
+                selectedData = modesMap[defaultKey];
+              }
+            } else if (isMemorialFeast && hasFeastReadings && hasWeekdayReadings) {
               // CẢ 2 BÀI ĐỌC ĐỀU TỒN TẠI TRONG NGÀY LỄ NHỚ: TẠO 2 OPTION CHO NGƯỜI DÙNG CHỌN TAB
               const saintName = info.displayName || feastData.title || weekdayData.title || 'Lễ Nhớ';
 
@@ -840,8 +938,6 @@ export default function LiturgyPage() {
             } else {
               setReadingModes({ weekday: null, feast: null });
             }
-          } else {
-            setReadingModes({ weekday: null, feast: null });
           }
 
           if (selectedData && !overrideLiturgyItem) {
@@ -1548,38 +1644,27 @@ export default function LiturgyPage() {
                 </div>
               )}
 
-              {/* Bộ Chọn Tab Bài Đọc (Cân bằng 50/50 tuyệt đối - Tối ưu Mobile & Desktop) */}
-              {readingModes.weekday && readingModes.feast && !overrideLiturgyItem && (
+              {/* Bộ Chọn Tab Bài Đọc Linh Hoạt (Tự động chia 2 hoặc 3 Tabs - Tối ưu Mobile & Desktop) */}
+              {modeList && modeList.length >= 2 && !overrideLiturgyItem && (
                 <div className="mb-5 sm:mb-8 flex flex-col items-center justify-center relative px-2">
                   
-                  {/* Thanh Pill Switcher chứa ĐÚNG 2 NÚT (Chia 50% - 50% đối xứng) */}
-                  <div className="inline-flex items-center justify-between bg-stone-200/80 dark:bg-stone-800/80 p-1 sm:p-1.5 rounded-full shadow-inner border border-stone-300/50 dark:border-stone-700/50 w-full max-w-[360px] sm:max-w-md">
+                  {/* Thanh Pill Switcher chứa các Tab Nút */}
+                  <div className={`inline-flex items-center justify-between bg-stone-200/80 dark:bg-stone-800/80 p-1 sm:p-1.5 rounded-full shadow-inner border border-stone-300/50 dark:border-stone-700/50 w-full ${modeList.length === 3 ? 'max-w-[480px] sm:max-w-xl' : 'max-w-[360px] sm:max-w-md'}`}>
                     
-                    {/* Tab 1: Bài đọc Lễ Thường (50% Width) */}
-                    <button
-                      onClick={() => handleSwitchReadingMode('weekday')}
-                      className={`w-1/2 py-1.5 sm:py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 ${
-                        activeReadingMode === 'weekday'
-                          ? `${theme.btnBg} text-white shadow-md scale-102`
-                          : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
-                      }`}
-                    >
-                      <span className="text-[12px] sm:text-[14px]">📘</span>
-                      <span className="truncate">Bài đọc Lễ Thường</span>
-                    </button>
-
-                    {/* Tab 2: Bài đọc Lễ Nhớ (50% Width) */}
-                    <button
-                      onClick={() => handleSwitchReadingMode('feast')}
-                      className={`w-1/2 py-1.5 sm:py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 ${
-                        activeReadingMode === 'feast'
-                          ? `${theme.btnBg} text-white shadow-md scale-102`
-                          : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
-                      }`}
-                    >
-                      <span className="text-[12px] sm:text-[14px]">🌹</span>
-                      <span className="truncate">Bài đọc Lễ Nhớ</span>
-                    </button>
+                    {modeList.map(m => (
+                      <button
+                        key={m.key}
+                        onClick={() => handleSwitchReadingMode(m.key)}
+                        className={`${modeList.length === 3 ? 'w-1/3' : 'w-1/2'} py-1.5 sm:py-2 px-1.5 sm:px-3 rounded-full text-[11px] sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 min-w-0 ${
+                          activeReadingMode === m.key
+                            ? `${theme.btnBg} text-white shadow-md scale-102`
+                            : 'text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white'
+                        }`}
+                      >
+                        <span className="text-[12px] sm:text-[14px]">{m.icon}</span>
+                        <span className="truncate">{m.label}</span>
+                      </button>
+                    ))}
                   </div>
 
                   {/* Nút Hướng Dẫn Quy Tắc Phụng Vụ (Desktop tự Hover hiện, Mobile 1 Chạm hiện & Click Outside tự ẩn) */}

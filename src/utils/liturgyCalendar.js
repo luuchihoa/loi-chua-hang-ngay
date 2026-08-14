@@ -135,6 +135,7 @@ const FIXED_FEASTS = {
   "1203": { key: "feast_12_03",  name: "Lễ Kính Thánh Phanxicô Xaviê, bổn mạng các xứ truyền giáo", rank: 8 },
   "1207": { key: "feast_12_07",  name: "Thánh Ambrôsiô, giám mục, tiến sĩ Hội Thánh", rank: 13 },
   "1208": { key: "feast_12_08",  name: "Lễ Đức Mẹ Vô Nhiễm Nguyên Tội", rank: 5 },
+  "1209": { key: "feast_12_09",  name: "Kỷ niệm - Cung hiến vương cung thánh đường Sài Gòn", rank: 10 },
   "1213": { key: "feast_12_13",  name: "Thánh Lucia, trinh nữ, tử đạo", rank: 13 },
   "1214": { key: "feast_12_14",  name: "Thánh Gioan Thánh Giá, linh mục, tiến sĩ Hội Thánh", rank: 13 },
   "1217": { key: "feast_12_17",  name: "Ngày 17 tháng 12", rank: 11, season: "vong" },
@@ -254,6 +255,8 @@ function getMovableFeast(d, ms) {
     [ms.baptismOfLord,       "phep_rua",          "Lễ Chúa Chịu Phép Rửa", 8],
     [ms.stJoseph,            "03_19",             "Lễ Thánh Giu-se, Bạn Trăm Năm Đức Maria", 5],
     [ms.annunciation,        "03_25",             "Lễ Truyền Tin", 5],
+    [ms.tat_nien,            "tat_nien",          "Chiều Tất Niên: Thánh lễ Tạ Ơn Cuối Năm", 7],
+    [ms.giao_thua,           "giao_thua",         "Đêm Giao Thừa: Thánh lễ Cầu Bình An Cho Năm Mới", 7],
     [ms.tet_1,               "tet_1",             "Mồng Một Tết Nguyên Đán: Thánh lễ Tân Niên", 7],
     [ms.tet_2,               "tet_2",             "Mồng Hai Tết Nguyên Đán: Kính nhớ Tổ tiên", 7],
     [ms.tet_3,               "tet_3",             "Mồng Ba Tết Nguyên Đán: Thánh hóa công ăn việc làm", 7],
@@ -331,6 +334,8 @@ function getMilestones(year) {
     ordinaryTime1Start: addDays(getBaptismOfLord(year), 1),
     
     // Thuật toán Tết Nguyên Đán
+    tat_nien:           addDays(getTet(year), -1),
+    giao_thua:          addDays(getTet(year), -1),
     tet_1:              getTet(year),
     tet_2:              addDays(getTet(year), 1),
     tet_3:              addDays(getTet(year), 2),
