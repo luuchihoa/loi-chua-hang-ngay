@@ -792,6 +792,9 @@ export default function LiturgyPage() {
                   mergedFeast[k] = feastData[k];
                 }
               }
+              // Cô lập không gộp reflection và extra_readings từ weekdayData
+              mergedFeast.reflection = (feastData.reflection && feastData.reflection.toString().trim() !== '') ? feastData.reflection : null;
+              mergedFeast.extra_readings = (feastData.extra_readings && Array.isArray(feastData.extra_readings) && feastData.extra_readings.length > 0) ? feastData.extra_readings : null;
 
               const feastOption = {
                 ...mergedFeast,
@@ -810,6 +813,9 @@ export default function LiturgyPage() {
                   mergedContent[k] = feastData[k];
                 }
               }
+              // Cô lập không gộp reflection và extra_readings từ weekdayData
+              mergedContent.reflection = (feastData.reflection && feastData.reflection.toString().trim() !== '') ? feastData.reflection : null;
+              mergedContent.extra_readings = (feastData.extra_readings && Array.isArray(feastData.extra_readings) && feastData.extra_readings.length > 0) ? feastData.extra_readings : null;
 
               const saintName = info.displayName || mergedContent.title || 'Lễ Nhớ';
               const displayTitle = (info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional')
