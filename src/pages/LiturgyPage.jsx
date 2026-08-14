@@ -127,7 +127,7 @@ export default function LiturgyPage() {
       return {
         key: k,
         label: item.tabLabel || (k === 'weekday' ? 'Bài đọc Lễ Thường' : k === 'feast' ? 'Bài đọc Lễ Nhớ' : item.title),
-        icon: item.tabIcon || (k === 'sunday' ? '✝️' : k === 'tat_nien' ? '🧧' : k === 'giao_thua' ? '🎆' : k === 'feast' ? '🌹' : '📘')
+        icon: item.tabIcon || (k === 'sunday' ? '✝️' : (k === 'tat_nien' || k === 'tet') ? '🧧' : k === 'giao_thua' ? '🎆' : k === 'feast' ? '🌹' : '📘')
       };
     }).filter(Boolean);
   }, [readingModes]);
@@ -811,27 +811,27 @@ export default function LiturgyPage() {
                 const sundayOption = {
                   ...(weekdayData || {}),
                   modeKey: 'sunday',
-                  tabLabel: 'Thánh Lễ Chúa Nhật',
+                  tabLabel: 'Chúa Nhật',
                   tabIcon: '✝️',
-                  title: `${datePrefix} - ${weekdayData?.title || info.displayName || 'Chúa Nhật'}`
+                  title: weekdayData?.title || 'Chúa Nhật'
                 };
 
                 // Tab 2: Chiều Tất Niên
                 const tatNienOption = tatNienData ? {
                   ...tatNienData,
                   modeKey: 'tat_nien',
-                  tabLabel: 'Chiều Tất Niên',
+                  tabLabel: 'Tất Niên',
                   tabIcon: '🧧',
-                  title: `${datePrefix} - Chiều Tất Niên - Thánh lễ Tạ Ơn Cuối Năm`
+                  title: tatNienData?.title || 'Thánh lễ Tất Niên'
                 } : null;
 
                 // Tab 3: Đêm Giao Thừa
                 const giaoThuaOption = giaoThuaData ? {
                   ...giaoThuaData,
                   modeKey: 'giao_thua',
-                  tabLabel: 'Đêm Giao Thừa',
+                  tabLabel: 'Giao Thừa',
                   tabIcon: '🎆',
-                  title: `${datePrefix} - Đêm Giao Thừa - Thánh lễ Cầu Bình An`
+                  title: giaoThuaData?.title || 'Thánh lễ Giao Thừa \n Cầu bình an cho Năm Mới'
                 } : null;
 
                 const modesMap = {};
@@ -849,27 +849,27 @@ export default function LiturgyPage() {
                 const tatNienOption = tatNienData ? {
                   ...tatNienData,
                   modeKey: 'tat_nien',
-                  tabLabel: 'Chiều Tất Niên',
+                  tabLabel: 'Tất Niên',
                   tabIcon: '🧧',
-                  title: `${datePrefix} - Chiều Tất Niên - Thánh lễ Tạ Ơn Cuối Năm`
+                  title: tatNienData?.title || 'Thánh lễ Tất Niên'
                 } : null;
 
                 // Tab 2: Đêm Giao Thừa
                 const giaoThuaOption = giaoThuaData ? {
                   ...giaoThuaData,
                   modeKey: 'giao_thua',
-                  tabLabel: 'Đêm Giao Thừa',
+                  tabLabel: 'Giao Thừa',
                   tabIcon: '🎆',
-                  title: `${datePrefix} - Đêm Giao Thừa - Thánh lễ Cầu Bình An`
+                  title: giaoThuaData?.title || 'Thánh lễ Giao Thừa \n Cầu bình an cho Năm Mới'
                 } : null;
 
                 // Tab 3: Bài đọc Ngày Thường
                 const weekdayOption = weekdayData ? {
                   ...weekdayData,
                   modeKey: 'weekday',
-                  tabLabel: 'Thánh Lễ Ngày Thường',
+                  tabLabel: 'Ngày Thường',
                   tabIcon: '📘',
-                  title: `${datePrefix} - ${weekdayData?.title || 'Ngày Thường'}`
+                  title: weekdayData?.title || 'Ngày Thường'
                 } : null;
 
                 const modesMap = {};
@@ -881,6 +881,44 @@ export default function LiturgyPage() {
                 const defaultKey = tatNienOption ? 'tat_nien' : (giaoThuaOption ? 'giao_thua' : 'weekday');
                 setActiveReadingMode(defaultKey); // MẶC ĐỊNH LÀ TẤT NIÊN
                 selectedData = modesMap[defaultKey];
+              }
+            } else if (['feast_tet_1', 'feast_tet_2', 'feast_tet_3'].includes(info.key) && feastData) {
+              const isSunday = info.isSunday;
+
+              if (isSunday && weekdayData) {
+                // TRƯỜNG HỢP RƠI VÀO CHÚA NHẬT -> 2 TABS (MẶC ĐỊNH LÀ TAB LỄ TẾT, TAB 2 LÀ CHÚA NHẬT)
+                const tetTabLabel = info.key === 'feast_tet_1' ? 'Mồng Một Tết' : (info.key === 'feast_tet_2' ? 'Mồng Hai Tết' : 'Mồng Ba Tết');
+                
+                const tetOption = {
+                  ...feastData,
+                  modeKey: 'tet',
+                  tabLabel: tetTabLabel,
+                  tabIcon: '🧧',
+                  title: feastData.title || info.displayName
+                };
+
+                const sundayOption = {
+                  ...weekdayData,
+                  modeKey: 'sunday',
+                  tabLabel: 'Chúa Nhật',
+                  tabIcon: '✝️',
+                  title: weekdayData.title ? `${datePrefix} - ${weekdayData.title}` : `${datePrefix} - Chúa Nhật`
+                };
+
+                setReadingModes({
+                  tet: tetOption,
+                  sunday: sundayOption
+                });
+                setActiveReadingMode('tet'); // MẶC ĐỊNH LÀ TAB LỄ TẾT
+                selectedData = tetOption;
+
+              } else {
+                // TRƯỜNG HỢP RƠI VÀO NGÀY THƯỜNG -> ƯU TIÊN LỄ TẾT TRỰC TIẾP, KHÔNG CẦN TAB CHUYỂN ĐỔI
+                setReadingModes({ weekday: null, feast: null });
+                selectedData = {
+                  ...feastData,
+                  title: feastData.title || info.displayName
+                };
               }
             } else if (isMemorialFeast && hasFeastReadings && hasWeekdayReadings) {
               // CẢ 2 BÀI ĐỌC ĐỀU TỒN TẠI TRONG NGÀY LỄ NHỚ: TẠO 2 OPTION CHO NGƯỜI DÙNG CHỌN TAB
