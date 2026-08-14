@@ -465,7 +465,7 @@ async function scrapeDate(browser, dateObj, previewMode, scrapedResults) {
               r1_ref: cleanText(ex.r1_ref), r1_quote: cleanText(ex.r1_quote), r1_intro: cleanText(ex.r1_intro), r1_content: cleanText(ex.r1_content),
               psalm_ref: cleanText(ex.psalm_ref), psalm_content: cleanText(ex.psalm_content),
               r2_ref: cleanText(ex.r2_ref), r2_quote: cleanText(ex.r2_quote), r2_intro: cleanText(ex.r2_intro), r2_content: cleanText(ex.r2_content),
-              gospel_ref: cleanText(ex.gospel_ref), gospel_alleluia: cleanText(ex.gospel_alleluia), gospel_quote: cleanText(ex.gospel_quote), gospel_intro: cleanText(ex.gospel_intro), gospel_content: cleanText(ex.gospel_content)
+              gospel_ref: cleanText(ex.gospel_ref), gospel_alleluia: cleanText(ex.gospel_alleluia), quote: cleanText(ex.quote || ex.gospel_quote || ex.epitomize), gospel_intro: cleanText(ex.gospel_intro), gospel_content: cleanText(ex.gospel_content)
             };
           }
           return {
@@ -508,7 +508,7 @@ async function scrapeDate(browser, dateObj, previewMode, scrapedResults) {
               r1_ref: cleanText(ex.r1_ref), r1_quote: cleanText(ex.r1_quote), r1_intro: cleanText(ex.r1_intro), r1_content: cleanText(ex.r1_content),
               psalm_ref: cleanText(ex.psalm_ref), psalm_content: cleanText(ex.psalm_content),
               r2_ref: cleanText(ex.r2_ref), r2_quote: cleanText(ex.r2_quote), r2_intro: cleanText(ex.r2_intro), r2_content: cleanText(ex.r2_content),
-              gospel_ref: cleanText(ex.gospel_ref), gospel_alleluia: cleanText(ex.gospel_alleluia), gospel_quote: cleanText(ex.gospel_quote), gospel_intro: cleanText(ex.gospel_intro), gospel_content: cleanText(ex.gospel_content)
+              gospel_ref: cleanText(ex.gospel_ref), gospel_alleluia: cleanText(ex.gospel_alleluia), quote: cleanText(ex.quote || ex.gospel_quote || ex.epitomize), gospel_intro: cleanText(ex.gospel_intro), gospel_content: cleanText(ex.gospel_content)
             };
           }
           return {
