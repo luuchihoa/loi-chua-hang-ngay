@@ -346,9 +346,10 @@ function getMilestones(year) {
     ashWednesday:       (() => {
                           let ash = addDays(easter, -46);
                           const t1 = getTet(year);
-                          const t2 = addDays(t1, 1);
-                          const t3 = addDays(t1, 2);
-                          if (sameDay(ash, t1) || sameDay(ash, t2) || sameDay(ash, t3)) {
+                          const t0 = addDays(t1, -1); // 30 Tết Tất Niên
+                          const t2 = addDays(t1, 1);  // Mùng 2 Tết
+                          const t3 = addDays(t1, 2);  // Mùng 3 Tết
+                          if (sameDay(ash, t0) || sameDay(ash, t1) || sameDay(ash, t2) || sameDay(ash, t3)) {
                             return addDays(t1, 3); // Dời sang Mùng 4
                           }
                           return ash;
