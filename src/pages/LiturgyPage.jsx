@@ -666,9 +666,13 @@ export default function LiturgyPage() {
 
             // 1. Phân loại 3 dòng dữ liệu với 3 cấp độ
             // Cấp 1: Dòng chứa Năm Chúa Nhật (A, B, C)
-            const sundayRow = matches.find(d => d.cycle === reqCycle || d.cycle === cycles.sundayCycle);
+            const sundayRow = preferredCycle 
+              ? matches.find(d => d.cycle === preferredCycle)
+              : matches.find(d => d.cycle === cycles.sundayCycle);
             // Cấp 2: Dòng chứa Năm Ngày Thường (I, II)
-            const weekdayRow = matches.find(d => d.cycle === cycles.weekdayCycle);
+            const weekdayRow = (preferredCycle === 'I' || preferredCycle === 'II')
+              ? matches.find(d => d.cycle === preferredCycle)
+              : matches.find(d => d.cycle === cycles.weekdayCycle);
             // Cấp 3: Dòng chung (all)
             const allRow = matches.find(d => d.cycle === 'all');
             

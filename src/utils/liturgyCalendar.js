@@ -260,7 +260,7 @@ function getMovableFeast(d, ms) {
     [ms.tet_1,               "tet_1",             "Mồng Một Tết Nguyên Đán: Thánh lễ Tân Niên", 2],
     [ms.tet_2,               "tet_2",             "Mồng Hai Tết Nguyên Đán: Kính nhớ Tổ tiên", 2],
     [ms.tet_3,               "tet_3",             "Mồng Ba Tết Nguyên Đán: Thánh hóa công ăn việc làm", 2],
-    [ms.trung_thu,           "trung_thu",         "Tết Trung Thu: Lễ Cầu cho Thiếu Nhi", 14],
+    [ms.trung_thu,           "trung_thu",         "Tết Trung Thu", 14],
     [ms.ashWednesday,        "le_tro",            "Thứ Tư Lễ Tro", 4],
     [ms.palmSunday,          "cn_le_la",          "Chúa Nhật Lễ Lá", 1],
     [ms.holyThursday,        "tuan_thanh_thu5",   "Thứ Năm Tuần Thánh", 1],
@@ -543,43 +543,35 @@ export function getLiturgicalColor(liturgyInfo) {
 export function findDateForLiturgyKey(targetKey, baseYear = new Date().getFullYear(), targetCycle = null) {
   if (!targetKey) return null;
 
-  let yearsToScan = [baseYear];
-  if (targetCycle && ['A', 'B', 'C'].includes(targetCycle)) {
-    const candidates = [];
-    for (let offset = 0; offset <= 15; offset++) {
-      if (offset === 0) candidates.push(baseYear);
-      else {
-        candidates.push(baseYear - offset);
-        candidates.push(baseYear + offset);
-      }
-    }
-    yearsToScan = candidates.filter(y => {
-      const litYear = getLiturgicalYear(new Date(y, 5, 1));
-      const cycle = ['C', 'A', 'B'][litYear % 3];
-      return cycle === targetCycle;
-    });
-    if (yearsToScan.length === 0) {
-      yearsToScan = [baseYear];
-    }
+  const matchFixed = targetKey.match(/(?:feast|fixed)_(\d{1,2})_(\d{1,2})/);
+  if (matchFixed) {
+    const month = parseInt(matchFixed[1], 10) - 1;
+    const day = parseInt(matchFixed[2], 10);
+    return new Date(baseYear, month, day);
   }
 
-  for (const yearToSearch of yearsToScan) {
-    const matchFixed = targetKey.match(/(?:feast|fixed)_(\d{1,2})_(\d{1,2})/);
-    if (matchFixed) {
-      const month = parseInt(matchFixed[1], 10) - 1;
-      const day = parseInt(matchFixed[2], 10);
-      return new Date(yearToSearch, month, day);
-    }
-
-    const startOfYear = new Date(yearToSearch, 0, 1);
+  const offsets = [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5];
+  for (const offset of offsets) {
+    const y = baseYear + offset;
+    const startOfYear = new Date(y, 0, 1);
     for (let i = 0; i < 366; i++) {
       const d = new Date(startOfYear);
       d.setDate(d.getDate() + i);
-      if (d.getFullYear() !== yearToSearch) break;
+      if (d.getFullYear() !== y) break;
 
       const info = getLiturgyInfo(d);
       if (info.key === targetKey || info.seasonKey === targetKey) {
-        return d;
+        if (targetCycle && ['A', 'B', 'C'].includes(targetCycle)) {
+          const litYear = getLiturgicalYear(d);
+          const cycle = ['C', 'A', 'B'][litYear % 3];
+          if (cycle === targetCycle) return d;
+        } else if (targetCycle && ['I', 'II'].includes(targetCycle)) {
+          const litYear = getLiturgicalYear(d);
+          const cycle = litYear % 2 === 1 ? 'I' : 'II';
+          if (cycle === targetCycle) return d;
+        } else {
+          return d;
+        }
       }
     }
   }
