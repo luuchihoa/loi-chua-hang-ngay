@@ -1483,11 +1483,11 @@ export default function LiturgyPage() {
       const rawLines = paragraphStr.split('\n').map(l => l.trim()).filter(Boolean);
       if (rawLines.length === 0) return '';
 
-      let stanzaHtml = '<div class="mb-4 sm:mb-5 font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200 text-left pl-3 sm:pl-4 border-l-2 border-amber-300/80 dark:border-amber-700/60">';
+      let stanzaHtml = '<div class="mb-4 sm:mb-6 font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200 text-left">';
       rawLines.forEach((line) => {
         const isAmenAlleluia = /^(A-men\.\s*Ha-lê-lui-a|A-men|Ha-lê-lui-a)/i.test(line);
         const lineClass = isAmenAlleluia 
-          ? 'font-bold text-amber-700 dark:text-amber-400 mt-2 not-italic' 
+          ? 'font-bold text-amber-700 dark:text-amber-400 mt-3 not-italic' 
           : 'mb-1 sm:mb-1.5';
 
         stanzaHtml += `<div class="${lineClass} [text-wrap:pretty]">${line}</div>`;
@@ -2084,24 +2084,30 @@ export default function LiturgyPage() {
 
               {/* Ca Tiếp Liên (Sequence - Lễ Phục Sinh, Lễ Chúa Thánh Thần, Lễ Mình Máu Thánh Chúa...) */}
               {sequenceReadings.map((seq, seqIdx) => (
-                <div key={`seq-${seqIdx}`} id="sec-sequence" className="mb-8 sm:mb-12 p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-amber-50/70 dark:bg-amber-950/30 border-2 border-amber-300/80 dark:border-amber-700/60 shadow-sm scroll-mt-24">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                    <h3 className={`font-serif ${sectionTitleClasses} font-bold ${theme.accentText} uppercase tracking-wider text-center`}>
-                      {seq.title || "Ca Tiếp Liên"}
-                    </h3>
-                    <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div key={`seq-${seqIdx}`} id="sec-sequence" className="mb-8 sm:mb-12 scroll-mt-24">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <div className="h-px bg-stone-200 dark:bg-stone-800 flex-1 max-w-[80px]" />
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                      <h3 className={`font-serif ${sectionTitleClasses} font-bold ${theme.accentText} uppercase tracking-wider text-center`}>
+                        {seq.title || "Ca Tiếp Liên"}
+                      </h3>
+                      <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <div className="h-px bg-stone-200 dark:bg-stone-800 flex-1 max-w-[80px]" />
                   </div>
 
                   {seq.quote && (
-                    <p className={`text-center ${fontClasses} text-stone-600 dark:text-stone-400 mb-4 px-2 font-serif leading-relaxed`}>
+                    <p className={`italic text-center ${fontClasses} text-stone-600 dark:text-stone-400 mb-5 px-2 font-serif leading-relaxed`}>
                       "{seq.quote}"
                     </p>
                   )}
 
                   {seq.content && (
-                    <div className={`${fontClasses} font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200`}>
-                      <div dangerouslySetInnerHTML={{ __html: formatPoetryText(seq.content) }} />
+                    <div className="pl-3.5 sm:pl-8 border-l-4 border-amber-400 dark:border-amber-600">
+                      <div className={`${fontClasses} font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200`}>
+                        <div dangerouslySetInnerHTML={{ __html: formatPoetryText(seq.content) }} />
+                      </div>
                     </div>
                   )}
                 </div>
