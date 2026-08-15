@@ -1299,22 +1299,22 @@ export default function LiturgyPage() {
         let prefixHtml = '';
         let restOfLine = line;
 
-        // TH1: Đầu dòng có cả Số Chương + Số Câu (Ví dụ: "11 21b Hồi ấy...", "2 1 Khi ấy...", "1 1 Thưa...")
+        // TH1: Đầu dòng có cả Số Chương + Số Câu (Ví dụ: "11 19a Tôi...", "11 21b Hồi ấy...", "2 1 Khi ấy...", "1 1 Thưa...")
         const chapterVerseMatch = restOfLine.match(/^(\d{1,3})\s+(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
         if (chapterVerseMatch) {
           const [fullMatch, chap, verse] = chapterVerseMatch;
-          prefixHtml = `<span class="inline-block w-[2.2em] sm:w-[2.6em] text-right pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap align-baseline"><span class="text-[0.82em] font-bold">${chap}</span><sup class="text-[0.58em] font-semibold ml-0.5">${verse}</sup></span>`;
+          prefixHtml = `<span class="inline-block w-[2.6em] sm:w-[3.0em] text-right pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap align-baseline"><span class="text-[0.82em] font-bold">${chap}</span><sup class="text-[0.58em] font-semibold ml-0.5">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         } else {
-          // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "18bcde Này...", "21b Hồi ấy...", "5 Đức Giê-su...")
+          // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "18bcde Này...", "21b Hồi ấy...", "5 Đức Giê-su...", "111 Tôi...")
           const singleVerseMatch = restOfLine.match(/^(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
           if (singleVerseMatch) {
             const [fullMatch, verse] = singleVerseMatch;
-            prefixHtml = `<span class="inline-block w-[2.2em] sm:w-[2.6em] text-right pr-1.5 sm:pr-2 font-sans font-bold text-[0.68em] ${theme.supColor} select-none whitespace-nowrap align-baseline">${verse}</span>`;
+            prefixHtml = `<span class="inline-block w-[2.6em] sm:w-[3.0em] text-right pr-1.5 sm:pr-2 font-sans font-bold text-[0.68em] ${theme.supColor} select-none whitespace-nowrap align-baseline">${verse}</span>`;
             restOfLine = restOfLine.slice(fullMatch.length).trimStart();
           } else {
-            // TH3: Đầu dòng KHÔNG có số câu -> Thẻ inline-block rỗng để giữ đúng trục gióng thụt đầu dòng
-            prefixHtml = `<span class="inline-block w-[2.2em] sm:w-[2.6em] select-none"></span>`;
+            // TH3: Đầu dòng KHÔNG có số câu -> Thẻ inline-block chứa &nbsp; để giữ đúng trục gióng, không bao giờ bị collapse
+            prefixHtml = `<span class="inline-block w-[2.6em] sm:w-[3.0em] select-none pointer-events-none" aria-hidden="true">&nbsp;</span>`;
           }
         }
 
