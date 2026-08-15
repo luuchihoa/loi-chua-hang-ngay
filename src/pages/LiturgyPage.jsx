@@ -1341,10 +1341,11 @@ export default function LiturgyPage() {
     }).join('');
   };
 
-  // 2. Định dạng Thánh Vịnh Đáp Ca (Responsorial Psalm) - Chuẩn Sách Bài Đọc HĐGMVN & KPV (Tối Ưu Hoàn Hảo Mobile & Desktop)
+  // 2. Định dạng Thánh Vịnh Đáp Ca (Responsorial Psalm) - Đồng bộ hoàn hảo với các bài đọc
   const formatPsalmText = (text, customRefrainClass = refrainFontClasses) => {
     if (!text) return '';
     const paragraphs = text.split(/\n\s*\n/);
+    const indentWidthClass = 'w-10 sm:w-12';
 
     return paragraphs.map((paragraphStr) => {
       const rawLines = paragraphStr.split('\n').map(l => l.trim()).filter(Boolean);
@@ -1363,32 +1364,43 @@ export default function LiturgyPage() {
         // Tô màu số câu nếu xuất hiện giữa câu đáp
         refrainContent = refrainContent.replace(
           /(\d{1,4}[a-h]{0,6})/g,
-          `<sup class="font-normal ${theme.supColor} text-[0.65em] font-sans ml-1 select-none">$1</sup>`
+          `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
         );
         refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
 
-        return `<div class="flex items-baseline gap-2 sm:gap-3 my-3 sm:my-4 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-[1.8]"><span class="w-5 sm:w-6 shrink-0 text-right font-serif font-black text-red-600 dark:text-red-400 select-none">Đ.</span><span class="flex-1 text-left">${refrainContent}</span></div>`;
+        return `<div class="flex items-baseline my-3 sm:my-4 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-[1.8]"><span class="inline-flex items-baseline justify-end ${indentWidthClass} pr-1.5 sm:pr-2 shrink-0 font-serif font-black text-red-600 dark:text-red-400 select-none">Đ.</span><span class="flex-1 text-left">${refrainContent}</span></div>`;
       }
 
-      // B. XỬ LÝ KHỔ THƠ THÁNH VỊNH (STANZA) - In-flow Two-Column Flexbox Layout
+      // B. XỬ LÝ KHỔ THƠ THÁNH VỊNH (STANZA)
       let stanzaHtml = '<div class="mb-4 sm:mb-5 font-serif text-stone-800 dark:text-stone-200 leading-relaxed sm:leading-[1.85]">';
 
       rawLines.forEach((line) => {
-        let verseNumber = '';
+        let prefixHtml = '';
         let restOfLine = line;
 
-        // Nhận diện số câu ở đầu dòng thơ: "1 ", "2 ", "4bcd ", "15-16 ", "2-3 "
-        const verseMatch = restOfLine.match(/^(\d{1,3}(?:[a-h]{1,6}|-\d{1,3})?)(?=\s*[\p{L}"“'‘(]|$)/u);
-        if (verseMatch) {
-          const [fullMatch, verse] = verseMatch;
-          verseNumber = verse;
+        // TH1: Số Chương + Số Câu (vd: "41 3Linh hồn...", "42 3Xin Ngài...")
+        const chapterVerseMatch = restOfLine.match(/^(\d{1,3})\s+(\d{1,3}(?:[a-h]{1,6}|-\d{1,3})?)(?=\s*[\p{L}"“'‘(]|$)/u);
+        if (chapterVerseMatch) {
+          const [fullMatch, chap, verse] = chapterVerseMatch;
+          prefixHtml = `<span class="inline-flex items-baseline justify-end ${indentWidthClass} pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap shrink-0"><span class="text-[0.82em] font-bold leading-none">${chap}</span><sup class="text-[0.58em] font-normal leading-none ml-0.5">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
+        } else {
+          // TH2: Số Câu lẻ (vd: "2 ", "4bcd ", "15-16 ", "2-3 ")
+          const singleVerseMatch = restOfLine.match(/^(\d{1,3}(?:[a-h]{1,6}|-\d{1,3})?)(?=\s*[\p{L}"“'‘(]|$)/u);
+          if (singleVerseMatch) {
+            const [fullMatch, verse] = singleVerseMatch;
+            prefixHtml = `<span class="inline-flex items-baseline justify-end ${indentWidthClass} pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap shrink-0"><sup class="font-normal text-[0.6em] leading-none">${verse}</sup></span>`;
+            restOfLine = restOfLine.slice(fullMatch.length).trimStart();
+          } else {
+            // TH3: Dòng thơ tiếp theo không có số câu -> Thẻ inline-flex rỗng cố định
+            prefixHtml = `<span class="inline-flex ${indentWidthClass} select-none pointer-events-none shrink-0"></span>`;
+          }
         }
 
         // Đổi màu số câu ở giữa dòng nếu có
         restOfLine = restOfLine.replace(
           /(\d{1,4}[a-h]{0,6})/g,
-          `<sup class="font-normal ${theme.supColor} text-[0.65em] font-sans ml-1 select-none">$1</sup>`
+          `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
         );
         restOfLine = restOfLine.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
 
@@ -1398,11 +1410,7 @@ export default function LiturgyPage() {
           `<span class="font-serif font-bold text-red-600 dark:text-red-400 ml-1.5 select-none">(Đ.)</span>`
         );
 
-        const col1 = verseNumber
-          ? `<span class="w-5 sm:w-6 shrink-0 text-right font-sans font-bold text-[0.72em] ${theme.supColor || 'text-amber-700 dark:text-amber-400'} select-none leading-none">${verseNumber}</span>`
-          : `<span class="w-5 sm:w-6 shrink-0 select-none"></span>`;
-
-        stanzaHtml += `<div class="flex items-baseline gap-2 sm:gap-3 mb-1 sm:mb-1.5 [text-wrap:pretty]">${col1}<span class="flex-1 text-left">${restOfLine}</span></div>`;
+        stanzaHtml += `<div class="flex items-baseline mb-1 sm:mb-1.5 [text-wrap:pretty]">${prefixHtml}<span class="flex-1 text-left">${restOfLine}</span></div>`;
       });
 
       stanzaHtml += '</div>';
