@@ -1281,11 +1281,9 @@ export default function LiturgyPage() {
     large:  'text-[19px] sm:text-[22px]',
   }[fontSize];
 
-  // Định dạng số câu Kinh Thánh & Đoạn Đáp Ca tối ưu giao diện (Sacred Flow Layout - Phương án 1 Liền Mạch)
-  const formatLiturgyText = (text, customRefrainClass = refrainFontClasses) => {
+  // 1. Định dạng văn bản Văn Xuôi (Bài Đọc 1, 2, Tin Mừng, Kiệu Lá...)
+  const formatProseText = (text) => {
     if (!text) return '';
-    
-    // Tách văn bản thành các đoạn văn lớn dựa theo \n\n (xuống 2 dòng)
     const paragraphs = text.split(/\n\s*\n/);
 
     return paragraphs.map((paragraphStr) => {
@@ -1319,46 +1317,7 @@ export default function LiturgyPage() {
           }
         }
 
-        // TH3: Xử lý Đoạn Đáp Ca (Bắt đầu với Đ., Đ:, Đáp:, Đ/)
-        const refrainMatch = restOfLine.match(/^(Đ\.|Đ:|Đ\/|Đáp:)\s*(.*)$/i);
-        if (refrainMatch) {
-          // Gom tất cả các dòng tiếp theo trong cùng paragraph thuộc câu đáp này
-          const refrainLines = [refrainMatch[2].trim()];
-          i++;
-
-          while (i < rawLines.length) {
-            const nextLine = rawLines[i];
-            // Dừng gom dòng nếu gặp số câu ở đầu dòng hoặc gặp chữ Đ. mới
-            const isNextStartNum = /^\d{1,3}[a-h]{0,6}/.test(nextLine);
-            const isNextRefrain = /^(Đ\.|Đ:|Đ\/|Đáp:)/i.test(nextLine);
-            if (isNextStartNum || isNextRefrain) break;
-
-            refrainLines.push(nextLine);
-            i++;
-          }
-
-          // Trình bày toàn bộ câu đáp (Dòng 1 + Dòng 2...) theo Phương án 1:
-          // Typography Phụng Vụ cao cấp: Font Serif in đậm, chữ Đ. màu đỏ phụng vụ, Hanging Indent tự động
-          let refrainContent = refrainLines.join('<br />');
-
-          // Đổi màu số câu ở giữa dòng
-          refrainContent = refrainContent.replace(
-            /(\d{1,4}[a-h]{0,6})/g,
-            `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
-          );
-          refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
-
-          // Đổi màu (Đ.) ở giữa hoặc cuối dòng
-          refrainContent = refrainContent.replace(
-            /\((Đ\.|Đ|Đáp)\)/gi,
-            `<span class="font-serif font-bold text-red-600 dark:text-red-400 mx-1 select-none">(Đ.)</span>`
-          );
-
-          resultHtml += `<div class="my-2.5 sm:my-3.5 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-loose text-left pl-7 sm:pl-8 -indent-7 sm:-indent-8">${prefixHtml}<span class="font-serif font-extrabold text-red-600 dark:text-red-400 mr-1.5 select-none">Đ.</span><span>${refrainContent}</span></div>`;
-          continue;
-        }
-
-        // Dòng văn bản bình thường (Không phải câu đáp)
+        // Đổi màu số câu ở giữa dòng
         restOfLine = restOfLine.replace(
           /(\d{1,4}[a-h]{0,6})/g,
           `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
@@ -1380,6 +1339,91 @@ export default function LiturgyPage() {
       return resultHtml;
     }).join('');
   };
+
+  // 2. Định dạng Thánh Vịnh Đáp Ca (Responsorial Psalm) - Chuẩn 100% Sách Bài Đọc Phụng Vụ
+  const formatPsalmText = (text, customRefrainClass = refrainFontClasses) => {
+    if (!text) return '';
+    const paragraphs = text.split(/\n\s*\n/);
+
+    return paragraphs.map((paragraphStr) => {
+      const rawLines = paragraphStr.split('\n').map(l => l.trim()).filter(Boolean);
+      if (rawLines.length === 0) return '';
+
+      // Kiểm tra nếu toàn bộ đoạn là Câu Đáp (bắt đầu bằng Đ., Đ:, Đ/, Đáp:)
+      const firstLine = rawLines[0];
+      const refrainMatch = firstLine.match(/^(Đ\.|Đ:|Đ\/|Đáp:)\s*(.*)$/i);
+
+      if (refrainMatch) {
+        let refrainContent = rawLines.map((l, idx) => {
+          if (idx === 0) return refrainMatch[2].trim();
+          return l.replace(/^(Đ\.|Đ:|Đ\/|Đáp:)\s*/i, '').trim();
+        }).filter(Boolean).join('<br />');
+
+        // Đổi màu số câu ở giữa dòng nếu có
+        refrainContent = refrainContent.replace(
+          /(\d{1,4}[a-h]{0,6})/g,
+          `<sup class="font-normal ${theme.supColor} text-[0.65em] font-sans ml-1 select-none">$1</sup>`
+        );
+        refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
+
+        return `<div class="my-3.5 sm:my-5 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-[1.8] text-left pl-6 sm:pl-7 -indent-6 sm:-indent-7"><span class="font-serif font-extrabold text-red-600 dark:text-red-400 mr-1.5 select-none">Đ.</span><span>${refrainContent}</span></div>`;
+      }
+
+      // Khổ thơ vịnh (Stanza) - Tất cả các dòng thẳng tắp 100% lề trái
+      let stanzaHtml = '<div class="mb-4 sm:mb-6 text-left font-serif leading-relaxed sm:leading-[1.85]">';
+
+      rawLines.forEach((line) => {
+        let prefixHtml = '';
+        let restOfLine = line;
+
+        // Số câu ở đầu dòng thơ (Ví dụ: "1 ", "2 ", "4bcd ", "15-16 ")
+        const verseMatch = restOfLine.match(/^(\d{1,3}(?:[a-h]{1,6}|-\d{1,3})?)(?=\s*[\p{L}"“'‘(]|$)/u);
+        if (verseMatch) {
+          const [fullMatch, verse] = verseMatch;
+          prefixHtml = `<sup class="inline-block font-bold ${theme.supColor} text-[0.68em] font-sans mr-1.5 select-none">${verse}</sup>`;
+          restOfLine = restOfLine.slice(fullMatch.length).trimStart();
+        }
+
+        // Đổi màu số câu ở giữa dòng nếu có
+        restOfLine = restOfLine.replace(
+          /(\d{1,4}[a-h]{0,6})/g,
+          `<sup class="font-normal ${theme.supColor} text-[0.65em] font-sans ml-1 select-none">$1</sup>`
+        );
+        restOfLine = restOfLine.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
+
+        // Đổi màu (Đ.) ở cuối hoặc giữa dòng
+        restOfLine = restOfLine.replace(
+          /\((Đ\.|Đ|Đáp)\)/gi,
+          `<span class="font-serif font-bold text-red-600 dark:text-red-400 mx-1 select-none">(Đ.)</span>`
+        );
+
+        stanzaHtml += `<div class="mb-1 sm:mb-1.5 text-left text-stone-800 dark:text-stone-200 [text-wrap:pretty]">${prefixHtml}${restOfLine}</div>`;
+      });
+
+      stanzaHtml += '</div>';
+      return stanzaHtml;
+    }).join('');
+  };
+
+  // 3. Định dạng Ca Tiếp Liên (Sequence) - Thơ Thánh Thi Phụng Vụ
+  const formatPoetryText = (text) => {
+    if (!text) return '';
+    const paragraphs = text.split(/\n\s*\n/);
+
+    return paragraphs.map((paragraphStr) => {
+      const rawLines = paragraphStr.split('\n').map(l => l.trim()).filter(Boolean);
+      if (rawLines.length === 0) return '';
+
+      let stanzaHtml = '<div class="mb-4 sm:mb-5 text-left font-serif leading-relaxed sm:leading-[1.85]">';
+      rawLines.forEach((line) => {
+        stanzaHtml += `<div class="mb-1 sm:mb-1.5 text-left text-stone-800 dark:text-stone-200 [text-wrap:pretty]">${line}</div>`;
+      });
+      stanzaHtml += '</div>';
+      return stanzaHtml;
+    }).join('');
+  };
+
+  const formatLiturgyText = formatProseText;
 
   return (
     <div className="min-h-screen bg-[#FDFCF9] dark:bg-[#12100E] text-stone-800 dark:text-stone-200 transition-colors duration-500 fade-in-up pb-32 overflow-x-hidden">
@@ -1902,7 +1946,7 @@ export default function LiturgyPage() {
                   
                   {r1Options[r1AltIdx]?.content && (
                     <div className={`${fontClasses}`}>
-                      <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(r1Options[r1AltIdx].content) }} />
+                      <div dangerouslySetInnerHTML={{ __html: formatProseText(r1Options[r1AltIdx].content) }} />
                     </div>
                   )}
                 </div>
@@ -1917,7 +1961,7 @@ export default function LiturgyPage() {
                   </h3>
                   
                   <div className={`${fontClasses} text-stone-800 dark:text-stone-200 font-serif leading-relaxed sm:leading-[1.85]`}>
-                    <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(activeContent.psalm_content) }} />
+                    <div dangerouslySetInnerHTML={{ __html: formatPsalmText(activeContent.psalm_content) }} />
                   </div>
                 </div>
               )}
@@ -1976,7 +2020,7 @@ export default function LiturgyPage() {
                   
                   {r2Options[r2AltIdx]?.content && (
                     <div className={`${fontClasses}`}>
-                      <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(r2Options[r2AltIdx].content) }} />
+                      <div dangerouslySetInnerHTML={{ __html: formatProseText(r2Options[r2AltIdx].content) }} />
                     </div>
                   )}
                 </div>
@@ -1995,7 +2039,7 @@ export default function LiturgyPage() {
                   </h3>
                   
                   <div className={`${fontClasses} text-stone-800 dark:text-stone-200 font-serif leading-relaxed sm:leading-[1.85]`}>
-                    <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(psalmItem.psalm_content || psalmItem.content) }} />
+                    <div dangerouslySetInnerHTML={{ __html: formatPsalmText(psalmItem.psalm_content || psalmItem.content) }} />
                   </div>
                 </div>
               ))}
@@ -2019,7 +2063,7 @@ export default function LiturgyPage() {
 
                   {seq.content && (
                     <div className={`${fontClasses} font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200`}>
-                      <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(seq.content) }} />
+                      <div dangerouslySetInnerHTML={{ __html: formatPoetryText(seq.content) }} />
                     </div>
                   )}
                 </div>
@@ -2058,7 +2102,7 @@ export default function LiturgyPage() {
                   
                   {extra.content && (
                     <div className={`${fontClasses} mb-6`}>
-                      <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(extra.content) }} />
+                      <div dangerouslySetInnerHTML={{ __html: formatProseText(extra.content) }} />
                     </div>
                   )}
 
@@ -2070,7 +2114,7 @@ export default function LiturgyPage() {
                       </h3>
                       
                       <div className={`${fontClasses} text-stone-800 dark:text-stone-200 font-serif leading-relaxed sm:leading-[1.85]`}>
-                        <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(extra.psalm_content) }} />
+                        <div dangerouslySetInnerHTML={{ __html: formatPsalmText(extra.psalm_content) }} />
                       </div>
                     </div>
                   )}
@@ -2142,7 +2186,7 @@ export default function LiturgyPage() {
                     
                     {gospelOptions[gospelAltIdx]?.content && (
                       <div className={`${fontClasses} text-stone-900 dark:text-stone-100 font-medium`}>
-                        <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(gospelOptions[gospelAltIdx].content) }} />
+                        <div dangerouslySetInnerHTML={{ __html: formatProseText(gospelOptions[gospelAltIdx].content) }} />
                       </div>
                     )}
                   </div>
