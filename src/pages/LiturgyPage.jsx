@@ -1340,7 +1340,7 @@ export default function LiturgyPage() {
     }).join('');
   };
 
-  // 2. Định dạng Thánh Vịnh Đáp Ca (Responsorial Psalm) - Chuẩn Sách Bài Đọc HĐGMVN & KPV
+  // 2. Định dạng Thánh Vịnh Đáp Ca (Responsorial Psalm) - Chuẩn Sách Bài Đọc HĐGMVN & KPV (Tối Ưu Hoàn Hảo Mobile & Desktop)
   const formatPsalmText = (text, customRefrainClass = refrainFontClasses) => {
     if (!text) return '';
     const paragraphs = text.split(/\n\s*\n/);
@@ -1366,21 +1366,21 @@ export default function LiturgyPage() {
         );
         refrainContent = refrainContent.replace(/(<\/sup>)([\p{L}"“'‘(])/gu, '$1 $2');
 
-        return `<div class="my-4 sm:my-5 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-[1.8] pl-7 sm:pl-8 relative text-left"><span class="absolute right-full mr-2.5 top-0 w-6 sm:w-7 text-right font-serif font-black text-red-600 dark:text-red-400 select-none">Đ.</span><span class="inline-block">${refrainContent}</span></div>`;
+        return `<div class="flex items-baseline gap-2 sm:gap-3 my-3 sm:my-4 font-serif font-bold text-stone-900 dark:text-stone-100 ${customRefrainClass} leading-relaxed sm:leading-[1.8]"><span class="w-5 sm:w-6 shrink-0 text-right font-serif font-black text-red-600 dark:text-red-400 select-none">Đ.</span><span class="flex-1 text-left">${refrainContent}</span></div>`;
       }
 
-      // B. XỬ LÝ KHỔ THƠ THÁNH VỊNH (STANZA)
-      let stanzaHtml = '<div class="mb-5 sm:mb-6 font-serif pl-7 sm:pl-8 text-stone-800 dark:text-stone-200 leading-relaxed sm:leading-[1.85] text-left">';
+      // B. XỬ LÝ KHỔ THƠ THÁNH VỊNH (STANZA) - In-flow Two-Column Flexbox Layout
+      let stanzaHtml = '<div class="mb-4 sm:mb-5 font-serif text-stone-800 dark:text-stone-200 leading-relaxed sm:leading-[1.85]">';
 
       rawLines.forEach((line) => {
-        let versePrefixHtml = '';
+        let verseNumber = '';
         let restOfLine = line;
 
         // Nhận diện số câu ở đầu dòng thơ: "1 ", "2 ", "4bcd ", "15-16 ", "2-3 "
         const verseMatch = restOfLine.match(/^(\d{1,3}(?:[a-h]{1,6}|-\d{1,3})?)(?=\s*[\p{L}"“'‘(]|$)/u);
         if (verseMatch) {
           const [fullMatch, verse] = verseMatch;
-          versePrefixHtml = `<span class="absolute right-full mr-2.5 top-0 w-6 sm:w-7 text-right font-sans font-semibold text-[0.72em] ${theme.supColor || 'text-amber-700 dark:text-amber-500'} select-none leading-relaxed">${verse}</span>`;
+          verseNumber = verse;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         }
 
@@ -1397,7 +1397,11 @@ export default function LiturgyPage() {
           `<span class="font-serif font-bold text-red-600 dark:text-red-400 ml-1.5 select-none">(Đ.)</span>`
         );
 
-        stanzaHtml += `<div class="relative mb-1 sm:mb-1.5 [text-wrap:pretty]">${versePrefixHtml}<span>${restOfLine}</span></div>`;
+        const col1 = verseNumber
+          ? `<span class="w-5 sm:w-6 shrink-0 text-right font-sans font-bold text-[0.72em] ${theme.supColor || 'text-amber-700 dark:text-amber-400'} select-none leading-none">${verseNumber}</span>`
+          : `<span class="w-5 sm:w-6 shrink-0 select-none"></span>`;
+
+        stanzaHtml += `<div class="flex items-baseline gap-2 sm:gap-3 mb-1 sm:mb-1.5 [text-wrap:pretty]">${col1}<span class="flex-1 text-left">${restOfLine}</span></div>`;
       });
 
       stanzaHtml += '</div>';
@@ -1414,11 +1418,11 @@ export default function LiturgyPage() {
       const rawLines = paragraphStr.split('\n').map(l => l.trim()).filter(Boolean);
       if (rawLines.length === 0) return '';
 
-      let stanzaHtml = '<div class="mb-4 sm:mb-6 font-serif leading-relaxed sm:leading-[1.9] text-stone-800 dark:text-stone-200 pl-4 sm:pl-6 border-l-2 border-amber-300/60 dark:border-amber-700/50 text-left">';
+      let stanzaHtml = '<div class="mb-4 sm:mb-5 font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200 text-left pl-3 sm:pl-4 border-l-2 border-amber-300/80 dark:border-amber-700/60">';
       rawLines.forEach((line) => {
         const isAmenAlleluia = /^(A-men\.\s*Ha-lê-lui-a|A-men|Ha-lê-lui-a)/i.test(line);
         const lineClass = isAmenAlleluia 
-          ? 'font-bold text-amber-700 dark:text-amber-400 mt-2.5 not-italic' 
+          ? 'font-bold text-amber-700 dark:text-amber-400 mt-2 not-italic' 
           : 'mb-1 sm:mb-1.5';
 
         stanzaHtml += `<div class="${lineClass} [text-wrap:pretty]">${line}</div>`;
