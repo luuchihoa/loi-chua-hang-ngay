@@ -1120,9 +1120,19 @@ export default function LiturgyPage() {
       quote: activeContent.r1_quote,
       intro: activeContent.r1_intro,
       content: activeContent.r1_content,
-      option_label: activeContent.r1_ref ? `Bài chính (${activeContent.r1_ref})` : 'Bài đọc chính'
+      option_label: activeContent.r1_ref ? `Bản chính (${activeContent.r1_ref})` : 'Bản chính',
+      tab_label: activeContent.r1_ref ? `📌 Bản Chính (${activeContent.r1_ref})` : '📌 Bản Chính'
     } : null;
-    const alts = alternativeReadings.filter(a => a.target_section === 'r1');
+    const alts = alternativeReadings.filter(a => a.target_section === 'r1').map((a, i) => {
+      const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
+      const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
+      const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
+      const label = a.option_label || a.title || (a.ref ? `Tùy Chọn ${i + 1} (${a.ref})` : `Tùy Chọn ${i + 1}`);
+      return {
+        ...a,
+        tab_label: `${icon} ${label}`
+      };
+    });
     return [mainOpt, ...alts].filter(Boolean);
   }, [activeContent, alternativeReadings]);
 
@@ -1133,9 +1143,19 @@ export default function LiturgyPage() {
       quote: activeContent.r2_quote,
       intro: activeContent.r2_intro,
       content: activeContent.r2_content,
-      option_label: activeContent.r2_ref ? `Bài chính (${activeContent.r2_ref})` : 'Bài đọc chính'
+      option_label: activeContent.r2_ref ? `Bản chính (${activeContent.r2_ref})` : 'Bản chính',
+      tab_label: activeContent.r2_ref ? `📌 Bản Chính (${activeContent.r2_ref})` : '📌 Bản Chính'
     } : null;
-    const alts = alternativeReadings.filter(a => a.target_section === 'r2');
+    const alts = alternativeReadings.filter(a => a.target_section === 'r2').map((a, i) => {
+      const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
+      const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
+      const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
+      const label = a.option_label || a.title || (a.ref ? `Tùy Chọn ${i + 1} (${a.ref})` : `Tùy Chọn ${i + 1}`);
+      return {
+        ...a,
+        tab_label: `${icon} ${label}`
+      };
+    });
     return [mainOpt, ...alts].filter(Boolean);
   }, [activeContent, alternativeReadings]);
 
@@ -1147,9 +1167,19 @@ export default function LiturgyPage() {
       quote: activeContent.quote || activeContent.gospel_quote,
       intro: activeContent.gospel_intro,
       content: activeContent.gospel_content,
-      option_label: activeContent.gospel_ref ? `Bài chính (${activeContent.gospel_ref})` : 'Bài đọc chính'
+      option_label: activeContent.gospel_ref ? `Bản chính (${activeContent.gospel_ref})` : 'Bản chính',
+      tab_label: activeContent.gospel_ref ? `📌 Bản Chính (${activeContent.gospel_ref})` : '📌 Bản Chính'
     } : null;
-    const alts = alternativeReadings.filter(a => a.target_section === 'gospel');
+    const alts = alternativeReadings.filter(a => a.target_section === 'gospel').map((a, i) => {
+      const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
+      const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
+      const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
+      const label = a.option_label || a.title || (a.ref ? `Tùy Chọn ${i + 1} (${a.ref})` : `Tùy Chọn ${i + 1}`);
+      return {
+        ...a,
+        tab_label: `${icon} ${label}`
+      };
+    });
     return [mainOpt, ...alts].filter(Boolean);
   }, [activeContent, alternativeReadings]);
 
@@ -1237,11 +1267,11 @@ export default function LiturgyPage() {
     large:  'text-[16px] sm:text-[18px]',
   }[fontSize];
 
-  // Class điều chỉnh cỡ chữ Dòng Câu Đáp (Đ.) trong Đáp Ca
+  // Class điều chỉnh cỡ chữ Dòng Câu Đáp (Đ.) trong Đáp Ca (đồng bộ với fontClasses)
   const refrainFontClasses = {
-    normal: 'text-[16px] sm:text-[18px]',
-    medium: 'text-[19px] sm:text-[21px]',
-    large:  'text-[22px] sm:text-[24px]',
+    normal: 'text-[15px] sm:text-[17px]',
+    medium: 'text-[17px] sm:text-[19px]',
+    large:  'text-[19px] sm:text-[22px]',
   }[fontSize];
 
   // Class điều chỉnh cỡ chữ Alleluia
@@ -1829,20 +1859,22 @@ export default function LiturgyPage() {
 
                   {/* Segmented Tab Toggle cho Bài Đọc 1 (nếu có lựa chọn thay thế) */}
                   {r1Options.length > 1 && (
-                    <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
-                      {r1Options.map((opt, idx) => (
-                        <button
-                          key={`r1-opt-${idx}`}
-                          onClick={() => setR1AltIdx(idx)}
-                          className={`px-3 py-1 rounded-full text-[12px] font-bold transition-all ${
-                            r1AltIdx === idx
-                              ? `${theme.btnBg} shadow-sm`
-                              : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
-                          }`}
-                        >
-                          {opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
-                        </button>
-                      ))}
+                    <div className="flex items-center justify-center my-3 sm:my-4">
+                      <div className="inline-flex items-center p-1 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/40 dark:border-stone-700/50 backdrop-blur-sm shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1">
+                        {r1Options.map((opt, idx) => (
+                          <button
+                            key={`r1-opt-${idx}`}
+                            onClick={() => setR1AltIdx(idx)}
+                            className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                              r1AltIdx === idx
+                                ? `${theme.btnBg} shadow-sm`
+                                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
+                            }`}
+                          >
+                            {opt.tab_label || opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 
@@ -1879,12 +1911,12 @@ export default function LiturgyPage() {
               {/* Đáp Ca */}
               {activeContent.psalm_content && (
                 <div id="sec-psalm" className="mb-8 sm:mb-12 pl-3.5 sm:pl-8 border-l-4 border-amber-400 dark:border-amber-600 scroll-mt-24">
-                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
+                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.accentText} mb-2.5 flex items-center flex-wrap gap-2`}>
                     <span className="font-bold">Đáp Ca</span> 
-                    {activeContent.psalm_ref && <span className={`${refFontClasses} text-stone-500 font-bold not-italic font-sans`}>- {activeContent.psalm_ref}</span>}
+                    {activeContent.psalm_ref && <span className={`${refFontClasses} text-stone-500 dark:text-stone-400 font-bold font-sans`}>- {activeContent.psalm_ref}</span>}
                   </h3>
                   
-                  <div className={`${fontClasses} italic text-stone-700 dark:text-stone-300`}>
+                  <div className={`${fontClasses} text-stone-800 dark:text-stone-200 font-serif leading-relaxed sm:leading-[1.85]`}>
                     <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(activeContent.psalm_content) }} />
                   </div>
                 </div>
@@ -1901,20 +1933,22 @@ export default function LiturgyPage() {
 
                   {/* Segmented Tab Toggle cho Bài Đọc 2 (nếu có lựa chọn thay thế) */}
                   {r2Options.length > 1 && (
-                    <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
-                      {r2Options.map((opt, idx) => (
-                        <button
-                          key={`r2-opt-${idx}`}
-                          onClick={() => setR2AltIdx(idx)}
-                          className={`px-3 py-1 rounded-full text-[12px] font-bold transition-all ${
-                            r2AltIdx === idx
-                              ? `${theme.btnBg} shadow-sm`
-                              : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
-                          }`}
-                        >
-                          {opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
-                        </button>
-                      ))}
+                    <div className="flex items-center justify-center my-3 sm:my-4">
+                      <div className="inline-flex items-center p-1 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/40 dark:border-stone-700/50 backdrop-blur-sm shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1">
+                        {r2Options.map((opt, idx) => (
+                          <button
+                            key={`r2-opt-${idx}`}
+                            onClick={() => setR2AltIdx(idx)}
+                            className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                              r2AltIdx === idx
+                                ? `${theme.btnBg} shadow-sm`
+                                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
+                            }`}
+                          >
+                            {opt.tab_label || opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 
@@ -1951,16 +1985,16 @@ export default function LiturgyPage() {
               {/* Đáp ca bổ sung (Đặc biệt Đáp ca sau Bài Đọc 2 trong Lễ Vọng Phục Sinh...) */}
               {extraPsalms.map((psalmItem, pIdx) => (
                 <div key={`extra-psalm-${pIdx}`} id="sec-r2-psalm" className="mb-8 sm:mb-12 pl-3.5 sm:pl-8 border-l-4 border-amber-400 dark:border-amber-600 scroll-mt-24">
-                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
+                  <h3 className={`font-serif ${sectionTitleClasses} ${theme.accentText} mb-2.5 flex items-center flex-wrap gap-2`}>
                     <span className="font-bold">{psalmItem.title || "Đáp Ca"}</span> 
                     {(psalmItem.psalm_ref || psalmItem.ref) && (
-                      <span className={`${refFontClasses} text-stone-500 font-bold not-italic font-sans`}>
+                      <span className={`${refFontClasses} text-stone-500 dark:text-stone-400 font-bold font-sans`}>
                         - {psalmItem.psalm_ref || psalmItem.ref}
                       </span>
                     )}
                   </h3>
                   
-                  <div className={`${fontClasses} italic text-stone-700 dark:text-stone-300`}>
+                  <div className={`${fontClasses} text-stone-800 dark:text-stone-200 font-serif leading-relaxed sm:leading-[1.85]`}>
                     <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(psalmItem.psalm_content || psalmItem.content) }} />
                   </div>
                 </div>
@@ -1978,13 +2012,13 @@ export default function LiturgyPage() {
                   </div>
 
                   {seq.quote && (
-                    <p className={`italic text-center ${fontClasses} text-stone-600 dark:text-stone-400 mb-4 px-2 font-serif leading-relaxed`}>
+                    <p className={`text-center ${fontClasses} text-stone-600 dark:text-stone-400 mb-4 px-2 font-serif leading-relaxed`}>
                       "{seq.quote}"
                     </p>
                   )}
 
                   {seq.content && (
-                    <div className={`${fontClasses} font-serif leading-relaxed text-stone-800 dark:text-stone-200`}>
+                    <div className={`${fontClasses} font-serif leading-relaxed sm:leading-[1.85] text-stone-800 dark:text-stone-200`}>
                       <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(seq.content) }} />
                     </div>
                   )}
@@ -2030,12 +2064,12 @@ export default function LiturgyPage() {
 
                   {extra.psalm_content && (
                     <div className="mb-8 sm:mb-12 pl-3.5 sm:pl-8 border-l-4 border-amber-400 dark:border-amber-600">
-                      <h3 className={`font-serif text-[15px] sm:text-[18px] ${theme.accentText} mb-2.5 italic flex items-center flex-wrap gap-2`}>
+                      <h3 className={`font-serif text-[15px] sm:text-[18px] ${theme.accentText} mb-2.5 flex items-center flex-wrap gap-2`}>
                         <span className="font-bold">Đáp Ca</span> 
-                        {extra.psalm_ref && <span className="text-[12px] sm:text-[13px] text-stone-500 font-bold not-italic font-sans">- {extra.psalm_ref}</span>}
+                        {extra.psalm_ref && <span className="text-[12px] sm:text-[13px] text-stone-500 dark:text-stone-400 font-bold font-sans">- {extra.psalm_ref}</span>}
                       </h3>
                       
-                      <div className={`${fontClasses} italic text-stone-700 dark:text-stone-300`}>
+                      <div className={`${fontClasses} text-stone-800 dark:text-stone-200 font-serif leading-relaxed sm:leading-[1.85]`}>
                         <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(extra.psalm_content) }} />
                       </div>
                     </div>
@@ -2055,20 +2089,22 @@ export default function LiturgyPage() {
 
                   {/* Segmented Tab Toggle cho Tin Mừng (nếu có lựa chọn thay thế) */}
                   {gospelOptions.length > 1 && (
-                    <div className="flex items-center justify-center gap-2 mb-4 flex-wrap pt-2 sm:pt-0">
-                      {gospelOptions.map((opt, idx) => (
-                        <button
-                          key={`gospel-opt-${idx}`}
-                          onClick={() => setGospelAltIdx(idx)}
-                          className={`px-3.5 py-1.5 rounded-full text-[12px] font-bold transition-all ${
-                            gospelAltIdx === idx
-                              ? `${theme.btnBg} shadow-sm`
-                              : 'bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-stone-700'
-                          }`}
-                        >
-                          {opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
-                        </button>
-                      ))}
+                    <div className="flex items-center justify-center my-3 sm:my-4 flex-wrap pt-2 sm:pt-0">
+                      <div className="inline-flex items-center p-1 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/40 dark:border-stone-700/50 backdrop-blur-sm shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1">
+                        {gospelOptions.map((opt, idx) => (
+                          <button
+                            key={`gospel-opt-${idx}`}
+                            onClick={() => setGospelAltIdx(idx)}
+                            className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                              gospelAltIdx === idx
+                                ? `${theme.btnBg} shadow-sm`
+                                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
+                            }`}
+                          >
+                            {opt.tab_label || opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
 
