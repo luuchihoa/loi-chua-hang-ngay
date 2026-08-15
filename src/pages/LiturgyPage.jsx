@@ -272,6 +272,31 @@ export default function LiturgyPage() {
     );
   };
 
+  // Helper render Segmented Tabs chuẩn hóa tối ưu Mobile & Desktop (Nhãn thông minh, mượt mà khi >= 3 tabs)
+  const renderSegmentedTabs = (options, activeIdx, setActiveIdx, sectionKey = 'tab') => {
+    if (!options || options.length <= 1) return null;
+    return (
+      <div className="flex items-center justify-center my-3 sm:my-4 max-w-full px-1">
+        <div className="inline-flex items-center p-1 rounded-full bg-stone-200/80 dark:bg-stone-800/85 border border-stone-300/60 dark:border-stone-700/60 backdrop-blur-md shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1 scroll-smooth">
+          {options.map((opt, idx) => (
+            <button
+              key={`${sectionKey}-opt-${idx}`}
+              onClick={() => setActiveIdx(idx)}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all duration-200 whitespace-nowrap flex items-center gap-1.5 shrink-0 ${
+                activeIdx === idx
+                  ? `${theme.btnBg} shadow-sm scale-[1.02]`
+                  : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
+              }`}
+            >
+              <span className="sm:hidden">{opt.short_label || opt.tab_label || opt.option_label || `Lựa chọn ${idx + 1}`}</span>
+              <span className="hidden sm:inline">{opt.full_label || opt.tab_label || opt.option_label || `Lựa chọn ${idx + 1}`}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // Trạng thái mở dropdown chọn ngày & ô tìm kiếm
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const pickerRef = useRef(null);
@@ -1112,7 +1137,7 @@ export default function LiturgyPage() {
     setGospelAltIdx(0);
   }, [activeContent]);
 
-  // Gom các Lựa Chọn cho từng bài đọc
+  // Gom các Lựa Chọn cho từng bài đọc với nhãn thông minh (Smart Adaptive Labels)
   const r1Options = useMemo(() => {
     const mainOpt = activeContent?.r1_content ? {
       title: "Bài Đọc 1",
@@ -1121,16 +1146,19 @@ export default function LiturgyPage() {
       intro: activeContent.r1_intro,
       content: activeContent.r1_content,
       option_label: activeContent.r1_ref ? `Bản chính (${activeContent.r1_ref})` : 'Bản chính',
-      tab_label: activeContent.r1_ref ? `📌 Bản Chính (${activeContent.r1_ref})` : '📌 Bản Chính'
+      short_label: '📌 Bản Chính',
+      full_label: activeContent.r1_ref ? `📌 Bản Chính (${activeContent.r1_ref})` : '📌 Bản Chính'
     } : null;
     const alts = alternativeReadings.filter(a => a.target_section === 'r1').map((a, i) => {
       const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
       const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
-      const label = a.option_label || a.title || (a.ref ? `Tùy Chọn ${i + 1} (${a.ref})` : `Tùy Chọn ${i + 1}`);
+      const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
+      const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
       return {
         ...a,
-        tab_label: `${icon} ${label}`
+        short_label: `${icon} ${baseShort}`,
+        full_label: `${icon} ${baseFull}`
       };
     });
     return [mainOpt, ...alts].filter(Boolean);
@@ -1144,16 +1172,19 @@ export default function LiturgyPage() {
       intro: activeContent.r2_intro,
       content: activeContent.r2_content,
       option_label: activeContent.r2_ref ? `Bản chính (${activeContent.r2_ref})` : 'Bản chính',
-      tab_label: activeContent.r2_ref ? `📌 Bản Chính (${activeContent.r2_ref})` : '📌 Bản Chính'
+      short_label: '📌 Bản Chính',
+      full_label: activeContent.r2_ref ? `📌 Bản Chính (${activeContent.r2_ref})` : '📌 Bản Chính'
     } : null;
     const alts = alternativeReadings.filter(a => a.target_section === 'r2').map((a, i) => {
       const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
       const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
-      const label = a.option_label || a.title || (a.ref ? `Tùy Chọn ${i + 1} (${a.ref})` : `Tùy Chọn ${i + 1}`);
+      const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
+      const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
       return {
         ...a,
-        tab_label: `${icon} ${label}`
+        short_label: `${icon} ${baseShort}`,
+        full_label: `${icon} ${baseFull}`
       };
     });
     return [mainOpt, ...alts].filter(Boolean);
@@ -1168,16 +1199,19 @@ export default function LiturgyPage() {
       intro: activeContent.gospel_intro,
       content: activeContent.gospel_content,
       option_label: activeContent.gospel_ref ? `Bản chính (${activeContent.gospel_ref})` : 'Bản chính',
-      tab_label: activeContent.gospel_ref ? `📌 Bản Chính (${activeContent.gospel_ref})` : '📌 Bản Chính'
+      short_label: '📌 Bản Chính',
+      full_label: activeContent.gospel_ref ? `📌 Bản Chính (${activeContent.gospel_ref})` : '📌 Bản Chính'
     } : null;
     const alts = alternativeReadings.filter(a => a.target_section === 'gospel').map((a, i) => {
       const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
       const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
-      const label = a.option_label || a.title || (a.ref ? `Tùy Chọn ${i + 1} (${a.ref})` : `Tùy Chọn ${i + 1}`);
+      const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
+      const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
       return {
         ...a,
-        tab_label: `${icon} ${label}`
+        short_label: `${icon} ${baseShort}`,
+        full_label: `${icon} ${baseFull}`
       };
     });
     return [mainOpt, ...alts].filter(Boolean);
@@ -1920,25 +1954,7 @@ export default function LiturgyPage() {
                   </div>
 
                   {/* Segmented Tab Toggle cho Bài Đọc 1 (nếu có lựa chọn thay thế) */}
-                  {r1Options.length > 1 && (
-                    <div className="flex items-center justify-center my-3 sm:my-4">
-                      <div className="inline-flex items-center p-1 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/40 dark:border-stone-700/50 backdrop-blur-sm shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1">
-                        {r1Options.map((opt, idx) => (
-                          <button
-                            key={`r1-opt-${idx}`}
-                            onClick={() => setR1AltIdx(idx)}
-                            className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                              r1AltIdx === idx
-                                ? `${theme.btnBg} shadow-sm`
-                                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
-                            }`}
-                          >
-                            {opt.tab_label || opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  {renderSegmentedTabs(r1Options, r1AltIdx, setR1AltIdx, 'r1')}
 
                   {r1Options[r1AltIdx]?.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{r1Options[r1AltIdx].ref}</p>}
 
@@ -1994,25 +2010,7 @@ export default function LiturgyPage() {
                   </div>
 
                   {/* Segmented Tab Toggle cho Bài Đọc 2 (nếu có lựa chọn thay thế) */}
-                  {r2Options.length > 1 && (
-                    <div className="flex items-center justify-center my-3 sm:my-4">
-                      <div className="inline-flex items-center p-1 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/40 dark:border-stone-700/50 backdrop-blur-sm shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1">
-                        {r2Options.map((opt, idx) => (
-                          <button
-                            key={`r2-opt-${idx}`}
-                            onClick={() => setR2AltIdx(idx)}
-                            className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                              r2AltIdx === idx
-                                ? `${theme.btnBg} shadow-sm`
-                                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
-                            }`}
-                          >
-                            {opt.tab_label || opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  {renderSegmentedTabs(r2Options, r2AltIdx, setR2AltIdx, 'r2')}
 
                   {r2Options[r2AltIdx]?.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{r2Options[r2AltIdx].ref}</p>}
 
@@ -2149,39 +2147,27 @@ export default function LiturgyPage() {
                     <Sparkles className="w-3 h-3" /> Tin Mừng
                   </div>
 
-                  {/* Segmented Tab Toggle cho Tin Mừng (nếu có lựa chọn thay thế) */}
-                  {gospelOptions.length > 1 && (
-                    <div className="flex items-center justify-center my-3 sm:my-4 flex-wrap pt-2 sm:pt-0">
-                      <div className="inline-flex items-center p-1 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/40 dark:border-stone-700/50 backdrop-blur-sm shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1">
-                        {gospelOptions.map((opt, idx) => (
-                          <button
-                            key={`gospel-opt-${idx}`}
-                            onClick={() => setGospelAltIdx(idx)}
-                            className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                              gospelAltIdx === idx
-                                ? `${theme.btnBg} shadow-sm`
-                                : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
-                            }`}
-                          >
-                            {opt.tab_label || opt.option_label || opt.ref || `Lựa chọn ${idx + 1}`}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
+                  {/* 1. Câu Tung Hô Tin Mừng (Alleluia) - Mở đầu trang trọng đón Tin Mừng */}
                   {(gospelOptions[gospelAltIdx]?.alleluia || activeContent.gospel_alleluia) && (
-                    <div className={`mb-5 sm:mb-8 text-center ${alleluiaFontClasses} font-serif italic text-amber-900 dark:text-amber-300 px-1 sm:px-12 leading-relaxed`}>
+                    <div className={`mb-5 sm:mb-8 text-center ${alleluiaFontClasses} font-serif italic text-amber-900 dark:text-amber-300 px-1 sm:px-12 leading-relaxed pt-2 sm:pt-0`}>
                       <div dangerouslySetInnerHTML={{ __html: formatLiturgyText(gospelOptions[gospelAltIdx]?.alleluia || activeContent.gospel_alleluia) }} />
                     </div>
                   )}
 
+                  {/* 2. Tiêu Đề Tin Mừng & Trích đoạn */}
                   <h3 className={`font-serif ${sectionTitleClasses} ${theme.headingText} uppercase tracking-wider text-center font-bold mb-1`}>
                     {gospelOptions[gospelAltIdx]?.title || "Tin Mừng"}
                   </h3>
-                  {gospelOptions[gospelAltIdx]?.ref && <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>{gospelOptions[gospelAltIdx].ref}</p>}
+                  {gospelOptions[gospelAltIdx]?.ref && (
+                    <p className={`text-center ${refFontClasses} text-stone-500 dark:text-stone-400 font-bold mb-1 font-sans`}>
+                      {gospelOptions[gospelAltIdx].ref}
+                    </p>
+                  )}
 
-                  {/* Nút nghe riêng Tin Mừng */}
+                  {/* 3. Segmented Tab Toggle cho Tin Mừng (nếu có lựa chọn thay thế) - Nằm ngay dưới Tiêu đề & Ref */}
+                  {renderSegmentedTabs(gospelOptions, gospelAltIdx, setGospelAltIdx, 'gospel')}
+
+                  {/* 4. Nút nghe riêng Tin Mừng */}
                   {renderSectionAudioBadge(
                     'Tin Mừng',
                     `Phúc Âm. ${gospelOptions[gospelAltIdx]?.intro || activeContent?.gospel_intro || ''}. ${gospelOptions[gospelAltIdx]?.content || activeContent?.gospel_content || ''}`,
@@ -2189,12 +2175,14 @@ export default function LiturgyPage() {
                     'gospel'
                   )}
 
+                  {/* 5. Câu Lời Chúa Nổi Bật */}
                   {gospelOptions[gospelAltIdx]?.quote && (
                     <p className={`italic text-center ${fontClasses} text-stone-600 dark:text-stone-400 mb-5 px-2 font-serif leading-relaxed`}>
                       "{gospelOptions[gospelAltIdx].quote}"
                     </p>
                   )}
 
+                  {/* 6. Thân bài Tin Mừng */}
                   <div className="relative pl-3.5 sm:pl-6 border-l-4 border-amber-500 dark:border-amber-400">
                     {gospelOptions[gospelAltIdx]?.intro && (
                       <p className={`font-bold ${fontClasses} text-stone-900 dark:text-stone-100 mb-3 font-serif`}>
