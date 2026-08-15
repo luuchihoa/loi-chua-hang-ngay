@@ -1282,6 +1282,7 @@ export default function LiturgyPage() {
   }[fontSize];
 
   // 1. Định dạng văn bản Văn Xuôi (Bài Đọc 1, 2, Tin Mừng, Kiệu Lá...)
+  // Kiến trúc: Fluid In-Flow Indent Box (Không absolute, không đè chữ, 100% thẳng hàng)
   const formatProseText = (text) => {
     if (!text) return '';
     const paragraphs = text.split(/\n\s*\n/);
@@ -1297,27 +1298,27 @@ export default function LiturgyPage() {
         let line = rawLines[i];
         let prefixHtml = '';
         let restOfLine = line;
-        let hasStartNumber = false;
 
-        // TH1: Đầu dòng có cả Số Chương + Số Câu (Ví dụ: "11 21b Hồi ấy...", "2 1 Khi ấy...")
+        // TH1: Đầu dòng có cả Số Chương + Số Câu (Ví dụ: "11 21b Hồi ấy...", "2 1 Khi ấy...", "1 1 Thưa...")
         const chapterVerseMatch = restOfLine.match(/^(\d{1,3})\s+(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
         if (chapterVerseMatch) {
           const [fullMatch, chap, verse] = chapterVerseMatch;
-          hasStartNumber = true;
-          prefixHtml = `<span class="inline-flex items-baseline gap-1 ${theme.supColor} mr-2 select-none"><span class="text-[0.9em] font-sans font-normal leading-none">${chap}</span><sup class="text-[0.6em] font-sans font-normal leading-none">${verse}</sup></span>`;
+          prefixHtml = `<span class="inline-block w-[2.2em] sm:w-[2.6em] text-right pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap align-baseline"><span class="text-[0.82em] font-bold">${chap}</span><sup class="text-[0.58em] font-semibold ml-0.5">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         } else {
           // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "18bcde Này...", "21b Hồi ấy...", "5 Đức Giê-su...")
           const singleVerseMatch = restOfLine.match(/^(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
           if (singleVerseMatch) {
             const [fullMatch, verse] = singleVerseMatch;
-            hasStartNumber = true;
-            prefixHtml = `<sup class="inline-block font-normal ${theme.supColor} text-[0.6em] font-sans px-1 mr-1.5 select-none">${verse}</sup>`;
+            prefixHtml = `<span class="inline-block w-[2.2em] sm:w-[2.6em] text-right pr-1.5 sm:pr-2 font-sans font-bold text-[0.68em] ${theme.supColor} select-none whitespace-nowrap align-baseline">${verse}</span>`;
             restOfLine = restOfLine.slice(fullMatch.length).trimStart();
+          } else {
+            // TH3: Đầu dòng KHÔNG có số câu -> Thẻ inline-block rỗng để giữ đúng trục gióng thụt đầu dòng
+            prefixHtml = `<span class="inline-block w-[2.2em] sm:w-[2.6em] select-none"></span>`;
           }
         }
 
-        // Đổi màu số câu ở giữa dòng
+        // Đổi màu số câu ở giữa dòng chảy văn bản (Inline Superscripts)
         restOfLine = restOfLine.replace(
           /(\d{1,4}[a-h]{0,6})/g,
           `<sup class="font-normal ${theme.supColor} text-[0.6em] font-sans ml-1 select-none">$1</sup>`
@@ -1328,11 +1329,10 @@ export default function LiturgyPage() {
           `<span class="font-serif font-bold text-red-600 dark:text-red-400 mx-1 select-none">(Đ.)</span>`
         );
 
-        const indentStyle = hasStartNumber ? '' : '[text-indent:1.25rem] sm:[text-indent:1.75rem]';
         const isLastLine = i === rawLines.length - 1;
-        const marginStyle = isLastLine ? 'mb-4 sm:mb-5' : 'mb-2 sm:mb-3';
+        const marginStyle = isLastLine ? 'mb-3.5 sm:mb-4.5' : 'mb-2 sm:mb-3';
 
-        resultHtml += `<div class="${marginStyle} ${indentStyle} leading-relaxed sm:leading-[1.85] text-justify [text-justify:inter-word] break-words">${prefixHtml}${restOfLine}</div>`;
+        resultHtml += `<div class="${marginStyle} leading-relaxed sm:leading-[1.85] text-justify [text-justify:inter-word] break-words">${prefixHtml}${restOfLine}</div>`;
         i++;
       }
 
