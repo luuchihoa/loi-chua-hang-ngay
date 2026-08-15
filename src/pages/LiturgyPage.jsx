@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BookOpen, Calendar, ChevronLeft, ChevronRight, Loader2, PlayCircle, 
   PauseCircle, CalendarDays, Copy, Share2, Check, Sparkles, Volume2, Square, ArrowUp,
-  Maximize2, Minimize2, Search, X, Command, Tag, Bookmark, CalendarHeart, PenLine, Info
+  Maximize2, Minimize2, Search, X, Command, Tag, Bookmark, CalendarHeart, PenLine, Info,
+  FileText, Zap
 } from 'lucide-react';
 import { usePageMotion } from '../hooks/usePageMotion.js';
 import { getLiturgyInfo, getLiturgicalYear, getLiturgicalColor, findDateForLiturgyKey } from '../utils/liturgyCalendar.js';
@@ -272,12 +273,26 @@ export default function LiturgyPage() {
     );
   };
 
-  // Helper render Segmented Tabs chuẩn hóa tối ưu Mobile & Desktop (Nhãn thông minh, mượt mà khi >= 3 tabs)
+  // Helper render Segmented Tabs chuẩn hóa tối ưu Mobile & Desktop (Icon Vector chống chìm màu, tương thích 3 Theme Sáng/Tối/Sepia)
   const renderSegmentedTabs = (options, activeIdx, setActiveIdx, sectionKey = 'tab') => {
     if (!options || options.length <= 1) return null;
+
+    const renderTabIcon = (iconType) => {
+      switch (iconType) {
+        case 'main':
+          return <Bookmark className="w-3.5 h-3.5 shrink-0" />;
+        case 'long':
+          return <FileText className="w-3.5 h-3.5 shrink-0" />;
+        case 'short':
+          return <Zap className="w-3.5 h-3.5 shrink-0" />;
+        default:
+          return <Sparkles className="w-3.5 h-3.5 shrink-0" />;
+      }
+    };
+
     return (
       <div className="flex items-center justify-center my-3 sm:my-4 max-w-full px-1">
-        <div className="inline-flex items-center p-1 rounded-full bg-stone-200/80 dark:bg-stone-800/85 border border-stone-300/60 dark:border-stone-700/60 backdrop-blur-md shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1 scroll-smooth">
+        <div className="inline-flex items-center p-1 rounded-full bg-stone-200/80 dark:bg-stone-800/85 sepia:bg-[#e8decb]/90 border border-stone-300/60 dark:border-stone-700/60 sepia:border-[#d6c7ae] backdrop-blur-md shadow-inner max-w-full overflow-x-auto no-scrollbar gap-1 scroll-smooth">
           {options.map((opt, idx) => (
             <button
               key={`${sectionKey}-opt-${idx}`}
@@ -285,9 +300,10 @@ export default function LiturgyPage() {
               className={`px-3.5 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-[13px] font-bold transition-all duration-200 whitespace-nowrap flex items-center gap-1.5 shrink-0 ${
                 activeIdx === idx
                   ? `${theme.btnBg} shadow-sm scale-[1.02]`
-                  : 'text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-300/50 dark:hover:bg-stone-700/50'
+                  : 'text-stone-600 dark:text-stone-300 sepia:text-[#6b583f] hover:text-stone-900 dark:hover:text-stone-100 sepia:hover:text-[#433422] hover:bg-stone-300/50 dark:hover:bg-stone-700/50 sepia:hover:bg-[#dcd1be]/60'
               }`}
             >
+              {renderTabIcon(opt.iconType)}
               <span className="sm:hidden">{opt.short_label || opt.tab_label || opt.option_label || `Lựa chọn ${idx + 1}`}</span>
               <span className="hidden sm:inline">{opt.full_label || opt.tab_label || opt.option_label || `Lựa chọn ${idx + 1}`}</span>
             </button>
@@ -1137,7 +1153,7 @@ export default function LiturgyPage() {
     setGospelAltIdx(0);
   }, [activeContent]);
 
-  // Gom các Lựa Chọn cho từng bài đọc với nhãn thông minh (Smart Adaptive Labels)
+  // Gom các Lựa Chọn cho từng bài đọc với nhãn thông minh (Smart Adaptive Labels) & Vector Icons
   const r1Options = useMemo(() => {
     const mainOpt = activeContent?.r1_content ? {
       title: "Bài Đọc 1",
@@ -1146,19 +1162,21 @@ export default function LiturgyPage() {
       intro: activeContent.r1_intro,
       content: activeContent.r1_content,
       option_label: activeContent.r1_ref ? `Bản chính (${activeContent.r1_ref})` : 'Bản chính',
-      short_label: '📌 Bản Chính',
-      full_label: activeContent.r1_ref ? `📌 Bản Chính (${activeContent.r1_ref})` : '📌 Bản Chính'
+      iconType: 'main',
+      short_label: 'Bản Chính',
+      full_label: activeContent.r1_ref ? `Bản Chính (${activeContent.r1_ref})` : 'Bản Chính'
     } : null;
     const alts = alternativeReadings.filter(a => a.target_section === 'r1').map((a, i) => {
       const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
-      const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
+      const iconType = isLong ? 'long' : isShort ? 'short' : 'alt';
       const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
       const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
       return {
         ...a,
-        short_label: `${icon} ${baseShort}`,
-        full_label: `${icon} ${baseFull}`
+        iconType,
+        short_label: baseShort,
+        full_label: baseFull
       };
     });
     return [mainOpt, ...alts].filter(Boolean);
@@ -1172,19 +1190,21 @@ export default function LiturgyPage() {
       intro: activeContent.r2_intro,
       content: activeContent.r2_content,
       option_label: activeContent.r2_ref ? `Bản chính (${activeContent.r2_ref})` : 'Bản chính',
-      short_label: '📌 Bản Chính',
-      full_label: activeContent.r2_ref ? `📌 Bản Chính (${activeContent.r2_ref})` : '📌 Bản Chính'
+      iconType: 'main',
+      short_label: 'Bản Chính',
+      full_label: activeContent.r2_ref ? `Bản Chính (${activeContent.r2_ref})` : 'Bản Chính'
     } : null;
     const alts = alternativeReadings.filter(a => a.target_section === 'r2').map((a, i) => {
       const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
-      const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
+      const iconType = isLong ? 'long' : isShort ? 'short' : 'alt';
       const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
       const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
       return {
         ...a,
-        short_label: `${icon} ${baseShort}`,
-        full_label: `${icon} ${baseFull}`
+        iconType,
+        short_label: baseShort,
+        full_label: baseFull
       };
     });
     return [mainOpt, ...alts].filter(Boolean);
@@ -1199,19 +1219,21 @@ export default function LiturgyPage() {
       intro: activeContent.gospel_intro,
       content: activeContent.gospel_content,
       option_label: activeContent.gospel_ref ? `Bản chính (${activeContent.gospel_ref})` : 'Bản chính',
-      short_label: '📌 Bản Chính',
-      full_label: activeContent.gospel_ref ? `📌 Bản Chính (${activeContent.gospel_ref})` : '📌 Bản Chính'
+      iconType: 'main',
+      short_label: 'Bản Chính',
+      full_label: activeContent.gospel_ref ? `Bản Chính (${activeContent.gospel_ref})` : 'Bản Chính'
     } : null;
     const alts = alternativeReadings.filter(a => a.target_section === 'gospel').map((a, i) => {
       const isLong = (a.title || a.option_label || '').toLowerCase().includes('dài');
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
-      const icon = isLong ? '📄' : isShort ? '⚡' : '✨';
+      const iconType = isLong ? 'long' : isShort ? 'short' : 'alt';
       const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
       const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
       return {
         ...a,
-        short_label: `${icon} ${baseShort}`,
-        full_label: `${icon} ${baseFull}`
+        iconType,
+        short_label: baseShort,
+        full_label: baseFull
       };
     });
     return [mainOpt, ...alts].filter(Boolean);
