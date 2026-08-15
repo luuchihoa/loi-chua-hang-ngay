@@ -1282,10 +1282,11 @@ export default function LiturgyPage() {
   }[fontSize];
 
   // 1. Định dạng văn bản Văn Xuôi (Bài Đọc 1, 2, Tin Mừng, Kiệu Lá...)
-  // Kiến trúc: Fixed In-Flow Indent Box (Cố định w-8 sm:w-10, 100% thẳng hàng từng pixel)
+  // Kiến trúc: Fixed In-Flow Indent Box (Cố định w-10 sm:w-12, 100% thẳng hàng từng pixel)
   const formatProseText = (text) => {
     if (!text) return '';
     const paragraphs = text.split(/\n\s*\n/);
+    const indentWidthClass = 'w-10 sm:w-12';
 
     return paragraphs.map((paragraphStr) => {
       const rawLines = paragraphStr.split('\n').map(l => l.trim()).filter(Boolean);
@@ -1303,18 +1304,18 @@ export default function LiturgyPage() {
         const chapterVerseMatch = restOfLine.match(/^(\d{1,3})\s+(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
         if (chapterVerseMatch) {
           const [fullMatch, chap, verse] = chapterVerseMatch;
-          prefixHtml = `<span class="inline-flex items-baseline justify-end w-8 sm:w-10 pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap shrink-0"><span class="text-[0.82em] font-bold leading-none">${chap}</span><sup class="text-[0.58em] font-normal leading-none ml-0.5">${verse}</sup></span>`;
+          prefixHtml = `<span class="inline-flex items-baseline justify-end ${indentWidthClass} pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap shrink-0"><span class="text-[0.82em] font-bold leading-none">${chap}</span><sup class="text-[0.58em] font-normal leading-none ml-0.5">${verse}</sup></span>`;
           restOfLine = restOfLine.slice(fullMatch.length).trimStart();
         } else {
           // TH2: Đầu dòng có Số Câu lẻ (Ví dụ: "18bcde Này...", "21b Hồi ấy...", "5 Đức Giê-su...", "111 Tôi...")
           const singleVerseMatch = restOfLine.match(/^(\d{1,3}[a-h]{0,6})(?=\s*[\p{L}"“'‘(]|$)/u);
           if (singleVerseMatch) {
             const [fullMatch, verse] = singleVerseMatch;
-            prefixHtml = `<span class="inline-flex items-baseline justify-end w-8 sm:w-10 pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap shrink-0"><sup class="font-normal text-[0.6em] leading-none">${verse}</sup></span>`;
+            prefixHtml = `<span class="inline-flex items-baseline justify-end ${indentWidthClass} pr-1.5 sm:pr-2 font-sans ${theme.supColor} select-none whitespace-nowrap shrink-0"><sup class="font-normal text-[0.6em] leading-none">${verse}</sup></span>`;
             restOfLine = restOfLine.slice(fullMatch.length).trimStart();
           } else {
-            // TH3: Đầu dòng KHÔNG có số câu -> Thẻ inline-flex rỗng cố định w-8 sm:w-10
-            prefixHtml = `<span class="inline-flex w-8 sm:w-10 select-none pointer-events-none shrink-0"></span>`;
+            // TH3: Đầu dòng KHÔNG có số câu -> Thẻ inline-flex rỗng cố định w-10 sm:w-12
+            prefixHtml = `<span class="inline-flex ${indentWidthClass} select-none pointer-events-none shrink-0"></span>`;
           }
         }
 
