@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-08-17T08:22:30.646Z",
+  "updatedAt": "2026-08-17T08:50:54.440Z",
   "bible": [
     "st_1",
     "mt_1",
@@ -12,6 +12,7 @@
     "lc_1",
     "ga_1",
     "ga_3",
+    "st_2",
     "voice_giang - northern female narrator",
     "voice_hao",
     "voice_hoang_ang",
