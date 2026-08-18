@@ -1,9 +1,11 @@
 import React from 'react';
-import { Heart, BookOpen, Sparkles, ShieldCheck } from 'lucide-react';
+import { Heart, BookOpen, Sparkles, ShieldCheck, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
 
 export default function Footer() {
+  const { openInstallModal } = usePWAInstall();
   return (
     <footer className="w-full pt-10 pb-24 md:pb-10 border-t border-stone-200/80 dark:border-stone-800/80 glass-panel transition-colors relative">
       <div className="max-w-5xl mx-auto px-4 text-center">
@@ -20,10 +22,17 @@ export default function Footer() {
         </blockquote>
 
         {/* Quick info row */}
-        <div className="flex flex-wrap items-center justify-center gap-4 text-[11px] text-stone-500 dark:text-stone-400 font-semibold mb-6">
+        <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] text-stone-500 dark:text-stone-400 font-semibold mb-6">
           <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/80 px-2.5 py-1 rounded-full border border-stone-200/60 dark:border-stone-700/60">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Bản dịch chuẩn Phụng Vụ
           </span>
+          <button
+            onClick={openInstallModal}
+            className="flex items-center gap-1 bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full transition-all cursor-pointer font-bold active:scale-95"
+            title="Hướng dẫn cài đặt ứng dụng lên iPhone & Android"
+          >
+            <Smartphone className="w-3.5 h-3.5" /> Cài đặt App (iOS / Android)
+          </button>
           {import.meta.env.DEV && (
             <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/80 px-2.5 py-1 rounded-full border border-stone-200/60 dark:border-stone-700/60">
               <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Công cụ Studio AI nội bộ

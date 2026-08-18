@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bookmark, Sun, Moon, Coffee } from 'lucide-react';
+import { Bookmark, Sun, Moon, Coffee, Smartphone } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLiturgy } from '../../context/LiturgyContext.jsx';
+import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
 
 export default function Header() {
@@ -14,6 +15,8 @@ export default function Header() {
     setFontSize, 
     bookmarks,
   } = useLiturgy();
+
+  const { openInstallModal, isStandalone } = usePWAInstall();
 
   const navLinks = [
     { path: '/', label: 'Lời Chúa', isActive: location.pathname === '/' || location.pathname === '/liturgy' },
@@ -222,6 +225,21 @@ export default function Header() {
               </span>
             )}
           </Link>
+
+          {/* Smart Install App Trigger Button */}
+          {!isStandalone && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={openInstallModal}
+              aria-label="Cài đặt ứng dụng Lời Chúa Mỗi Ngày"
+              className="h-9 sm:h-10 px-2.5 sm:px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 dark:bg-amber-400/15 dark:hover:bg-amber-400/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 dark:border-amber-400/30 flex items-center gap-1.5 transition-all text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 cursor-pointer shrink-0"
+              title="Cài đặt App lên điện thoại / máy tính"
+            >
+              <Smartphone className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+              <span className="hidden sm:inline">Cài App</span>
+            </motion.button>
+          )}
         </div>
 
       </div>

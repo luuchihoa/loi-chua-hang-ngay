@@ -10,6 +10,7 @@
     "prebuild": "node scripts/generate_audio_index.js && node scripts/generate_sitemap.js && node scripts/generate_ai_feeds.js && node scripts/instant_indexing.js && node scripts/assert_no_public_audio.js",
     "build": "vite build",
     "build:index": "node scripts/generate_audio_index.js",
+    "test": "node --test tests/*.test.mjs",
     "postbuild": "node scripts/assert_no_public_audio.js && node scripts/generate_static_seo.js && cp dist/index.html dist/404.html",
     "preview": "vite preview",
     "rebuild:bible-manifest": "node scripts/rebuild_bible_audio_manifest.js"
