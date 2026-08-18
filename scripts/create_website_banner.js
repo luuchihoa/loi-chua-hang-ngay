@@ -134,9 +134,12 @@ async function createBannersAndBadges() {
   // =========================================================================
   // 2. CẮT RIÊNG KHUNG VIỀN CHỨA LINK WEBSITE (STANDALONE BADGE TRANSPARENT PNG)
   // =========================================================================
-  // Kích thước chuẩn badge: 640 x 140 px (Ultra HD Vector Badge)
-  const badgeWidth = 640;
-  const badgeHeight = 140;
+  // Kích thước chuẩn badge: 500 x 120 px (Snug & Cân đối 2 bên, không bị thừa đuôi)
+  const badgeWidth = 500;
+  const badgeHeight = 120;
+  const capsuleWidth = 476;
+  const capsuleHeight = 96;
+  const rx = capsuleHeight / 2; // 48
 
   const svgBadge = Buffer.from(`
     <svg width="${badgeWidth}" height="${badgeHeight}" viewBox="0 0 ${badgeWidth} ${badgeHeight}" xmlns="http://www.w3.org/2000/svg">
@@ -156,21 +159,21 @@ async function createBannersAndBadges() {
         </linearGradient>
 
         <filter id="badgeShadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
         </filter>
       </defs>
 
-      <!-- Standalone Capsule Badge with luxury gold rim and dark navy core -->
+      <!-- Snug Capsule Badge with luxury gold rim and dark navy core -->
       <g filter="url(#badgeShadow)">
-        <rect x="20" y="20" width="${badgeWidth - 40}" height="${badgeHeight - 40}" rx="${(badgeHeight - 40) / 2}" fill="url(#badgeBg)" stroke="url(#goldGrad)" stroke-width="3.5" />
+        <rect x="12" y="12" width="${capsuleWidth}" height="${capsuleHeight}" rx="${rx}" fill="url(#badgeBg)" stroke="url(#goldGrad)" stroke-width="3" />
         
         <!-- Globe Icon -->
-        <circle cx="75" cy="${badgeHeight / 2}" r="22" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" />
-        <ellipse cx="75" cy="${badgeHeight / 2}" rx="11" ry="22" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" />
-        <line x1="53" y1="${badgeHeight / 2}" x2="97" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="2.2" />
+        <circle cx="56" cy="${badgeHeight / 2}" r="18" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" />
+        <ellipse cx="56" cy="${badgeHeight / 2}" rx="9" ry="18" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
+        <line x1="38" y1="${badgeHeight / 2}" x2="74" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="2" />
 
-        <!-- Domain text -->
-        <text x="120" y="${badgeHeight / 2 + 13}" font-family="system-ui, -apple-system, sans-serif" font-size="38" font-weight="800" fill="url(#goldGrad)" letter-spacing="2">
+        <!-- Domain text (Snug & centered within capsule) -->
+        <text x="90" y="${badgeHeight / 2 + 11}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="33" font-weight="800" fill="url(#goldGrad)" letter-spacing="1">
           loichuamoingay.org
         </text>
       </g>
@@ -181,7 +184,7 @@ async function createBannersAndBadges() {
 
   const artifactBadgePath = path.join(artifactDir, 'badge_link_loichuamoingay.png');
   await sharp(badgeBuffer).toFile(artifactBadgePath);
-  console.log(`✅ Đã lưu Standalone Badge: ${artifactBadgePath}`);
+  console.log(`✅ Đã lưu Standalone Badge (Snug): ${artifactBadgePath}`);
 
   const publicBadgePath = path.join(publicDir, 'badge_link_loichuamoingay.png');
   await sharp(badgeBuffer).toFile(publicBadgePath);
@@ -208,15 +211,15 @@ async function createBannersAndBadges() {
 
       <!-- Hollow Capsule Outline (Hoàn toàn trong suốt ở giữa) -->
       <g filter="url(#glow)">
-        <rect x="20" y="20" width="${badgeWidth - 40}" height="${badgeHeight - 40}" rx="${(badgeHeight - 40) / 2}" fill="none" stroke="url(#goldGrad)" stroke-width="4" />
+        <rect x="12" y="12" width="${capsuleWidth}" height="${capsuleHeight}" rx="${rx}" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" />
         
         <!-- Globe Icon -->
-        <circle cx="75" cy="${badgeHeight / 2}" r="22" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" />
-        <ellipse cx="75" cy="${badgeHeight / 2}" rx="11" ry="22" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" />
-        <line x1="53" y1="${badgeHeight / 2}" x2="97" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="2.2" />
+        <circle cx="56" cy="${badgeHeight / 2}" r="18" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" />
+        <ellipse cx="56" cy="${badgeHeight / 2}" rx="9" ry="18" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
+        <line x1="38" y1="${badgeHeight / 2}" x2="74" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="2" />
 
         <!-- Domain text -->
-        <text x="120" y="${badgeHeight / 2 + 13}" font-family="system-ui, -apple-system, sans-serif" font-size="38" font-weight="800" fill="url(#goldGrad)" letter-spacing="2">
+        <text x="90" y="${badgeHeight / 2 + 11}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="33" font-weight="800" fill="url(#goldGrad)" letter-spacing="1">
           loichuamoingay.org
         </text>
       </g>
