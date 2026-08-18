@@ -132,14 +132,15 @@ async function createBannersAndBadges() {
   console.log(`✅ Đã cập nhật public/og-image.png`);
 
   // =========================================================================
-  // 2. CẮT RIÊNG KHUNG VIỀN CHỨA LINK WEBSITE (STANDALONE BADGE TRANSPARENT PNG)
+  // 2. CẮT RIÊNG KHUNG VIỀN CHỨA LINK WEBSITE (STANDALONE ULTRA-SNUG BADGE)
   // =========================================================================
-  // Kích thước chuẩn badge: 500 x 120 px (Snug & Cân đối 2 bên, không bị thừa đuôi)
-  const badgeWidth = 500;
-  const badgeHeight = 120;
-  const capsuleWidth = 476;
-  const capsuleHeight = 96;
-  const rx = capsuleHeight / 2; // 48
+  // Kích thước chuẩn badge: 680 x 176 px (Ultra-HD 2X Retina, Cắt sát hai đầu cực gọn, 0% khoảng trống thừa)
+  const badgeWidth = 680;
+  const badgeHeight = 176;
+  const pad = 12;
+  const capsuleWidth = badgeWidth - pad * 2; // 656
+  const capsuleHeight = badgeHeight - pad * 2; // 152
+  const rx = capsuleHeight / 2; // 76
 
   const svgBadge = Buffer.from(`
     <svg width="${badgeWidth}" height="${badgeHeight}" viewBox="0 0 ${badgeWidth} ${badgeHeight}" xmlns="http://www.w3.org/2000/svg">
@@ -159,21 +160,21 @@ async function createBannersAndBadges() {
         </linearGradient>
 
         <filter id="badgeShadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.6"/>
+          <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.65"/>
         </filter>
       </defs>
 
-      <!-- Snug Capsule Badge with luxury gold rim and dark navy core -->
+      <!-- Ultra-Snug Capsule Badge with luxury gold rim and dark navy core -->
       <g filter="url(#badgeShadow)">
-        <rect x="12" y="12" width="${capsuleWidth}" height="${capsuleHeight}" rx="${rx}" fill="url(#badgeBg)" stroke="url(#goldGrad)" stroke-width="3" />
+        <rect x="${pad}" y="${pad}" width="${capsuleWidth}" height="${capsuleHeight}" rx="${rx}" fill="url(#badgeBg)" stroke="url(#goldGrad)" stroke-width="4.5" />
         
         <!-- Globe Icon -->
-        <circle cx="56" cy="${badgeHeight / 2}" r="18" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" />
-        <ellipse cx="56" cy="${badgeHeight / 2}" rx="9" ry="18" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
-        <line x1="38" y1="${badgeHeight / 2}" x2="74" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="2" />
+        <circle cx="64" cy="${badgeHeight / 2}" r="28" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" />
+        <ellipse cx="64" cy="${badgeHeight / 2}" rx="14" ry="28" fill="none" stroke="url(#goldGrad)" stroke-width="3.2" />
+        <line x1="36" y1="${badgeHeight / 2}" x2="92" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="3.2" />
 
-        <!-- Domain text (Snug & centered within capsule) -->
-        <text x="90" y="${badgeHeight / 2 + 11}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="33" font-weight="800" fill="url(#goldGrad)" letter-spacing="1">
+        <!-- Domain text (Snug & perfectly centered, ending flush with right padding) -->
+        <text x="112" y="${badgeHeight / 2 + 17}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="48" font-weight="800" fill="url(#goldGrad)" letter-spacing="1">
           loichuamoingay.org
         </text>
       </g>
@@ -184,7 +185,7 @@ async function createBannersAndBadges() {
 
   const artifactBadgePath = path.join(artifactDir, 'badge_link_loichuamoingay.png');
   await sharp(badgeBuffer).toFile(artifactBadgePath);
-  console.log(`✅ Đã lưu Standalone Badge (Snug): ${artifactBadgePath}`);
+  console.log(`✅ Đã lưu Standalone Badge (Ultra-Snug 2X): ${artifactBadgePath}`);
 
   const publicBadgePath = path.join(publicDir, 'badge_link_loichuamoingay.png');
   await sharp(badgeBuffer).toFile(publicBadgePath);
@@ -205,21 +206,21 @@ async function createBannersAndBadges() {
         </linearGradient>
 
         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.9"/>
+          <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000000" flood-opacity="0.9"/>
         </filter>
       </defs>
 
       <!-- Hollow Capsule Outline (Hoàn toàn trong suốt ở giữa) -->
       <g filter="url(#glow)">
-        <rect x="12" y="12" width="${capsuleWidth}" height="${capsuleHeight}" rx="${rx}" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" />
+        <rect x="${pad}" y="${pad}" width="${capsuleWidth}" height="${capsuleHeight}" rx="${rx}" fill="none" stroke="url(#goldGrad)" stroke-width="5" />
         
         <!-- Globe Icon -->
-        <circle cx="56" cy="${badgeHeight / 2}" r="18" fill="none" stroke="url(#goldGrad)" stroke-width="2.2" />
-        <ellipse cx="56" cy="${badgeHeight / 2}" rx="9" ry="18" fill="none" stroke="url(#goldGrad)" stroke-width="2" />
-        <line x1="38" y1="${badgeHeight / 2}" x2="74" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="2" />
+        <circle cx="64" cy="${badgeHeight / 2}" r="28" fill="none" stroke="url(#goldGrad)" stroke-width="3.5" />
+        <ellipse cx="64" cy="${badgeHeight / 2}" rx="14" ry="28" fill="none" stroke="url(#goldGrad)" stroke-width="3.2" />
+        <line x1="36" y1="${badgeHeight / 2}" x2="92" y2="${badgeHeight / 2}" stroke="url(#goldGrad)" stroke-width="3.2" />
 
         <!-- Domain text -->
-        <text x="90" y="${badgeHeight / 2 + 11}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="33" font-weight="800" fill="url(#goldGrad)" letter-spacing="1">
+        <text x="112" y="${badgeHeight / 2 + 17}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="48" font-weight="800" fill="url(#goldGrad)" letter-spacing="1">
           loichuamoingay.org
         </text>
       </g>
