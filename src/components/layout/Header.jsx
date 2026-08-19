@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bookmark, Sun, Moon, Coffee, Smartphone } from 'lucide-react';
+import { Bookmark, Sun, Moon, Coffee, Download } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLiturgy } from '../../context/LiturgyContext.jsx';
@@ -226,18 +226,18 @@ export default function Header() {
             )}
           </Link>
 
-          {/* Smart Install App Trigger Button */}
+          {/* Smart Install App Trigger Button (Universal Download Icon, 100% Theme-Harmonious) */}
           {!isStandalone && (
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={openInstallModal}
               aria-label="Cài đặt ứng dụng Lời Chúa Mỗi Ngày"
-              className="h-9 sm:h-10 px-2.5 sm:px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 dark:bg-amber-400/15 dark:hover:bg-amber-400/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 dark:border-amber-400/30 flex items-center gap-1.5 transition-all text-xs font-extrabold outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 cursor-pointer shrink-0"
-              title="Cài đặt App lên điện thoại / máy tính"
+              className="w-11 h-11 sm:w-auto sm:h-10 sm:px-3 rounded-xl text-stone-500 dark:text-stone-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 sm:bg-stone-100 sm:dark:bg-stone-800 sm:border sm:border-stone-200/80 sm:dark:border-stone-700/80 flex items-center justify-center gap-1.5 transition-colors text-xs font-bold outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70 cursor-pointer shrink-0"
+              title="Tải & Cài đặt App (iOS / Android)"
             >
-              <Smartphone className="w-4 h-4 text-amber-700 dark:text-amber-400" />
-              <span className="hidden sm:inline">Cài App</span>
+              <Download className="w-4 h-4 sm:w-4 sm:h-4 text-amber-600 dark:text-amber-400" />
+              <span className="hidden sm:inline text-stone-700 dark:text-stone-200">Cài App</span>
             </motion.button>
           )}
         </div>

@@ -74,20 +74,20 @@ export default function InstallAppModal() {
           </div>
 
           {/* Benefits Feature Grid */}
-          <div className="grid grid-cols-2 gap-2.5 p-4 sm:p-5 bg-amber-50/50 dark:bg-stone-950/40 border-b border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 text-xs">
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
+          <div className="grid grid-cols-2 gap-2.5 p-4 sm:p-5 bg-stone-100/60 dark:bg-stone-950/50 border-b border-stone-200/80 dark:border-stone-800 text-stone-700 dark:text-stone-300 text-xs">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200/70 dark:border-stone-700/70 shadow-2xs">
               <Layers className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
               <span className="font-semibold">Toàn màn hình không viền</span>
             </div>
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200/70 dark:border-stone-700/70 shadow-2xs">
               <WifiOff className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span className="font-semibold">Đọc offline không cần mạng</span>
             </div>
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200/70 dark:border-stone-700/70 shadow-2xs">
               <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
               <span className="font-semibold">Nghe Audio chạy nền</span>
             </div>
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-white dark:bg-stone-800 border border-stone-200/70 dark:border-stone-700/70 shadow-2xs">
               <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
               <span className="font-semibold">0đ trọn đời & Không QC</span>
             </div>
@@ -95,7 +95,7 @@ export default function InstallAppModal() {
 
           {/* OS Switcher Tabs */}
           <div className="p-4 sm:p-6 pt-4">
-            <div className="flex rounded-2xl bg-stone-200/70 dark:bg-stone-800 p-1 mb-5">
+            <div className="flex rounded-2xl bg-stone-200/60 dark:bg-stone-800/80 p-1 mb-5">
               <button
                 onClick={() => setActiveTab('ios')}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${

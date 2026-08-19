@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, BookOpen, Sparkles, ShieldCheck, Smartphone } from 'lucide-react';
+import { Heart, BookOpen, Sparkles, ShieldCheck, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
@@ -28,10 +28,10 @@ export default function Footer() {
           </span>
           <button
             onClick={openInstallModal}
-            className="flex items-center gap-1 bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full transition-all cursor-pointer font-bold active:scale-95"
+            className="flex items-center gap-1.5 bg-stone-100 dark:bg-stone-800/90 hover:bg-amber-50 dark:hover:bg-amber-900/30 text-stone-700 dark:text-stone-300 hover:text-amber-700 dark:hover:text-amber-300 border border-stone-200/80 dark:border-stone-700/80 px-3 py-1 rounded-full transition-all cursor-pointer font-bold active:scale-95 text-[11px]"
             title="Hướng dẫn cài đặt ứng dụng lên iPhone & Android"
           >
-            <Smartphone className="w-3.5 h-3.5" /> Cài đặt App (iOS / Android)
+            <Download className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Cài đặt App (iOS / Android)
           </button>
           {import.meta.env.DEV && (
             <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/80 px-2.5 py-1 rounded-full border border-stone-200/60 dark:border-stone-700/60">
