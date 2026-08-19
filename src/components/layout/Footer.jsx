@@ -3,6 +3,7 @@ import { Heart, BookOpen, Sparkles, ShieldCheck, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
+import SocialIconSVG from '../common/SocialIconSVG.jsx';
 
 export default function Footer() {
   const { openInstallModal } = usePWAInstall();
@@ -17,9 +18,33 @@ export default function Footer() {
         </div>
 
         {/* Scripture Quote */}
-        <blockquote className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-lg mx-auto leading-relaxed italic font-serif-reading mb-4">
+        <blockquote className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-lg mx-auto leading-relaxed italic font-serif-reading mb-5">
           "Lời Thầy nói với anh em là thần khí và là sự sống." <span className="not-italic text-[11px] font-sans font-semibold text-amber-700 dark:text-amber-400 opacity-90">(Ga 6, 63)</span>
         </blockquote>
+
+        {/* Social Media Links */}
+        <div className="mb-5">
+          <p className="text-[10px] font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-2.5">
+            Theo dõi chúng tôi
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {BRAND.socialLinks.map((social) => (
+              <motion.a
+                key={social.id}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Theo dõi ${BRAND.name} trên ${social.label}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center gap-1.5 bg-stone-100 dark:bg-stone-800/80 ${social.hoverClass} border border-stone-200/80 dark:border-stone-700/80 px-3 py-1 rounded-full transition-all text-[11px] font-bold text-stone-600 dark:text-stone-400 ${social.colorClass}`}
+              >
+                <SocialIconSVG id={social.id} className="w-3.5 h-3.5" />
+                {social.label}
+              </motion.a>
+            ))}
+          </div>
+        </div>
 
         {/* Quick info row */}
         <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] text-stone-500 dark:text-stone-400 font-semibold mb-6">

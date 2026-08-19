@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Smartphone, Apple, CheckCircle2, Share2, PlusSquare, Sparkles, Download, Layers, ShieldCheck, WifiOff, Volume2 } from 'lucide-react';
 import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
+import SocialIconSVG from '../common/SocialIconSVG.jsx';
+
 
 export default function InstallAppModal() {
   const { 
@@ -203,11 +205,34 @@ export default function InstallAppModal() {
               </div>
             )}
 
+
+            {/* Social Media Links */}
+            <div className="mt-4 pt-3 border-t border-stone-200/80 dark:border-stone-800 text-center">
+              <p className="text-[10px] font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-2">
+                Theo dõi để nhận Lời Chúa hàng ngày
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {BRAND.socialLinks.map((social) => (
+                  <a
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Theo dõi ${BRAND.name} trên ${social.label}`}
+                    className={`flex items-center gap-1.5 bg-stone-100 dark:bg-stone-800/80 ${social.hoverClass} border border-stone-200/80 dark:border-stone-700/80 px-3 py-1.5 rounded-full transition-all text-[11px] font-bold ${social.colorClass} active:scale-95`}
+                  >
+                    <SocialIconSVG id={social.id} className="w-3.5 h-3.5" />
+                    {social.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
             {/* Footer Notice */}
-            <div className="mt-5 pt-3 border-t border-stone-200/80 dark:border-stone-800 text-center">
+            <div className="mt-3 text-center">
               <span className="inline-flex items-center gap-1.5 text-[11px] text-stone-500 dark:text-stone-400 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                Công nghệ PWA đạt chuẩn quốc tế do Apple & Google phát triển
+                Công nghệ PWA đạt chuẩn quốc tế do Apple &amp; Google phát triển
               </span>
             </div>
           </div>
@@ -216,3 +241,4 @@ export default function InstallAppModal() {
     </AnimatePresence>
   );
 }
+
