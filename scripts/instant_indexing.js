@@ -22,10 +22,16 @@ async function sendIndexNowPING(urls) {
         'Content-Type': 'application/json; charset=utf-8',
         'Content-Length': Buffer.byteLength(payload)
       },
-      timeout: 5000
+      timeout: 3000
     }, (res) => {
+      res.resume();
       console.log(`✅ IndexNow PING Response Status: ${res.statusCode}`);
       resolve(true);
+    });
+
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(false);
     });
 
     req.on('error', (err) => {
@@ -38,7 +44,7 @@ async function sendIndexNowPING(urls) {
   });
 }
 
-function initInstantIndexing() {
+async function initInstantIndexing() {
   const publicDir = path.join(process.cwd(), 'public');
   if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir, { recursive: true });
@@ -57,7 +63,7 @@ function initInstantIndexing() {
     `${DOMAIN}/calendar`
   ];
 
-  sendIndexNowPING(updatedUrls);
+  await sendIndexNowPING(updatedUrls);
 }
 
 initInstantIndexing();

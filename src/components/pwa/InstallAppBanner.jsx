@@ -41,16 +41,11 @@ export default function InstallAppBanner() {
                 />
               </div>
               <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-extrabold text-xs text-amber-300 truncate">
-                    Cài Đặt App {BRAND.name}
-                  </span>
-                  <span className="text-[9px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded-full">
-                    Miễn phí
-                  </span>
-                </div>
-                <p className="text-[11px] text-stone-300 truncate">
-                  Đọc offline, toàn màn hình không viền
+                <h4 className="font-extrabold text-xs sm:text-sm text-amber-300 tracking-tight truncate">
+                  Cài Đặt {BRAND.name}
+                </h4>
+                <p className="text-[11px] text-stone-300 truncate opacity-90 mt-0.5">
+                  Đọc offline & toàn màn hình
                 </p>
               </div>
             </div>
