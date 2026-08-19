@@ -1,8 +1,41 @@
-const CACHE_PREFIX = 'loi_chua_hang_ngay_cache_v2_';
+const CACHE_PREFIX = 'loi_chua_hang_ngay_cache_v3_';
 const CACHE_TTL_DAYS = 7;
 
 // Tắt cache khi chạy dev server (npm run dev) để dễ test dữ liệu mới
 const IS_DEV = import.meta.env.DEV;
+
+/**
+ * Xóa sạch toàn bộ cache bài đọc phụng vụ trong localStorage
+ */
+export function clearAllLiturgyCache() {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('loi_chua_hang_ngay_cache_')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+  } catch (err) {
+    console.warn("Lỗi khi xóa toàn bộ cache phụng vụ:", err);
+  }
+}
+
+// Tự động dọn dẹp các bản cache cũ (v1, v2) khi người dùng truy cập phiên bản mới
+try {
+  if (typeof localStorage !== 'undefined') {
+    const legacyKeys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('loi_chua_hang_ngay_cache_') && !key.startsWith(CACHE_PREFIX)) {
+        legacyKeys.push(key);
+      }
+    }
+    legacyKeys.forEach(k => localStorage.removeItem(k));
+  }
+} catch (e) {}
 
 export function getLiturgyDateKey(date) {
   if (!date) return '';
@@ -52,3 +85,4 @@ export function setCachedLiturgy(date, data, extraKey = '') {
     console.warn("Lỗi lưu cache phụng vụ:", err);
   }
 }
+

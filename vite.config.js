@@ -64,7 +64,7 @@ export default defineConfig({
             urlPattern: /^https:\/\/avrnbefzxtznpodugacz\.supabase\.co\/rest\/v1\/verses.*/i,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'supabase-verses-cache',
+              cacheName: 'supabase-verses-cache-v2',
               expiration: {
                 maxEntries: 500,
                 maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
