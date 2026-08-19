@@ -18,7 +18,7 @@ export default function App() {
           <ScrollToTop />
           <div className="min-h-screen flex flex-col justify-between bg-stone-50 dark:bg-stone-950 relative">
             <Header />
-            <main className="flex-1 pt-16">
+            <main className="flex-1" style={{ paddingTop: 'calc(4rem + env(safe-area-inset-top, 0px))' }}>
               <AppRoutes />
             </main>
             <Footer />

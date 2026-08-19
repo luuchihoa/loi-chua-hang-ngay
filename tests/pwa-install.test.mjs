@@ -19,12 +19,16 @@ describe('PWA Installation Configuration Tests', () => {
   });
 
   it('verifies PWA icon assets exist in public folder', () => {
+    const appleIcon = path.join(rootDir, 'public', 'apple-touch-icon.png');
     const icon192 = path.join(rootDir, 'public', 'icon-192x192.png');
     const icon512 = path.join(rootDir, 'public', 'icon-512x512.png');
+    const iconMaskable = path.join(rootDir, 'public', 'icon-maskable-512x512.png');
     const logo48 = path.join(rootDir, 'public', 'logo_48.png');
 
+    assert.ok(fs.existsSync(appleIcon), 'apple-touch-icon.png must exist');
     assert.ok(fs.existsSync(icon192), 'icon-192x192.png must exist');
     assert.ok(fs.existsSync(icon512), 'icon-512x512.png must exist');
+    assert.ok(fs.existsSync(iconMaskable), 'icon-maskable-512x512.png must exist');
     assert.ok(fs.existsSync(logo48), 'logo_48.png must exist');
   });
 

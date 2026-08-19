@@ -75,6 +75,7 @@ export default function Header() {
           ? 'border-stone-200/80 dark:border-stone-800/80 shadow-md'
           : 'border-stone-200/50 dark:border-stone-800/50 shadow-xs'
       }`}
+      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
     >
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         

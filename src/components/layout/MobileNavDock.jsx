@@ -116,13 +116,13 @@ export default function MobileNavDock() {
       ref={navElRef}
       data-ui-layer="mobile-dock" 
       aria-label="Điều hướng chính" 
-      className="fixed left-1/2 -translate-x-1/2 z-[45] w-[calc(100%-24px)] max-w-md block md:hidden pointer-events-auto"
-      style={{ bottom: 'calc(14px + env(safe-area-inset-bottom, 0px))' }}
+      className="fixed bottom-0 left-0 right-0 z-[45] w-full block md:hidden pointer-events-auto glass-dock border-t border-stone-200/80 dark:border-stone-800/80 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]"
+      style={{ paddingBottom: 'max(0.35rem, env(safe-area-inset-bottom, 0px))' }}
     >
-      <div ref={dockRef} className="relative glass-dock rounded-[22px] px-1.5 py-1.5 flex items-center justify-around shadow-[0_16px_50px_-18px_rgba(28,25,23,.45)]">
+      <div ref={dockRef} className="relative max-w-md mx-auto px-2 pt-1 pb-1 flex items-center justify-around">
         {/* Bulletproof sliding pill */}
         <motion.div
-          className="absolute top-1.5 bottom-1.5 bg-amber-500/15 dark:bg-amber-400/20 border border-amber-500/30 rounded-xl pointer-events-none"
+          className="absolute top-1 bottom-1 bg-amber-500/15 dark:bg-amber-400/20 border border-amber-500/30 rounded-xl pointer-events-none"
           initial={false}
           animate={{ 
             left: dockActiveRect.left, 
