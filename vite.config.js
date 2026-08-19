@@ -32,8 +32,8 @@ export default defineConfig({
         name: BRAND.name,
         short_name: 'Lời Chúa',
         description: 'Ứng dụng đọc Kinh Thánh và Phụng Vụ Công Giáo',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        theme_color: '#600b14',
+        background_color: '#600b14',
         display: 'standalone',
         icons: [
           {

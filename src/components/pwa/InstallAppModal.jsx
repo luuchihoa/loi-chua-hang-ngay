@@ -16,7 +16,7 @@ export default function InstallAppModal() {
     isStandalone 
   } = usePWAInstall();
 
-  const [activeTab, setActiveTab] = useState(isIOS ? 'ios' : isAndroid ? 'android' : 'ios');
+  const [activeTab, setActiveTab] = useState(() => (isIOS ? 'ios' : 'android'));
 
   if (!isInstallModalOpen) return null;
 

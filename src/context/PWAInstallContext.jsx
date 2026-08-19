@@ -1,4 +1,25 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+
+const STORAGE_KEY = 'loichua_pwa_banner_dismissed_until';
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+// Safe storage wrapper protecting against Safari Private Mode & QuotaExceededError
+const safeStorage = {
+  get: (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set: (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // Gracefully ignore storage write failures
+    }
+  }
+};
 
 const PWAInstallContext = createContext({
   isStandalone: false,
@@ -22,24 +43,38 @@ export function PWAInstallProvider({ children }) {
   const [isDesktop, setIsDesktop] = useState(false);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
+  const isPromptingRef = useRef(false);
 
   useEffect(() => {
-    // 1. Detect Standalone / Already Installed mode
+    // 1. Comprehensive Standalone Mode Detection
     const checkStandalone = () => {
       const isStandaloneMode = 
         window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.matchMedia('(display-mode: minimal-ui)').matches ||
         window.navigator.standalone === true ||
         document.referrer.includes('android-app://');
       
-      setIsStandalone(isStandaloneMode);
-      return isStandaloneMode;
+      setIsStandalone(Boolean(isStandaloneMode));
+      return Boolean(isStandaloneMode);
     };
 
     const standalone = checkStandalone();
 
-    // 2. Detect OS / Device Platform
+    // 2. Realtime display-mode change listener
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    const handleDisplayModeChange = (e) => {
+      if (e.matches) {
+        setIsStandalone(true);
+        setShowInstallBanner(false);
+      }
+    };
+    mediaQuery.addEventListener?.('change', handleDisplayModeChange);
+
+    // 3. Robust Device Platform Detection (including iPadOS 13+ fix)
     const ua = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(ua) && !window.MSStream;
+    const isIPadOS = ua.includes('macintosh') && window.navigator.maxTouchPoints > 1;
+    const isIosDevice = (/iphone|ipad|ipod/.test(ua) || isIPadOS) && !window.MSStream;
     const isAndroidDevice = /android/.test(ua);
     const isDesktopDevice = !isIosDevice && !isAndroidDevice;
 
@@ -47,65 +82,83 @@ export function PWAInstallProvider({ children }) {
     setIsAndroid(isAndroidDevice);
     setIsDesktop(isDesktopDevice);
 
-    // 3. Listen to beforeinstallprompt event (Android / Chrome Desktop)
+    // 4. Listen to PWA lifecycle events
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    const handleAppInstalled = () => {
+      setDeferredPrompt(null);
+      setIsStandalone(true);
+      setShowInstallBanner(false);
+      setIsInstallModalOpen(false);
+    };
 
-    // 4. Determine if we should show the bottom slide-in install banner
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    // 5. Check if we should display the install banner after 3.5s delay
+    let timer = null;
     if (!standalone) {
-      const dismissedUntil = localStorage.getItem('loichua_pwa_banner_dismissed_until');
-      const now = Date.now();
+      const dismissedUntil = safeStorage.get(STORAGE_KEY);
+      const parsedTime = Number(dismissedUntil);
+      const isDismissed = Number.isFinite(parsedTime) && Date.now() < parsedTime;
       
-      if (!dismissedUntil || now > Number(dismissedUntil)) {
-        // Show after small pleasant delay (3.5 seconds) so user has seen the page
-        const timer = setTimeout(() => {
+      if (!isDismissed) {
+        timer = setTimeout(() => {
           setShowInstallBanner(true);
         }, 3500);
-        return () => {
-          clearTimeout(timer);
-          window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-        };
       }
     }
 
     return () => {
+      if (timer) clearTimeout(timer);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+      mediaQuery.removeEventListener?.('change', handleDisplayModeChange);
     };
   }, []);
 
-  const openInstallModal = () => {
+  const openInstallModal = useCallback(() => {
     setIsInstallModalOpen(true);
     setShowInstallBanner(false);
-  };
+  }, []);
 
-  const closeInstallModal = () => {
+  const closeInstallModal = useCallback(() => {
     setIsInstallModalOpen(false);
-  };
+  }, []);
 
-  const dismissInstallBanner = () => {
+  const dismissInstallBanner = useCallback(() => {
     setShowInstallBanner(false);
-    // Dismiss for 7 days
-    const nextWeek = Date.now() + 7 * 24 * 60 * 60 * 1000;
-    localStorage.setItem('loichua_pwa_banner_dismissed_until', String(nextWeek));
-  };
+    const nextWeek = Date.now() + SEVEN_DAYS_MS;
+    safeStorage.set(STORAGE_KEY, String(nextWeek));
+  }, []);
 
-  const triggerInstall = async () => {
-    if (deferredPrompt) {
+  const triggerInstall = useCallback(async () => {
+    if (!deferredPrompt) {
+      openInstallModal();
+      return;
+    }
+
+    if (isPromptingRef.current) return;
+    isPromptingRef.current = true;
+
+    try {
       deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
+      // Clear deferred prompt on both accept and dismiss since prompt event is single-use
+      setDeferredPrompt(null);
       if (choice.outcome === 'accepted') {
-        setDeferredPrompt(null);
         setShowInstallBanner(false);
         setIsInstallModalOpen(false);
       }
-    } else {
+    } catch {
       openInstallModal();
+    } finally {
+      isPromptingRef.current = false;
     }
-  };
+  }, [deferredPrompt, openInstallModal]);
 
   return (
     <PWAInstallContext.Provider

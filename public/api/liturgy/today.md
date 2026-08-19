@@ -1,4 +1,4 @@
-# Lời Chúa Phụng Vụ Ngày 2026-08-18
+# Lời Chúa Phụng Vụ Ngày 2026-08-19
 
 > **Mùa Phụng Vụ**: Thường Niên  
 > **Màu Áo Lễ**: Trắng / Xanh  
