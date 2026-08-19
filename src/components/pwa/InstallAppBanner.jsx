@@ -37,7 +37,7 @@ export default function InstallAppBanner() {
           style={{ bottom: 'max(1.25rem, calc(var(--mobile-dock-h, 0px) + 0.75rem))' }}
           className="fixed left-4 right-4 max-w-md mx-auto z-40 lg:hidden"
         >
-          <div className="flex items-center justify-between gap-3 p-3 sm:p-3.5 bg-stone-900/95 dark:bg-stone-900/95 text-white rounded-2xl shadow-2xl border border-amber-500/40 backdrop-blur-xl ring-1 ring-black/20">
+          <div className="theme-invariant flex items-center justify-between gap-3 p-3 sm:p-3.5 bg-stone-900/95 dark:bg-stone-900/95 text-white rounded-2xl shadow-2xl border border-amber-500/40 backdrop-blur-xl ring-1 ring-black/20">
             {/* Logo & Text */}
             <div 
               onClick={openInstallModal}

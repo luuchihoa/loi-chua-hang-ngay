@@ -40,8 +40,8 @@ export default function InstallAppModal() {
           transition={{ type: 'spring', damping: 25, stiffness: 350 }}
           className="relative w-full max-w-lg bg-stone-50 dark:bg-stone-900 rounded-3xl shadow-2xl border border-amber-500/30 overflow-hidden z-10 my-auto"
         >
-          {/* Header Banner with Gold Accents */}
-          <div className="relative bg-gradient-to-br from-[#600b14] via-[#45070e] to-[#250307] text-white p-6 pb-5 text-center overflow-hidden">
+          {/* Header Banner with Gold Accents (theme-invariant to ensure crisp white/amber text on dark red background) */}
+          <div className="theme-invariant relative bg-gradient-to-br from-[#600b14] via-[#45070e] to-[#250307] text-white p-6 pb-5 text-center overflow-hidden">
             {/* Background Glow */}
             <div className="absolute -top-16 -right-16 w-36 h-36 bg-amber-500/20 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute -bottom-16 -left-16 w-36 h-36 bg-rose-500/20 rounded-full blur-2xl pointer-events-none" />
