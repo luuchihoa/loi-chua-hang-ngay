@@ -1,10 +1,12 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, X } from 'lucide-react';
 import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
 
 export default function InstallAppBanner() {
+  const location = useLocation();
   const { 
     showInstallBanner, 
     dismissInstallBanner, 
@@ -12,7 +14,16 @@ export default function InstallAppBanner() {
     isStandalone 
   } = usePWAInstall();
 
-  const isVisible = showInstallBanner && !isStandalone;
+  // Chỉ hiển thị trên các màn hình Cửa ngõ / Khám phá: Trang Chủ (/ hoặc /liturgy), Lịch (/calendar), Mục lục Kinh Thánh (/bible)
+  // Tự động ẩn trên trang Đọc sâu chương Kinh Thánh (/bible/:book/:chapter) và trang Audio (/bible-audio)
+  const isAllowedRoute = 
+    location.pathname === '/' || 
+    location.pathname === '/liturgy' || 
+    location.pathname === '/calendar' || 
+    location.pathname === '/bible';
+
+  // Ẩn hoàn toàn trên Màn hình Máy tính (Desktop >= 1024px - dùng lg:hidden) và khi đã ở chế độ Standalone
+  const isVisible = showInstallBanner && !isStandalone && isAllowedRoute;
 
   return (
     <AnimatePresence>
@@ -24,7 +35,7 @@ export default function InstallAppBanner() {
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           style={{ bottom: 'max(1.25rem, calc(var(--mobile-dock-h, 0px) + 0.75rem))' }}
-          className="fixed left-4 right-4 max-w-md mx-auto z-40"
+          className="fixed left-4 right-4 max-w-md mx-auto z-40 lg:hidden"
         >
           <div className="flex items-center justify-between gap-3 p-3 sm:p-3.5 bg-stone-900/95 dark:bg-stone-900/95 text-white rounded-2xl shadow-2xl border border-amber-500/40 backdrop-blur-xl ring-1 ring-black/20">
             {/* Logo & Text */}
