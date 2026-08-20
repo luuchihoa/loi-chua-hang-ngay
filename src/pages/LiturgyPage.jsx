@@ -654,6 +654,7 @@ export default function LiturgyPage() {
           }
         }
 
+        const currentInfo = getLiturgyInfo(selectedDate);
         const lityear = getLiturgicalYear(selectedDate);
         const cycles = getLiturgicalCycles(lityear);
         const isSpecialABCFeast = [
@@ -667,12 +668,12 @@ export default function LiturgyPage() {
           'feast_chua_thang_thien',
           'tuan_thanh_thu7',
           'feast_thu7_tuan_thanh'
-        ].includes(info.key) || (info.key && info.key.includes('phep_rua'));
+        ].includes(currentInfo.key) || (currentInfo.key && currentInfo.key.includes('phep_rua'));
         
         let currentCycle;
-        if (info.isSunday || isSpecialABCFeast) {
+        if (currentInfo.isSunday || isSpecialABCFeast) {
           currentCycle = cycles.sundayCycle;
-        } else if (info.season === 'thuong') {
+        } else if (currentInfo.season === 'thuong') {
           currentCycle = cycles.weekdayCycle;
         } else {
           currentCycle = 'all';
@@ -688,27 +689,31 @@ export default function LiturgyPage() {
         const dNum = String(selectedDate.getDate());
 
         const is30TetDate = (
-          info.key === 'feast_tat_nien' || 
-          info.key === 'feast_giao_thua' || 
-          (info.displayName && (info.displayName.includes('Tất Niên') || info.displayName.includes('Giao Thừa')))
+          currentInfo.key === 'feast_tat_nien' || 
+          currentInfo.key === 'feast_giao_thua' || 
+          (currentInfo.displayName && (currentInfo.displayName.includes('Tất Niên') || currentInfo.displayName.includes('Giao Thừa')))
         );
 
         const keysToFetch = Array.from(new Set([
           overrideLiturgyItem?.liturgy_key,
-          info.key,
+          currentInfo.key,
           is30TetDate ? 'feast_tat_nien' : null,
           is30TetDate ? 'feast_giao_thua' : null,
           `feast_${mPadded}_${dPadded}`,
           `feast_${mNum}_${dNum}`,
           `fixed_${mPadded}_${dPadded}`,
           `fixed_${mNum}_${dNum}`,
-          info.seasonKey
+          currentInfo.seasonKey
         ].filter(Boolean)));
 
         const { data, error } = await supabase
           .from('liturgy_contents')
           .select('*')
           .in('liturgy_key', keysToFetch);
+
+        if (error) {
+          console.error('[Liturgy] Supabase error:', error);
+        }
 
         if (!error && data && data.length > 0) {
           const getDataForKey = (targetKey, preferredCycle = null) => {
@@ -820,13 +825,13 @@ export default function LiturgyPage() {
           //   return Object.keys(merged).length > 0 ? merged : null;
           // };
 
-          const feastData = getDataForKey(info.key) 
+          const feastData = getDataForKey(currentInfo.key) 
                          || getDataForKey(`feast_${mPadded}_${dPadded}`) 
                          || getDataForKey(`fixed_${mPadded}_${dPadded}`)
                          || getDataForKey(`feast_${mNum}_${dNum}`)
                          || getDataForKey(`fixed_${mNum}_${dNum}`);
                          
-          const weekdayData = info.seasonKey ? getDataForKey(info.seasonKey) : null;
+          const weekdayData = currentInfo.seasonKey ? getDataForKey(currentInfo.seasonKey) : null;
           
           let selectedData = null;
 
@@ -854,7 +859,7 @@ export default function LiturgyPage() {
               (weekdayData.r1_ref && weekdayData.r1_ref.trim() !== '')
             );
 
-            const isMemorialFeast = info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional';
+            const isMemorialFeast = currentInfo.feastType === 'memorial_obligatory' || currentInfo.feastType === 'memorial_optional';
 
             let modesToApply = { weekday: null, feast: null };
             let activeModeToApply = 'weekday';
@@ -865,7 +870,7 @@ export default function LiturgyPage() {
             const is30TetDay = !!(tatNienData || giaoThuaData);
 
             if (is30TetDay) {
-              const isSunday = info.isSunday;
+              const isSunday = currentInfo.isSunday;
 
               if (isSunday) {
                 // TRƯỜNG HỢP 1: RƠI VÀO CHÚA NHẬT
@@ -948,19 +953,19 @@ export default function LiturgyPage() {
                 setActiveReadingMode(defaultKey); // MẶC ĐỊNH LÀ TẤT NIÊN
                 selectedData = modesMap[defaultKey];
               }
-            } else if (['feast_tet_1', 'feast_tet_2', 'feast_tet_3'].includes(info.key) && feastData) {
-              const isSunday = info.isSunday;
+            } else if (['feast_tet_1', 'feast_tet_2', 'feast_tet_3'].includes(currentInfo.key) && feastData) {
+              const isSunday = currentInfo.isSunday;
 
               if (isSunday && weekdayData) {
                 // TRƯỜNG HỢP RƠI VÀO CHÚA NHẬT -> 2 TABS (MẶC ĐỊNH LÀ TAB LỄ TẾT, TAB 2 LÀ CHÚA NHẬT)
-                const tetTabLabel = info.key === 'feast_tet_1' ? 'Mồng Một Tết' : (info.key === 'feast_tet_2' ? 'Mồng Hai Tết' : 'Mồng Ba Tết');
+                const tetTabLabel = currentInfo.key === 'feast_tet_1' ? 'Mồng Một Tết' : (currentInfo.key === 'feast_tet_2' ? 'Mồng Hai Tết' : 'Mồng Ba Tết');
                 
                 const tetOption = {
                   ...feastData,
                   modeKey: 'tet',
                   tabLabel: tetTabLabel,
                   tabIcon: '🧧',
-                  title: feastData.title || info.displayName
+                  title: feastData.title || currentInfo.displayName
                 };
 
                 const sundayOption = {
@@ -988,16 +993,16 @@ export default function LiturgyPage() {
                 setActiveReadingMode('weekday');
                 selectedData = {
                   ...feastData,
-                  title: feastData.title || info.displayName
+                  title: feastData.title || currentInfo.displayName
                 };
               }
             } else if (isMemorialFeast && hasFeastReadings && hasWeekdayReadings) {
               // CẢ 2 BÀI ĐỌC ĐỀU TỒN TẠI TRONG NGÀY LỄ NHỚ: TẠO 2 OPTION CHO NGƯỜI DÙNG CHỌN TAB
-              const saintName = info.displayName || feastData.title || weekdayData.title || 'Lễ Nhớ';
+              const saintName = currentInfo.displayName || feastData.title || weekdayData.title || 'Lễ Nhớ';
 
               const weekdayOption = {
                 ...weekdayData,
-                title: `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`,
+                title: `${datePrefix} - ${saintName} - ${currentInfo.feastTypeName || 'Lễ Nhớ'}`,
                 saintName
               };
 
@@ -1013,7 +1018,7 @@ export default function LiturgyPage() {
 
               const feastOption = {
                 ...mergedFeast,
-                title: `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`,
+                title: `${datePrefix} - ${saintName} - ${currentInfo.feastTypeName || 'Lễ Nhớ'}`,
                 saintName
               };
 
@@ -1037,9 +1042,9 @@ export default function LiturgyPage() {
               mergedContent.reflection = (feastData.reflection && feastData.reflection.toString().trim() !== '') ? feastData.reflection : null;
               mergedContent.extra_readings = (feastData.extra_readings && Array.isArray(feastData.extra_readings) && feastData.extra_readings.length > 0) ? feastData.extra_readings : null;
 
-              const saintName = info.displayName || mergedContent.title || 'Lễ Nhớ';
-              const displayTitle = (info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional')
-                ? `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`
+              const saintName = currentInfo.displayName || mergedContent.title || 'Lễ Nhớ';
+              const displayTitle = (currentInfo.feastType === 'memorial_obligatory' || currentInfo.feastType === 'memorial_optional')
+                ? `${datePrefix} - ${saintName} - ${currentInfo.feastTypeName || 'Lễ Nhớ'}`
                 : (feastData.title || mergedContent.title || `${datePrefix} - ${saintName}`);
 
               selectedData = {
@@ -1051,9 +1056,9 @@ export default function LiturgyPage() {
               activeModeToApply = 'weekday';
               setReadingModes(modesToApply);
               setActiveReadingMode('weekday');
-              const saintName = info.displayName || weekdayData.title || 'Lễ Nhớ';
-              const displayTitle = (info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional')
-                ? `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`
+              const saintName = currentInfo.displayName || weekdayData.title || 'Lễ Nhớ';
+              const displayTitle = (currentInfo.feastType === 'memorial_obligatory' || currentInfo.feastType === 'memorial_optional')
+                ? `${datePrefix} - ${saintName} - ${currentInfo.feastTypeName || 'Lễ Nhớ'}`
                 : (weekdayData.title?.toLowerCase().startsWith('ngày') ? weekdayData.title : `${datePrefix} - ${weekdayData.title || saintName}`);
 
               selectedData = {
