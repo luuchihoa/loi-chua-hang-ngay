@@ -634,7 +634,15 @@ export default function LiturgyPage() {
         if (!overrideLiturgyItem) {
           const cached = getCachedLiturgy(selectedDate, 'page');
           if (cached) {
-            setContent(cached);
+            if (cached.content && cached.readingModes !== undefined) {
+              setContent(cached.content);
+              setReadingModes(cached.readingModes || { weekday: null, feast: null });
+              setActiveReadingMode(cached.activeReadingMode || 'weekday');
+            } else {
+              setContent(cached);
+              setReadingModes({ weekday: null, feast: null });
+              setActiveReadingMode('weekday');
+            }
             setLoading(false);
             return;
           }
@@ -842,6 +850,9 @@ export default function LiturgyPage() {
 
             const isMemorialFeast = info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional';
 
+            let modesToApply = { weekday: null, feast: null };
+            let activeModeToApply = 'weekday';
+
             // XỬ LÝ ĐẶC BIỆT CHO NGÀY 30 TẾT (TẤT NIÊN VÀ GIAO THỪA)
             const tatNienData = getDataForKey('feast_tat_nien');
             const giaoThuaData = getDataForKey('feast_giao_thua');
@@ -884,6 +895,8 @@ export default function LiturgyPage() {
                 if (tatNienOption) modesMap.tat_nien = tatNienOption;
                 if (giaoThuaOption) modesMap.giao_thua = giaoThuaOption;
 
+                modesToApply = modesMap;
+                activeModeToApply = 'sunday';
                 setReadingModes(modesMap);
                 setActiveReadingMode('sunday'); // MẶC ĐỊNH LÀ CHÚA NHẬT
                 selectedData = sundayOption;
@@ -922,8 +935,10 @@ export default function LiturgyPage() {
                 if (giaoThuaOption) modesMap.giao_thua = giaoThuaOption;
                 if (weekdayOption) modesMap.weekday = weekdayOption;
 
-                setReadingModes(modesMap);
                 const defaultKey = tatNienOption ? 'tat_nien' : (giaoThuaOption ? 'giao_thua' : 'weekday');
+                modesToApply = modesMap;
+                activeModeToApply = defaultKey;
+                setReadingModes(modesMap);
                 setActiveReadingMode(defaultKey); // MẶC ĐỊNH LÀ TẤT NIÊN
                 selectedData = modesMap[defaultKey];
               }
@@ -950,16 +965,21 @@ export default function LiturgyPage() {
                   title: weekdayData.title ? `${datePrefix} - ${weekdayData.title}` : `${datePrefix} - Chúa Nhật`
                 };
 
-                setReadingModes({
+                modesToApply = {
                   tet: tetOption,
                   sunday: sundayOption
-                });
+                };
+                activeModeToApply = 'tet';
+                setReadingModes(modesToApply);
                 setActiveReadingMode('tet'); // MẶC ĐỊNH LÀ TAB LỄ TẾT
                 selectedData = tetOption;
 
               } else {
                 // TRƯỜNG HỢP RƠI VÀO NGÀY THƯỜNG -> ƯU TIÊN LỄ TẾT TRỰC TIẾP, KHÔNG CẦN TAB CHUYỂN ĐỔI
-                setReadingModes({ weekday: null, feast: null });
+                modesToApply = { weekday: null, feast: null };
+                activeModeToApply = 'weekday';
+                setReadingModes(modesToApply);
+                setActiveReadingMode('weekday');
                 selectedData = {
                   ...feastData,
                   title: feastData.title || info.displayName
@@ -991,11 +1011,16 @@ export default function LiturgyPage() {
                 saintName
               };
 
-              setReadingModes({ weekday: weekdayOption, feast: feastOption });
+              modesToApply = { weekday: weekdayOption, feast: feastOption };
+              activeModeToApply = 'weekday';
+              setReadingModes(modesToApply);
               setActiveReadingMode('weekday'); // MẶC ĐỊNH LÀ Bài đọc Lễ Thường DÀNH CHO LỄ NHỚ
               selectedData = weekdayOption;
             } else if (feastData) {
-              setReadingModes({ weekday: null, feast: null });
+              modesToApply = { weekday: null, feast: null };
+              activeModeToApply = 'weekday';
+              setReadingModes(modesToApply);
+              setActiveReadingMode('weekday');
               const mergedContent = { ...(weekdayData || {}) };
               for (let k in feastData) {
                 if (feastData[k] && feastData[k].toString().trim() !== "") {
@@ -1016,7 +1041,10 @@ export default function LiturgyPage() {
                 title: displayTitle
               };
             } else if (weekdayData) {
-              setReadingModes({ weekday: null, feast: null });
+              modesToApply = { weekday: null, feast: null };
+              activeModeToApply = 'weekday';
+              setReadingModes(modesToApply);
+              setActiveReadingMode('weekday');
               const saintName = info.displayName || weekdayData.title || 'Lễ Nhớ';
               const displayTitle = (info.feastType === 'memorial_obligatory' || info.feastType === 'memorial_optional')
                 ? `${datePrefix} - ${saintName} - ${info.feastTypeName || 'Lễ Nhớ'}`
@@ -1027,12 +1055,19 @@ export default function LiturgyPage() {
                 title: displayTitle
               };
             } else {
-              setReadingModes({ weekday: null, feast: null });
+              modesToApply = { weekday: null, feast: null };
+              activeModeToApply = 'weekday';
+              setReadingModes(modesToApply);
+              setActiveReadingMode('weekday');
             }
           }
 
           if (selectedData && !overrideLiturgyItem) {
-            setCachedLiturgy(selectedDate, selectedData, 'page');
+            setCachedLiturgy(selectedDate, {
+              content: selectedData,
+              readingModes: modesToApply,
+              activeReadingMode: activeModeToApply
+            }, 'page');
           }
           setContent(selectedData);
         } else {
@@ -1055,10 +1090,15 @@ export default function LiturgyPage() {
       const targetContent = readingModes[mode];
       setContent(targetContent);
       if (!overrideLiturgyItem) {
-        setCachedLiturgy(selectedDate, targetContent, 'page');
+        setCachedLiturgy(selectedDate, {
+          content: targetContent,
+          readingModes: readingModes,
+          activeReadingMode: mode
+        }, 'page');
       }
     }
   };
+
 
   // Phân loại các Thánh Lễ khác nhau trong cùng 1 ngày (VD: 24/12 Lễ Sáng vs Lễ Vọng Ban Tối)
   const fullMassReadings = useMemo(() => {
