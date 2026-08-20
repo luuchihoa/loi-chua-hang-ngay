@@ -834,6 +834,8 @@ export default function LiturgyPage() {
           const weekdayData = currentInfo.seasonKey ? getDataForKey(currentInfo.seasonKey) : null;
           
           let selectedData = null;
+          let modesToApply = { weekday: null, feast: null };
+          let activeModeToApply = 'weekday';
 
           // Ưu tiên hiển thị bài đọc nếu người dùng chọn trực tiếp từ ô tìm kiếm
           if (overrideLiturgyItem && overrideLiturgyItem.liturgy_key) {
@@ -860,9 +862,6 @@ export default function LiturgyPage() {
             );
 
             const isMemorialFeast = currentInfo.feastType === 'memorial_obligatory' || currentInfo.feastType === 'memorial_optional';
-
-            let modesToApply = { weekday: null, feast: null };
-            let activeModeToApply = 'weekday';
 
             // XỬ LÝ ĐẶC BIỆT CHO NGÀY 30 TẾT (TẤT NIÊN VÀ GIAO THỪA)
             const tatNienData = getDataForKey('feast_tat_nien');
