@@ -634,17 +634,23 @@ export default function LiturgyPage() {
         if (!overrideLiturgyItem) {
           const cached = getCachedLiturgy(selectedDate, 'page');
           if (cached) {
-            if (cached.content && cached.readingModes !== undefined) {
+            // Cấu trúc mới: { content, readingModes, activeReadingMode }
+            if (cached.content && typeof cached.content === 'object' && (cached.content.r1_content || cached.content.gospel_content || cached.content.psalm_content || cached.content.title)) {
               setContent(cached.content);
               setReadingModes(cached.readingModes || { weekday: null, feast: null });
               setActiveReadingMode(cached.activeReadingMode || 'weekday');
-            } else {
+              setLoading(false);
+              return;
+            } 
+            // Cấu trúc cũ (legacy content object phẳng)
+            else if (cached.r1_content || cached.gospel_content || cached.psalm_content || (cached.title && typeof cached.title === 'string' && !cached.content)) {
               setContent(cached);
               setReadingModes({ weekday: null, feast: null });
               setActiveReadingMode('weekday');
+              setLoading(false);
+              return;
             }
-            setLoading(false);
-            return;
+            // Nếu cache rỗng hoặc không đúng format -> bỏ qua để fetch mới từ Supabase
           }
         }
 

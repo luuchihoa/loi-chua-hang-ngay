@@ -1,4 +1,4 @@
-const CACHE_PREFIX = 'loi_chua_hang_ngay_cache_v4_';
+const CACHE_PREFIX = 'loi_chua_hang_ngay_cache_v5_';
 const CACHE_TTL_DAYS = 7;
 
 // Tắt cache khi chạy dev server (npm run dev) để dễ test dữ liệu mới
