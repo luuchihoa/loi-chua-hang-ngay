@@ -17,8 +17,17 @@ const queryClient = new QueryClient({
   },
 });
 
-// Đăng ký Service Worker cho PWA
-registerSW({ immediate: true });
+// Đăng ký Service Worker cho PWA (Cập nhật ngầm trong nền, không tự ý reload làm giật trang)
+registerSW({
+  immediate: true,
+  onNeedReload() {
+    // 🛡️ Chặn tự động reload: cho phép Service Worker âm thầm nạp cache mới trong nền
+    // Tuyệt đối không gián đoạn trải nghiệm của người đang đọc kinh
+  },
+  onOfflineReady() {
+    // Ứng dụng đã sẵn sàng hoạt động ngoại tuyến (offline)
+  }
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
