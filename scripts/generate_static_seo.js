@@ -17,40 +17,59 @@ const TEMPLATE = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 const bibleIndexPath = path.join(__dirname, '../src/data/bible/bibleIndex.json');
 const bibleData = JSON.parse(fs.readFileSync(bibleIndexPath, 'utf8'));
 
+import { getLiturgyInfo } from '../src/utils/liturgyCalendar.js';
+
 const allBooks = [
-  ...(bibleData.old_testament || []),
-  ...(bibleData.new_testament || [])
+  ...(bibleData.old_testament || []).map(b => ({ ...b, testament: 'old' })),
+  ...(bibleData.new_testament || []).map(b => ({ ...b, testament: 'new' }))
 ];
 
-console.log('🚀 Đang Pre-render HTML tĩnh cho các đường dẫn chính, 73 Sách Hub Pages và Kinh Thánh...');
+console.log('🚀 Đang Pre-render HTML tĩnh cho 100% các đường dẫn (Trang chính, 365 Ngày Phụng Vụ, 73 Sách Hub Pages và toàn bộ 1328 Chương Kinh Thánh)...');
 
-function createStaticPage(routePath, title, description, jsonLdSchema = null) {
+const DOMAIN = 'https://loichuamoingay.org';
+const DEFAULT_IMAGE = `${DOMAIN}/logo_loi_chua_moi_ngay.png`;
+
+function createStaticPage(routePath, title, description, jsonLdSchema = null, bodySkeleton = '', robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1') {
   const targetDir = path.join(DIST_DIR, routePath);
   fs.mkdirSync(targetDir, { recursive: true });
 
   let html = TEMPLATE;
-  html = html.replace(/<title>.*?<\/title>/, `<title>${title} | Lời Chúa Mỗi Ngày</title>`);
+  const fullTitle = `${title} | Lời Chúa Mỗi Ngày`;
+  const canonicalUrl = `${DOMAIN}${routePath}`;
+
+  html = html.replace(/<title>.*?<\/title>/, `<title>${fullTitle}</title>`);
 
   let metaTags = `
     <meta name="description" content="${description}" />
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <meta property="og:title" content="${title} | Lời Chúa Mỗi Ngày" />
+    <meta name="robots" content="${robots}" />
+    <meta property="og:title" content="${fullTitle}" />
     <meta property="og:description" content="${description}" />
-    <meta property="og:url" content="https://loichuamoingay.org${routePath}" />
-    <meta property="og:image" content="https://loichuamoingay.org/logo_loi_chua_moi_ngay.png" />
+    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:image" content="${DEFAULT_IMAGE}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Lời Chúa Mỗi Ngày" />
-    <link rel="canonical" href="https://loichuamoingay.org${routePath}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${fullTitle}" />
+    <meta name="twitter:description" content="${description}" />
+    <meta name="twitter:image" content="${DEFAULT_IMAGE}" />
+    <link rel="canonical" href="${canonicalUrl}" />
   `;
 
   if (jsonLdSchema) {
     metaTags += `\n    <script type="application/ld+json">${JSON.stringify(jsonLdSchema)}</script>`;
   }
 
-  html = html.replace(/<meta name="description" content=".*?" \/>/, metaTags);
+  // Xóa sạch các thẻ meta/canonical cũ của template trước khi chèn thẻ mới để tránh trùng lặp
+  html = html
+    .replace(/<meta name="description" content=".*?" \/>/g, '')
+    .replace(/<meta name="robots" content=".*?" \/>/g, '')
+    .replace(/<link rel="canonical" href=".*?" \/>/g, '')
+    .replace(/<meta property="og:.*?" content=".*?" \/>/g, '')
+    .replace(/<meta name="twitter:.*?" content=".*?" \/>/g, '');
 
-  // Chèn nội dung Static HTML Skeleton vào trong <div id="root"></div> giúp Googlebot và Lighthouse render văn bản ngay lập tức
-  const staticSkeleton = `
+  html = html.replace('</head>', `${metaTags}\n  </head>`);
+
+  const fallbackSkeleton = `
     <div class="min-h-screen bg-stone-50 dark:bg-stone-950 p-4">
       <header class="max-w-4xl mx-auto py-6 border-b border-stone-200 dark:border-stone-800">
         <h1 class="text-2xl md:text-3xl font-serif font-bold text-amber-900 dark:text-amber-100">${title}</h1>
@@ -58,47 +77,371 @@ function createStaticPage(routePath, title, description, jsonLdSchema = null) {
       </header>
     </div>
   `;
-  html = html.replace('<div id="root"></div>', `<div id="root">${staticSkeleton}</div>`);
 
+  const finalSkeleton = bodySkeleton || fallbackSkeleton;
+  html = html.replace('<div id="root"></div>', `<div id="root">${finalSkeleton}</div>`);
+
+  // 1. Ghi file dạng directory/index.html (cho URL có trailing slash /liturgy/)
   fs.writeFileSync(path.join(targetDir, 'index.html'), html, 'utf8');
+
+  // 2. Ghi file dạng routePath.html (cho URL không có trailing slash /liturgy trên GitHub Pages)
+  // Giúp GitHub Pages phục vụ HTTP 200 OK trực tiếp, triệt tiêu hoàn toàn 301 Redirect!
+  const cleanRoute = routePath.replace(/^\/+/, '');
+  if (cleanRoute) {
+    const directHtmlPath = path.join(DIST_DIR, `${cleanRoute}.html`);
+    const directParentDir = path.dirname(directHtmlPath);
+    if (!fs.existsSync(directParentDir)) {
+      fs.mkdirSync(directParentDir, { recursive: true });
+    }
+    fs.writeFileSync(directHtmlPath, html, 'utf8');
+  }
 }
 
-// 1. Pre-render Trang Tĩnh Chính
-createStaticPage('/liturgy', 'Phụng Vụ Lời Chúa Hàng Ngày', 'Đọc và nghe bài đọc Phụng vụ hằng ngày cùng bài suy niệm Lời Chúa Công giáo.');
-createStaticPage('/bible', 'Kinh Thánh Công Giáo Trọn Bộ 73 Sách', 'Đọc và tra cứu trọn bộ 73 sách Kinh Thánh Công giáo Cựu Ước và Tân Ước.');
-createStaticPage('/bible-audio', 'Kinh Thánh Audio Giọng Đọc Truyền Cảm', 'Nghe đọc Kinh Thánh Công giáo trọn bộ với âm thanh chất lượng cao.');
-createStaticPage('/calendar', 'Lịch Phụng Vụ Công Giáo', 'Tra cứu màu áo lễ, các lễ trọng, lễ kính và mùa Phụng vụ Công giáo.');
+let generatedCount = 0;
 
-// 2. Pre-render 73 Hub Pages cho 73 Sách Kinh Thánh (/bible/[bookId]) & Chương 1
+// ─────────────────────────────────────────────────────────────
+// 1. PRE-RENDER CÁC TRANG TĨNH CHÍNH
+// ─────────────────────────────────────────────────────────────
+const staticPages = [
+  {
+    path: '/liturgy',
+    title: 'Phụng Vụ Lời Chúa Hàng Ngày',
+    description: 'Đọc và nghe bài đọc Phụng vụ hằng ngày cùng bài suy niệm Lời Chúa Công giáo Việt Nam.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Phụng Vụ Lời Chúa Hàng Ngày | Lời Chúa Mỗi Ngày",
+      "url": `${DOMAIN}/liturgy`,
+      "description": "Đọc và nghe bài đọc Phụng vụ hằng ngày cùng bài suy niệm Lời Chúa Công giáo Việt Nam."
+    }
+  },
+  {
+    path: '/bible',
+    title: 'Kinh Thánh Công Giáo Trọn Bộ 73 Sách',
+    description: 'Đọc và tra cứu trọn bộ 73 sách Kinh Thánh Công giáo Cựu Ước và Tân Ước chuẩn xác kèm audio nghe đọc.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "Book",
+      "name": "Kinh Thánh Công Giáo Trọn Bộ 73 Sách",
+      "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
+      "url": `${DOMAIN}/bible`
+    }
+  },
+  {
+    path: '/bible-audio',
+    title: 'Kinh Thánh Audio Giọng Đọc Truyền Cảm',
+    description: 'Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao truyền cảm.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "AudioObject",
+      "name": "Kinh Thánh Audio Giọng Đọc Truyền Cảm",
+      "description": "Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao.",
+      "contentUrl": `${DOMAIN}/bible-audio`
+    }
+  },
+  {
+    path: '/calendar',
+    title: 'Lịch Phụng Vụ Công Giáo',
+    description: 'Tra cứu lịch Phụng vụ Công giáo, màu áo lễ, các lễ trọng, lễ kính và mùa Phụng vụ trong năm.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Lịch Phụng Vụ Công Giáo | Lời Chúa Mỗi Ngày",
+      "url": `${DOMAIN}/calendar`
+    }
+  },
+  {
+    path: '/bookmarks',
+    title: 'Bài Đọc Đã Lưu',
+    description: 'Danh sách bài đọc Lời Chúa bạn đã đánh dấu yêu thích trên Lời Chúa Mỗi Ngày.',
+    robots: 'noindex, follow',
+    schema: null
+  }
+];
+
+staticPages.forEach((page) => {
+  createStaticPage(page.path, page.title, page.description, page.schema, '', page.robots || undefined);
+  generatedCount++;
+});
+
+// ─────────────────────────────────────────────────────────────
+// 2. PRE-RENDER 365 NGÀY PHỤNG VỤ TRONG NĂM (/liturgy/YYYY-MM-DD)
+// ─────────────────────────────────────────────────────────────
+const currentYear = new Date().getFullYear();
+const isLeap = (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0;
+const totalDays = isLeap ? 366 : 365;
+
+const formatDateToYYYYMMDD = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
+for (let d = 0; d < totalDays; d++) {
+  const date = new Date(currentYear, 0, 1 + d);
+  const dateStr = formatDateToYYYYMMDD(date);
+  const formattedDate = date.toLocaleDateString('vi-VN');
+  const info = getLiturgyInfo(date);
+
+  const prevDate = new Date(date);
+  prevDate.setDate(prevDate.getDate() - 1);
+  const prevDateStr = formatDateToYYYYMMDD(prevDate);
+
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + 1);
+  const nextDateStr = formatDateToYYYYMMDD(nextDate);
+
+  const liturgySkeleton = `
+    <div class="min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8 text-stone-800 dark:text-stone-200">
+      <div class="max-w-4xl mx-auto">
+        <nav aria-label="Đường dẫn trang" class="mb-4 text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1.5 flex-wrap">
+          <a href="/" class="hover:underline">Trang chủ</a>
+          <span>›</span>
+          <a href="/liturgy" class="hover:underline">Phụng Vụ</a>
+          <span>›</span>
+          <span class="text-amber-800 dark:text-amber-300 font-semibold">Ngày ${formattedDate}</span>
+        </nav>
+        <header class="py-6 border-b border-stone-200 dark:border-stone-800 mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 mb-3 border border-amber-300 dark:border-amber-800">
+            <span>${info.displayName || 'Phụng Vụ Ngày'}</span>
+            <span>•</span>
+            <span>Mùa Phụng Vụ: ${info.season || 'Thường'}</span>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-serif font-bold text-amber-900 dark:text-amber-100">Lời Chúa Ngày ${formattedDate} - ${info.displayName}</h1>
+          <p class="text-sm text-stone-600 dark:text-stone-400 mt-2">Bài đọc Phụng Vụ Thánh Lễ và Suy niệm Tin Mừng ngày ${formattedDate}. Lời Chúa Mỗi Ngày.</p>
+        </header>
+
+        <nav aria-label="Điều hướng ngày" class="flex items-center justify-between gap-3 mb-8">
+          <a href="/liturgy/${prevDateStr}" class="px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-amber-600 hover:text-white transition-colors">‹ Ngày trước (${prevDate.toLocaleDateString('vi-VN')})</a>
+          <a href="/calendar" class="text-xs font-medium text-amber-800 dark:text-amber-300 hover:underline">Lịch Phụng Vụ Tháng</a>
+          <a href="/liturgy/${nextDateStr}" class="px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-amber-600 hover:text-white transition-colors">Ngày sau (${nextDate.toLocaleDateString('vi-VN')}) ›</a>
+        </nav>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm text-center">
+          <p class="text-sm font-medium text-stone-600 dark:text-stone-300">Đang tải toàn văn Bài Đọc I, Đáp Ca, Tin Mừng và bài suy niệm Lời Chúa ngày ${formattedDate}...</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  createStaticPage(
+    `/liturgy/${dateStr}`,
+    `Lời Chúa Ngày ${formattedDate} - ${info.displayName || 'Phụng Vụ'}`,
+    `Bài đọc Phụng Vụ Thánh Lễ và Suy niệm Tin Mừng ngày ${formattedDate} (${info.displayName || ''}). Lời Chúa Mỗi Ngày.`,
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": `${DOMAIN}/#organization`,
+          "name": "Lời Chúa Mỗi Ngày",
+          "url": DOMAIN,
+          "logo": DEFAULT_IMAGE
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": `${DOMAIN}/liturgy/${dateStr}#breadcrumb`,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": DOMAIN },
+            { "@type": "ListItem", "position": 2, "name": "Phụng Vụ", "item": `${DOMAIN}/liturgy` },
+            { "@type": "ListItem", "position": 3, "name": `Ngày ${formattedDate}`, "item": `${DOMAIN}/liturgy/${dateStr}` }
+          ]
+        },
+        {
+          "@type": "Article",
+          "headline": `Lời Chúa Ngày ${formattedDate} - ${info.displayName || 'Phụng Vụ'}`,
+          "description": `Bài đọc Phụng Vụ Thánh Lễ và Suy niệm Tin Mừng ngày ${formattedDate}.`,
+          "inLanguage": "vi",
+          "mainEntityOfPage": `${DOMAIN}/liturgy/${dateStr}`,
+          "datePublished": `${dateStr}T00:00:00+07:00`
+        }
+      ]
+    },
+    liturgySkeleton
+  );
+  generatedCount++;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 3. PRE-RENDER 73 HUB PAGES CHO 73 SÁCH KINH THÁNH (/bible/[bookId])
+// ─────────────────────────────────────────────────────────────
 allBooks.forEach((book) => {
-  const isOT = (bibleData.old_testament || []).some(b => b.id === book.id);
+  const isOT = book.testament === 'old';
   const testamentName = isOT ? 'Cựu Ước' : 'Tân Ước';
 
-  // Hub Page đại diện cho Sách
+  const chapterLinks = Array.from({ length: book.chapters }, (_, i) => i + 1)
+    .map(c => `<a href="/bible/${book.id}/${c}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-amber-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-sm font-semibold text-stone-800 dark:text-stone-200 hover:bg-amber-600 hover:text-white transition-colors">${c}</a>`)
+    .join('\n        ');
+
+  const hubSkeleton = `
+    <div class="min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8 text-stone-800 dark:text-stone-200">
+      <div class="max-w-4xl mx-auto">
+        <nav aria-label="Đường dẫn trang" class="mb-4 text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1.5 flex-wrap">
+          <a href="/" class="hover:underline">Trang chủ</a>
+          <span>›</span>
+          <a href="/bible" class="hover:underline">Kinh Thánh</a>
+          <span>›</span>
+          <span class="text-amber-800 dark:text-amber-300 font-semibold">Sách ${book.name}</span>
+        </nav>
+        <header class="py-6 border-b border-stone-200 dark:border-stone-800 mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 mb-3 border border-amber-300 dark:border-amber-800">
+            <span>${testamentName}</span>
+            <span>•</span>
+            <span>${book.category}</span>
+            <span>•</span>
+            <span>${book.chapters} chương</span>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-serif font-bold text-amber-900 dark:text-amber-100">Sách ${book.name} (${book.short})</h1>
+          <p class="text-base text-stone-600 dark:text-stone-400 mt-3">Đọc trọn bộ Sách ${book.name} gồm ${book.chapters} chương thuộc ${testamentName} Kinh Thánh Công giáo Việt Nam.</p>
+        </header>
+
+        <section class="mb-8">
+          <h2 class="text-lg font-bold text-stone-900 dark:text-stone-100 mb-4">Danh Sách Các Chương</h2>
+          <div class="flex flex-wrap gap-2">
+            ${chapterLinks}
+          </div>
+        </section>
+
+        <section class="p-5 rounded-2xl bg-amber-50/60 dark:bg-stone-900/60 border border-amber-200 dark:border-stone-800 text-sm">
+          <p class="font-medium text-stone-700 dark:text-stone-300">Lời Chúa Mỗi Ngày hỗ trợ tra cứu toàn văn Lời Chúa, nghe đọc audio chất lượng cao, đánh dấu câu và ghi chú suy niệm cá nhân.</p>
+          <div class="mt-4 flex gap-3">
+            <a href="/bible/${book.id}/1" class="px-4 py-2 rounded-xl bg-amber-700 text-white font-medium text-sm hover:bg-amber-800 transition-colors">Bắt đầu đọc Chương 1</a>
+            <a href="/bible-audio" class="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 text-sm font-medium hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">Nghe Audio</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  `;
+
   createStaticPage(
     `/bible/${book.id}`,
     `Sách ${book.name} - Kinh Thánh Công Giáo 73 Sách`,
-    `Đọc trọn bộ Sách ${book.name} (${book.chapters} chương) thuộc ${testamentName} Kinh Thánh Công giáo.`,
+    `Đọc trọn bộ Sách ${book.name} (${book.chapters} chương) thuộc ${testamentName} Kinh Thánh Công giáo. Bản dịch chuẩn Công Giáo Việt Nam có audio nghe đọc.`,
     {
       "@context": "https://schema.org",
-      "@type": "Book",
-      "name": book.name,
-      "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
-      "numberOfPages": book.chapters,
-      "url": `https://loichuamoingay.org/bible/${book.id}`
-    }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": `${DOMAIN}/#organization`,
+          "name": "Lời Chúa Mỗi Ngày",
+          "url": DOMAIN,
+          "logo": DEFAULT_IMAGE
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": `${DOMAIN}/bible/${book.id}#breadcrumb`,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": DOMAIN },
+            { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": `${DOMAIN}/bible` },
+            { "@type": "ListItem", "position": 3, "name": `Sách ${book.name}`, "item": `${DOMAIN}/bible/${book.id}` }
+          ]
+        },
+        {
+          "@type": "Book",
+          "name": `Sách ${book.name}`,
+          "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
+          "numberOfPages": book.chapters,
+          "url": `${DOMAIN}/bible/${book.id}`
+        }
+      ]
+    },
+    hubSkeleton
   );
+  generatedCount++;
 
-  // Pre-render Chương 1
-  createStaticPage(
-    `/bible/${book.id}/1`,
-    `Sách ${book.name} - Chương 1`,
-    `Đọc Kinh Thánh Công giáo: Sách ${book.name} chương 1. Lời Chúa mỗi ngày.`
-  );
+  // ─────────────────────────────────────────────────────────────
+  // 3. PRE-RENDER TOÀN BỘ 1328 CHƯƠNG KINH THÁNH (/bible/[bookId]/[chapter])
+  // ─────────────────────────────────────────────────────────────
+  for (let c = 1; c <= book.chapters; c++) {
+    const prevLink = c > 1 
+      ? `<a href="/bible/${book.id}/${c - 1}" class="px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-amber-600 hover:text-white transition-colors">‹ Chương ${c - 1}</a>`
+      : '';
+    const nextLink = c < book.chapters 
+      ? `<a href="/bible/${book.id}/${c + 1}" class="px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-amber-600 hover:text-white transition-colors">Chương ${c + 1} ›</a>`
+      : '';
+
+    const chapterSkeleton = `
+      <div class="min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8 text-stone-800 dark:text-stone-200">
+        <div class="max-w-4xl mx-auto">
+          <nav aria-label="Đường dẫn trang" class="mb-4 text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1.5 flex-wrap">
+            <a href="/" class="hover:underline">Trang chủ</a>
+            <span>›</span>
+            <a href="/bible" class="hover:underline">Kinh Thánh</a>
+            <span>›</span>
+            <a href="/bible/${book.id}" class="hover:underline">Sách ${book.name}</a>
+            <span>›</span>
+            <span class="text-amber-800 dark:text-amber-300 font-semibold">Chương ${c}</span>
+          </nav>
+          
+          <header class="py-6 border-b border-stone-200 dark:border-stone-800 mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 mb-3 border border-amber-300 dark:border-amber-800">
+              <span>${testamentName}</span>
+              <span>•</span>
+              <span>${book.category}</span>
+              <span>•</span>
+              <span>Chương ${c}/${book.chapters}</span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-serif font-bold text-amber-900 dark:text-amber-100">Sách ${book.name} - Chương ${c}</h1>
+            <p class="text-sm text-stone-600 dark:text-stone-400 mt-2">Đọc Kinh Thánh Công giáo: Sách ${book.name} (${book.short}) chương ${c}. Trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.</p>
+          </header>
+
+          <nav aria-label="Điều hướng chương" class="flex items-center justify-between gap-3 mb-8">
+            <div>${prevLink}</div>
+            <a href="/bible/${book.id}" class="text-xs font-medium text-amber-800 dark:text-amber-300 hover:underline">Tất cả chương Sách ${book.name}</a>
+            <div>${nextLink}</div>
+          </nav>
+
+          <div class="p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm text-center">
+            <p class="text-sm font-medium text-stone-600 dark:text-stone-300">Đang tải toàn văn Lời Chúa Sách ${book.name} Chương ${c} và bản thu âm Audio chất lượng cao...</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    createStaticPage(
+      `/bible/${book.id}/${c}`,
+      `Sách ${book.name} - Chương ${c}`,
+      `Đọc Kinh Thánh Công giáo: Sách ${book.name} (${book.short}) chương ${c}. Trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam có audio nghe đọc.`,
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": `${DOMAIN}/#organization`,
+            "name": "Lời Chúa Mỗi Ngày",
+            "url": DOMAIN,
+            "logo": DEFAULT_IMAGE
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": `${DOMAIN}/bible/${book.id}/${c}#breadcrumb`,
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": DOMAIN },
+              { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": `${DOMAIN}/bible` },
+              { "@type": "ListItem", "position": 3, "name": `Sách ${book.name}`, "item": `${DOMAIN}/bible/${book.id}` },
+              { "@type": "ListItem", "position": 4, "name": `Chương ${c}`, "item": `${DOMAIN}/bible/${book.id}/${c}` }
+            ]
+          },
+          {
+            "@type": "Article",
+            "headline": `Sách ${book.name} - Chương ${c}`,
+            "description": `Đọc Kinh Thánh Công giáo: Sách ${book.name} (${book.short}) chương ${c}. Trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.`,
+            "inLanguage": "vi",
+            "mainEntityOfPage": `${DOMAIN}/bible/${book.id}/${c}`,
+            "isPartOf": {
+              "@type": "Book",
+              "name": `Sách ${book.name}`,
+              "url": `${DOMAIN}/bible/${book.id}`
+            }
+          }
+        ]
+      },
+      chapterSkeleton
+    );
+    generatedCount++;
+  }
 });
 
-console.log(`✅ Đã hoàn tất Pre-rendering static HTML cho ${staticRoutesLength()} đường dẫn tĩnh!`);
+console.log(`✅ Đã hoàn tất Pre-rendering static HTML cho toàn bộ ${generatedCount} đường dẫn tĩnh trong dist/!`);
 
-function staticRoutesLength() {
-  return 4 + allBooks.length * 2;
-}

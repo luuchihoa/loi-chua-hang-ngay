@@ -27,7 +27,9 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<LiturgyPage />} />
       <Route path="/liturgy" element={<LiturgyPage />} />
+      <Route path="/liturgy/:dateStr" element={<LiturgyPage />} />
       <Route path="/bible" element={<LazyPage><BiblePage /></LazyPage>} />
+      <Route path="/bible/:bookId" element={<LazyPage><BiblePage /></LazyPage>} />
       <Route path="/bible/:bookId/:chapterNum" element={<LazyPage><BiblePage /></LazyPage>} />
       <Route path="/bible-audio" element={<LazyPage><BibleAudioPage /></LazyPage>} />
       <Route path="/calendar" element={<LazyPage><CalendarPage /></LazyPage>} />

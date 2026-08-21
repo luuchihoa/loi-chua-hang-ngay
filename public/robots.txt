@@ -1,7 +1,6 @@
 # Robots.txt cho Lời Chúa Hàng Ngày - Tối ưu cho Search Engines & AI Crawlers
 User-agent: *
 Allow: /
-Disallow: /bookmarks
 
 # AI Web Crawlers
 User-agent: GPTBot

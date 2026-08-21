@@ -140,6 +140,7 @@ export default function MobileNavDock() {
             <Link
               key={item.path}
               to={item.path}
+              rel={item.path === '/bookmarks' ? 'nofollow' : undefined}
               data-active={active}
               aria-current={active ? 'page' : undefined}
               className="relative min-w-[62px] min-h-[52px] flex flex-col items-center justify-center py-1.5 px-2 rounded-2xl transition-all duration-200"

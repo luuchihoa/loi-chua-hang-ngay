@@ -871,12 +871,23 @@ export default function BiblePage() {
         exit: (dir) => ({ x: dir === 'left' ? -16 : dir === 'right' ? 16 : 0, opacity: 0, transition: { duration: 0.14 } }),
       };
 
-  // ─────────────────────────────────────────────────────────────────
+  const isBookHubOnly = Boolean(urlBookId && !urlChapter);
+  const pageTitle = isBookHubOnly
+    ? `Sách ${activeBook?.name || ''} - Kinh Thánh Công Giáo 73 Sách`
+    : `Sách ${activeBook?.name || ''} - Chương ${chapterNum}`;
+  const pageDesc = isBookHubOnly
+    ? `Đọc trọn bộ Sách ${activeBook?.name || ''} (${activeBook?.chapters || 0} chương) thuộc ${activeBook?.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} Kinh Thánh Công giáo Việt Nam.`
+    : `Đọc Kinh Thánh Công giáo: Sách ${activeBook?.name || ''} (${activeBook?.short || ''}) chương ${chapterNum}. Trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.`;
+  const canonicalPath = isBookHubOnly
+    ? `https://loichuamoingay.org/bible/${activeBook?.id}`
+    : `https://loichuamoingay.org/bible/${activeBook?.id}/${chapterNum}`;
+
   return (
     <div className={`bible-reader-page min-h-screen flex flex-col md:flex-row pb-[calc(7rem+env(safe-area-inset-bottom,0px))] md:pb-0 ${getThemeClass()}`}>
       <SEO 
-        title={`Sách ${activeBook?.name || ''} - Chương ${chapterNum}`}
-        description={`Đọc Kinh Thánh Công giáo: Sách ${activeBook?.name || ''} chương ${chapterNum}. Trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.`}
+        title={pageTitle}
+        description={pageDesc}
+        canonical={canonicalPath}
         jsonLd={activeBook ? {
           "@context": "https://schema.org",
           "@graph": [
@@ -889,19 +900,35 @@ export default function BiblePage() {
             },
             {
               "@type": "BreadcrumbList",
-              "@id": `https://loichuamoingay.org/bible/${activeBook.id}/${chapterNum}#breadcrumb`,
-              "itemListElement": [
+              "@id": `${canonicalPath}#breadcrumb`,
+              "itemListElement": isBookHubOnly ? [
                 { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" },
                 { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": "https://loichuamoingay.org/bible" },
-                { "@type": "ListItem", "position": 3, "name": activeBook.name, "item": `https://loichuamoingay.org/bible/${activeBook.id}/1` },
+                { "@type": "ListItem", "position": 3, "name": `Sách ${activeBook.name}`, "item": `https://loichuamoingay.org/bible/${activeBook.id}` }
+              ] : [
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" },
+                { "@type": "ListItem", "position": 2, "name": "Kinh Thánh", "item": "https://loichuamoingay.org/bible" },
+                { "@type": "ListItem", "position": 3, "name": `Sách ${activeBook.name}`, "item": `https://loichuamoingay.org/bible/${activeBook.id}` },
                 { "@type": "ListItem", "position": 4, "name": `Chương ${chapterNum}`, "item": `https://loichuamoingay.org/bible/${activeBook.id}/${chapterNum}` }
               ]
             },
-            {
+            isBookHubOnly ? {
               "@type": "Book",
-              "name": activeBook.name,
+              "name": `Sách ${activeBook.name}`,
               "bookEdition": "Kinh Thánh Công Giáo Việt Nam",
-              "url": `https://loichuamoingay.org/bible/${activeBook.id}/${chapterNum}`
+              "numberOfPages": activeBook.chapters,
+              "url": canonicalPath
+            } : {
+              "@type": "Article",
+              "headline": `Sách ${activeBook.name} - Chương ${chapterNum}`,
+              "description": pageDesc,
+              "inLanguage": "vi",
+              "mainEntityOfPage": canonicalPath,
+              "isPartOf": {
+                "@type": "Book",
+                "name": `Sách ${activeBook.name}`,
+                "url": `https://loichuamoingay.org/bible/${activeBook.id}`
+              }
             }
           ]
         } : null}

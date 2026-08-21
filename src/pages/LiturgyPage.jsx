@@ -11,7 +11,7 @@ import { getLiturgyInfo, getLiturgicalYear, getLiturgicalColor, findDateForLitur
 import { getCachedLiturgy, setCachedLiturgy } from '../utils/liturgyCache.js';
 import { useLiturgyTTS } from '../hooks/useLiturgyTTS.js';
 import { supabase } from '../lib/supabase.js';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useLiturgy } from '../context/LiturgyContext.jsx';
 import WeekRibbon from '../features/liturgy/components/WeekRibbon.jsx';
 import DatePicker from '../features/liturgy/components/DatePicker.jsx';
@@ -159,7 +159,19 @@ export default function LiturgyPage() {
     if (location.state?.date) {
       setSelectedDate(new Date(location.state.date));
     }
-  }, [location.state]);
+  }, [location.state, setSelectedDate]);
+
+  // Lắng nghe ngày từ URL params (/liturgy/:dateStr ví dụ /liturgy/2026-10-10)
+  const { dateStr } = useParams();
+  useEffect(() => {
+    if (dateStr && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const parsed = new Date(y, m - 1, d);
+      if (!isNaN(parsed.getTime())) {
+        setSelectedDate(parsed);
+      }
+    }
+  }, [dateStr, setSelectedDate]);
 
   // Phát hoặc dừng toàn bộ bài đọc trong ngày theo thứ tự (BĐ1 -> BĐ2 -> Tin Mừng)
   const handleToggleAudio = () => {
@@ -1547,13 +1559,32 @@ export default function LiturgyPage() {
     }).join('');
   };
 
-  const formatLiturgyText = formatProseText;
+  const isHome = location.pathname === '/';
+  const isDateSpecific = Boolean(dateStr);
+  const formattedDate = selectedDate ? selectedDate.toLocaleDateString('vi-VN') : '';
+  
+  const seoTitle = isHome
+    ? 'Lời Chúa Mỗi Ngày – Phụng Vụ & Kinh Thánh Công Giáo'
+    : isDateSpecific
+    ? `Lời Chúa Ngày ${formattedDate} - ${liturgyInfo?.displayName || liturgyInfo?.title || 'Phụng Vụ'}`
+    : `Phụng Vụ Lời Chúa Hàng Ngày – Bài Đọc & Suy Niệm`;
+
+  const seoDescription = isHome
+    ? 'Đọc và nghe Lời Chúa mỗi ngày, bài đọc Phụng vụ Thánh Lễ hôm nay, suy niệm Tin Mừng và trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.'
+    : `Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${formattedDate} (${liturgyInfo?.displayName || ''}). Tin Mừng: ${content?.gospel_ref || ''}`;
+
+  const canonicalUrl = isHome
+    ? 'https://loichuamoingay.org'
+    : isDateSpecific
+    ? `https://loichuamoingay.org/liturgy/${dateStr}`
+    : 'https://loichuamoingay.org/liturgy';
 
   return (
     <div className="min-h-screen bg-[#FDFCF9] dark:bg-[#12100E] text-stone-800 dark:text-stone-200 transition-colors duration-500 fade-in-up pb-32 overflow-x-hidden">
       <SEO 
-        title={liturgyInfo?.title ? `${liturgyInfo.title} (${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''})` : `Lời Chúa Ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}`}
-        description={`Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}. Tin Mừng: ${content?.gospel_ref || ''}`}
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
         jsonLd={liturgyInfo ? {
           "@context": "https://schema.org",
           "@graph": [
@@ -1566,20 +1597,26 @@ export default function LiturgyPage() {
             },
             {
               "@type": "BreadcrumbList",
-              "@id": "https://loichuamoingay.org/liturgy#breadcrumb",
-              "itemListElement": [
+              "@id": `${canonicalUrl}#breadcrumb`,
+              "itemListElement": isHome ? [
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" }
+              ] : isDateSpecific ? [
+                { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" },
+                { "@type": "ListItem", "position": 2, "name": "Phụng Vụ", "item": "https://loichuamoingay.org/liturgy" },
+                { "@type": "ListItem", "position": 3, "name": `Ngày ${formattedDate}`, "item": canonicalUrl }
+              ] : [
                 { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://loichuamoingay.org" },
                 { "@type": "ListItem", "position": 2, "name": "Phụng Vụ Hàng Ngày", "item": "https://loichuamoingay.org/liturgy" }
               ]
             },
             {
               "@type": "Article",
-              "@id": "https://loichuamoingay.org/liturgy#article",
-              "headline": liturgyInfo.title || `Lời Chúa Ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}`,
-              "description": `Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${selectedDate ? selectedDate.toLocaleDateString('vi-VN') : ''}. Tin Mừng: ${content?.gospel_ref || ''}`,
+              "@id": `${canonicalUrl}#article`,
+              "headline": seoTitle,
+              "description": seoDescription,
               "inLanguage": "vi",
               "publisher": { "@id": "https://loichuamoingay.org/#organization" },
-              "mainEntityOfPage": "https://loichuamoingay.org/liturgy"
+              "mainEntityOfPage": canonicalUrl
             }
           ]
         } : null}

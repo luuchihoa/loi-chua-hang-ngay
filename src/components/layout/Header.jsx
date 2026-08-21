@@ -215,6 +215,7 @@ export default function Header() {
 
           <Link
             to="/bookmarks"
+            rel="nofollow"
             aria-label={bookmarks.length > 0 ? `Mở các bài đã lưu (${bookmarks.length})` : 'Mở các bài đã lưu'}
             className="w-11 h-11 flex items-center justify-center rounded-xl text-stone-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors relative outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70"
             title="Bài đã lưu"

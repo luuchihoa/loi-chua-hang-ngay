@@ -17,6 +17,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import BibleAudioPlayer from '../components/audio/BibleAudioPlayer.jsx';
+import SEO from '../components/seo/SEO.jsx';
 import {
   getAllBooks,
   fetchAudioAccessStreamUrl,
@@ -454,6 +455,17 @@ export default function BibleAudioPage() {
 
   return (
     <main className="min-h-screen pb-40 font-sans">
+      <SEO 
+        title="Kinh Thánh Audio Giọng Đọc Truyền Cảm"
+        description="Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao truyền cảm."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AudioObject",
+          "name": "Kinh Thánh Audio Giọng Đọc Truyền Cảm | Lời Chúa Mỗi Ngày",
+          "description": "Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao.",
+          "contentUrl": "https://loichuamoingay.org/bible-audio"
+        }}
+      />
       <style>{`
         @keyframes bibleContentFade {
           from { opacity: 0; transform: translateY(6px); }

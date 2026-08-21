@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-08-19T07:02:48.823Z",
+  "updatedAt": "2026-08-21T14:30:43.770Z",
   "bible": [
     "st_1",
     "mt_1",
@@ -18,16 +18,14 @@
     "voice_hoang_ang",
     "voice_hoàng đặng",
     "voice_trieu duong",
-    "Bản sao gospel_Lc_928b-36",
-    "Bản sao r1_1_V_357-12",
-    "Bản sao r1_Ed_91-71018-22",
-    "Bản sao r1_Đn_79-1013-14"
+    "Bản sao r1_1_V_357-12"
   ],
   "liturgy": [
     "gospel_Mt_1331-35",
     "gospel_Ga_1119-27",
     "r1_1_Ga_47-16",
     "gospel_Ga_1224-26",
+    "gospel_Ga_2115-17",
     "gospel_Lc_126-38",
     "gospel_Lc_139-56 ",
     "gospel_Lc_139-56",
@@ -55,7 +53,9 @@
     "gospel_Mt_201-16a",
     "gospel_Mt_221-14",
     "gospel_Mt_2234-40",
+    "gospel_Mt_231-12",
     "gospel_Mt_2531-46",
+    "r1_1_Tx_22b-8",
     "r1_1_V_199a11-13a",
     "r1_1_V_357-12",
     "r1_2_Cr_96-10",
@@ -64,8 +64,10 @@
     "r1_Ed_2415-24",
     "r1_Ed_28-34",
     "r1_Ed_281-10",
+    "r1_Ed_341-11",
     "r1_Ed_3623-28",
     "r1_Ed_371-14",
+    "r1_Ed_431-7a",
     "r1_Ed_91-71018-22",
     "r1_Gr_131-11",
     "r1_Gr_1417-22",

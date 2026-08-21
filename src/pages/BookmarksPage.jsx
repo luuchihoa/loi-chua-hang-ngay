@@ -2,6 +2,7 @@ import React from 'react';
 import { Bookmark, Trash2, BookOpen, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLiturgy } from '../context/LiturgyContext.jsx';
+import SEO from '../components/seo/SEO.jsx';
 
 export default function BookmarksPage() {
   const { bookmarks, toggleBookmark, setSelectedDate } = useLiturgy();
@@ -15,6 +16,11 @@ export default function BookmarksPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
+      <SEO 
+        title="Bài Đọc Đã Lưu"
+        description="Danh sách bài đọc Lời Chúa bạn đã đánh dấu yêu thích trên Lời Chúa Mỗi Ngày."
+        robots="noindex, follow"
+      />
       
       <div className="flex items-center gap-3 mb-6">
         <div className="theme-invariant w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shadow-md">

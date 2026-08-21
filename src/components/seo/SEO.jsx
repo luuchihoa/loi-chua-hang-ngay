@@ -11,6 +11,8 @@ export default function SEO({
   description = DEFAULT_DESC,
   image = DEFAULT_IMAGE,
   type = 'website',
+  robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
+  canonical = null,
   jsonLd = null,
   speakableSelectors = ['.liturgy-gospel-text', '.liturgy-homily-text'],
   audioData = null
@@ -19,7 +21,7 @@ export default function SEO({
   const rawPath = location.pathname.endsWith('/') && location.pathname !== '/'
     ? location.pathname.slice(0, -1)
     : location.pathname;
-  const canonicalUrl = `${DOMAIN}${rawPath}`;
+  const canonicalUrl = canonical || `${DOMAIN}${rawPath}`;
   const fullTitle = title ? `${title} | Lời Chúa Mỗi Ngày` : DEFAULT_TITLE;
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export default function SEO({
 
     // 2. Cập nhật Meta Description, Robots & Open Graph
     setMetaTag('name', 'description', description);
-    setMetaTag('name', 'robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+    setMetaTag('name', 'robots', robots);
     setMetaTag('property', 'og:title', fullTitle);
     setMetaTag('property', 'og:description', description);
     setMetaTag('property', 'og:url', canonicalUrl);

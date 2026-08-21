@@ -3,6 +3,7 @@ import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Sparkles, BookOpen
 import { useNavigate } from 'react-router-dom';
 import { getLiturgyInfo, getLiturgicalColor } from '../utils/liturgyCalendar.js';
 import { useLiturgy } from '../context/LiturgyContext.jsx';
+import SEO from '../components/seo/SEO.jsx';
 
 export default function CalendarPage() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -44,6 +45,16 @@ export default function CalendarPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
+      <SEO 
+        title="Lịch Phụng Vụ Công Giáo"
+        description="Tra cứu lịch Phụng vụ Công giáo, màu áo lễ, các lễ trọng, lễ kính và mùa Phụng vụ trong năm."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Lịch Phụng Vụ Công Giáo | Lời Chúa Mỗi Ngày",
+          "url": "https://loichuamoingay.org/calendar"
+        }}
+      />
       
       {/* Calendar Header */}
       <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 border border-stone-200 dark:border-stone-800 shadow-sm mb-6">
