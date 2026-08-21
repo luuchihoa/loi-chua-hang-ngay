@@ -140,7 +140,14 @@ export default function BibleSearchModal({ isOpen, onClose, allBooks }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div data-ui-layer="modal-root" className="fixed inset-0 z-[90] flex items-start justify-center p-4 pt-16 sm:p-6 sm:pt-24">
+        <div
+          data-ui-layer="modal-root"
+          style={{
+            paddingTop: 'calc(1rem + env(safe-area-inset-top, 0px))',
+            paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))'
+          }}
+          className="fixed inset-0 z-[90] flex items-start justify-center p-4 sm:p-6"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

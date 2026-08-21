@@ -105,14 +105,14 @@ let generatedCount = 0;
 const staticPages = [
   {
     path: '/liturgy',
-    title: 'Phụng Vụ Lời Chúa Hàng Ngày',
-    description: 'Đọc và nghe bài đọc Phụng vụ hằng ngày cùng bài suy niệm Lời Chúa Công giáo Việt Nam.',
+    title: 'Lời Chúa Hôm Nay – Bài Đọc & Tin Mừng Phụng Vụ',
+    description: 'Đọc và nghe Lời Chúa hôm nay, bài đọc Phụng vụ Thánh Lễ, bài đọc 1, đáp ca, Tin Mừng và suy niệm Lời Chúa mỗi ngày theo Lịch Công giáo Việt Nam.',
     schema: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Phụng Vụ Lời Chúa Hàng Ngày | Lời Chúa Mỗi Ngày",
+      "name": "Lời Chúa Hôm Nay – Bài Đọc & Tin Mừng Phụng Vụ | Lời Chúa Mỗi Ngày",
       "url": `${DOMAIN}/liturgy`,
-      "description": "Đọc và nghe bài đọc Phụng vụ hằng ngày cùng bài suy niệm Lời Chúa Công giáo Việt Nam."
+      "description": "Đọc và nghe Lời Chúa hôm nay, bài đọc Phụng vụ Thánh Lễ, bài đọc 1, đáp ca, Tin Mừng và suy niệm Lời Chúa mỗi ngày theo Lịch Công giáo Việt Nam."
     }
   },
   {

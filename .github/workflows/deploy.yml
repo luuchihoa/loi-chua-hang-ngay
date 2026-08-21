@@ -1,9 +1,13 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages & Daily Liturgy Auto-Refresh
 
 on:
   push:
     branches:
       - main
+  schedule:
+    # Chạy tự động mỗi ngày lúc 17:00 UTC (tức 00:00 sáng nửa đêm giờ Việt Nam GMT+7)
+    - cron: '0 17 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,16 +19,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -33,18 +37,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        env:
-          VITE_AUDIO_API_BASE: ${{ vars.VITE_AUDIO_API_BASE || secrets.VITE_AUDIO_API_BASE }}
+      - name: Run verification test suite
+        run: npm test
+
+      - name: Build static site with 365 daily liturgy pages
         run: npm run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

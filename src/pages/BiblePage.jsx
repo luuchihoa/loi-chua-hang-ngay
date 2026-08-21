@@ -1428,7 +1428,8 @@ export default function BiblePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
               data-ui-layer="modal-content"
-              className="fixed top-24 left-4 right-4 z-[90] bg-white dark:bg-stone-900 rounded-2xl shadow-xl overflow-hidden sm:hidden border border-stone-200 dark:border-stone-800"
+              style={{ top: 'calc(4.5rem + env(safe-area-inset-top, 0px))' }}
+              className="fixed left-4 right-4 z-[90] bg-white dark:bg-stone-900 rounded-2xl shadow-xl overflow-hidden sm:hidden border border-stone-200 dark:border-stone-800"
             >
               <div className="p-4 flex items-center gap-3">
                 <Compass size={18} className="text-amber-600 shrink-0" />

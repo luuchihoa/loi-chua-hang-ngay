@@ -1566,14 +1566,14 @@ export default function LiturgyPage() {
   const formattedDate = selectedDate ? selectedDate.toLocaleDateString('vi-VN') : '';
   
   const seoTitle = isHome
-    ? 'Lời Chúa Mỗi Ngày – Phụng Vụ & Kinh Thánh Công Giáo'
+    ? 'Lời Chúa Hôm Nay – Bài Đọc & Tin Mừng Phụng Vụ Mỗi Ngày'
     : isDateSpecific
     ? `Lời Chúa Ngày ${formattedDate} - ${liturgyInfo?.displayName || liturgyInfo?.title || 'Phụng Vụ'}`
-    : `Phụng Vụ Lời Chúa Hàng Ngày – Bài Đọc & Suy Niệm`;
+    : `Phụng Vụ Lời Chúa Hôm Nay – Bài Đọc & Suy Niệm Tin Mừng`;
 
   const seoDescription = isHome
-    ? 'Đọc và nghe Lời Chúa mỗi ngày, bài đọc Phụng vụ Thánh Lễ hôm nay, suy niệm Tin Mừng và trọn bộ 73 sách Kinh Thánh Công giáo Việt Nam.'
-    : `Bài đọc Phụng Vụ và Suy niệm Lời Chúa ngày ${formattedDate} (${liturgyInfo?.displayName || ''}). Tin Mừng: ${content?.gospel_ref || ''}`;
+    ? 'Đọc và nghe Lời Chúa hôm nay, bài đọc Phụng vụ Thánh Lễ, bài đọc 1, đáp ca, Tin Mừng và suy niệm Lời Chúa mỗi ngày theo Lịch Công giáo Việt Nam.'
+    : `Bài đọc Phụng Vụ và Suy niệm Tin Mừng Lời Chúa ngày ${formattedDate} (${liturgyInfo?.displayName || ''}). Tin Mừng: ${content?.gospel_ref || ''}`;
 
   const canonicalUrl = isHome
     ? 'https://loichuamoingay.org'
@@ -2412,11 +2412,13 @@ export default function LiturgyPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-2xl bg-white/95 dark:bg-stone-900/95 backdrop-blur-2xl border-0 sm:border border-stone-200/90 dark:border-stone-800/90 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden z-10"
+              className="relative w-full h-[100dvh] sm:h-auto sm:max-h-[85vh] sm:max-w-2xl bg-white/95 dark:bg-stone-900/95 backdrop-blur-2xl border-0 sm:border border-stone-200/90 dark:border-stone-800/90 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden z-10"
             >
               {/* Search Header Input Bar */}
-              {/* Search Header Input Bar */}
-<div className="p-3 sm:p-4 border-b border-stone-200/80 dark:border-stone-800/80 flex items-center gap-3 bg-stone-50/70 dark:bg-stone-900/70 focus-within:bg-white dark:focus-within:bg-stone-900 transition-colors">
+              <div 
+                style={{ paddingTop: 'calc(0.75rem + env(safe-area-inset-top, 0px))' }}
+                className="p-3 sm:p-4 border-b border-stone-200/80 dark:border-stone-800/80 flex items-center gap-3 bg-stone-50/70 dark:bg-stone-900/70 focus-within:bg-white dark:focus-within:bg-stone-900 transition-colors"
+              >
   <div className="group flex min-w-0 flex-1 items-center rounded-2xl border border-stone-200 bg-white px-3 transition-all focus-within:border-amber-500 focus-within:ring-3 focus-within:ring-amber-500/15 dark:border-stone-700 dark:bg-stone-900 dark:focus-within:border-amber-500">
     <Search className={`w-4 h-4 shrink-0 text-stone-400 group-focus-within:text-amber-600 dark:group-focus-within:text-amber-400`} aria-hidden="true" />
     <input
@@ -2465,6 +2467,7 @@ export default function LiturgyPage() {
 
               {/* Modal Body / Scrollable Results & Suggestions */}
               <div
+                style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
                 className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-6 no-scrollbar"
                 data-lenis-prevent
                 id="liturgy-search-results"
