@@ -70,7 +70,7 @@ export default function QuoteImageModal({ isOpen, onClose, versesData, citation 
             {/* The Card to capture */}
             <div 
               ref={cardRef}
-              className={`w-full aspect-square max-w-sm sm:max-w-md p-6 sm:p-10 flex flex-col justify-center rounded-2xl shadow-xl transition-all duration-300 relative overflow-hidden ${bg.class}`}
+              className={`theme-invariant w-full aspect-square max-w-sm sm:max-w-md p-6 sm:p-10 flex flex-col justify-center rounded-2xl shadow-xl transition-all duration-300 relative overflow-hidden ${bg.class}`}
             >
               {/* Decorative elements */}
               <div className="absolute top-4 left-4 text-4xl opacity-20 font-serif">"</div>
@@ -99,7 +99,7 @@ export default function QuoteImageModal({ isOpen, onClose, versesData, citation 
                   <button
                     key={b.id}
                     onClick={() => setBg(b)}
-                    className={`shrink-0 w-12 h-12 rounded-xl border-2 transition-all cursor-pointer ${b.class} ${bg.id === b.id ? 'border-amber-500 scale-110 shadow-lg' : 'border-transparent hover:scale-105'}`}
+                    className={`theme-invariant shrink-0 w-12 h-12 rounded-xl border-2 transition-all cursor-pointer ${b.class} ${bg.id === b.id ? 'border-amber-500 scale-110 shadow-lg' : 'border-transparent hover:scale-105'}`}
                     title={b.name}
                   />
                 ))}

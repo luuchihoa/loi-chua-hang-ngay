@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '2ga', 1, '[PART] Chương 1
-[SECTION] Lời chào
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '2ga', 1, '[SECTION] Lời chào
 (1) Tôi là kỳ mục, kính gửi Bà đã được Thiên Chúa tuyển chọn, và con cái Bà là những người mà tôi thật sự quý mến; không phải chỉ một mình tôi, mà là tất cả những ai đã biết sự thật cũng đều quý mến, (2) bởi vì sự thật ở lại trong chúng ta và sẽ ở với chúng ta mãi mãi. (3) Thiên Chúa là Cha và Đức Giê-su Ki-tô là Con Chúa Cha sẽ cho chúng ta được hưởng ân sủng, lòng thương xót và bình an, trong sự thật và tình thương.
 [SECTION] Điều răn yêu thương
 (4) Tôi rất vui mừng vì đã gặp thấy trong số con cái của Bà, những người sống trong sự thật, đúng như điều răn chúng ta đã nhận được từ Chúa Cha. (5) Thưa Bà, bây giờ tôi xin Bà điều này –đây không phải là một điều răn mới tôi viết ra, nhưng là điều răn chúng ta đã có từ lúc khởi đầu– đó là: chúng ta phải yêu thương nhau. (6) Yêu thương là sống theo các điều răn của Thiên Chúa. Như anh em đã được nghe từ lúc khởi đầu, điều răn này là: anh em phải sống trong tình thương.

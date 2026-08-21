@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 1, '[PART] Chương 1
-[PART] I. NGHI THỨC CÁC LỄ TẾ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 1, '[PART] I. NGHI THỨC CÁC LỄ TẾ
 [SECTION] Lễ toàn thiêu
 (1) ĐỨC CHÚA gọi ông Mô-sê, và từ Lều Hội Ngộ, Người phán với ông rằng:
 (2) “Hãy nói với con cái Ít-ra-en và bảo chúng: Khi một người trong các ngươi dâng lễ tiến lên ĐỨC CHÚA, nếu là gia súc thì các ngươi phải dâng bò hay chiên dê làm lễ tiến.
@@ -22,18 +21,18 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 Tất cả những gì là mỡ đều thuộc về ĐỨC CHÚA. (17) Đây là quy tắc vĩnh viễn cho các thế hệ của các ngươi, tại khắp nơi các ngươi ở: tất cả những gì là mỡ và huyết, các ngươi không được ăn.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 4, '[SECTION] Lễ tạ tội
-[SECTION] a. Tạ tội cho tư tế
+a. Tạ tội cho tư tế
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy nói với con cái Ít-ra-en: Khi có người nào vô ý phạm tội trái với một trong các mệnh lệnh của ĐỨC CHÚA và làm một trong những điều không được làm, (3) nếu là tư tế đã được xức dầu tấn phong mà phạm tội, khiến dân cũng mắc lỗi, thì vì tội đã phạm, nó phải tiến dâng một con bò tơ toàn vẹn lên ĐỨC CHÚA làm lễ tạ tội. (4) Nó sẽ đưa con bò đến cửa Lều Hội Ngộ trước nhan ĐỨC CHÚA; nó sẽ đặt tay trên đầu con bò và sát tế con bò trước nhan ĐỨC CHÚA. (5) Tư tế đã được xức dầu tấn phong sẽ lấy một phần máu con bò và đưa vào Lều Hội Ngộ. (6) Tư tế sẽ nhúng ngón tay vào máu và rảy máu đó bảy lần trước nhan ĐỨC CHÚA, phía trước màn trướng thánh điện. (7) Tư tế sẽ bôi máu lên các góc cong của bàn thờ dâng hương thơm đặt trong Lều Hội Ngộ, trước nhan ĐỨC CHÚA, rồi đổ tất cả máu bò còn lại xuống chân bàn thờ dâng lễ toàn thiêu đặt ở cửa Lều Hội Ngộ.
 (8) Còn tất cả mỡ của con bò dâng làm lễ tạ tội, nó sẽ trích riêng ra, đó là: lớp mỡ bọc ngoài bộ lòng, tất cả lớp mỡ ở trên bộ lòng, (9) hai trái cật và lớp mỡ bọc ngoài, gần lưng, và khối mỡ trên gan mà nó sẽ tách ra cùng với các trái cật – (10) giống như phần trích riêng ra từ con bò dâng làm hy lễ kỳ an– rồi tư tế sẽ đốt những thứ ấy cho cháy nghi ngút trên bàn thờ dâng lễ toàn thiêu. (11) Còn da con bò, tất cả thịt của nó, cùng với đầu, chân, lòng và phân của nó, (12) tóm lại tất cả con bò, thì tư tế sẽ đưa ra ngoài trại, ở một nơi thanh sạch, chỗ đổ tro, và thiêu trên củi đang cháy; nó sẽ được thiêu tại chính nơi đổ tro.
-[SECTION] b. Tạ tội cho cộng đồng Ít-ra-en
+b. Tạ tội cho cộng đồng Ít-ra-en
 (13) Nếu toàn thể cộng đồng Ít-ra-en vô ý phạm tội và đại hội không nhận thấy điều đó, nếu chúng làm một trong những điều mà mệnh lệnh ĐỨC CHÚA cấm làm, khiến chúng mắc lỗi, (14) nhưng rồi chúng biết được tội đã phạm, thì đại hội phải tiến dâng một bò tơ làm lễ tạ tội, và sẽ đưa nó đến trước Lều Hội Ngộ. (15) Các kỳ mục của cộng đồng sẽ đặt tay trên đầu con bò, trước nhan ĐỨC CHÚA, và người ta sẽ sát tế con bò trước nhan ĐỨC CHÚA.
 (16) Tư tế đã được xức dầu tấn phong sẽ đem một phần máu con bò vào Lều Hội Ngộ. (17) Tư tế sẽ nhúng ngón tay vào máu và rảy bảy lần trước nhan ĐỨC CHÚA, phía trước màn trướng. (18) Tư tế sẽ bôi máu vào các góc cong của bàn thờ đặt trong Lều Hội Ngộ, trước nhan ĐỨC CHÚA, rồi đổ tất cả máu còn lại xuống chân bàn thờ dâng lễ toàn thiêu đặt ở cửa Lều Hội Ngộ.
 (19) Còn tất cả mỡ, tư tế sẽ lấy riêng ra và đốt cho cháy nghi ngút trên bàn thờ. (20) Nó sẽ tế con bò này như đã tế con bò dâng làm lễ tạ tội; tư tế sẽ tế nó như vậy. Tư tế sẽ cử hành lễ xá tội như thế cho chúng và chúng sẽ được tha.
 (21) Tư tế sẽ đưa con bò ra ngoài trại và thiêu nó như đã thiêu con bò trước. Đó là lễ tạ tội cho đại hội.
-[SECTION] c. Tạ tội cho một đầu mục
+c. Tạ tội cho một đầu mục
 (22) Nếu một đầu mục phạm tội, và vô ý làm một trong những điều mà mệnh lệnh ĐỨC CHÚA, Thiên Chúa của nó, cấm làm, khiến nó mắc lỗi, (23) nếu người ta cho nó biết tội nó đã phạm, thì nó phải đưa đến một con dê làm lễ tiến, một con đực toàn vẹn. (24) Nó sẽ đặt tay trên đầu con dê và sát tế trước nhan ĐỨC CHÚA, ở nơi sát tế lễ vật toàn thiêu. Đó là lễ tạ tội. (25) Tư tế sẽ dùng ngón tay lấy máu lễ vật tạ tội và bôi lên các góc cong của bàn thờ dâng lễ toàn thiêu, rồi đổ máu còn lại xuống chân bàn thờ dâng lễ toàn thiêu. (26) Còn tất cả mỡ, tư tế sẽ đốt cho cháy nghi ngút trên bàn thờ, như mỡ của hy lễ kỳ an. Tư tế sẽ cử hành lễ xá tội như thế cho người ấy khỏi tội của mình, và người ấy sẽ được tha.
-[SECTION] d. Tạ tội cho một thường dân
+d. Tạ tội cho một thường dân
 (27) Nếu một thường dân vô ý phạm tội, làm một trong những điều mà mệnh lệnh của ĐỨC CHÚA cấm làm, khiến nó mắc lỗi, (28) nếu người ta cho nó biết tội nó đã phạm, thì vì tội đã phạm, nó sẽ đưa đến một con dê làm lễ tiến, một dê cái toàn vẹn. (29) Nó sẽ đặt tay trên đầu lễ vật tạ tội và sát tế lễ vật tạ tội ở nơi sát tế lễ vật toàn thiêu. (30) Tư tế sẽ dùng ngón tay lấy máu con vật và bôi lên các góc cong của bàn thờ dâng lễ toàn thiêu, rồi đổ tất cả máu còn lại xuống chân bàn thờ. (31) Còn tất cả mỡ, tư tế sẽ tách ra như người ta tách mỡ ra khỏi hy lễ kỳ an, rồi tư tế sẽ đốt cho cháy nghi ngút trên bàn thờ thành hương thơm làm vui lòng ĐỨC CHÚA. Tư tế sẽ cử hành lễ xá tội như thế cho người ấy, và người ấy sẽ được tha.
 (32) Nếu người ấy đem dâng tiến một con chiên làm lễ tạ tội, thì phải đem đến một con chiên cái toàn vẹn. (33) Người ấy sẽ đặt tay trên đầu lễ vật tạ tội và sát tế làm lễ tạ tội ở nơi sát tế lễ vật toàn thiêu. (34) Tư tế sẽ dùng ngón tay lấy máu lễ vật tạ tội và bôi lên các góc cong của bàn thờ dâng lễ toàn thiêu, rồi đổ tất cả máu còn lại xuống chân bàn thờ. (35) Còn tất cả mỡ, tư tế sẽ tách ra như người ta tách mỡ của con chiên dâng làm hy lễ kỳ an, rồi tư tế sẽ đốt cho cháy nghi ngút trên bàn thờ, bên trên các lễ hỏa tế dâng ĐỨC CHÚA. Tư tế sẽ cử hành lễ xá tội như thế cho người ấy, vì tội người ấy đã phạm, và người ấy sẽ được tha.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
@@ -54,33 +53,33 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 (21) “Khi một người nào phạm tội và bất trung với ĐỨC CHÚA, vì đã từ chối không trả cho người đồng bào một vật ký thác, một vật gửi tay hay một vật mất trộm, hoặc vì đã bóc lột người đồng bào, (22) hoặc vì đã từ chối không trả một vật bắt được, khi nó đã thề gian về một trong những điều trên là những tội người ta có thể phạm, (23) thì kẻ phạm tội và mắc lỗi như thế phải trả lại vật mình đã ăn trộm, hoặc của đã bóc lột, hoặc cái đã được ký thác cho mình, hoặc vật bị mất mà mình đã bắt được, (24) hoặc bất cứ vật nào mà nó đã thề gian là không giữ. Nó phải đền đầy đủ, cộng thêm một phần năm, và phải nộp cho chủ của, ngày mà nó dâng lễ đền tội. (25) Nó phải đem dâng ĐỨC CHÚA lễ vật đền tội, là một con chiên đực toàn vẹn bắt từ bầy chiên, giá trị như đã quy định, nộp cho tư tế làm lễ vật đền tội. (26) Tư tế sẽ cử hành lễ xá tội cho nó trước nhan ĐỨC CHÚA, thì nó sẽ được tha, bất kể nó đã làm gì khiến mình mắc lỗi.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 6, '[SECTION] Hàng tư tế và các lễ tế
-[SECTION] a. Lễ toàn thiêu
+a. Lễ toàn thiêu
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy truyền cho A-ha-ron và các con nó: Đây là luật về lễ toàn thiêu. Lễ vật toàn thiêu phải ở trên lò trên bàn thờ suốt đêm cho đến sáng, và lửa phải cháy luôn trên bàn thờ.
 (3) Tư tế sẽ mặc áo vải gai và mặc quần đùi vải gai che mình; nó sẽ hốt tro lễ toàn thiêu mà lửa đã đốt trên bàn thờ, và đổ bên cạnh bàn thờ. (4) Nó sẽ cởi phẩm phục ra, mặc phẩm phục khác vào, rồi đưa tro ra ngoài trại, ở một nơi thanh sạch.
 (5) Lửa trên bàn thờ phải cháy luôn không tắt: sáng sáng, tư tế sẽ đốt củi trên đó, xếp lễ vật toàn thiêu lên trên và đốt mỡ của lễ vật kỳ an. (6) Lửa phải thường xuyên cháy trên bàn thờ, không bao giờ tắt.
-[SECTION] b. Lễ phẩm
+b. Lễ phẩm
 (7) Đây là luật về lễ phẩm:
 Các con A-ha-ron phải tiến dâng lễ phẩm trước nhan ĐỨC CHÚA, đối diện với bàn thờ. (8) Từ lễ phẩm đó, tư tế sẽ trích ra một nắm tinh bột, dầu và tất cả nhũ hương ở trên lễ phẩm, rồi đốt cho cháy nghi ngút trên bàn thờ, thành hương thơm làm vui lòng ĐỨC CHÚA, đó là phần kỷ vật dành cho ĐỨC CHÚA. (9) Phần còn lại của lễ phẩm thì A-ha-ron và các con sẽ được ăn; phần đó sẽ được làm thành bánh không men và ăn trong một nơi thánh; chúng sẽ ăn nó tại khuôn viên Lều Hội Ngộ. (10) Phần đó không được trộn men mà nướng. Đó là phần Ta ban cho chúng từ các lễ hỏa tế dâng cho Ta; đó là của rất thánh, giống như lễ tạ tội và lễ đền tội. (11) Mọi đàn ông con trai trong các con A-ha-ron sẽ được ăn phần ấy; đó là quy luật vĩnh viễn cho các thế hệ của các ngươi, trong những lễ hỏa tế dâng ĐỨC CHÚA; tất cả những gì chạm đến các vật ấy sẽ được thánh hiến.”
 (12) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (13) “Đây là lễ tiến mà A-ha-ron và các con sẽ dâng lên ĐỨC CHÚA ngày được xức dầu tấn phong; bốn lít rưỡi tinh bột làm lễ phẩm thường xuyên, một nửa ban sáng và một nửa ban chiều. (14) Lễ phẩm ấy sẽ được chiên trên chảo, với dầu. Sau khi trộn kỹ, ngươi sẽ đem dâng lễ phẩm ấy là bánh đã bẻ thành miếng: đó là hương thơm làm vui lòng ĐỨC CHÚA. (15) Trong số các con A-ha-ron, tư tế được xức dầu tấn phong để kế vị nó, cũng sẽ làm như thế: đó là quy luật vĩnh viễn. Lễ phẩm sẽ được đốt trọn vẹn cho cháy nghi ngút dâng ĐỨC CHÚA.
 (16) Mọi lễ phẩm của tư tế phải được dâng trọn vẹn, không được ăn.”
-[SECTION] c. Lễ tạ tội
+c. Lễ tạ tội
 (17) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (18) “Hãy nói với A-ha-ron và các con nó:
 Đây là luật về lễ tạ tội:
 Lễ vật tạ tội phải được sát tế ở nơi sát tế lễ vật toàn thiêu, trước nhan ĐỨC CHÚA. Đó là của rất thánh. (19) Tư tế cử hành lễ tạ tội được ăn lễ vật đó; lễ vật sẽ được ăn trong một nơi thánh, trong khuôn viên Lều Hội Ngộ, (20) tất cả những gì chạm đến thịt lễ vật sẽ được thánh hiến; nếu có máu bắn vào quần áo, thì ngươi phải giặt chỗ có máu bắn vào, trong một nơi thánh. (21) Nồi đất đã dùng để nấu lễ vật sẽ phải đập vỡ, còn nếu nó đã được nấu trong nồi đồng, thì nồi đó phải được cọ sạch và rửa bằng nước. (22) Mọi đàn ông con trai thuộc hàng tư tế sẽ được ăn: đó là của rất thánh. (23) Nhưng mọi lễ vật tạ tội mà máu đã được mang vào Lều Hội Ngộ để cử hành lễ xá tội trong nơi thánh, thì không được ăn; lễ vật đó phải bỏ vào lửa mà thiêu.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 7, '[SECTION] d. Lễ đền tội
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 7, 'd. Lễ đền tội
 (1) Đây là luật về lễ đền tội, về một của rất thánh:
 (2) Phải sát tế lễ vật đền tội ở nơi sát tế lễ vật toàn thiêu, và tư tế sẽ rảy máu nó chung quanh bàn thờ. (3) Tư tế sẽ tiến dâng tất cả mỡ của nó: cái đuôi, lớp mỡ bọc ngoài bộ lòng, (4) hai trái cật và lớp mỡ bọc ngoài, gần lưng, và khối mỡ trên gan mà tư tế sẽ tách ra cùng với các trái cật. (5) Tư tế sẽ đốt những thứ ấy cho cháy nghi ngút trên bàn thờ, làm lễ hỏa tế dâng ĐỨC CHÚA. Đó là lễ đền tội. (6) Mọi đàn ông con trai thuộc hàng tư tế sẽ được ăn; lễ vật ấy sẽ được ăn trong một nơi thánh: đó là của rất thánh.
 [SECTION] Quyền lợi của các tư tế
 (7) Lễ tạ tội thế nào, lễ đền tội cũng vậy: chỉ có một luật duy nhất cho cả hai. Tư tế nào dâng lễ vật để cử hành lễ xá tội, thì lễ vật sẽ thuộc về tư tế đó. (8) Tư tế tiến dâng lễ toàn thiêu của người nào, thì da của lễ vật mà tư tế đó tiến dâng sẽ thuộc về tư tế đó. (9) Mọi lễ phẩm nướng trong lò, mọi lễ phẩm nấu trong nồi hay chiên trên chảo sẽ thuộc về tư tế tiến dâng lễ phẩm ấy. (10) Mọi lễ phẩm nhào với dầu hay để khô sẽ thuộc về các con A-ha-ron.
-[SECTION] đ. Hy lễ kỳ an
-[SECTION] đ.1. Hy lễ tạ ơn
+đ. Hy lễ kỳ an
+đ.1. Hy lễ tạ ơn
 (11) Đây là luật về hy lễ kỳ an tiến dâng ĐỨC CHÚA:
 (12) Nếu tiến dâng hy lễ kỳ an kèm với lễ tạ ơn, thì cùng với hy lễ tạ ơn, phải tiến dâng bánh ngọt không men nhào với dầu, bánh tráng không men phết dầu và tinh bột trộn kỹ làm thành bánh nhào với dầu. (13) Cùng với bánh ngọt đó, phải dâng bánh có men làm lễ tiến, kèm theo lễ kỳ an. (14) Phải tiến dâng một phần lấy từ mọi lễ tiến làm phần trích dâng ĐỨC CHÚA. Phần ấy sẽ thuộc về tư tế đã rảy máu của lễ vật kỳ an. (15) Còn thịt của hy lễ kỳ an để tạ ơn, thì phải ăn trong chính ngày tiến dâng, không được để lại gì cho đến sáng hôm sau.
-[SECTION] đ.2. Lễ vật đã khấn hứa hay lễ vật tự nguyện
+đ.2. Lễ vật đã khấn hứa hay lễ vật tự nguyện
 (16) Nếu hy lễ tiến dâng là lễ vật đã khấn hứa hay lễ vật tự nguyện, thì phải ăn trong chính ngày tiến dâng hy lễ; phần còn lại, được ăn ngày hôm sau. (17) Sang ngày thứ ba, những gì còn lại của hy lễ, phải bỏ vào lửa mà thiêu.
 [SECTION] Quy tắc chung
 (18) Sang ngày thứ ba mà người ta cứ ăn thịt của hy lễ kỳ an, thì người tiến dâng hy lễ sẽ không được đoái nhận; nó sẽ không được kể là đã dâng hy lễ: đó là thịt ôi, và người nào ăn thì phải mang tội.
@@ -120,41 +119,41 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 (22) Ông A-ha-ron giơ tay trên dân và chúc phúc cho họ; rồi ông đi xuống, sau khi đã cử hành lễ tạ tội, lễ toàn thiêu và lễ kỳ an. (23) Ông Mô-sê và ông A-ha-ron vào Lều Hội Ngộ, rồi đi ra chúc phúc cho dân. Vinh quang ĐỨC CHÚA xuất hiện giữa toàn dân. (24) Lửa phát ra từ trước nhan ĐỨC CHÚA đốt sạch lễ toàn thiêu và mỡ trên bàn thờ. Thấy thế, toàn dân reo mừng và cúi rạp xuống.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 10, '[SECTION] Quy định bổ sung
-[SECTION] a. Trường hợp ông Na-đáp và ông A-vi-hu
+a. Trường hợp ông Na-đáp và ông A-vi-hu
 (1) Hai người con của ông A-ha-ron là Na-đáp và A-vi-hu, mỗi người lấy bình hương của mình, bỏ lửa vào, rồi đặt hương lên trên, họ tiến dâng ĐỨC CHÚA lửa phàm tục, điều mà Người đã không truyền cho họ. (2) Bấy giờ lửa từ trước nhan ĐỨC CHÚA phát ra, thiêu sống họ, họ đã chết trước nhan ĐỨC CHÚA. (3) Ông Mô-sê nói với ông A-ha-ron: “Đó là điều ĐỨC CHÚA đã phán:
 Giữa các kẻ đến gần Ta,
 Ta sẽ biểu dương sự thánh thiện của Ta;
 trước mặt toàn dân, Ta sẽ cho thấy vinh quang của Ta.”
 Ông A-ha-ron lặng thinh.
-[SECTION] b. Khiêng xác đi
+b. Khiêng xác đi
 (4) Ông Mô-sê gọi các ông Mi-sa-ên và En-xa-phan, con ông Út-di-ên là chú ông A-ha-ron, và bảo họ: “Các chú lại đây, khiêng các người anh em của các chú từ nơi thánh ra ngoài trại.” (5) Họ lại gần, khiêng hai người kia vẫn còn mặc áo dài, đưa ra ngoài trại, như ông Mô-sê đã nói.
-[SECTION] c. Tang chế của tư tế
+c. Tang chế của tư tế
 (6) Ông Mô-sê nói với ông A-ha-ron và hai người con ông ấy là E-la-da và I-tha-ma: “Ông và các anh đừng xõa tóc cũng đừng xé áo, để khỏi phải chết, và để Người khỏi nổi giận với toàn thể cộng đồng. Các người anh em của ông và các anh cùng toàn thể nhà Ít-ra-en sẽ khóc những kẻ ĐỨC CHÚA đã thiêu. (7) Ông và các anh cũng không được rời cửa Lều Hội Ngộ, để khỏi phải chết, vì ông và các anh đã được xức dầu tấn phong của ĐỨC CHÚA.” Họ làm theo lời ông Mô-sê.
-[SECTION] d. Cấm uống rượu
+d. Cấm uống rượu
 (8) ĐỨC CHÚA phán với ông A-ha-ron rằng:
 (9) “Ngươi cùng các con ngươi không được uống rượu và đồ uống có men, khi các ngươi vào Lều Hội Ngộ, kẻo các ngươi phải chết. Đó là quy tắc vĩnh viễn cho các thế hệ của các ngươi. (10) Như vậy là để phân biệt của thánh với của phàm tục, vật ô uế với vật thanh sạch, (11) và để dạy con cái Ít-ra-en mọi thánh chỉ ĐỨC CHÚA đã dùng ông Mô-sê mà phán với các ngươi.”
-[SECTION] đ. Phần lễ tiến dành cho tư tế
+đ. Phần lễ tiến dành cho tư tế
 (12) Ông Mô-sê nói với ông A-ha-ron và hai người con còn lại của ông ấy là E-la-da và I-tha-ma: “Ông và các anh hãy lấy phần lễ phẩm còn lại sau khi đã dâng hỏa tế lên ĐỨC CHÚA, và hãy làm thành bánh không men mà ăn bên cạnh bàn thờ, vì đó là của rất thánh. (13) Ông và các anh hãy ăn trong một nơi thánh, vì đó là quyền lợi của ông và quyền lợi của con cái ông, mỗi khi có lễ hỏa tế dâng ĐỨC CHÚA. Đó là lệnh truyền tôi đã nhận được.
 (14) Còn cái ức đã tiến dâng theo nghi thức trước nhan ĐỨC CHÚA và cái đùi đã trích ra, ông cùng các con trai con gái ông sẽ ăn trong một nơi thanh sạch, vì những thứ ấy là phần quy định cho ông và phần quy định cho các con ông, mỗi khi con cái Ít-ra-en dâng hy lễ kỳ an. (15) Cái đùi trích ra và cái ức tiến dâng theo nghi thức, người ta sẽ đem đến cùng với các phần mỡ làm lễ hỏa tế, để làm nghi thức tiến dâng trước nhan ĐỨC CHÚA; rồi đùi và ức đó sẽ là của ông và các con ông. Đó là quy luật vĩnh viễn, như ĐỨC CHÚA đã truyền.”
-[SECTION] e. Quy định đặc biệt về lễ tạ tội
+e. Quy định đặc biệt về lễ tạ tội
 (16) Ông Mô-sê hỏi đi hỏi lại về con dê đực dâng làm lễ tạ tội và thấy là nó đã bị thiêu. Ông nổi giận với hai người con còn lại của ông A-ha-ron là E-la-da và I-tha-ma, và nói: (17) “Tại sao các anh không ăn lễ vật tạ tội trong nơi thánh, vì đó là của rất thánh? Người đã ban nó cho các anh để xóa bỏ tội lỗi của cộng đồng, để cử hành lễ xá tội cho họ trước nhan ĐỨC CHÚA. (18) Vì máu nó đã không được đưa vào nơi thánh, nên lẽ ra các anh phải ăn nó trong nơi thánh, như tôi đã truyền.” (19) Ông A-ha-ron nói với ông Mô-sê: “Này, hôm nay chúng đã tiến dâng lễ tạ tội và lễ toàn thiêu của chúng trước nhan ĐỨC CHÚA. Sau khi sự việc đã xảy đến cho tôi như thế, nếu hôm nay tôi ăn lễ vật tạ tội, thì liệu điều ấy có vừa lòng ĐỨC CHÚA không?” (20) Nghe vậy, ông Mô-sê lấy làm vừa lòng.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 11, '[PART] III. LUẬT LIÊN QUAN ĐẾN CÁI THANH SẠCH VÀ CÁI Ô UẾ
 [SECTION] Loài vật thanh sạch và loài vật ô uế
-[SECTION] a. Loài vật sống trên đất
+a. Loài vật sống trên đất
 (1) ĐỨC CHÚA phán với ông Mô-sê và ông A-ha-ron và bảo các ông rằng:
 (2) “Hãy nói với con cái Ít-ra-en: Trong tất cả các loài vật sống trên đất, đây là những loài các ngươi được ăn:
 (3) Mọi con vật có chân chẻ làm hai móng và thuộc loài nhai lại, thì các ngươi được ăn. (4) Tuy nhiên, trong các loài nhai lại và các loài có móng chẻ hai, các ngươi không được ăn các con này: con lạc đà, vì nó nhai lại, nhưng không có móng chẻ hai: các ngươi phải coi nó là loài ô uế; (5) con ngân thử, vì nó nhai lại, nhưng không có móng chẻ hai: các ngươi phải coi nó là loài ô uế; (6) con thỏ rừng, vì nó nhai lại, nhưng không có móng chẻ hai: các ngươi phải coi nó là ô uế; (7) con heo, vì nó có chân chẻ làm hai móng, nhưng không nhai lại: các ngươi phải coi nó là loài ô uế. (8) Thịt của chúng, các ngươi không được ăn, xác chết của chúng, các ngươi không được đụng đến; các ngươi phải coi chúng là loài ô uế.
-[SECTION] b. Loài vật sống dưới nước
+b. Loài vật sống dưới nước
 (9) Trong tất cả các loài sống dưới nước, đây là những loài các ngươi được ăn:
 Tất cả những loài sống dưới nước, ở sông hay ở biển, có vây và có vảy, thì các ngươi được ăn. (10) Còn tất cả những loài không có vây, không có vảy, ở sông hay ở biển, trong số mọi vật nhỏ sống dưới nước và mọi sinh vật sống dưới nước, thì các ngươi phải coi chúng là loài kinh tởm. (11) Các ngươi phải coi chúng là loài kinh tởm: thịt của chúng, các ngươi không được ăn, xác chết của chúng, các ngươi phải coi là vật kinh tởm. (12) Tất cả những loài sống dưới nước mà không có vây, không có vảy, các ngươi phải coi là loài kinh tởm.
-[SECTION] c. Chim
+c. Chim
 (13) Trong các loài chim, đây là những loài các ngươi phải coi là kinh tởm: người ta không được ăn, vì là loài kinh tởm: đại bàng, diều hâu, ó biển, (14) diều hâu đen, mọi thứ kền kền, (15) mọi thứ quạ, (16) đà điểu, cú, mòng biển, mọi thứ bồ cắt, (17) cú vọ, cóc, cú mèo, (18) chim lợn, bồ nông, ó, (19) cò, mọi thứ diệc, chim đầu rìu và dơi.
-[SECTION] d. Vật nhỏ có cánh
+d. Vật nhỏ có cánh
 (20) Mọi loài vật nhỏ có cánh đi bằng bốn chân, các ngươi phải coi là loài kinh tởm. (21) Trong các loài vật nhỏ có cánh đi bằng bốn chân, các ngươi chỉ được ăn những thứ sau đây: những con ngoài chân ra có thêm càng để nhảy trên đất. (22) Trong số những loài đó, đây là những loài các ngươi được ăn: mọi thứ cào cào, mọi thứ châu chấu, mọi thứ muỗm, mọi thứ dế. (23) Nhưng mọi vật nhỏ có cánh mà có bốn chân, các ngươi phải coi là loài kinh tởm.
 [SECTION] Đụng vào loài vật ô uế
 (24) Vì các vật ấy, các ngươi sẽ ra ô uế: ai đụng vào xác chết của chúng, sẽ ra ô uế cho đến chiều, (25) bất cứ ai mang xác chết của chúng, thì phải giặt quần áo và sẽ ra ô uế cho đến chiều. (26) Mọi con vật không có chân chẻ làm hai móng và không nhai lại, các ngươi phải coi là loài ô uế: bất cứ ai đụng vào chúng, sẽ ra ô uế. (27) Trong số các loài vật đi bằng bốn chân, tất cả các con đi bằng bàn chân, các ngươi phải coi là loài ô uế; bất cứ ai đụng vào chúng, sẽ ra ô uế cho đến chiều. (28) Bất cứ ai mang xác chết của chúng, thì phải giặt quần áo và sẽ ra ô uế cho đến chiều; các ngươi phải coi chúng là vật ô uế.
-[SECTION] đ. Vật nhỏ sống trên mặt đất
+đ. Vật nhỏ sống trên mặt đất
 (29) Trong số các loài vật nhỏ lúc nhúc trên mặt đất, các ngươi phải coi những loài này là ô uế: chuột chũi, chuột nhắt, mọi thứ thằn lằn, (30) tắc kè, kỳ đà, cắc ké, kỳ nhông, thạch sùng.
 [SECTION] Quy định khác về việc đụng vào vật ô uế
 (31) Trong số mọi loài vật nhỏ, các ngươi phải coi những loài trên là ô uế. Bất cứ ai đụng đến chúng khi chúng đã chết, thì sẽ ra ô uế cho đến chiều.
@@ -172,22 +171,22 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 Đó là luật về người đàn bà sinh con trai hay con gái. (8) Nếu không có phương tiện kiếm được chiên, thì nó sẽ bắt một đôi chim gáy hay một cặp bồ câu non, một con để làm lễ toàn thiêu, một con để làm lễ tạ tội. Tư tế sẽ cử hành lễ xá tội cho nó, và nó sẽ ra thanh sạch.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 13, '[SECTION] Bệnh phong ở người
-[SECTION] a. Nhọt, lác, đốm
+a. Nhọt, lác, đốm
 (1) ĐỨC CHÚA phán với ông Mô-sê và ông A-ha-ron:
 (2) “Khi trên da thịt người nào phát ra nhọt, lác hoặc đốm, và cái đó trở thành vết thương bệnh phong, thì người ta sẽ đưa người ấy đến với tư tế A-ha-ron hoặc với một trong các tư tế, con của A-ha-ron. (3) Tư tế sẽ khám vết thương trên da thịt nó: nếu lông ở vết thương đã chuyển sang màu trắng và vết thương xem ra lõm vào da thịt, thì đó là vết thương bệnh phong; sau khi khám, tư tế sẽ tuyên bố người ấy là ô uế. (4) Nếu là đốm trắng trên da thịt, mà xem ra không lõm vào da, và lông không chuyển sang màu trắng, thì tư tế sẽ cô lập người mắc vết thương trong vòng bảy ngày. (5) Đến ngày thứ bảy, tư tế sẽ khám nó: nếu chính mắt tư tế thấy là vết thương vẫn y nguyên, không lan ra trên da, thì tư tế sẽ lại cô lập nó trong vòng bảy ngày nữa. (6) Đến ngày thứ bảy, tư tế sẽ tái khám nó: nếu vết thương đã mờ đi và không lan ra trên da, thì tư tế sẽ tuyên bố người ấy là thanh sạch: đó là lác; nó sẽ giặt áo và sẽ ra thanh sạch.
 (7) Nhưng nếu lác cứ lan ra trên da, sau khi người ấy đã được tư tế khám để được tuyên bố là thanh sạch, thì nó phải được tư tế tái khám. (8) Tư tế sẽ khám: nếu lác đã lan ra trên da, tư tế sẽ tuyên bố người ấy là ô uế: đó là bệnh phong.
-[SECTION] b. Phong kinh niên
+b. Phong kinh niên
 (9) Khi trên người nào có vết thương phong, thì phải đưa nó đến với tư tế. (10) Tư tế sẽ khám: nếu ở trên da có nhọt trắng, và nhọt ấy làm cho lông chuyển sang màu trắng, và trong nhọt có thịt đỏ lòm sùi ra, (11) thì đó là bệnh phong kinh niên ở da thịt nó. Tư tế sẽ tuyên bố nó là ô uế; tư tế sẽ không cô lập nó, vì nó là ô uế.
 (12) Nhưng nếu bệnh phong ấy cứ loang ra trên da và phủ tất cả da của người bệnh, từ đầu đến chân, bất kỳ đâu đâu mắt tư tế nhìn thấy, (13) thì tư tế sẽ khám: nếu bệnh phong phủ tất cả da, thì tư tế sẽ tuyên bố người bệnh là thanh sạch: nó đã chuyển tất cả ra màu trắng, nó thanh sạch. (14) Nhưng ngày nào thấy người ấy có chỗ thịt đỏ lòm, thì nó sẽ ra ô uế; (15) tư tế sẽ khám chỗ thịt đỏ lòm và sẽ tuyên bố người ấy là ô uế; thịt đỏ lòm là ô uế: đó là bệnh phong. (16) Hoặc khi thịt đỏ lòm lại chuyển sang màu trắng, thì nó sẽ đến với tư tế; (17) tư tế sẽ khám nó: nếu vết thương đã chuyển sang màu trắng, tư tế sẽ tuyên bố vết thương là thanh sạch: người ấy thanh sạch.
-[SECTION] c. Ung
+c. Ung
 (18) Khi người nào có ung ở da mà đã khỏi, (19) nhưng ở chỗ cái ung lại có một nhọt trắng hay một đốm trắng đỏ nhạt, thì nó phải để cho tư tế khám. (20) Tư tế sẽ khám: nếu đốm ấy xem ra ăn sâu vào da và lông đã chuyển sang màu trắng, thì tư tế sẽ tuyên bố người ấy là ô uế: đó là một vết thương bệnh phong đã loang ra chỗ cái ung. (21) Nhưng nếu khi tư tế khám mà thấy ở đó không có lông trắng, cái ung không ăn sâu vào da và đã mờ đi, thì tư tế sẽ cô lập nó trong vòng bảy ngày. (22) Nếu vết đốm cứ loang ra trên da, thì tư tế sẽ tuyên bố người ấy là ô uế: đó là một vết thương. (23) Nhưng nếu vết đốm vẫn y nguyên, không lan ra, thì đó là sẹo của cái ung: tư tế sẽ tuyên bố người ấy là thanh sạch.
-[SECTION] d. Phỏng
+d. Phỏng
 (24) Trường hợp khác: khi người nào có chỗ phỏng lửa trên da và ở chỗ phỏng có đốm trắng đỏ nhạt hoặc trắng, (25) thì tư tế sẽ khám chỗ ấy: nếu lông ở đốm đã chuyển sang màu trắng, và vết đốm xem ra lõm vào da, thì đó là bệnh phong loang ra ở chỗ phỏng; tư tế sẽ tuyên bố người ấy là ô uế: đó là vết thương bệnh phong. (26) Nhưng nếu khi tư tế khám mà thấy vết đốm không có lông trắng, không ăn sâu vào da và đã mờ đi, thì tư tế sẽ cô lập người ấy trong vòng bảy ngày. (27) Đến ngày thứ bảy, tư tế sẽ khám người ấy: nếu vết đốm cứ lan ra trên da, thì tư tế sẽ tuyên bố người ấy là ô uế: đó là vết thương bệnh phong. (28) Nhưng nếu vết đốm cứ y nguyên, không lan ra trên da, và đã mờ đi, thì đó là một cái nhọt do phỏng gây ra; tư tế sẽ tuyên bố người ấy là thanh sạch, vì đó là sẹo của chỗ phỏng.
-[SECTION] đ. Chốc
+đ. Chốc
 (29) Khi một người đàn ông hay một người đàn bà có vết thương ở đầu hoặc cằm, (30) thì tư tế sẽ khám vết thương: nếu nó xem ra lõm vào da, có lông vàng và nhỏ, thì tư tế sẽ tuyên bố người ấy là ô uế: đó là chốc, tức là bệnh phong ở đầu hay ở cằm. (31) Nhưng nếu khi tư tế khám vết thương chốc, mà nó xem ra không lõm vào da và không có lông đen, thì tư tế sẽ cô lập người có vết thương chốc trong vòng bảy ngày. (32) Đến ngày thứ bảy, tư tế sẽ khám vết thương: nếu chốc không lan ra, không có lông vàng và chốc xem ra không lõm vào da, (33) thì người ấy phải cạo đầu cạo cằm nhưng không cạo chỗ chốc, rồi tư tế sẽ lại cô lập người bị chốc trong vòng bảy ngày nữa. (34) Đến ngày thứ bảy, tư tế sẽ khám chỗ chốc: nếu chỗ chốc không lan ra trên da và xem ra không lõm vào da, thì tư tế sẽ tuyên bố người ấy là thanh sạch; nó sẽ giặt áo và sẽ ra thanh sạch. (35) Nhưng nếu chỗ chốc cứ lan ra trên da, sau khi người ấy được tuyên bố là thanh sạch, (36) thì tư tế sẽ khám người ấy: nếu chỗ chốc đã lan ra trên da, thì tư tế sẽ không phải tìm xem có lông vàng không; người ấy ô uế. (37) Nhưng nếu chính mắt tư tế thấy là chỗ chốc vẫn y nguyên và có lông đen mọc ở đó, thì chỗ chốc đã khỏi và người ấy là thanh sạch; tư tế sẽ tuyên bố người ấy là thanh sạch.
-[SECTION] e. Lang ben
+e. Lang ben
 (38) Khi trên da thịt một người đàn ông hay một người đàn bà phát ra những đốm, những đốm trắng, (39) thì tư tế sẽ khám: nếu những đốm trên da thịt họ trắng đục, thì đó là lang ben đã loang ra trên da: họ thanh sạch.
-[SECTION] g. Sói đầu
+g. Sói đầu
 (40) Người rụng tóc ở đầu là người sói đầu: người ấy thanh sạch. (41) Người rụng tóc phía trước là người sói trán: người ấy thanh sạch. (42) Nhưng nếu chỗ sói đầu hoặc sói trán có vết thương trắng đỏ nhạt, thì đó là bệnh phong loang ra ở chỗ sói đầu hoặc sói trán. (43) Tư tế sẽ khám người ấy: nếu nhọt ở vết thương có màu trắng đỏ nhạt ở chỗ sói đầu hoặc sói trán, trông giống như bệnh phong da thịt, (44) thì người ấy bị bệnh phong: người ấy ô uế. Tư tế sẽ tuyên bố người ấy là ô uế; nó bị vết thương ở đầu.
 [SECTION] Quy chế người phong
 (45) Người mắc bệnh phong phải mặc áo rách, xõa tóc, che râu và kêu lên: “Ô uế! Ô uế!” (46) Bao lâu còn mắc bệnh, thì nó ô uế; nó ô uế: nó phải ở riêng ra, chỗ ở của nó là một nơi bên ngoài trại.
@@ -214,7 +213,7 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 Đó là luật về bệnh phong.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 15, '[SECTION] Ô uế về sinh dục
-[SECTION] a. Đàn ông
+a. Đàn ông
 (1) ĐỨC CHÚA phán với ông Mô-sê và ông A-ha-ron rằng:
 (2) “Hãy nói với con cái Ít-ra-en và bảo chúng: Khi bất cứ một người đàn ông nào mắc bệnh lậu trong thân thể, thì bệnh lậu đó làm nó ra ô uế. (3) Sự ô uế của nó khi có bệnh lậu là thế này:
 Dù thân thể nó tiết ra hay giữ lại mủ lậu, thì nó cũng mắc phải ô uế.
@@ -231,7 +230,7 @@ Ai mang một đồ vật như thế, sẽ phải giặt áo, lấy nước mà 
 (13) Khi người bị lậu được lành bệnh, nó phải tính bảy ngày mới được thanh tẩy; nó phải giặt áo, lấy nước tắm rửa thân thể, và nó sẽ ra thanh sạch. (14) Ngày thứ tám, nó sẽ bắt một đôi chim gáy, hay một cặp bồ câu non, đến trước nhan ĐỨC CHÚA, ở cửa Lều Hội Ngộ, mà đưa cho tư tế. (15) Tư tế sẽ dâng một con làm lễ tạ tội, một con làm lễ toàn thiêu; tư tế sẽ cử hành lễ xá tội cho nó, trước nhan ĐỨC CHÚA, vì nó đã bị lậu.
 (16) Khi một người đàn ông xuất tinh, thì phải lấy nước tắm rửa thân thể, và sẽ ra ô uế cho đến chiều, (17) khi có xuất tinh mà giây ra bất cứ áo hay đồ da nào, thì sẽ phải lấy nước mà giặt rửa, và những thứ ấy sẽ ra ô uế cho đến chiều.
 (18) Khi một người đàn bà giao hợp với một người đàn ông, thì cả hai phải lấy nước mà tắm rửa, và sẽ ra ô uế cho đến chiều.
-[SECTION] b. Đàn bà
+b. Đàn bà
 (19) Khi một người đàn bà ra huyết, huyết từ thân thể chảy ra, thì nó sẽ ra ô uế bảy ngày vì có kinh.
 Bất cứ ai đụng vào nó, sẽ ra ô uế cho đến chiều.
 (20) Mọi cái gì nó nằm khi có kinh, sẽ ra ô uế, mọi đồ vật nó ngồi lên, sẽ ra ô uế. (21) Bất cứ ai đụng vào giường của nó, sẽ phải giặt áo, lấy nước mà tắm rửa, và sẽ ra ô uế cho đến chiều. (22) Bất cứ ai đụng vào đồ vật nó đã ngồi lên, sẽ phải giặt áo, lấy nước mà tắm rửa, và sẽ ra ô uế cho đến chiều. (23) Nếu có cái gì trên giường hoặc trên đồ vật nó đã ngồi lên, thì ai đụng đến cái đó, sẽ ra ô uế cho đến chiều.
@@ -316,12 +315,12 @@ Ngươi không được cho hai con vật khác giống giao cấu với nhau, k
 (37) Các ngươi phải giữ mọi quy tắc, mọi quyết định của Ta và đem ra thực hành. Ta là ĐỨC CHÚA.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 20, '[SECTION] Quy định về hình phạt
-[SECTION] a. Tội về phụng tự
+a. Tội về phụng tự
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy nói với con cái Ít-ra-en: Bất cứ người nào, thuộc con cái Ít-ra-en hoặc trong số ngoại kiều sống tại Ít-ra-en, dâng một đứa trong con cái mình cho thần Mô-léc, thì sẽ bị xử tử; dân trong xứ sẽ ném đá nó. (3) Phần Ta, Ta sẽ quay mặt lại phạt nó và sẽ khai trừ khỏi dân nó, vì nó đã dâng một đứa con trong con cái mình cho thần Mô-léc, khiến thánh điện Ta ra ô uế và thánh danh Ta bị xúc phạm. (4) Nếu dân trong xứ che mắt không nhìn người ấy, khi nó dâng một đứa trong con cái mình cho thần Mô-léc, để khỏi phải giết nó, (5) thì chính Ta sẽ hướng mặt Ta về người ấy và dòng họ nó, Ta sẽ khai trừ nó và những kẻ làm điếm như nó, những kẻ chạy theo thần Mô-léc mà làm điếm, Ta sẽ khai trừ khỏi dân của chúng.
 (6) Người nào đến với các người ngồi đồng ngồi bóng để chạy theo chúng mà làm điếm, thì Ta sẽ quay mặt lại phạt người ấy và sẽ khai trừ khỏi dân nó.
 (7) Các ngươi phải nên thánh và phải thánh thiện, vì Ta là ĐỨC CHÚA, Thiên Chúa của các ngươi.
-[SECTION] b. Tội liên quan đến gia đình
+b. Tội liên quan đến gia đình
 (8) Các ngươi phải giữ các quy tắc của Ta và đem ra thực hành. Ta là ĐỨC CHÚA, Đấng thánh hiến các ngươi.
 (9) Vậy: Bất cứ người nào nguyền rủa cha mẹ, thì phải bị xử tử. Nó đã nguyền rủa cha mẹ, thì máu nó đổ xuống đầu nó.
 (10) Khi người đàn ông nào ngoại tình với đàn bà có chồng, ngoại tình với vợ người đồng loại, thì cả đàn ông ngoại tình lẫn đàn bà ngoại tình phải bị xử tử.
@@ -342,33 +341,33 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 (27) Khi người đàn ông hay người đàn bà nào có ma nhập thần ốp, thì phải bị xử tử; người ta sẽ ném đá chúng, máu chúng đổ xuống đầu chúng.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 21, '[SECTION] Sự thánh thiện của hàng tư tế
-[SECTION] a. Các tư tế
+a. Các tư tế
 (1) ĐỨC CHÚA phán với ông Mô-sê:
 “Hãy nói với các tư tế, con của A-ha-ron và bảo chúng: Một tư tế không được làm cho mình ra ô uế vì một người chết trong dòng họ nó, (2) ngoại trừ vì một người gần nhất, một người ruột thịt: mẹ, cha, con trai, con gái, anh em nó. (3) Một người chị em còn trinh, vẫn là người gần nhất với nó, vì chưa thuộc về một người đàn ông, thì nó có thể làm cho mình ra ô uế vì người ấy. (4) Vì là người đứng đầu trong dòng họ mình, nó không được làm cho mình ra ô uế mà trở nên phàm tục.
 (5) Các tư tế không được cạo đầu và cắt riềm râu, không được rạch mình. (6) Chúng sẽ được thánh hiến cho Thiên Chúa của chúng và không được xúc phạm đến danh Thiên Chúa của chúng, vì chúng là những người tiến dâng lên ĐỨC CHÚA các lễ hỏa tế, là thức ăn dành cho Thiên Chúa của chúng; chúng phải sống thánh thiện.
 (7) Chúng không được lấy một gái điếm hay một người đàn bà bị làm nhục, chúng không được lấy một người đàn bà bị chồng bỏ, vì tư tế được thánh hiến cho Thiên Chúa của mình.
 (8) Ngươi phải coi nó là thánh, vì nó là người tiến dâng thức ăn dành cho Thiên Chúa của ngươi: đối với ngươi, nó sẽ là thánh, vì Ta là Đấng Thánh, Ta, ĐỨC CHÚA, Đấng thánh hóa các ngươi.
 (9) Nếu con gái của một tư tế làm nhục chính mình mà đi làm điếm, thì nó làm nhục chính cha nó; nó phải bị bỏ vào lửa mà thiêu.
-[SECTION] b. Thượng tế
+b. Thượng tế
 (10) Tư tế lớn nhất trong hàng anh em nó, người đã được đổ dầu tấn phong lên đầu và được trao quyền khi mặc phẩm phục, thì không được xõa tóc và xé áo, (11) không được đến gần người chết nào, và không được làm cho mình ra ô uế, dù vì cha hay vì mẹ mình. (12) Nó không được ra khỏi thánh điện và không được xúc phạm đến thánh điện của Thiên Chúa nó, vì nó đã được dầu tấn phong của Thiên Chúa nó ghi dấu trên mình. Ta là ĐỨC CHÚA.
 (13) Nó sẽ cưới một người nữ còn trinh. (14) Đàn bà góa hay bị chồng bỏ, người bị làm nhục hay làm điếm, những người đó nó không được lấy, mà chỉ được lấy một trinh nữ trong gia tộc mình làm vợ; (15) như vậy, nó sẽ không làm nhục dòng dõi nó trong gia tộc nó, vì Ta là ĐỨC CHÚA, Đấng thánh hóa nó.”
-[SECTION] c. Những trường hợp không được làm tư tế
+c. Những trường hợp không được làm tư tế
 (16) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (17) “Hãy nói với A-ha-ron: Qua các thế hệ, người đàn ông nào trong dòng dõi ngươi có tật, thì không được lại gần để tiến dâng thức ăn dành cho Thiên Chúa của nó. (18) Thật vậy, bất cứ người nào có tật không được lại gần: người đui mù, què quặt, dị tướng, dị hình, (19) người bị gãy chân gãy tay, (20) gù, còi, bị đốm ở mắt, ghẻ, hắc lào, hay bị giập tinh hoàn. (21) Bất cứ người đàn ông nào trong dòng dõi tư tế A-ha-ron có tật, thì không được đến gần để tiến dâng các lễ hỏa tế lên ĐỨC CHÚA; nó có tật, nó không được đến gần để tiến dâng thức ăn dành cho Thiên Chúa của nó.
 (22) Thức ăn dành cho Thiên Chúa của nó, những của rất thánh, và những của thánh, nó được ăn, (23) nhưng nó không được tới chỗ màn trướng, không được đến gần bàn thờ, vì nó có tật; như vậy nó sẽ không xúc phạm đến các nơi thánh của Ta, vì Ta là ĐỨC CHÚA, Đấng thánh hóa những nơi ấy.”
 (24) Ông Mô-sê nói thế với ông A-ha-ron, với các con ông này và toàn thể con cái Ít-ra-en.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 22, '[SECTION] Phải thánh mới được ăn của thánh
-[SECTION] a. Tư tế
+a. Tư tế
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy bảo A-ha-ron và các con nó, trong những trường hợp sau đây, phải kiêng những của thánh con cái Ít-ra-en thánh hiến cho Ta, để khỏi xúc phạm đến thánh danh Ta. Ta là ĐỨC CHÚA. (3) Hãy bảo chúng: Trong các thế hệ các ngươi, bất cứ người nào trong dòng dõi các ngươi, khi bị ô uế, mà lại gần các của thánh con cái Ít-ra-en thánh hiến cho ĐỨC CHÚA, thì người ấy sẽ bị khai trừ cho khuất mắt Ta. Ta là ĐỨC CHÚA.
 (4) Không người nào trong dòng dõi A-ha-ron bị bệnh phong hay bị lậu, được ăn các của thánh khi chưa được thanh sạch. Ai đụng vào bất cứ cái gì đã ra ô uế vì xác chết, người đàn ông đã xuất tinh, (5) người đàn ông đã đụng vào bất cứ một con vật nhỏ nào làm cho người ấy ra ô uế, hay đụng vào người nào làm cho người ấy ra ô uế, dù là thứ ô uế nào, (6) ai đã đụng vào những thứ như vậy, sẽ ra ô uế cho đến chiều, và không được ăn những của thánh khi chưa lấy nước tắm rửa thân thể. (7) Lúc mặt trời lặn, nó sẽ được thanh sạch, bấy giờ nó được ăn những của thánh, vì đó là thức ăn của nó.
 (8) Con vật chết hay bị thú dữ xé, nó không được ăn, kẻo ra ô uế vì vật đó. Ta là ĐỨC CHÚA.
 (9) Chúng phải giữ điều Ta truyền giữ, nếu không sẽ mang tội vì chuyện đó và phải chết vì phạm đến của thánh. Ta là ĐỨC CHÚA, Đấng thánh hóa những của ấy.
-[SECTION] b. Người ngoài
+b. Người ngoài
 (10) Không người ngoài nào được ăn của thánh; khách trọ nhà tư tế và người làm thuê không được ăn của thánh. (11) Nhưng nếu tư tế dùng tiền mà mua người nào, thì người ấy được ăn; nô lệ sinh ra trong nhà cũng được ăn thức ăn của tư tế. (12) Con gái một tư tế, nếu lấy một người ngoài, thì không được ăn phần trích ra từ các của thánh; (13) nhưng nếu con gái tư tế góa chồng hay bị chồng bỏ, mà không có con, trở về nhà cha mình như khi còn trẻ, thì được ăn thức ăn của cha, mặc dầu không một người ngoài nào được ăn. (14) Nếu người nào vô ý ăn của thánh, thì phải đền của thánh cho tư tế, cộng thêm một phần năm.
 (15) Các tư tế không được phạm đến các của thánh con cái Ít-ra-en đã trích dâng ĐỨC CHÚA; (16) tư tế sẽ làm cho chúng mang một lỗi, một lỗi mà chúng phải đền vì đã ăn các của thánh, vì Ta là ĐỨC CHÚA, Đấng thánh hóa những của ấy.”
-[SECTION] c. Tế vật
+c. Tế vật
 (17) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (18) “Hãy nói với A-ha-ron, với các con nó cùng toàn thể con cái Ít-ra-en, và bảo chúng: Bất cứ người nào, trong nhà Ít-ra-en hoặc trong số ngoại kiều sống tại Ít-ra-en, vì đã khấn hứa hay tự nguyện, mà dâng lễ tiến của mình, và tiến dâng ĐỨC CHÚA làm lễ toàn thiêu (19) thì phải dâng một con đực toàn vẹn bắt từ đàn bò, chiên hay dê, nếu muốn được đoái nhận. (20) Các ngươi không được tiến dâng con vật nào có tật, vì các ngươi sẽ không được đoái nhận. (21) Khi một người tiến dâng ĐỨC CHÚA bò hay chiên dê làm hy lễ kỳ an để giữ trọn lời khấn hứa hoặc vì đã tự nguyện, thì con vật phải toàn vẹn, không có một tật nào, nếu muốn được đoái nhận. (22) Con vật mù, què, bị cắt xẻo, lở loét, ghẻ, hắc lào, thì các ngươi không được tiến dâng lên ĐỨC CHÚA, không được lấy phần nào đặt trên bàn thờ làm lễ hỏa tế dâng ĐỨC CHÚA. (23) Bò, chiên dê dị hình hay còi, ngươi có thể dâng làm lễ vật tự nguyện, nhưng nếu dâng làm lễ vật đã khấn hứa, thì chúng sẽ không được đoái nhận. (24) Các ngươi không được tiến dâng ĐỨC CHÚA một con vật có tinh hoàn bị giập, bị nghiền, bị moi hay cắt; các ngươi không được làm thế trong đất các ngươi. (25) Các ngươi không được nhận những con vật như thế từ tay người nước ngoài, để tiến dâng làm thức ăn dành cho Thiên Chúa các ngươi: chúng bị thiến tức là có tật, chúng sẽ không được đoái nhận như lễ vật của các ngươi.”
 (26) ĐỨC CHÚA phán với ông Mô-sê rằng: (27) “Bê, chiên hay dê, sau khi sinh, sẽ ở với mẹ nó bảy ngày; từ ngày thứ tám trở đi, nó sẽ được đoái nhận làm lễ tiến, làm lễ hỏa tế dâng ĐỨC CHÚA. (28) Dù là bò hay chiên dê, ngươi không được sát tế mẹ và con cùng một ngày. (29) Khi các ngươi dâng ĐỨC CHÚA hy lễ tạ ơn, hãy dâng thế nào để được đoái nhận; (30) phải ăn lễ vật trong chính ngày đó, các ngươi không được để lại gì cho đến sáng hôm sau. Ta là ĐỨC CHÚA.
@@ -378,25 +377,25 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 23, '[SECTION] Nghi thức cử hành các lễ trong năm
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy nói với con cái Ít-ra-en và bảo chúng: Các đại lễ của ĐỨC CHÚA là những ngày mà các ngươi phải triệu tập những cuộc họp để thờ phượng Ta. Đây là những đại lễ của Ta:
-[SECTION] a. Ngày sa-bát
+a. Ngày sa-bát
 (3) Trong sáu ngày, người ta sẽ làm công việc của mình; còn ngày thứ bảy là ngày sa-bát, một ngày nghỉ, có cuộc họp để thờ phượng, các ngươi không được làm công việc nào. Đó là ngày sa-bát kính ĐỨC CHÚA, tại khắp nơi các ngươi ở.
 (4) Đây là các đại lễ của ĐỨC CHÚA, các cuộc họp để thờ phượng mà các ngươi phải triệu tập vào thời gian ấn định:
-[SECTION] b. Lễ Vượt Qua và lễ Bánh Không Men
+b. Lễ Vượt Qua và lễ Bánh Không Men
 (5) Tháng thứ nhất, ngày mười bốn trong tháng, vào lúc chập tối, là lễ Vượt Qua kính ĐỨC CHÚA. (6) Ngày mười lăm tháng ấy là lễ Bánh Không Men kính ĐỨC CHÚA. Trong vòng bảy ngày, các ngươi phải ăn bánh không men. (7) Ngày đầu tiên, các ngươi phải họp nhau để thờ phượng Ta, các ngươi không được làm một công việc nặng nhọc nào. (8) Trong vòng bảy ngày, các ngươi phải tiến dâng lễ hỏa tế lên ĐỨC CHÚA. Ngày thứ bảy, có cuộc họp để thờ phượng Ta, các ngươi không được làm một công việc nặng nhọc nào.”
-[SECTION] c. Dâng bó lúa đầu mùa
+c. Dâng bó lúa đầu mùa
 (9) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (10) “Hãy nói với con cái Ít-ra-en và bảo chúng: Khi các ngươi vào đất Ta ban cho các ngươi, và gặt mùa ở đó, thì phải đem đến cho tư tế một bó lúa, sản phẩm đầu mùa gặt hái của các ngươi. (11) Nó sẽ làm nghi thức tiến dâng trước nhan ĐỨC CHÚA để các ngươi được đoái nhận; tư tế sẽ làm nghi thức tiến dâng hôm sau ngày sa-bát. (12) Ngày các ngươi làm nghi thức tiến dâng bó lúa ấy, các ngươi phải dâng một con chiên toàn vẹn, một tuổi, làm lễ toàn thiêu lên ĐỨC CHÚA, (13) cùng với lễ phẩm là chín lít tinh bột nhào với dầu: đó là lễ hỏa tế dâng ĐỨC CHÚA, là hương thơm làm vui lòng ĐỨC CHÚA; lễ tưới rượu kèm theo là hai lít. (14) Cho đến chính ngày đó, khi các ngươi mang lễ phẩm của Thiên Chúa các ngươi đến, các ngươi không được ăn bánh, ăn gié lúa rang và hột lúa mới. Đó là quy tắc vĩnh viễn cho các thế hệ của các ngươi, tại khắp nơi các ngươi ở.
-[SECTION] d. Lễ Ngũ Tuần
+d. Lễ Ngũ Tuần
 (15) Từ hôm sau ngày sa-bát, ngày các ngươi đem bó lúa đến để làm nghi thức tiến dâng, các ngươi phải tính bảy tuần, bảy tuần chẵn. (16) Các ngươi phải tính năm mươi ngày cho đến hôm sau ngày sa-bát thứ bảy, và các ngươi sẽ tiến dâng một lễ phẩm mới lên ĐỨC CHÚA: (17) từ những nơi các ngươi ở, các ngươi phải đem đến hai chiếc bánh để làm nghi thức tiến dâng, bánh làm bằng chín lít tinh bột và trộn men mà nướng: đó là của đầu mùa dâng ĐỨC CHÚA. (18) Thêm vào với bánh, các ngươi phải tiến dâng bảy con chiên toàn vẹn, một tuổi, một con bò tơ và hai con cừu đực làm lễ toàn thiêu dâng ĐỨC CHÚA, cùng với lễ phẩm và lễ tưới rượu kèm theo: đó là lễ hỏa tế, là hương thơm làm vui lòng ĐỨC CHÚA. (19) Các ngươi phải lấy một con dê đực làm lễ tạ tội và hai con chiên một tuổi làm hy lễ kỳ an; (20) tư tế sẽ làm nghi thức tiến dâng trước nhan ĐỨC CHÚA hai con chiên cùng với bánh đầu mùa: đó là của thánh thuộc về ĐỨC CHÚA, dành cho tư tế.
 (21) Chính ngày đó, các ngươi phải triệu tập dân, phải họp nhau để thờ phượng Ta; các ngươi không được làm một công việc nặng nhọc nào. Đó là quy tắc vĩnh viễn cho các thế hệ của các ngươi, tại khắp nơi các ngươi ở.
 (22) Khi các ngươi gặt lúa trong đất các ngươi, (các) ngươi không được gặt cho tới sát bờ ruộng; lúa gặt sót, (các) ngươi không được mót: (các) ngươi sẽ bỏ lại cho người nghèo và ngoại kiều. Ta là ĐỨC CHÚA, Thiên Chúa của các ngươi.”
-[SECTION] đ. Ngày đầu tháng bảy
+đ. Ngày đầu tháng bảy
 (23) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (24) “Hãy nói với con cái Ít-ra-en và bảo chúng: Tháng thứ bảy, ngày mồng một, đối với các ngươi sẽ là một ngày nghỉ, một ngày tưởng niệm giữa tiếng reo hò, và họp nhau để thờ phượng Ta. (25) Các ngươi không được làm một công việc nặng nhọc nào, và phải tiến dâng một lễ hỏa tế lên ĐỨC CHÚA.”
-[SECTION] e. Ngày Xá tội
+e. Ngày Xá tội
 (26) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (27) “Ngoài ra, ngày mồng mười tháng bảy là ngày Xá tội, các ngươi phải họp nhau để thờ phượng Ta, phải ăn chay hãm mình và tiến dâng một lễ hỏa tế lên ĐỨC CHÚA. (28) Chính ngày ấy, các ngươi không được làm một công việc nặng nhọc nào, vì đó là ngày Xá tội, ngày cử hành lễ xá tội cho các ngươi trước nhan ĐỨC CHÚA, Thiên Chúa của các ngươi. (29) Như vậy bất cứ người nào không ăn chay hãm mình vào chính ngày đó, sẽ bị khai trừ khỏi dòng họ; (30) và bất cứ người nào làm một việc gì vào chính ngày đó, Ta sẽ làm cho nó biến mất không còn dấu vết giữa dân nó. (31) Các ngươi không được làm một công việc nào: đó là quy tắc vĩnh viễn cho các thế hệ của các ngươi, tại khắp nơi các ngươi ở. (32) Đối với các ngươi, đó sẽ là một ngày sa-bát, một ngày nghỉ, và các ngươi phải ăn chay hãm mình. Từ chiều ngày mồng chín đến chiều hôm sau, các ngươi phải nghỉ để giữ ngày sa-bát.”
-[SECTION] g. Lễ Lều
+g. Lễ Lều
 (33) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (34) “Hãy nói với con cái Ít-ra-en: Ngày mười lăm tháng bảy là lễ Lều kính ĐỨC CHÚA, trong vòng bảy ngày. (35) Ngày đầu tiên, phải họp nhau để thờ phượng Ta, các ngươi không được làm một công việc nặng nhọc nào. (36) Trong vòng bảy ngày, các ngươi phải tiến dâng lễ hỏa tế lên ĐỨC CHÚA. Ngày thứ tám, các ngươi phải họp nhau để thờ phượng Ta, và phải tiến dâng một lễ hỏa tế lên ĐỨC CHÚA: đó là một buổi họp long trọng, các ngươi không được làm một công việc nặng nhọc nào.
 [SECTION] Kết luận
@@ -407,10 +406,10 @@ Vào tháng bảy, các ngươi phải mừng lễ đó. (42) Trong vòng bảy 
 (44) Ông Mô-sê nói cho con cái Ít-ra-en biết các đại lễ của ĐỨC CHÚA.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 24, '[SECTION] Quy định bổ sung về nghi lễ
-[SECTION] a. Lửa vĩnh viễn
+a. Lửa vĩnh viễn
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy truyền cho con cái Ít-ra-en phải giã ô-liu lấy dầu nguyên chất cho ngươi, để thắp đèn, hầu cho luôn luôn có ngọn lửa cháy. (3) A-ha-ron sẽ đặt chiếc đèn đó bên ngoài bức màn trướng che Chứng Ước, trong Lều Hội Ngộ, sao cho nó luôn luôn cháy từ chiều đến sáng trước nhan ĐỨC CHÚA. Đó là quy tắc vĩnh viễn cho các thế hệ của các ngươi. (4) A-ha-ron sẽ phải đặt các đèn trên trụ đèn bằng vàng ròng trước nhan ĐỨC CHÚA, luôn luôn.
-[SECTION] b. Bánh tiến
+b. Bánh tiến
 (5) Ngươi phải lấy tinh bột và nướng thành mười hai cái bánh, mỗi cái sẽ là chín lít bột. (6) Ngươi phải xếp bánh thành hai chồng, mỗi chồng sáu cái, trên bàn bằng vàng ròng, trước nhan ĐỨC CHÚA. (7) Trên mỗi chồng, ngươi phải để hương tinh khiết, hương đó sẽ là kỷ vật thay cho bánh, là hỏa tế dâng ĐỨC CHÚA. (8) Mỗi ngày sa-bát, người ta phải đặt luôn luôn trước nhan ĐỨC CHÚA, bánh con cái Ít-ra-en dâng: đó là một giao ước vĩnh cửu. (9) Bánh đó sẽ dành cho A-ha-ron và các con nó; chúng sẽ ăn trong một nơi thánh, vì đó là của rất thánh dành cho nó, lấy từ các lễ hỏa tế dâng ĐỨC CHÚA: đó là quy luật vĩnh viễn.”
 [SECTION] Nói phạm thượng. Luật báo phục tương xứng.
 (10) Có một người con trai, mẹ là người Ít-ra-en, cha là người Ai-cập, đến giữa con cái Ít-ra-en, và ngay giữa trại, con của người đàn bà Ít-ra-en đó xô xát với một người đàn ông Ít-ra-en. (11) Con của người đàn bà Ít-ra-en đó nói phạm đến thánh danh và buông lời nguyền rủa. Người ta đem nó đến cho ông Mô-sê. Mẹ nó tên là Sơ-lô-mít, con ông Đíp-ri, thuộc chi tộc Đan. (12) Người ta nhốt nó lại, để chờ quyết định theo lệnh ĐỨC CHÚA.
@@ -421,10 +420,10 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 (23) Ông Mô-sê nói thế với con cái Ít-ra-en. Họ liền đưa kẻ nói lời nguyền rủa ra ngoài trại và ném đá nó. Con cái Ít-ra-en làm như ĐỨC CHÚA đã truyền cho ông Mô-sê.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 25, '[SECTION] Các năm thánh
-[SECTION] a. Năm sa-bát
+a. Năm sa-bát
 (1) Trên núi Xi-nai, ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy nói với con cái Ít-ra-en và bảo chúng: Khi các ngươi vào đất Ta sắp ban cho các ngươi, đất phải nghỉ một sa-bát kính ĐỨC CHÚA. (3) Trong sáu năm, (các) ngươi sẽ gieo vãi trong cánh đồng của (các) ngươi, trong sáu năm, (các) ngươi sẽ tỉa vườn nho của (các) ngươi, và (các) ngươi sẽ thu hoa lợi. (4) Nhưng năm thứ bảy sẽ là một sa-bát, một thời kỳ đất nghỉ, một sa-bát kính ĐỨC CHÚA: (các) ngươi không được gieo vãi trong cánh đồng của (các) ngươi, không được tỉa vườn nho của các ngươi; (5) (các) ngươi không được gặt lúa tự nhiên mọc sau mùa gặt, không được hái những chùm nho từ vườn nho không cắt tỉa của (các) ngươi: đó sẽ là một năm đất nghỉ. (6) Sản phẩm tự nhiên của đất trong năm sa-bát sẽ nuôi các ngươi, tôi tớ nam nữ của (các) ngươi, người làm thuê của (các) ngươi, khách trọ nhà (các) ngươi; tóm lại các người trú ngụ nơi (các) ngươi. (7) Còn gia súc và dã thú ở trong đất (các) ngươi, thì tất cả hoa lợi của đất sẽ là lương thực cho chúng.
-[SECTION] b. Năm toàn xá
+b. Năm toàn xá
 (8) (Các) ngươi phải tính bảy tuần năm, nghĩa là bảy lần bảy năm; thời gian của bảy tuần năm đó là bốn mươi chín năm. (9) Tháng thứ bảy, ngày mồng mười trong tháng, (các) ngươi sẽ thổi tù và giữa tiếng reo hò; vào ngày Xá tội, (các) ngươi sẽ thổi tù và trong toàn xứ các ngươi. (10) Các ngươi sẽ công bố năm thứ năm mươi là năm thánh và sẽ tuyên cáo trong xứ lệnh ân xá cho mọi người sống tại đó. Đối với (các) ngươi, đó là thời kỳ toàn xá: mỗi người trong các ngươi sẽ trở về phần sở hữu của mình, mỗi người sẽ trở về dòng họ của mình. (11) Đối với các ngươi, năm thứ năm mươi sẽ là thời kỳ toàn xá: các ngươi không được gieo, không được gặt lúa tự nhiên mọc, không được hái trong vườn nho không cắt tỉa. (12) Vì đó là thời kỳ toàn xá, một năm thánh đối với các ngươi, các ngươi sẽ ăn hoa lợi của đồng ruộng.
 (13) Năm toàn xá đó, mỗi người trong các ngươi sẽ trở về phần sở hữu của mình. (14) Nếu các ngươi bán cái gì cho người đồng bào hoặc mua cái gì từ tay người đồng bào, thì đừng ai làm thiệt hại người anh em mình. (15) Ngươi sẽ mua của người đồng bào theo số năm sau năm toàn xá, và nó sẽ bán cho ngươi theo số năm thu hoạch. (16) Còn nhiều năm thì ngươi mua giá cao, còn ít năm thì ngươi mua giá thấp, vì nó bán cho ngươi một số năm thu hoạch. (17) Không ai trong các ngươi được làm thiệt hại người đồng bào, nhưng (các) ngươi phải kính sợ Thiên Chúa của (các) ngươi, vì Ta là ĐỨC CHÚA, Thiên Chúa của (các) ngươi.
 [SECTION] Thiên Chúa bảo đảm về năm sa-bát
@@ -461,7 +460,7 @@ Ta sẽ trút xuống các ngươi nỗi kinh hoàng, sự suy mòn, cơn nóng 
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv', 27, '[PART] PHỤ LỤC
 [PART] GIÁ BIỂU
-[SECTION] a. Người
+a. Người
 (1) ĐỨC CHÚA phán với ông Mô-sê rằng:
 (2) “Hãy nói với con cái Ít-ra-en và bảo chúng: Nếu ai muốn giữ trọn lời khấn hứa dâng một người cho ĐỨC CHÚA, thì phải định giá như sau:
 (3) Nếu là phái nam từ hai mươi đến sáu mươi tuổi, thì phải định giá là mười lăm lượng bạc, tính theo đơn vị đo lường của thánh điện; (4) nếu là phái nữ, thì phải định giá là chín lượng;
@@ -469,20 +468,20 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lv'
 (6) từ một tháng đến năm tuổi, thì phải định giá nam là mười lăm chỉ bạc, nữ là chín chỉ bạc;
 (7) từ sáu mươi tuổi trở lên, thì phải định giá nam là bốn mươi lăm chỉ bạc, nữ là ba lượng.
 (8) Nếu ai túng thiếu, không trả nổi giá đó, thì phải đặt nó trước mặt tư tế để tư tế định giá; tư tế sẽ dựa vào khả năng của người khấn hứa mà định giá.
-[SECTION] b. Loài vật
+b. Loài vật
 (9) Nếu là một con vật thuộc loại có thể dâng làm lễ tiến lên ĐỨC CHÚA, thì bất cứ con nào người ta hiến cho ĐỨC CHÚA đều là của thánh. (10) Không được đổi, không được thay thế con tốt bằng con xấu, hay con xấu bằng con tốt. Nếu cứ thay thế một con vật này bằng một con khác, thì cả con vật này lẫn con vật thay thế đều là của thánh. (11) Nếu là một con vật ô uế, thuộc loại không được dâng làm lễ tiến lên ĐỨC CHÚA, thì phải đặt con vật trước mặt tư tế; (12) tư tế sẽ định giá nó là tốt hay xấu, và tư tế định giá thế nào thì cứ như vậy. (13) Nếu muốn chuộc lại, thì phải trả thêm một phần năm giá đã định.
-[SECTION] c. Nhà cửa
+c. Nhà cửa
 (14) Khi một người thánh hiến nhà mình làm của thánh dâng ĐỨC CHÚA, thì tư tế sẽ định giá nhà ấy là tốt hay xấu; tư tế định giá thế nào thì cứ y như vậy. (15) Nếu người đã thánh hiến nhà muốn chuộc lại, thì sẽ phải trả thêm một phần năm giá đã định và nhà ấy sẽ là của nó.
-[SECTION] d. Đồng ruộng
+d. Đồng ruộng
 (16) Nếu một người thánh hiến cho ĐỨC CHÚA một cánh đồng là sở hữu của mình, thì phải dựa vào số lượng lúa giống mà định giá: hai mươi thùng giống lúa mạch là mười lăm lượng bạc. (17) Nếu nó thánh hiến cánh đồng ngay từ năm toàn xá, thì cứ theo như giá đã định. (18) Nếu nó thánh hiến cánh đồng sau năm toàn xá, thì tư tế sẽ tính giá tùy theo số năm còn lại cho đến năm toàn xá, và có giảm bớt giá đã định.
 (19) Nếu người đã thánh hiến cánh đồng muốn chuộc lại, thì sẽ phải trả thêm vào đó một phần năm giá đã định, và cánh đồng sẽ thuộc về nó. (20) Nếu nó không chuộc lại cánh đồng nhưng bán cho người khác, thì cánh đồng không chuộc lại được nữa, (21) và khi cánh đồng ra khỏi tay người mua, vào thời kỳ toàn xá, thì cánh đồng sẽ là của thánh dâng ĐỨC CHÚA, như một cánh đồng được biệt hiến; cánh đồng sẽ thuộc quyền sở hữu của tư tế.
 (22) Nếu nó thánh hiến cho ĐỨC CHÚA một cánh đồng nó đã mua, chứ không phải cánh đồng thuộc quyền sở hữu của nó, (23) thì tư tế sẽ tính số tiền phải trả cho đến năm toàn xá, và ngay hôm đó người kia phải nộp theo giá đã định; đó là của thánh dâng ĐỨC CHÚA. (24) Đến năm toàn xá, cánh đồng sẽ lại về tay người bán, là người có quyền sở hữu đất. (25) Mỗi khi định giá thì phải theo đơn vị đo lường của thánh điện: một se-ken ăn hai mươi ghê-ra.
 [SECTION] Quy định đặc biệt về việc chuộc lại những của thánh hiến
-[SECTION] a. Con đầu lòng
+a. Con đầu lòng
 (26) Con đầu lòng trong đàn gia súc, không ai được thánh hiến: vì là con đầu lòng, nó đã thuộc về ĐỨC CHÚA; dù là bò hay chiên dê, nó thuộc về ĐỨC CHÚA. (27) Nhưng nếu là loài vật ô uế, thì có thể chuộc theo giá đã định, cộng thêm một phần năm; nếu nó không được chuộc, thì sẽ được bán theo giá đã định.
-[SECTION] b. Của biệt hiến
+b. Của biệt hiến
 (28) Tuy nhiên, trong những cái thuộc về một người –như người, gia súc hay cánh đồng là sở hữu của nó– bất cứ cái gì nó đã biệt hiến dâng ĐỨC CHÚA làm của biệt hiến, thì không được bán, cũng không được chuộc. Mọi của biệt hiến là của rất thánh, nó thuộc về ĐỨC CHÚA. (29) Của biệt hiến mà là một người biệt hiến, thì không thể được chuộc: nó phải bị xử tử.
-[SECTION] c. Thuế thập phân
+c. Thuế thập phân
 (30) Mọi thuế thập phân đánh vào đất, trích từ sản phẩm của đất và từ hoa trái của cây cối, đều thuộc về ĐỨC CHÚA: đó là của thánh dâng ĐỨC CHÚA. (31) Nếu người nào muốn chuộc một phần thuế thập phân, thì phải trả thêm một phần năm.
 (32) Mọi thuế thập phân đánh vào bò và chiên dê, tức là một phần mười của mọi vật đi qua dưới cây gậy người chăn, đều là của rất thánh dâng ĐỨC CHÚA. (33) Không được tìm xem con nào tốt hay xấu và không được thay thế; nếu cứ thay thế, thì con vật ấy và con vật thay thế sẽ là của rất thánh, không thể được chuộc lại.”
 (34) Đó là những mệnh lệnh ĐỨC CHÚA đã truyền cho ông Mô-sê nói lại cho con cái Ít-ra-en, trên núi Xi-nai.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;

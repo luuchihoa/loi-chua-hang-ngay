@@ -37,7 +37,7 @@ export default function DatePicker({ selectedDate, onChange, onClose, theme }) {
 
       <div className="grid grid-cols-7 gap-1 mb-2 text-center">
         {DAY_LABELS.map((label, index) => (
-          <div key={label} className={`text-[11px] font-bold ${index === 6 ? 'text-rose-500' : 'text-stone-400'}`}>{label}</div>
+          <div key={label} className={`text-[11px] font-bold ${index === 6 ? 'text-rose-600' : 'text-stone-400'}`}>{label}</div>
         ))}
       </div>
 

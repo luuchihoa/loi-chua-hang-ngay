@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'xp', 1, '[PART] Chương 1
-(1) Dưới thời Giô-si-gia-hu con vua A-môn làm vua Giu-đa, có lời ĐỨC CHÚA phán với ông Xô-phô-ni-a, con ông Cu-si; ông Cu-si là con ông Gơ-đan-gia; ông Gơ-đan-gia là con ông A-mác-gia; ông A-mác-gia là con ông Khít-ki-gia.
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'xp', 1, '(1) Dưới thời Giô-si-gia-hu con vua A-môn làm vua Giu-đa, có lời ĐỨC CHÚA phán với ông Xô-phô-ni-a, con ông Cu-si; ông Cu-si là con ông Gơ-đan-gia; ông Gơ-đan-gia là con ông A-mác-gia; ông A-mác-gia là con ông Khít-ki-gia.
 [PART] I. NGÀY CỦA ĐỨC CHÚA TẠI GIU-ĐA
 [SECTION] Lời mở đầu liên quan đến vũ trụ
 (2) Phải, Ta sẽ quét sạch tất cả khỏi mặt đất này

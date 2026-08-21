@@ -1,6 +1,6 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, Type, AlignJustify } from 'lucide-react';
+import { X, Type, AlignJustify, Palette, ScanText } from 'lucide-react';
 
 const FONT_OPTIONS = [
   { value: 'normal', label: 'Nhỏ' },
@@ -12,6 +12,12 @@ const LINE_OPTIONS = [
   { value: 'compact', label: 'Gần' },
   { value: 'normal', label: 'Vừa' },
   { value: 'relaxed', label: 'Thoáng' },
+];
+
+const THEME_OPTIONS = [
+  { value: 'light', label: 'Sáng' },
+  { value: 'sepia', label: 'Giấy' },
+  { value: 'dark', label: 'Tối' },
 ];
 
 export default function ReaderPreferencesSheet({
@@ -70,6 +76,28 @@ export default function ReaderPreferencesSheet({
                 <SegmentedOptions options={LINE_OPTIONS} value={lineHeight} onChange={setLineHeight} />
               </PreferenceGroup>
 
+              <PreferenceGroup icon={Palette} label="Màu giấy đọc">
+                <SegmentedOptions options={THEME_OPTIONS} value={readingTheme} onChange={setReadingTheme} />
+              </PreferenceGroup>
+
+              <PreferenceGroup icon={ScanText} label="Lời Đức Giê-su">
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={showRedLetter}
+                  onClick={() => setShowRedLetter(!showRedLetter)}
+                  className={`flex min-h-[48px] w-full items-center justify-between rounded-2xl border px-4 text-left transition-colors ${
+                    showRedLetter
+                      ? 'border-rose-700 bg-rose-50 text-rose-900 dark:bg-rose-950/35 dark:text-rose-200'
+                      : 'border-stone-200 bg-stone-50 text-stone-700 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300'
+                  }`}
+                >
+                  <span className="text-xs font-bold">Hiển thị lời nói của Đức Giê-su bằng màu đỏ</span>
+                  <span aria-hidden="true" className={`relative h-6 w-11 rounded-full transition-colors ${showRedLetter ? 'bg-rose-700' : 'bg-stone-300 dark:bg-stone-600'}`}>
+                    <span className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${showRedLetter ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </span>
+                </button>
+              </PreferenceGroup>
 
             </div>
           </motion.section>
@@ -93,7 +121,7 @@ function PreferenceGroup({ icon: Icon, label, children }) {
 
 function SegmentedOptions({ options, value, onChange }) {
   return (
-    <div className="grid grid-cols-3 gap-1 rounded-2xl bg-stone-100 p-1 dark:bg-stone-800">
+    <div className="sepia-surface-soft grid grid-cols-3 gap-1 rounded-2xl bg-stone-100 p-1 dark:bg-stone-800">
       {options.map((option) => (
         <button
           key={option.value}
@@ -102,7 +130,7 @@ function SegmentedOptions({ options, value, onChange }) {
           aria-pressed={value === option.value}
           className={`min-h-[44px] rounded-xl px-3 text-xs font-bold transition-all ${
             value === option.value
-              ? 'bg-white text-stone-900 shadow-sm dark:bg-stone-700 dark:text-white'
+              ? 'bg-white text-stone-900 shadow-sm ring-1 ring-amber-600/70 dark:bg-stone-700 dark:text-white'
               : 'text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100'
           }`}
         >

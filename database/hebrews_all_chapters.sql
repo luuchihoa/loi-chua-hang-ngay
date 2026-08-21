@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dt', 1, '[PART] Chương 1
-[PART] LỜI TỰA
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dt', 1, '[PART] LỜI TỰA
 [SECTION] Địa vị cao trọng của Con Thiên Chúa làm người
 (1) Thuở xưa, nhiều lần nhiều cách, Thiên Chúa đã phán dạy cha ông chúng ta qua các ngôn sứ; (2) nhưng vào thời sau hết này, Thiên Chúa đã phán dạy chúng ta qua Thánh Tử. Thiên Chúa đã nhờ Người mà dựng nên vũ trụ, đã đặt Người làm Đấng thừa hưởng muôn vật muôn loài. (3) Người là phản ánh vẻ huy hoàng, là hình ảnh trung thực của bản thể Thiên Chúa. Người là Đấng dùng lời quyền năng của mình mà duy trì vạn vật. Sau khi đã tẩy trừ tội lỗi, Người lên ngự bên hữu Đấng Cao Cả trên trời. (4) Danh hiệu Người được thừa hưởng, cao cả hơn danh hiệu các thiên thần bao nhiêu, thì Người lại trổi hơn họ bấy nhiêu.
 [PART] I. CON THIÊN CHÚA CAO TRỌNG HƠN CÁC THIÊN THẦN

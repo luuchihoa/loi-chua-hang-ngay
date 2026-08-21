@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gc', 1, '[PART] Chương 1
-[SECTION] Lời chào thăm
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gc', 1, '[SECTION] Lời chào thăm
 (1) Tôi là Gia-cô-bê, tôi tớ của Thiên Chúa và của Chúa Giê-su Ki-tô, kính gửi mười hai chi tộc đang sống tản mác khắp nơi. Chúc anh em được an vui mạnh khỏe!
 [SECTION] Ích lợi của thử thách
 (2) Thưa anh em, anh em hãy tự cho mình là được chan chứa niềm vui khi gặp thử thách trăm chiều. (3) Vì như anh em biết: đức tin có vượt qua thử thách mới sinh ra lòng kiên nhẫn. (4) Chớ gì anh em chứng tỏ lòng kiên nhẫn đó ra bằng những việc hoàn hảo, để anh em nên hoàn hảo, không có chi đáng trách, không thiếu sót điều gì.

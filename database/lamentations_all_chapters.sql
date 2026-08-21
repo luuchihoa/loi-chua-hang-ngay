@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ac', 1, '[PART] Chương 1
-[PART] BÀI THỨ NHẤT
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ac', 1, '[PART] BÀI THỨ NHẤT
 [SECTION] A-lép
 (1) Làm sao Đô Thị dân đông đúc
 lại ngồi trơ, tủi nhục một mình!

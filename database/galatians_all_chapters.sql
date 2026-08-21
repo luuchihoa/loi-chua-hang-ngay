@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gl', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gl', 1, '[SECTION] Lời mở đầu
 (1) Tôi là Phao-lô, Tông Đồ không phải do loài người, cũng không phải nhờ một người nào, nhưng bởi Đức Giê-su Ki-tô và Thiên Chúa là Cha, Đấng đã cho Người từ cõi chết trỗi dậy, (2) tôi và mọi anh em đang ở với tôi, kính gửi các Hội Thánh miền Ga-lát. (3) Xin Thiên Chúa là Cha chúng ta, và xin Chúa Giê-su Ki-tô ban cho anh em ân sủng và bình an. (4) Để cứu chúng ta thoát khỏi cõi đời xấu xa hiện tại, Đức Giê-su Ki-tô đã tự hiến vì tội lỗi chúng ta, theo ý muốn của Thiên Chúa là Cha chúng ta. (5) Xin tôn vinh Thiên Chúa đến muôn thuở muôn đời. A-men.
 [SECTION] Lời cảnh cáo
 (6) Tôi lấy làm ngạc nhiên, khi thấy anh em trở mặt mau lẹ như thế với Đấng đã kêu gọi anh em nhờ ân sủng của Đức Ki-tô, để theo một Tin Mừng khác. (7) Không có Tin Mừng nào khác đâu, mà chỉ có một vài kẻ phá rối anh em, và muốn làm xáo trộn Tin Mừng của Đức Ki-tô đó thôi. (8) Nhưng nếu có ai, kể cả chúng tôi, hoặc một thiên thần nào từ trời xuống, loan báo cho anh em Tin Mừng khác với Tin Mừng chúng tôi đã loan báo cho anh em, thì xin Thiên Chúa loại trừ kẻ ấy đi! (9) Như tôi đã nói, và nay tôi xin nói lại: nếu có ai loan báo cho anh em một Tin Mừng khác với Tin Mừng anh em đã lãnh nhận, thì xin Thiên Chúa loại trừ kẻ ấy đi! (10) Vậy, giờ đây tôi tìm cách lấy lòng người đời, hay lấy lòng Thiên Chúa? Phải chăng tôi tìm cách làm đẹp lòng người đời? Nếu tôi còn muốn làm đẹp lòng người đời, thì tôi không phải là tôi tớ của Đức Ki-tô.
@@ -36,13 +35,13 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gl'
 (12) Thưa anh em, tôi van anh em, anh em hãy nên giống như tôi, vì tôi cũng đã nên giống như anh em. Anh em đã không làm tổn thương gì cho tôi cả. (13) Anh em biết: nhân khi thân xác bị đau ốm, tôi đã loan báo Tin Mừng cho anh em lần đầu tiên. (14) Mặc dù thân xác tôi là một dịp thử thách cho anh em, anh em đã không khinh, không tởm; trái lại anh em đã tiếp đón tôi như một sứ giả của Thiên Chúa, như Đức Ki-tô Giê-su. (15) Vậy hạnh phúc của anh em lúc đó, bây giờ đâu rồi? Thật thế, tôi xin làm chứng cho anh em rằng: nếu có thể, hẳn anh em đã móc mắt hiến cho tôi. (16) Thành thử tôi đã trở nên kẻ thù của anh em vì nói sự thật cho anh em sao? (17) Họ nhiệt thành với anh em không phải vì mục đích tốt, mà chỉ vì muốn ly gián anh em với tôi, để anh em nhiệt thành với họ. (18) Được người ta tỏ lòng nhiệt thành là điều tốt, miễn là vì mục đích tốt và trong mọi trường hợp, chứ không phải chỉ khi nào tôi có mặt giữa anh em. (19) Hỡi anh em, những người con bé nhỏ của tôi, mà tôi phải quặn đau sinh ra một lần nữa cho đến khi Đức Ki-tô được thành hình nơi anh em, (20) tôi ước ao được có mặt giữa anh em lúc này, để lựa lời nói sao cho thích hợp, vì tôi thấy khó xử với anh em quá!
 [SECTION] Hai giao ước: Ha-ga và Xa-ra
 (21) Hãy nói cho tôi hay: anh em là những người muốn sống dưới Lề Luật, anh em không nghe Lề Luật nói gì sao? (22) Thật vậy, có lời chép rằng: ông Áp-ra-ham có hai người con, mẹ của một người là nô lệ, mẹ của người kia là tự do. (23) Nhưng con của người mẹ nô lệ thì sinh ra theo lẽ tự nhiên; còn con của người mẹ tự do thì sinh ra nhờ lời hứa. (24) Chuyện đó ngụ ý thế này: hai người đàn bà là hai giao ước. Giao ước thứ nhất tại núi Xi-nai, thì sinh ra nô lệ: đó là Ha-ga. (25) Ha-ga chỉ núi Xi-nai trong miền Ả-rập, và tương đương với Giê-ru-sa-lem ngày nay, vì thành này cùng với các con đều là nô lệ. (26) Còn Giê-ru-sa-lem thượng giới thì tự do: đó là mẹ chúng ta. (27) Thật vậy, có lời chép:
-[SECTION] Reo mừng lên,
-[SECTION] hỡi người phụ nữ son sẻ,
-[SECTION] không sinh con;
-[SECTION] hãy bật tiếng reo hò mừng vui,
-[SECTION] hỡi ai chưa một lần chuyển dạ,
-[SECTION] vì con của phụ nữ bị bỏ rơi
-[SECTION] thì đông hơn con của phụ nữ có chồng!
+Reo mừng lên,
+hỡi người phụ nữ son sẻ,
+không sinh con;
+hãy bật tiếng reo hò mừng vui,
+hỡi ai chưa một lần chuyển dạ,
+vì con của phụ nữ bị bỏ rơi
+thì đông hơn con của phụ nữ có chồng!
 (28) Thưa anh em, như I-xa-ác, anh em là những người con sinh ra do lời Thiên Chúa hứa. (29) Nhưng cũng như thuở ấy đứa con sinh ra theo lẽ tự nhiên đã ngược đãi đứa con sinh ra theo thần khí, thì bây giờ cũng vậy. (30) Thế nhưng Kinh Thánh nói gì? Kinh Thánh nói: Tống cổ người nô lệ và con của nó đi, vì con của nô lệ không đời nào được thừa kế gia tài cùng với con của người tự do. (31) Ấy vậy, thưa anh em, chúng ta không phải là con của một người nô lệ, nhưng là con của người tự do.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gl', 5, '[PART] III. PHẦN KHUYÊN NHỦ

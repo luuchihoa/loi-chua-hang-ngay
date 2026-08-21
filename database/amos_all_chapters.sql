@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'am', 1, '[PART] Chương 1
-[PART] TỰA ĐỀ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'am', 1, '[PART] TỰA ĐỀ
 (1) Lời của A-mốt. Ông là một trong những người chăn cừu tại Tơ-cô-a, ông đã thấy thị kiến liên quan đến Ít-ra-en, dưới thời Út-di-gia làm vua nước Giu-đa, và Gia-róp-am –con vua Giô-át– làm vua nước Ít-ra-en, hai năm trước trận động đất.
 [PART] KHAI ĐỀ
 (2) Ông nói: Từ Xi-on, ĐỨC CHÚA gầm lên,

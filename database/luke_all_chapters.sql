@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lc', 1, '[PART] Chương 1
-[SECTION] Lời tựa
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lc', 1, '[SECTION] Lời tựa
 (1) Thưa ngài Thê-ô-phi-lô đáng kính, có nhiều người đã ra công soạn bản tường thuật những sự việc đã được thực hiện giữa chúng ta. (2) Họ viết theo những điều mà các người đã được chứng kiến ngay từ đầu và đã phục vụ lời Chúa truyền lại cho chúng ta. (3) Tôi cũng vậy, sau khi đã cẩn thận tra cứu đầu đuôi mọi sự, thì thiết tưởng cũng nên tuần tự viết ra để kính tặng ngài, (4) mong ngài sẽ nhận thức được rằng giáo huấn ngài đã học hỏi thật là vững chắc.
 [PART] I. THỜI THƠ ẤU: ÔNG GIO-AN TẨY GIẢ VÀ ĐỨC GIÊ-SU SINH RA VÀ SỐNG ẨN DẬT
 [SECTION] Truyền tin cho ông Da-ca-ri-a
@@ -20,26 +19,26 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lc'
 (46) Bấy giờ bà Ma-ri-a nói:
 “Linh hồn tôi ngợi khen Đức Chúa,
 (47) thần trí tôi hớn hở vui mừng
-[SECTION] vì Thiên Chúa, Đấng cứu độ tôi.
+vì Thiên Chúa, Đấng cứu độ tôi.
 (48) Phận nữ tỳ hèn mọn,
-[SECTION] Người đoái thương nhìn tới;
+Người đoái thương nhìn tới;
 từ nay, hết mọi đời
 sẽ khen tôi diễm phúc.
 (49) Đấng Toàn Năng đã làm cho tôi
 biết bao điều cao cả,
-[SECTION] danh Người thật chí thánh chí tôn!
+danh Người thật chí thánh chí tôn!
 (50) Đời nọ tới đời kia,
-[SECTION] Chúa hằng thương xót
-[SECTION] những ai kính sợ Người.
+Chúa hằng thương xót
+những ai kính sợ Người.
 (51) Chúa giơ tay biểu dương sức mạnh,
 dẹp tan phường lòng trí kiêu căng.
 (52) Chúa hạ bệ những ai quyền thế,
-[SECTION] Người nâng cao mọi kẻ khiêm nhường.
+Người nâng cao mọi kẻ khiêm nhường.
 (53) Kẻ đói nghèo, Chúa ban của đầy dư,
 người giàu có, lại đuổi về tay trắng.
 (54) Chúa độ trì Ít-ra-en, tôi tớ của Người,
 (55) như đã hứa cùng cha ông chúng ta,
-[SECTION] vì Người nhớ lại lòng thương xót
+vì Người nhớ lại lòng thương xót
 dành cho tổ phụ Áp-ra-ham
 và cho con cháu đến muôn đời.”
 (56) Bà Ma-ri-a ở lại với bà Ê-li-sa-bét độ ba tháng, rồi trở về nhà.
@@ -50,8 +49,8 @@ và cho con cháu đến muôn đời.”
 [SECTION] Bài ca “Chúc Tụng” (Benedictus)
 (67) Bấy giờ, người cha của em, tức là ông Da-ca-ri-a, được đầy Thánh Thần, liền nói tiên tri rằng:
 (68) “Chúc tụng Đức Chúa
-[SECTION] là Thiên Chúa Ít-ra-en
-[SECTION] đã viếng thăm cứu chuộc dân Người.
+là Thiên Chúa Ít-ra-en
+đã viếng thăm cứu chuộc dân Người.
 (69) Từ dòng dõi trung thần Đa-vít,
 Người đã cho xuất hiện
 Vị Cứu Tinh quyền thế để giúp ta,
@@ -59,9 +58,9 @@ Vị Cứu Tinh quyền thế để giúp ta,
 các vị thánh ngôn sứ
 mà phán hứa tự ngàn xưa:
 (71) sẽ cứu ta thoát khỏi địch thù,
-[SECTION] thoát tay mọi kẻ hằng ghen ghét;
+thoát tay mọi kẻ hằng ghen ghét;
 (72) sẽ trọn bề nhân nghĩa với tổ tiên
-[SECTION] và nhớ lại lời xưa giao ước;
+và nhớ lại lời xưa giao ước;
 (73) Chúa đã thề với tổ phụ Áp-ra-ham
 rằng sẽ giải phóng ta khỏi tay địch thù,
 (74) và cho ta chẳng còn sợ hãi,
@@ -70,8 +69,8 @@ công chính trước nhan Người,
 mà phụng thờ Người suốt cả đời ta.
 (76) Hài Nhi hỡi, con sẽ mang tước hiệu
 là ngôn sứ của Đấng Tối Cao:
-[SECTION] con sẽ đi trước Chúa,
-[SECTION] mở lối cho Người,
+con sẽ đi trước Chúa,
+mở lối cho Người,
 (77) bảo cho dân Chúa biết:
 Người sẽ cứu độ
 là tha cho họ hết mọi tội khiên.
@@ -79,8 +78,8 @@ là tha cho họ hết mọi tội khiên.
 cho Vầng Đông
 tự chốn cao vời viếng thăm ta,
 (79) soi sáng những ai ngồi nơi tăm tối
-[SECTION] và trong bóng tử thần,
-[SECTION] dẫn ta bước vào đường nẻo bình an.”
+và trong bóng tử thần,
+dẫn ta bước vào đường nẻo bình an.”
 [SECTION] Ông Gio-an Tẩy Giả sống ẩn dật
 (80) Cậu bé càng lớn lên thì tinh thần càng vững mạnh. Cậu sống trong hoang địa cho đến ngày ra mắt dân Ít-ra-en.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
@@ -510,8 +509,8 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'lc'
 (9) Rồi Đức Giê-su bắt đầu kể cho dân nghe dụ ngôn này: “Có người kia trồng được một vườn nho và cho tá điền canh tác, rồi trẩy đi xa một thời gian khá lâu.
 (10) “Đến mùa, ông sai một đầy tớ đến gặp các tá điền để chúng nộp hoa lợi vườn nho cho anh đem về. Nhưng bọn tá điền đánh anh ta rồi đuổi về tay không. (11) Ông lại sai một đầy tớ khác, nhưng họ cũng đánh anh ta, hạ nhục, rồi đuổi về tay không. (12) Ông còn sai thêm một người thứ ba, nhưng họ cũng đánh trọng thương, rồi quăng ra ngoài. (13) Ông chủ vườn nho mới nói: ‘Ta phải làm gì đây? Ta sẽ phái người con yêu dấu của ta, biết đâu chúng sẽ nể con ta.’ (14) Nhưng vừa thấy cậu, bọn tá điền liền bàn nhau: ‘Đứa thừa tự đây rồi! Ta giết quách nó đi, rồi gia tài sẽ về tay ta.’ (15) Thế là chúng quăng cậu ra bên ngoài vườn nho, rồi giết đi.
 “Vậy ông chủ vườn nho sẽ làm gì chúng? (16) Ông sẽ đến tru diệt các tá điền ấy, rồi giao vườn nho cho người khác.” Nghe vậy, họ nói: “Mong đừng có chuyện ấy!” (17) Nhưng Đức Giê-su đưa mắt nhìn họ và nói: “Vậy câu Kinh Thánh này có nghĩa gì:
-[SECTION] Tảng đá thợ xây nhà loại bỏ,
-[SECTION] lại trở nên đá tảng góc tường?
+Tảng đá thợ xây nhà loại bỏ,
+lại trở nên đá tảng góc tường?
 (18) “Phàm ai ngã xuống đá này, kẻ ấy sẽ tan xương; đá này rơi trúng ai, sẽ làm người ấy nát thịt.”
 (19) Ngay giờ đó, các kinh sư và thượng tế tìm cách tra tay bắt Đức Giê-su, nhưng lại sợ dân. Quả vậy, họ thừa hiểu Người đã nhắm vào họ mà kể dụ ngôn ấy.
 [SECTION] Nộp thuế cho Xê-da

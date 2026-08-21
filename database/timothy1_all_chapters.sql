@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1tm', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1tm', 1, '[SECTION] Lời mở đầu
 (1) Tôi là Phao-lô, Tông Đồ của Đức Ki-tô Giê-su theo lệnh Thiên Chúa, Đấng cứu độ chúng ta, và theo lệnh Đức Ki-tô Giê-su, niềm hy vọng của chúng ta, (2) gửi anh Ti-mô-thê, người con tôi đã sinh ra trong đức tin. Xin Thiên Chúa là Cha và xin Đức Ki-tô Giê-su, Chúa chúng ta, ban cho anh ân sủng, lòng thương xót và sự bình an.
 [SECTION] Đề phòng giáo lý sai lạc
 (3) Khi đi Ma-kê-đô-ni-a, tôi đã khuyên anh ở lại Ê-phê-xô để anh truyền cho một số người đừng dạy một giáo lý khác, (4) cũng đừng chú ý đến những chuyện hoang đường và những gia phả dài dòng; những cái đó chỉ gây ra tranh luận, chứ không đóng góp vào kế hoạch của Thiên Chúa mà đức tin cho chúng ta biết. (5) Lời truyền dạy đó phải nhằm đưa tới đức mến phát xuất từ tâm hồn trong sạch, lương tâm ngay thẳng và đức tin không giả hình. (6) Vì đi trệch đường lối ấy, một số người đã sa vào tật nói rỗng tuếch. (7) Họ muốn làm thầy dạy Luật, nhưng lại không hiểu cả điều mình nói lẫn điều mình xác quyết.

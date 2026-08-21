@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'is', 1, '[PART] Chương 1
-[PART] I. PHẦN THỨ NHẤT SÁCH I-SAI-A
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'is', 1, '[PART] I. PHẦN THỨ NHẤT SÁCH I-SAI-A
 [PART] 1. SẤM NGÔN TRƯỚC THỜI CHIẾN TRANH GIỮA GIU-ĐA VỚI A-RAM VÀ ÍT-RA-EN
 [SECTION] Nhan đề
 (1) Thị kiến ông I-sai-a, con ông A-mốc, đã được thấy, liên quan đến Giu-đa và Giê-ru-sa-lem, thời các vua Út-di-gia-hu, Giô-tham, A-khát, Khít-ki-gia cai trị Giu-đa.
@@ -4281,10 +4280,10 @@ bản thân chúng cũng như cả nòi giống.
 (24) Trước khi chúng kêu Ta, chính Ta đã đáp lời,
 chúng hãy còn đang nói thì Ta đã nghe rồi.
 (25) Sói với chiên con sẽ cùng nhau ăn cỏ,
-[SECTION] sư tử cũng ăn rơm như bò,
+sư tử cũng ăn rơm như bò,
 còn rắn sẽ lấy bụi đất làm lương thực.
-[SECTION] Sẽ không còn ai tác hại và tàn phá
-[SECTION] trên khắp núi thánh của Ta.” ĐỨC CHÚA phán như vậy.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+Sẽ không còn ai tác hại và tàn phá
+trên khắp núi thánh của Ta.” ĐỨC CHÚA phán như vậy.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'is', 66, '[SECTION] Sấm ngôn về Đền Thờ
 (1) ĐỨC CHÚA phán thế này:

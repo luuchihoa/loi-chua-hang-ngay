@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'xh', 1, '[PART] Chương 1
-[PART] I. CÔNG CUỘC GIẢI THOÁT KHỎI AI-CẬP
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'xh', 1, '[PART] I. CÔNG CUỘC GIẢI THOÁT KHỎI AI-CẬP
 [PART] 1. DÂN ÍT-RA-EN BÊN AI-CẬP
 [SECTION] Cảnh sống thịnh vượng của người Híp-ri ở Ai-cập
 (1) Sau đây là tên những con cái Ít-ra-en đã đến Ai-cập với ông Gia-cóp, mỗi người đem theo gia đình mình: (2) Rưu-vên, Si-mê-ôn, Lê-vi và Giu-đa, (3) Ít-xa-kha, Dơ-vu-lun và Ben-gia-min, (4) Đan và Náp-ta-li, Gát và A-se. (5) Dòng giống ông Gia-cóp tính tất cả là bảy mươi người; ông Giu-se thì đang ở bên Ai-cập. (6) Rồi ông Giu-se qua đời, cũng như anh em ông và tất cả thế hệ đó. (7) Con cái Ít-ra-en sinh sôi nảy nở, nên đông đúc và ngày càng hùng mạnh: họ lan tràn khắp xứ.

@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gv', 1, '[PART] Chương 1
-(1) Đây là lời ông Cô-he-lét, làm vua ngự tại Giê-ru-sa-lem. Ông là con vua Đa-vít.
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gv', 1, '(1) Đây là lời ông Cô-he-lét, làm vua ngự tại Giê-ru-sa-lem. Ông là con vua Đa-vít.
 [PART] PHẦN THỨ NHẤT
 [SECTION] Lời tựa
 (2) Ông Cô-he-lét nói: “Phù vân, quả là phù vân. Phù vân, quả là phù vân. Tất cả chỉ là phù vân. (3) Lợi lộc gì đâu khi con người phải chịu đựng bao gian lao vất vả dưới ánh nắng mặt trời? (4) Thế hệ này đi, thế hệ kia đến, nhưng trái đất mãi mãi trường tồn. (5) Mặt trời mọc rồi lặn; mặt trời vội vã ngả xuống nơi nó đã mọc lên. (6) Gió thổi xuống phía nam, rồi xoay về phía bắc: gió xoay lui xoay tới rồi gió đi; gió trở qua trở lại lòng vòng. (7) Mọi khúc sông đều xuôi ra biển, nhưng biển cũng chẳng đầy. Sông chảy tới đâu thì từ đó sông lại tiếp tục. (8) Chuyện gì cũng nhàm chán, chẳng thể nói gì hơn. Mắt có nhìn bao nhiêu cũng chẳng thấy gì lạ, tai có nghe đến mấy cũng chẳng thấy gì mới.

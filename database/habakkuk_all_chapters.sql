@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'hb', 1, '[PART] Chương 1
-[SECTION] Tên sách
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'hb', 1, '[SECTION] Tên sách
 (1) Lời sấm ngôn sứ Kha-ba-cúc đã nhận được qua thị kiến.
 [PART] I. CUỘC ĐỐI THOẠI GIỮA NGÔN SỨ VÀ THIÊN CHÚA
 [SECTION] Lời phàn nàn thứ nhất của ngôn sứ: Sự công chính suy thoái
@@ -110,8 +109,8 @@ lấy bất công dựng phố.
 các nước kiệt quệ mà chẳng được ích gì,
 đó chẳng phải là do ĐỨC CHÚA các đạo binh sao?
 (14) Quả thật, sự hiểu biết ĐỨC CHÚA quang vinh
-[SECTION] sẽ tràn ngập cõi đất
-[SECTION] cũng như nước lấp đầy lòng biển.
+sẽ tràn ngập cõi đất
+cũng như nước lấp đầy lòng biển.
 IV
 (15) Khốn thay kẻ chuốc rượu cho anh em mình,
 kẻ pha chất độc làm cho nó say sưa, để thấy nó trần truồng.

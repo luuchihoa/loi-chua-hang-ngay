@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'g', 1, '[PART] Chương 1
-[PART] I. LỜI MỞ ĐẦU
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'g', 1, '[PART] I. LỜI MỞ ĐẦU
 [SECTION] Xa-tan thử thách ông Gióp
 (1) Xưa ở đất Út có một người tên là Gióp. Ông là một con người vẹn toàn và ngay thẳng, kính sợ Thiên Chúa và lánh xa điều ác. (2) Ông sinh được bảy người con trai và ba người con gái. (3) Ông có một đàn súc vật gồm bảy ngàn chiên dê, ba ngàn lạc đà, năm trăm đôi bò, năm trăm lừa cái và một số rất đông tôi tớ. Ông là người giàu có nhất trong số các con cái Phương Đông. (4) Các con trai ông có thói quen luân phiên tới nhà nhau tiệc tùng và cho người đi mời ba cô em gái đến ăn uống với họ. (5) Mỗi khi hết vòng tiệc tùng, ông Gióp cho gọi họ đến để thanh tẩy họ; rồi ông dậy thật sớm, dâng lễ toàn thiêu cho mỗi người trong họ, vì ông tự nhủ: “Biết đâu các con trai ta đã chẳng phạm tội và nguyền rủa Thiên Chúa trong lòng!” Lần nào ông Gióp cũng làm như thế.
 (6) Vậy một ngày kia, các con cái Thiên Chúa đến trình diện ĐỨC CHÚA; Xa-tan cũng đến trong đám họ. (7) Bấy giờ ĐỨC CHÚA phán với Xa-tan: “Ngươi từ đâu tới?” Xa-tan thưa với ĐỨC CHÚA: “Rảo quanh cõi đất và lang thang khắp đó đây.” (8) ĐỨC CHÚA phán với Xa-tan: “Ngươi có để ý đến Gióp, tôi tớ của Ta không? Thật chẳng có ai trên cõi đất này giống như nó: một con người vẹn toàn và ngay thẳng, kính sợ Thiên Chúa và lánh xa điều ác!” (9) Nhưng Xa-tan thưa lại với ĐỨC CHÚA: “Có phải Gióp kính sợ Thiên Chúa mà không cầu lợi chăng? (10) Chẳng phải chính Ngài đã bao bọc, chở che nó tư bề, nó cũng như nhà cửa và tài sản của nó sao? Ngài đã ban phúc lành cho công việc do tay nó làm, và các đàn súc vật của nó lan tràn khắp xứ. (11) Ngài cứ thử giơ tay đánh vào mọi tài sản của nó xem, chắc chắn là nó nguyền rủa Ngài thẳng mặt!” (12) ĐỨC CHÚA phán với Xa-tan: “Được, mọi tài sản của nó thuộc quyền ngươi, duy chỉ có con người của nó là ngươi không được đưa tay đụng tới.” Rồi Xa-tan rút lui khỏi nhan ĐỨC CHÚA.
@@ -1402,7 +1401,7 @@ tránh xa điều ác, đó là trí hiểu.”') ON CONFLICT (translation_id, b
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'g', 29, '[PART] 5. KẾT THÚC CUỘC ĐỐI THOẠI
 [SECTION] Lời than van và biện hộ của ông Gióp
-[SECTION] a. Những ngày xa xưa
+a. Những ngày xa xưa
 (1) Ông Gióp tiếp tục ngâm nga như sau:
 (2) Ai sẽ làm cho tôi được như những tháng năm thuở trước,
 như những ngày Thiên Chúa giữ gìn tôi,
@@ -1447,7 +1446,7 @@ sương đêm đọng lại trên cành lá của tôi.
 (20) Vinh quang của tôi luôn đổi mới,
 cung nỏ trong tay tôi sẽ tăng thêm sức mạnh.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'g', 30, '[SECTION] b. Cơn khốn cùng hiện tại
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'g', 30, 'b. Cơn khốn cùng hiện tại
 (1) Giờ đây, tôi bị những người ít tuổi hơn nhạo cười,
 cha ông họ từng bị tôi khinh dể
 và xếp vào hạng chó canh bầy vật.

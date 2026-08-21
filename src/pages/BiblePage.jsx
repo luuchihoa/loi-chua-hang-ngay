@@ -1216,7 +1216,7 @@ export default function BiblePage() {
                             <div className="flex-1 space-y-3">
                               <p className={`text-stone-800 dark:text-stone-200 transition-colors ${
                                 isRedLetter ? 'text-rose-700 dark:text-rose-400 font-medium' : ''
-                              } ${isAudioActive ? 'bg-amber-200/60 dark:bg-amber-900/50 rounded-r-xl border-l-3 border-amber-500 -mx-2 px-3 py-1.5 shadow-xs font-medium' : ''} ${highlightClass || ''}`}>
+                              } ${isAudioActive ? 'audio-active-verse -mx-2 px-3 py-1.5 shadow-xs font-medium' : ''} ${highlightClass || ''}`}>
                                 {renderVerseText(v.text, v.footnotes)}
                               </p>
                             </div>
@@ -1266,7 +1266,7 @@ export default function BiblePage() {
           {isMultiSelect && selectedVerses.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }}
-              className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:bottom-8 left-1/2 -translate-x-1/2 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-4 whitespace-nowrap border border-stone-700"
+              className="theme-invariant fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:bottom-8 left-1/2 -translate-x-1/2 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-4 whitespace-nowrap border border-stone-700"
             >
               <div className="text-sm font-bold bg-stone-800 px-3 py-1 rounded-lg">
                 Đã chọn {selectedVerses.length} câu

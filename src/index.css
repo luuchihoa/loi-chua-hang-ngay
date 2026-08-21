@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+/* Sepia is a first-class Tailwind variant, rather than an uncompiled class
+   prefix.  Reader-only Sepia continues to be handled by the scoped rules
+   below so it cannot recolour unrelated application chrome. */
+@custom-variant sepia (&:where(.theme-sepia, .theme-sepia *));
 
 
 html {
@@ -115,7 +119,7 @@ button, a {
 }
 
 /* 2. Thẻ Khung, Card, Glass Panels & Modals (Bao quát 100% khối nền) */
-:is(html.theme-sepia, html.reader-sepia) .bg-white,
+:is(html.theme-sepia, html.reader-sepia) .bg-white:not(.theme-invariant, .theme-invariant *),
 :is(html.theme-sepia, html.reader-sepia) [class*="bg-white/"]:not(.theme-invariant, .theme-invariant *),
 :is(html.theme-sepia, html.reader-sepia) .glass-panel:not(.theme-invariant, .theme-invariant *),
 :is(html.theme-sepia, html.reader-sepia) .glass-dock:not(.theme-invariant, .theme-invariant *),
@@ -132,10 +136,11 @@ button, a {
   backdrop-filter: blur(6px) !important;
 }
 
-:is(html.theme-sepia, html.reader-sepia) [class*="bg-stone-200"]:not(.theme-invariant, .theme-invariant *, [data-ui-layer="modal-backdrop"], [data-ui-layer="modal-backdrop"] *),
-:is(html.theme-sepia, html.reader-sepia) [class*="bg-stone-800"]:not(.theme-invariant, .theme-invariant *, [data-ui-layer="modal-backdrop"], [data-ui-layer="modal-backdrop"] *),
-:is(html.theme-sepia, html.reader-sepia) [class*="bg-stone-900"]:not(.theme-invariant, .theme-invariant *, [data-ui-layer="modal-backdrop"], [data-ui-layer="modal-backdrop"] *),
-:is(html.theme-sepia, html.reader-sepia) [class*="bg-stone-950"]:not(.theme-invariant, .theme-invariant *, [data-ui-layer="modal-backdrop"], [data-ui-layer="modal-backdrop"] *) {
+/* Do not match every Tailwind class containing "bg-stone-*".  A class list
+   such as `bg-white dark:bg-stone-900` used to match both rules and flatten
+   the raised surface into the sunken one.  Only declared semantic controls
+   use the soft surface now. */
+:is(html.theme-sepia, html.reader-sepia) .sepia-surface-soft:not(.theme-invariant, .theme-invariant *) {
   background-color: var(--sepia-surface-soft) !important;
 }
 
@@ -206,8 +211,8 @@ button, a {
   color: var(--sepia-text-faint) !important;
 }
 
-/* Ép tất cả class dark:text-white / dark:text-stone-100 / dark:text-amber-200/300 (như partTitle, sectionTitle, Modals) về màu nâu Sepia nét căng */
-:is(html.theme-sepia, html.reader-sepia) .text-white:not(.theme-invariant, .theme-invariant *),
+/* Light text must be preserved on intentional dark and coloured actions.
+   Only dark-mode fallbacks on normal Sepia surfaces are translated to ink. */
 :is(html.theme-sepia, html.reader-sepia) [class*="text-stone-100"]:not(.theme-invariant, .theme-invariant *),
 :is(html.theme-sepia, html.reader-sepia) [class*="text-stone-200"]:not(.theme-invariant, .theme-invariant *),
 :is(html.theme-sepia, html.reader-sepia) [class*="text-stone-950"]:not(.theme-invariant, .theme-invariant *) {

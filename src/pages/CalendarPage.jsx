@@ -60,7 +60,7 @@ export default function CalendarPage() {
       <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 border border-stone-200 dark:border-stone-800 shadow-sm mb-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shadow-md">
+            <div className="theme-invariant w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shadow-md">
               <CalendarIcon className="w-5 h-5" />
             </div>
             <div>
@@ -126,7 +126,7 @@ export default function CalendarPage() {
                 onClick={() => handleSelectDate(date)}
                 className={`h-16 rounded-2xl p-1.5 flex flex-col justify-between text-left transition-all hover:scale-[1.03] active:scale-95 border ${
                   isToday
-                    ? 'bg-amber-100 dark:bg-amber-950/60 border-amber-400 dark:border-amber-700 font-bold'
+                    ? 'bg-amber-100 ring-2 ring-amber-600 dark:bg-amber-950/60 border-amber-400 dark:border-amber-700 font-bold'
                     : 'bg-white dark:bg-stone-900 border-stone-100 dark:border-stone-800 hover:border-amber-300'
                 }`}
               >

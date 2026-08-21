@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'tv', 1, '[PART] Thánh Vịnh 1
-[SECTION] Hai con đường
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'tv', 1, '[SECTION] Hai con đường
 (1) Phúc thay người chẳng nghe theo lời bọn ác nhân,
 chẳng bước vào đường quân tội lỗi,
 không nhập bọn với phường ngạo mạn kiêu căng,

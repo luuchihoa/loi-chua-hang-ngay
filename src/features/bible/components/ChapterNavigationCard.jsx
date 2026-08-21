@@ -69,7 +69,7 @@ export default function ChapterNavigationCard({
               onClick={toggleCompleted}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-xs ${
                 isCompleted
-                  ? 'bg-emerald-600 text-white shadow-emerald-900/20'
+                  ? 'theme-invariant bg-emerald-600 text-white shadow-emerald-900/20'
                   : 'bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700 hover:border-amber-400 dark:hover:border-amber-600'
               }`}
             >

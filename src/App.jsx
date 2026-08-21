@@ -9,11 +9,13 @@ import { PWAInstallProvider } from './context/PWAInstallContext.jsx';
 import InstallAppModal from './components/pwa/InstallAppModal.jsx';
 import InstallAppBanner from './components/pwa/InstallAppBanner.jsx';
 import AppRoutes from './app/AppRoutes.jsx';
+import { FeedbackProvider } from './context/FeedbackContext.jsx';
 
 export default function App() {
   return (
     <LiturgyProvider>
       <PWAInstallProvider>
+        <FeedbackProvider>
         <Router>
           <ScrollToTop />
           <div className="min-h-screen flex flex-col justify-between bg-stone-50 dark:bg-stone-950 relative">
@@ -27,8 +29,8 @@ export default function App() {
             <InstallAppModal />
           </div>
         </Router>
+        </FeedbackProvider>
       </PWAInstallProvider>
     </LiturgyProvider>
   );
 }
-

@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gs', 1, '[PART] Chương 1
-[PART] I. CHIẾM ĐẤT HỨA
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gs', 1, '[PART] I. CHIẾM ĐẤT HỨA
 [PART] 1. CHUẨN BỊ
 [SECTION] Mời gọi qua Đất Hứa
 (1) Sau khi tôi trung ĐỨC CHÚA là ông Mô-sê qua đời, ĐỨC CHÚA phán với con ông Nun là ông Giô-suê, phụ tá của ông Mô-sê: (2) “Mô-sê, tôi trung của Ta, đã chết. Vậy bây giờ, ngươi hãy trỗi dậy! Và cùng với tất cả dân này, qua sông Gio-đan, mà vào đất Ta ban cho chúng, tức là con cái Ít-ra-en. (3) Mọi nơi bàn chân các ngươi dẫm lên thì Ta đã ban cho các ngươi rồi, như Ta đã phán với Mô-sê. (4) Từ sa mạc và dãy Li-băng kia cho đến Sông Cả, nghĩa là sông Êu-phơ-rát, –tất cả xứ người Khết–, và cho đến Biển Lớn, phía mặt trời lặn: đó sẽ là lãnh thổ của các ngươi. (5) Mọi ngày đời ngươi, không ai sẽ đứng vững được trước mặt ngươi. Ta sẽ ở với ngươi như Ta đã ở với Mô-sê; Ta sẽ không bỏ rơi ngươi, Ta sẽ không ruồng bỏ ngươi.

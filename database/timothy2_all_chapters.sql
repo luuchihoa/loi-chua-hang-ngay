@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '2tm', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu và tạ ơn
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '2tm', 1, '[SECTION] Lời mở đầu và tạ ơn
 (1) Tôi là Phao-lô, Tông Đồ của Đức Ki-tô Giê-su, do ý muốn của Thiên Chúa, chiếu theo lời Thiên Chúa hứa ban sự sống vốn có trong Đức Ki-tô Giê-su, (2) gửi anh Ti-mô-thê, người con yêu dấu. Xin Thiên Chúa là Cha và xin Đức Giê-su Ki-tô, Chúa chúng ta, ban cho anh được ân sủng, lòng thương xót và sự bình an.
 (3) Tôi tạ ơn Thiên Chúa, Đấng tôi phụng thờ với lương tâm trong sạch, theo gót tổ tiên; tôi tạ ơn Người khi tôi không ngừng nhắc nhớ đến anh, trong các lời cầu nguyện của tôi, đêm cũng như ngày. (4) Nhớ đến những giọt nước mắt của anh, tôi ước ao gặp lại anh để được chan chứa niềm vui. (5) Tôi hồi tưởng lại lòng tin không giả hình của anh, lòng tin đã có nơi cụ Lô-ít, bà ngoại anh, nơi bà Êu-ni-kê, mẹ anh, cũng như chính nơi anh, tôi xác tín như vậy.
 [SECTION] Những ơn ông Ti-mô-thê đã nhận được

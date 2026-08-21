@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mk', 1, '[PART] Chương 1
-(1) Có lời ĐỨC CHÚA phán với ông Mi-kha, người Mô-re-sét, dưới thời các vua Giu-đa là Giô-tham, A-khát và Khít-ki-gia: đây là điều ông đã thấy liên quan đến Sa-ma-ri và Giê-ru-sa-lem.
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mk', 1, '(1) Có lời ĐỨC CHÚA phán với ông Mi-kha, người Mô-re-sét, dưới thời các vua Giu-đa là Giô-tham, A-khát và Khít-ki-gia: đây là điều ông đã thấy liên quan đến Sa-ma-ri và Giê-ru-sa-lem.
 [PART] I. ÍT-RA-EN BỊ KIỆN, ĐE DỌA VÀ TRỪNG PHẠT
 [SECTION] Án xử Sa-ma-ri
 (2) Hãy nghe đây, hỡi chư dân,

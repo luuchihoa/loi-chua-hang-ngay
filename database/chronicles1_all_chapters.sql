@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1sb', 1, '[PART] Chương 1
-[PART] I. DÒNG HỌ VUA ĐA-VÍT: CÁC GIA PHẢ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1sb', 1, '[PART] I. DÒNG HỌ VUA ĐA-VÍT: CÁC GIA PHẢ
 [PART] 1. TỪ A-ĐAM ĐẾN ÍT-RA-EN
 [SECTION] Gốc tích của ba nhóm
 (1) Ông A-đam, ông Sết, ông E-nốt. (2) Ông Kê-nan, ông Ma-ha-lan-ên, ông Gie-rét. (3) Ông Kha-nốc, ông Mơ-thu-se-lác, ông La-méc. (4) Ông Nô-ê, ông Sêm, ông Kham, ông Gia-phét.

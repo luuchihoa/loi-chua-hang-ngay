@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'nh', 1, '[PART] Chương 1
-(1) Lời sấm về Ni-ni-vê.
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'nh', 1, '(1) Lời sấm về Ni-ni-vê.
 Sách thị kiến của ông Na-khum, người En-cốt.
 [PART] LỜI MỞ ĐẦU
 [SECTION] Thánh vịnh – Cơn thịnh nộ của ĐỨC CHÚA

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack, X, BookOpen, Moon, Clock, Check, RotateCcw, RotateCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, SkipForward, SkipBack, X, BookOpen, Moon, Clock, Check, RotateCcw, RotateCw, ChevronLeft, ChevronRight, Flag } from 'lucide-react';
+import { useFeedback } from '../../context/FeedbackContext.jsx';
 
 /**
  * BibleAudioPlayer — Trình phát audio Kinh Thánh với Audio-Text Sync, Continuous Auto Play, Sleep Timer & MediaSession API.
@@ -22,6 +23,7 @@ export default function BibleAudioPlayer({
   onNextChapter,
   onPrevChapter,
 }) {
+  const { openFeedback } = useFeedback();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -259,6 +261,15 @@ export default function BibleAudioPlayer({
 
             {/* Quick Actions (Speed, Sleep, Mute, Close) */}
             <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => openFeedback({ category: 'audio', source: 'audio_player', reference: currentTrack.title || 'Kinh Thánh Audio', audioPositionSeconds: Math.round(currentTime) })}
+                className="min-w-[38px] h-9 rounded-xl text-stone-400 hover:text-amber-300 transition-colors cursor-pointer flex items-center justify-center"
+                title="Báo lỗi audio"
+                aria-label="Báo lỗi audio đang phát"
+              >
+                <Flag size={16} />
+              </button>
               {/* Sleep Timer Trigger */}
               <button
                 type="button"

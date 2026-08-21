@@ -4,7 +4,7 @@ import {
   BookOpen, Calendar, ChevronLeft, ChevronRight, Loader2, PlayCircle, 
   PauseCircle, CalendarDays, Copy, Share2, Check, Sparkles, Volume2, Square, ArrowUp,
   Maximize2, Minimize2, Search, X, Command, Tag, Bookmark, CalendarHeart, PenLine, Info,
-  FileText, Zap
+  FileText, Zap, RotateCcw
 } from 'lucide-react';
 import { usePageMotion } from '../hooks/usePageMotion.js';
 import { getLiturgyInfo, getLiturgicalYear, getLiturgicalColor, findDateForLiturgyKey } from '../utils/liturgyCalendar.js';
@@ -265,7 +265,7 @@ export default function LiturgyPage() {
           }}
           className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold transition-all active:scale-95 shadow-2xs border ${
             isPlayingThis
-              ? 'bg-amber-500 text-white border-amber-600 shadow-sm animate-pulse'
+              ? 'theme-invariant bg-amber-500 text-white border-amber-600 shadow-sm animate-pulse'
               : 'bg-amber-50/90 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/60 hover:bg-amber-100 dark:hover:bg-amber-900/60'
           }`}
           title={isPlayingThis ? (isPausedThis ? "Tiếp tục" : "Tạm dừng") : `Nghe riêng ${sectionTitle}`}
@@ -335,6 +335,7 @@ export default function LiturgyPage() {
   const [searching, setSearching] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [overrideLiturgyItem, setOverrideLiturgyItem] = useState(null);
+  const [dateBeforeSearch, setDateBeforeSearch] = useState(null);
   // Chỉ số kết quả đang được highlight bằng phím mũi tên (điều hướng bàn phím)
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   // Chỉ hiện "Mẹo tra cứu" cho tới khi người dùng tự đóng nó (lưu vào localStorage)
@@ -570,6 +571,11 @@ export default function LiturgyPage() {
   const handleSelectSearchResult = async (item) => {
     setIsSearchOpen(false);
     setSearchQuery('');
+    
+    // Ghi nhớ ngày người dùng đang xem trước khi nhảy sang ngày tra cứu
+    if (!dateBeforeSearch) {
+      setDateBeforeSearch(selectedDate);
+    }
     setOverrideLiturgyItem(item);
 
     // Dò tìm ngày chuẩn xác trong lịch phụng vụ tương ứng với bài đọc được chọn (chuẩn theo Cycle A, B, C)
@@ -591,6 +597,18 @@ export default function LiturgyPage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
+  };
+
+  // Thoát chế độ tra cứu và quay lại đúng ngày trước đó (hoặc hôm nay)
+  const handleExitSearchResult = () => {
+    setOverrideLiturgyItem(null);
+    if (dateBeforeSearch) {
+      setSelectedDate(dateBeforeSearch);
+      setDateBeforeSearch(null);
+    } else {
+      setSelectedDate(new Date());
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Điều hướng bàn phím trong modal tìm kiếm: ArrowUp/ArrowDown chọn kết quả,
@@ -629,6 +647,7 @@ export default function LiturgyPage() {
 
   const handleDateChange = (newDate) => {
     setOverrideLiturgyItem(null);
+    setDateBeforeSearch(null);
     setSelectedDate(newDate);
   };
 
@@ -1739,10 +1758,18 @@ export default function LiturgyPage() {
               </span>
             </div>
             <button
-              onClick={() => setOverrideLiturgyItem(null)}
-              className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs flex-shrink-0 transition-colors shadow-sm active:scale-95 cursor-pointer"
+              onClick={handleExitSearchResult}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex-shrink-0 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Quay lại ngày bạn đang xem trước khi tra cứu"
             >
-              Quay về Lễ theo Lịch
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>
+                {dateBeforeSearch
+                  ? (dateBeforeSearch.toDateString() === new Date().toDateString()
+                      ? 'Về Hôm Nay'
+                      : `Quay lại ngày ${dateBeforeSearch.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })}`)
+                  : 'Về Hôm Nay'}
+              </span>
             </button>
           </motion.div>
         )}
@@ -2398,6 +2425,7 @@ export default function LiturgyPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsSearchOpen(false)}
+              data-ui-layer="modal-backdrop"
               className="fixed inset-0 bg-stone-950/60 dark:bg-black/80 backdrop-blur-md transition-opacity"
             />
 
@@ -2412,6 +2440,7 @@ export default function LiturgyPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              data-ui-layer="modal-content"
               className="relative w-full h-[100dvh] sm:h-auto sm:max-h-[85vh] sm:max-w-2xl bg-white/95 dark:bg-stone-900/95 backdrop-blur-2xl border-0 sm:border border-stone-200/90 dark:border-stone-800/90 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden z-10"
             >
               {/* Search Header Input Bar */}

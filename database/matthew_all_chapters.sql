@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mt', 1, '[PART] Chương 1
-[PART] I. GIÁNG SINH VÀ THỜI THƠ ẤU CỦA ĐỨC GIÊ-SU
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mt', 1, '[PART] I. GIÁNG SINH VÀ THỜI THƠ ẤU CỦA ĐỨC GIÊ-SU
 [SECTION] Gia phả Đức Giê-su Ki-tô
 (1) Đây là gia phả Đức Giê-su Ki-tô, con cháu vua Đa-vít, con cháu tổ phụ Áp-ra-ham:
 (2) Ông Áp-ra-ham sinh I-xa-ác; I-xa-ác sinh Gia-cóp; Gia-cóp sinh Giu-đa và các anh em ông này; (3) Giu-đa ăn ở với Ta-ma sinh Pe-rét và De-rác; Pe-rét sinh Khét-rôn; Khét-rôn sinh A-ram; (4) A-ram sinh Am-mi-na-đáp; Am-mi-na-đáp sinh Nác-son; Nác-son sinh Xan-môn; (5) Xan-môn lấy Ra-kháp sinh Bô-át; Bô-át lấy Rút sinh Ô-vết; Ô-vết sinh Gie-sê; (6) Gie-sê sinh Đa-vít.
@@ -49,8 +48,8 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mt'
 có tâm hồn nghèo khó,
 vì Nước Trời là của họ.
 (4) Phúc thay ai hiền lành,
-[SECTION] vì họ sẽ được Đất Hứa
-[SECTION] làm gia nghiệp.
+vì họ sẽ được Đất Hứa
+làm gia nghiệp.
 (5) Phúc thay ai sầu khổ,
 vì họ sẽ được Thiên Chúa ủi an.
 (6) Phúc thay ai

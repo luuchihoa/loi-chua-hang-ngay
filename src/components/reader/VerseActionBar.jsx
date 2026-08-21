@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Bookmark, Highlighter, MessageSquare, Share2, Check, X, CheckSquare } from 'lucide-react';
+import { Bookmark, Highlighter, MessageSquare, Share2, Check, X, CheckSquare, Flag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HIGHLIGHT_COLORS } from '../../hooks/useVerseHighlight.js';
+import { useFeedback } from '../../context/FeedbackContext.jsx';
 
 export default function VerseActionBar({ 
   verseNum,
@@ -16,6 +17,7 @@ export default function VerseActionBar({
   onMultiSelect,
 }) {
   const [showHighlightPicker, setShowHighlightPicker] = useState(false);
+  const { openFeedback } = useFeedback();
 
   return (
     <AnimatePresence>
@@ -84,6 +86,17 @@ export default function VerseActionBar({
           >
             <Highlighter size={18} />
             <span className="text-[10px] font-medium hidden sm:block">Tô sáng</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => openFeedback({ category: 'content', source: 'bible_verse', reference: `Câu ${verseNum}: ${verseText?.slice(0, 80) || ''}` })}
+            className="flex flex-col items-center justify-center gap-1 min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl text-stone-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all cursor-pointer"
+            title="Báo lỗi câu này"
+            aria-label="Báo lỗi câu này"
+          >
+            <Flag size={18} />
+            <span className="text-[10px] font-medium hidden sm:block">Báo lỗi</span>
           </button>
 
           {/* Bookmark Button */}

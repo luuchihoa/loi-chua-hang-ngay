@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gd', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gd', 1, '[SECTION] Lời mở đầu
 (1) Tôi là Giu-đa, tôi tớ của Đức Giê-su Ki-tô, anh em với ông Gia-cô-bê, xin gửi lời thăm những người được kêu gọi, được Thiên Chúa là Cha yêu mến, và được dành riêng cho Đức Giê-su Ki-tô. (2) Chúc anh em được đầy tràn lòng thương xót, sự bình an và tình thương.
 [SECTION] Lý do viết thư
 (3) Anh em thân mến, tôi vẫn ước mong viết thư cho anh em về ơn cứu độ chung của chúng ta, thì nay lại bó buộc phải viết cho anh em, để khuyên nhủ anh em chiến đấu cho đức tin đã được truyền lại cho dân thánh chỉ một lần là đủ. (4) Thật vậy, có những người đã len lỏi vào, những người từ lâu đã bị ghi trước vào danh sách những kẻ bị lên án, những kẻ vô luân này đã biến ân sủng của Thiên Chúa chúng ta thành lý do biện minh cho lối sống dâm ô, họ chối bỏ Chúa chúng ta là Đức Giê-su Ki-tô, vị Chúa Tể duy nhất.

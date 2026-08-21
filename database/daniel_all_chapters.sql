@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 1, '[PART] Chương 1
-[PART] I. CÁC TRÌNH THUẬT
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 1, '[PART] I. CÁC TRÌNH THUẬT
 [PART] 1. TRẺ EM DO-THÁI TẠI TRIỀU ĐÌNH VUA NA-BU-CÔ-ĐÔ-NÔ-XO
 (1) Năm thứ ba, đời vua Giơ-hô-gia-kim cai trị xứ Giu-đa, vua xứ Ba-by-lon là Na-bu-cô-đô-nô-xo đến bao vây thành Giê-ru-sa-lem. (2) Chúa trao vua xứ Giu-đa là Giơ-hô-gia-kim cùng với tất cả đồ dùng của Nhà Chúa vào tay vua Na-bu-cô-đô-nô-xo. Ông này mang những thứ ấy về đền thờ các thần của ông ta ở xứ Sin-a và bỏ vào nhà kho của các thần.
 (3) Nhà vua truyền cho quan đứng đầu các thái giám là Át-pơ-nát chọn trong số con cái Ít-ra-en một vài đứa trẻ thuộc dòng dõi hoàng gia và hàng quý tộc mà dẫn về. (4) Những đứa trẻ này phải là những đứa không khuyết tật, diện mạo khôi ngô, đã được học mọi lẽ khôn ngoan, hiểu rộng biết nhiều, trí khôn sắc sảo, có khả năng đứng chầu trong điện vua. Ông Át-pơ-nát còn phải dạy cho chúng biết chữ viết và tiếng nói của người Can-đê. (5) Nhà vua dành cho chúng khẩu phần hằng ngày trong thức ăn rượu uống của nhà vua. Chúng phải được nuôi dạy ba năm, và sau thời hạn đó, phải ra mắt nhà vua. (6) Trong số các trẻ ấy có Đa-ni-en, Kha-na-ni-a, Mi-sa-ên và A-da-ri-a là những người Giu-đa. (7) Quan đứng đầu các thái giám đổi tên cho chúng: Đa-ni-en thành Bên-tơ-sát-xa, Kha-na-ni-a thành Sát-rác, Mi-sa-ên thành Mê-sác và A-da-ri-a thành A-vết Nơ-gô. (8) Phần Đa-ni-en, vì quyết tâm không để mình bị ô uế do thức ăn rượu uống của nhà vua, nên đã xin quan cho mình khỏi bị ô uế. (9) Chúa đã khiến cho Đa-ni-en được cảm tình của quan đứng đầu các thái giám. (10) Nhưng quan này nói với Đa-ni-en rằng: “Ta sợ đức vua; vua đã chỉ định đồ ăn thức uống cho các ngươi. Vua mà thấy mặt mũi các ngươi gầy ốm hơn các bạn cùng tuổi thì chính các ngươi sẽ khiến ta mang tội trước mặt vua.” (11) Đa-ni-en thưa với người được quan đứng đầu các thái giám chỉ định để trông coi Đa-ni-en, Kha-na-ni-a, Mi-sa-ên và A-da-ri-a: (12) “Xin quan cứ thử các tôi tớ của quan đây trong mười ngày: cứ cho chúng tôi ăn rau uống nước, (13) rồi quan nhìn sắc mặt chúng tôi và sắc mặt những đứa dùng thức ăn của nhà vua. Lúc đó quan thấy thế nào thì cứ xử với các tôi tớ của quan như vậy.” (14) Quan chấp nhận lời các cậu ấy xin và thử trong mười ngày. (15) Hết mười ngày, quan thấy các cậu sắc mặt hồng hào, da thịt đầy đặn hơn tất cả những đứa đã dùng thức ăn của nhà vua. (16) Thế là quan giám thị cất phần thức ăn rượu uống của các cậu đi và cứ cho ăn rau. (17) Bốn cậu bé này đều được Chúa ban ơn hiểu rộng biết nhiều về tất cả chữ nghĩa và lẽ khôn ngoan. Riêng Đa-ni-en còn được hiểu biết mọi thị kiến và điềm báo mộng. (18) Khi đến thời hạn phải đưa bọn trẻ ra như vua đã truyền, thì quan đứng đầu các thái giám đem chúng ra trước mặt vua Na-bu-cô-đô-nô-xo. (19) Nhà vua nói chuyện với chúng, và trong số các trẻ ấy không có đứa nào được như Đa-ni-en, Kha-na-ni-a, Mi-sa-ên và A-da-ri-a. Thế là bốn cậu này được đứng chầu vua, (20) và khi vua hỏi các cậu về bất cứ điều gì cần đến sự khôn ngoan và tài trí, thì đều thấy các cậu trổi vượt gấp mười lần hơn tất cả các thầy phù thủy và pháp sư trong toàn vương quốc. (21) Đa-ni-en ở lại đó cho đến năm thứ nhất triều vua Ky-rô.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
@@ -48,169 +47,169 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn'
 [SECTION] Thánh ca của A-da-ri-a trong lò lửa
 (24-2) Rồi giữa ngọn lửa, họ vừa đi lại, vừa ngợi khen chúc tụng Thiên Chúa. (25-2) A-da-ri-a đứng giữa đám lửa và cất tiếng cầu nguyện rằng:
 (26-2) Lạy Chúa là Thiên Chúa tổ tiên chúng con,
-[SECTION] xin chúc tụng và ca ngợi Chúa,
-[SECTION] cùng tôn vinh Danh Thánh mãi muôn đời,
+xin chúc tụng và ca ngợi Chúa,
+cùng tôn vinh Danh Thánh mãi muôn đời,
 (27-2) vì trong hết mọi việc Chúa làm cho chúng con,
-[SECTION] Chúa đã xử công minh chính trực.
-[SECTION] Mọi việc Chúa làm đều đáng cậy tin,
-[SECTION] đường lối Chúa quả là ngay thẳng,
-[SECTION] mọi phán quyết của Ngài thật công minh.
+Chúa đã xử công minh chính trực.
+Mọi việc Chúa làm đều đáng cậy tin,
+đường lối Chúa quả là ngay thẳng,
+mọi phán quyết của Ngài thật công minh.
 (28-2) Ngài đã tuyên án theo công lý,
-[SECTION] qua mọi điều Ngài bắt chúng con phải chịu,
-[SECTION] chúng con cũng như Giê-ru-sa-lem
-[SECTION] là thành thánh của cha ông chúng con.
-[SECTION] Phải, Chúa đã phán quyết thật công minh
-[SECTION] khi bắt chúng con phải chịu mọi điều ấy,
-[SECTION] bởi vì chúng con đã phạm tội.
+qua mọi điều Ngài bắt chúng con phải chịu,
+chúng con cũng như Giê-ru-sa-lem
+là thành thánh của cha ông chúng con.
+Phải, Chúa đã phán quyết thật công minh
+khi bắt chúng con phải chịu mọi điều ấy,
+bởi vì chúng con đã phạm tội.
 (29-2) Quả chúng con đã phạm tội,
-[SECTION] đã làm điều gian ác khi dám lìa xa Ngài.
-[SECTION] Trong mọi sự, chúng con đã nặng nề sai lỗi,
-[SECTION] đã chẳng tuân theo mệnh lệnh Ngài.
+đã làm điều gian ác khi dám lìa xa Ngài.
+Trong mọi sự, chúng con đã nặng nề sai lỗi,
+đã chẳng tuân theo mệnh lệnh Ngài.
 (30-2) Chúng con đã bất tuân,
-[SECTION] đã không hành động theo lệnh Ngài truyền,
-[SECTION] nên không được hưởng nhờ ơn phúc.
+đã không hành động theo lệnh Ngài truyền,
+nên không được hưởng nhờ ơn phúc.
 (31-2) Phải, mọi sự Ngài đã bắt chúng con phải chịu,
-[SECTION] mọi sự Ngài đã làm cho chúng con,
-[SECTION] Ngài đã làm tất cả thật chính trực công minh.
+mọi sự Ngài đã làm cho chúng con,
+Ngài đã làm tất cả thật chính trực công minh.
 (32-2) Ngài đã nộp chúng con vào tay bọn địch thù gian ác
-[SECTION] là những kẻ ngoại giáo ác ôn.
-[SECTION] Ngài đã nộp chúng con cho một vua bất chính
-[SECTION] xấu xa nhất trên đời.
+là những kẻ ngoại giáo ác ôn.
+Ngài đã nộp chúng con cho một vua bất chính
+xấu xa nhất trên đời.
 (33-2) Bây giờ, chúng con đâu còn dám mở miệng,
-[SECTION] vì phải cùng chịu nhục nhằn xấu hổ
-[SECTION] với những ai phục vụ và phụng thờ Ngài.
+vì phải cùng chịu nhục nhằn xấu hổ
+với những ai phục vụ và phụng thờ Ngài.
 (34-2) Ôi! Vì danh thánh Chúa, xin đừng mãi mãi bỏ rơi chúng con,
-[SECTION] đừng hủy bỏ giao ước của Ngài!
+đừng hủy bỏ giao ước của Ngài!
 (35-2) Vì tình nghĩa với bạn thân Ngài là Áp-ra-ham,
-[SECTION] với tôi tớ Ngài là I-xa-ác, và kẻ Ngài thánh hóa là Ít-ra-en,
-[SECTION] xin Ngài đừng rút lại
-[SECTION] lòng thương xót đã dành cho chúng con.
+với tôi tớ Ngài là I-xa-ác, và kẻ Ngài thánh hóa là Ít-ra-en,
+xin Ngài đừng rút lại
+lòng thương xót đã dành cho chúng con.
 (36-2) Ngài đã hứa làm cho dòng dõi họ
-[SECTION] đông đảo như sao trên bầu trời,
-[SECTION] như cát ngoài bãi biển.
+đông đảo như sao trên bầu trời,
+như cát ngoài bãi biển.
 (37-2) Thế mà hôm nay, lạy Chúa, vì tội lỗi chúng con,
-[SECTION] chúng con đã thành dân nhỏ nhất,
-[SECTION] đã nếm mùi ô nhục trên khắp hoàn cầu.
+chúng con đã thành dân nhỏ nhất,
+đã nếm mùi ô nhục trên khắp hoàn cầu.
 (38-2) Ngày nay chẳng còn vị thủ lãnh,
-[SECTION] chẳng còn bậc ngôn sứ, chẳng còn người chỉ huy.
-[SECTION] Lễ toàn thiêu, lễ hy sinh đã hết,
-[SECTION] lễ tiến, lễ hương cũng chẳng còn,
-[SECTION] chẳng còn nơi dâng của đầu mùa lên Chúa
-[SECTION] để chúng con được Chúa xót thương.
+chẳng còn bậc ngôn sứ, chẳng còn người chỉ huy.
+Lễ toàn thiêu, lễ hy sinh đã hết,
+lễ tiến, lễ hương cũng chẳng còn,
+chẳng còn nơi dâng của đầu mùa lên Chúa
+để chúng con được Chúa xót thương.
 (39-2) Nhưng xin nhận tâm hồn thống hối
-[SECTION] và tinh thần khiêm nhượng của chúng con,
-[SECTION] thay của lễ toàn thiêu chiên bò, và ngàn vạn cừu non béo tốt.
+và tinh thần khiêm nhượng của chúng con,
+thay của lễ toàn thiêu chiên bò, và ngàn vạn cừu non béo tốt.
 (40-2) Ước gì hy lễ chúng con thượng tiến Ngài hôm nay
-[SECTION] cũng làm đẹp ý Ngài như vậy.
-[SECTION] Ước gì chúng con theo Ngài mãi đến cùng,
-[SECTION] vì những ai tin cậy vào Ngài, đâu có phải ê chề thất vọng.
+cũng làm đẹp ý Ngài như vậy.
+Ước gì chúng con theo Ngài mãi đến cùng,
+vì những ai tin cậy vào Ngài, đâu có phải ê chề thất vọng.
 (41-2) Và giờ đây, chúng con hết lòng đi theo Chúa,
-[SECTION] kính sợ Ngài và tìm kiếm Thánh Nhan.
-[SECTION] Xin đừng để chúng con phải thẹn thùng xấu hổ.
+kính sợ Ngài và tìm kiếm Thánh Nhan.
+Xin đừng để chúng con phải thẹn thùng xấu hổ.
 (42-2) Nhưng xin Ngài tỏ lòng nhân hậu
-[SECTION] và lòng thương xót vô biên của Ngài
-[SECTION] khi Ngài đối xử với chúng con.
+và lòng thương xót vô biên của Ngài
+khi Ngài đối xử với chúng con.
 (43-2) Xin làm những việc lạ lùng kỳ diệu
-[SECTION] mà giải thoát chúng con
-[SECTION] và tôn vinh danh Ngài, lạy Chúa.
+mà giải thoát chúng con
+và tôn vinh danh Ngài, lạy Chúa.
 (44-2) Ước gì những kẻ gây tai họa cho các tôi tớ Ngài
-[SECTION] phải bẽ mặt hổ ngươi.
-[SECTION] Ước gì chúng phải xấu hổ thẹn thùng,
-[SECTION] mất hết mọi uy thế và quyền thống trị,
-[SECTION] và ước gì sức mạnh của chúng bị đập tan.
+phải bẽ mặt hổ ngươi.
+Ước gì chúng phải xấu hổ thẹn thùng,
+mất hết mọi uy thế và quyền thống trị,
+và ước gì sức mạnh của chúng bị đập tan.
 (45-2) Ước gì chúng nhận biết Ngài chính là Chúa Tể,
-[SECTION] là Thiên Chúa duy nhất quang vinh trên khắp cõi trần gian.
+là Thiên Chúa duy nhất quang vinh trên khắp cõi trần gian.
 (46-2) Sau khi quăng ba thanh niên vào lò, các thuộc hạ của vua không ngừng đốt lò bằng dầu, nhựa, xơ gai và cành nho. (47-2) Ngọn lửa bốc lên trên lò hai mươi bốn thước rưỡi, (48-2) rồi lan ra, đốt cháy những người Can-đê đứng xung quanh lò. (49-2) Nhưng thiên sứ của ĐỨC CHÚA trước đây đã xuống trong lò cùng lúc với A-da-ri-a và các bạn, nay đẩy ngọn lửa ra khỏi lò. (50-2) Thiên sứ làm cho trung tâm lò thành nơi mát mẻ như có một làn gió nhẹ rì rào, khiến cho lửa không hề đụng tới họ và chẳng gây phiền hà đau đớn gì cho họ cả.
 [SECTION] Thánh ca của ba thanh niên trong lò lửa
 (51-2) Bấy giờ trong lò lửa, cả ba người đều đồng thanh ca ngợi, tôn vinh và chúc tụng Thiên Chúa rằng:
 (52-2) “Lạy Chúa, chúc tụng Ngài
-[SECTION] là Thiên Chúa tổ tiên chúng con,
-[SECTION] xin dâng lời khen ngợi suy tôn muôn đời.
-[SECTION] Chúc tụng danh thánh Ngài vinh hiển,
-[SECTION] xin dâng lời khen ngợi suy tôn muôn đời.
+là Thiên Chúa tổ tiên chúng con,
+xin dâng lời khen ngợi suy tôn muôn đời.
+Chúc tụng danh thánh Ngài vinh hiển,
+xin dâng lời khen ngợi suy tôn muôn đời.
 (53-2) Chúc tụng Chúa trong thánh điện vinh quang,
-[SECTION] xin dâng lời ca tụng tôn vinh muôn đời.
+xin dâng lời ca tụng tôn vinh muôn đời.
 (54-2) Chúc tụng Chúa trên ngôi báu cửu trùng,
-[SECTION] xin dâng lời ca tụng suy tôn muôn đời.
+xin dâng lời ca tụng suy tôn muôn đời.
 (55-2) Chúc tụng Chúa, Đấng ngự trên các Kê-ru-bim
-[SECTION] mà thấu nhìn vực thẳm,
-[SECTION] xin dâng lời khen ngợi suy tôn muôn đời.
+mà thấu nhìn vực thẳm,
+xin dâng lời khen ngợi suy tôn muôn đời.
 (56-2) Chúc tụng Chúa trên vòm trời tận chốn cao xanh,
-[SECTION] xin dâng lời ca tụng tôn vinh muôn đời.
+xin dâng lời ca tụng tôn vinh muôn đời.
 (57-2) Chúc tụng Chúa đi, mọi công trình của Chúa,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (58-2) Chúc tụng Chúa đi, các thiên sứ của Người,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (59-2) Chúc tụng Chúa đi, chín tầng trời thăm thẳm,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (60-2) Chúc tụng Chúa đi, nguồn nước tận cao xanh,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (61-2) Chúc tụng Chúa đi, mọi cơ binh thượng giới,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (62-2) Chúc tụng Chúa đi, mặt trời với mặt trăng,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (63-2) Chúc tụng Chúa đi, hỡi tinh tú trên trời,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (64-2) Chúc tụng Chúa đi, nào mưa sương tất cả,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (65-2) Chúc tụng Chúa đi, mọi luồng gió cơn dông,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (66-2) Chúc tụng Chúa đi, sức nóng với lửa hồng,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (67-2) Chúc tụng Chúa đi, trời nồng và khí lạnh,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (68-2) Chúc tụng Chúa đi, nào sương đọng mưa tuôn,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (69-2) Chúc tụng Chúa đi, kìa thời đông tiết giá,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (70-2) Chúc tụng Chúa đi, này băng phủ tuyết rơi,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (71-2) Chúc tụng Chúa đi, hỡi đêm ngày đắp đổi,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (72-2) Chúc tụng Chúa đi, ánh sáng và bóng tối,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (73-2) Chúc tụng Chúa đi, chớp giật với mây trôi,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (74-2) Chúc tụng Chúa đi, tất cả mười phương đất,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (75-2) Chúc tụng Chúa đi, này đồi xanh núi biếc,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (76-2) Chúc tụng Chúa đi, kìa hoa lá cỏ cây,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (77-2) Chúc tụng Chúa đi, hỡi suối nước tràn đầy,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (78-2) Chúc tụng Chúa đi, nào sông sâu biển cả,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (79-2) Chúc tụng Chúa đi, kình ngư cùng thủy tộc,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (80-2) Chúc tụng Chúa đi, hết mọi loài chim chóc,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (81-2) Chúc tụng Chúa đi, gia súc lẫn thú rừng,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (82-2) Chúc tụng Chúa đi, hỡi phàm nhân dương thế,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (83-2) Chúc tụng Chúa đi, dòng dõi Ít-ra-en,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (84-2) Chúc tụng Chúa đi, tư tế phụng thờ Chúa,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (85-2) Chúc tụng Chúa đi, tôi tớ phục vụ Người,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (86-2) Chúc tụng Chúa đi, hồn thiêng hàng công chính,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (87-2) Chúc tụng Chúa đi, người thánh kẻ khiêm nhường,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
+muôn ngàn đời, hãy ca tụng suy tôn.
 (88-2) Chúc tụng Chúa đi, này Kha-na-ni-a,
-[SECTION] A-da-ri-a và Mi-sa-ên hỡi,
-[SECTION] muôn ngàn đời, hãy ca tụng suy tôn.
-[SECTION] Vì Người đã kéo ta ra khỏi âm phủ, đã cứu ta khỏi tay tử thần,
-[SECTION] và đã giải thoát ta khỏi lò lửa nóng bừng,
-[SECTION] khỏi lửa hồng đốt cháy.
+A-da-ri-a và Mi-sa-ên hỡi,
+muôn ngàn đời, hãy ca tụng suy tôn.
+Vì Người đã kéo ta ra khỏi âm phủ, đã cứu ta khỏi tay tử thần,
+và đã giải thoát ta khỏi lò lửa nóng bừng,
+khỏi lửa hồng đốt cháy.
 (89-2) Hãy tạ ơn Chúa vì Chúa nhân từ,
-[SECTION] muôn ngàn đời Chúa vẫn trọn tình thương.
+muôn ngàn đời Chúa vẫn trọn tình thương.
 (90-2) Hỡi tất cả những ai kính sợ Chúa,
-[SECTION] hãy chúc tụng Chúa là Thần các thần,
-[SECTION] hãy dâng lời tạ ơn và ca tụng,
-[SECTION] vì muôn ngàn đời Chúa vẫn trọn tình thương.”
+hãy chúc tụng Chúa là Thần các thần,
+hãy dâng lời tạ ơn và ca tụng,
+vì muôn ngàn đời Chúa vẫn trọn tình thương.”
 [SECTION] Vua nhìn nhận phép lạ
 (24) Vua Na-bu-cô-đô-nô-xo ngạc nhiên đứng bật dậy và cất tiếng nói với các quan cố vấn: “Chẳng phải chúng ta đã quăng ba người bị trói vào lửa sao?” Họ đáp rằng: “Tâu đức vua, đúng thế!” (25) Vua cất tiếng nói: “Nhưng ta thấy có bốn người đang tự do đi lại trong lò lửa mà không hề hấn gì, và dáng vẻ người thứ tư giống như con của thần minh.” (26) Bấy giờ vua Na-bu-cô-đô-nô-xo tới gần cửa lò đang cháy phừng phực, vua lên tiếng nói: “Hỡi Sát-rác, Mê-sác và A-vết Nơ-gô là tôi tớ của Thiên Chúa Tối Cao, hãy bước ra và tới đây.” Sát-rác, Mê-sác và A-vết Nơ-gô liền bước ra khỏi lò lửa. (27) Các thống đốc, thủ lãnh, tổng trấn và các cận thần của nhà vua xúm lại xem những người này, thấy lửa không làm gì được thân thể họ, sợi tóc trên đầu họ cũng không bị cháy sém, áo xống không hư hại, thậm chí mùi lửa cũng không bám vào họ. (28) Vua Na-bu-cô-đô-nô-xo cất tiếng nói: “Chúc tụng Thiên Chúa của Sát-rác, Mê-sác và A-vết Nơ-gô, Người đã sai thiên sứ đến giải thoát các tôi tớ của Người là những kẻ đã tin tưởng vào Người. Họ đã cưỡng lại lời vua, hy sinh tính mạng để khỏi phụng sự và thờ lạy một thần nào khác ngoài Thiên Chúa của họ. (29) Vậy ta truyền rằng bất cứ người nào thuộc bất cứ dân tộc, giống nòi, ngôn ngữ nào dám nói điều gì sai quấy, phạm đến Thiên Chúa của Sát-rác, Mê-sác và A-vết Nơ-gô, sẽ bị xử lăng trì, và nhà chúng sẽ trở thành đống bùn, bởi vì không có thần nào khác có thể cứu được như thế.” (30) Rồi vua thăng chức cho Sát-rác, Mê-sác và A-vết Nơ-gô trong tỉnh Ba-by-lon.
 [PART] 4. ĐIỀM BÁO MỘNG VÀ CƠN ĐIÊN CỦA VUA NA-BU-CÔ-ĐÔ-NÔ-XO
@@ -531,6 +530,7 @@ cho đến khi lệnh tiêu hủy
 giáng xuống kẻ tàn phá.”') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn', 10, '[PART] 4. THỊ KIẾN LỚN
+[PART] A. THỜI THỊNH NỘ
 [SECTION] Thị kiến về người mặc áo vải gai
 (1) Năm thứ ba đời vua Ky-rô nước Ba-tư, có lời mặc khải cho ông Đa-ni-en cũng gọi là Bên-tơ-sát-xa: đó là lời chân thật loan báo một cuộc chiến lớn. Ông đã hiểu lời ấy; ông đã được ơn am hiểu như vậy là nhờ thị kiến.
 (2) Trong những ngày ấy, tôi là Đa-ni-en, đã ăn chay đền tội suốt ba tuần như thể chịu tang: (3) tôi không ăn đồ cao lương mỹ vị; thịt và rượu, tôi không hề nếm chút nào; tôi cũng chẳng xức dầu thơm trong suốt ba tuần đó. (4) Ngày hai mươi bốn tháng giêng, đang ở ven sông Cả, tức là sông Tích-ra, (5) tôi ngước mắt nhìn lên, thì này:
@@ -561,6 +561,7 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dn'
 (27) Cả hai vua đều tính chuyện gian ác trong lòng, nên tuy đồng bàn, họ cứ nói những lời dối trá với nhau. Nhưng chuyện đó sẽ không thành, vì còn phải chờ thời cùng tận vào lúc ấn định. (28) Vua Phương Bắc sẽ trở về xứ, mang theo một tài sản lớn, nhưng lòng y thì chống lại Giao Ước thánh. Y tung hoành, rồi trở về xứ. (29) Đến thời đến buổi, y sẽ trở lại Phương Nam. Nhưng thời cuối sẽ không như thời đầu. (30) Tàu bè từ Kít-tim sẽ đến tấn công y. Y sẽ hoảng sợ, quay trở về và giận dữ chống lại Giao Ước thánh. Y sẽ tung hoành và một lần nữa lại thông đồng với những kẻ bỏ Giao Ước thánh.
 (31) Các lực lượng do y gửi đi sẽ xuất hiện và xúc phạm đến thánh điện vốn là thành trì kiên cố. Ở đó chúng sẽ bãi bỏ lễ tế thường tiến và đặt đồ ghê tởm khốc hại. (32) Những kẻ lơ là với Giao Ước thì bị y dùng xảo kế mà làm cho ra ô uế. Còn những con dân nhận biết Thiên Chúa của mình thì sẽ vững mạnh và ra tay hành động. (33) Những kẻ hiểu biết trong dân sẽ dạy dỗ nhiều người; nhưng họ sẽ ngã gục vì gươm đâm lửa đốt, sẽ bị đày ải, bị cướp bóc trong một thời gian. (34) Khi họ ngã gục, những kẻ đến trợ giúp họ thì ít, còn những kẻ liên kết với họ vì xảo quyệt thì nhiều. (35) Trong hàng những người hiểu biết, một số sẽ ngã gục để có những người được thử bằng lửa, được thanh luyện và tẩy trắng, cho đến thời cùng tận, vì còn phải chờ lúc đã ấn định.
 (36) Vua này sẽ mặc sức hoành hành, sẽ tự cao tự đại, tôn mình lên trên hết các thần. Y sẽ nói những điều kỳ quặc chống lại Thiên Chúa của chư thần. Y sẽ thành công cho đến khi thời thịnh nộ chấm dứt, vì điều đã quyết ắt sẽ thành. (37) Y sẽ không coi trọng các thần của tổ tiên, cũng như thần mà nữ giới sùng mộ, cũng không coi trọng bất cứ thần nào khác, vì y tôn mình lên trên hết tất cả. (38) Thay vào đó, y tôn kính thần của các thành trì kiên cố; thần mà tổ tiên y không biết đến, thì y lại dùng vàng bạc, đá quý và báu vật mà tôn kính. (39) Y sẽ củng cố các thành trì nhờ sự trợ giúp của thần xa lạ. Ai nhìn nhận thần đó thì y cho hưởng vinh hoa phú quý. Y đặt họ cai trị nhiều người và phân chia đất đai cho họ để thưởng công.
+[PART] B. THỜI CÙNG TẬN
 [SECTION] Ngày tận số của kẻ bách hại
 (40) “Đến thời cùng tận, vua Phương Nam sẽ chiến đấu chống lại tên bỉ ổi ấy. Vua Phương Bắc sẽ xông vào y như vũ bão cùng với chiến xa, kỵ binh và đông đảo tàu bè. Nhưng y sẽ kéo quân đến các nước, tràn ngập tất cả như thác lũ. (41) Y sẽ đến Xứ Huy Hoàng, và nhiều người sẽ ngã gục. Nhưng sẽ có những người thoát khỏi tay y, đó là người Ê-đôm, người Mô-áp và các phần tử ưu tú trong số con cái Am-mon. (42) Y sẽ tra tay hại các nước, ngay Ai-cập cũng không thoát khỏi. (43) Y sẽ chiếm lấy các kho vàng bạc và mọi đồ có giá của Ai-cập. Dân Li-by-a và dân Cút sẽ đi theo y. (44) Nhưng các tin đồn từ phương đông và phương bắc sẽ làm y khiếp sợ. Y giận dữ lên đường để tàn sát, hủy diệt nhiều sinh mạng. (45) Y sẽ dựng lều tại bản doanh trong một vùng nằm giữa biển và núi thánh của Xứ Huy Hoàng. Nhưng ngày tận số của y đã tới rồi mà chẳng có ai cứu giúp.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 

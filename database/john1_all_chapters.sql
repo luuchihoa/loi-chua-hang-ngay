@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1ga', 1, '[PART] Chương 1
-[PART] LỜI DẪN NHẬP
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1ga', 1, '[PART] LỜI DẪN NHẬP
 [SECTION] Ngôi Lời nhập thể và sự hiệp thông với Chúa Cha và Chúa Con
 (1) Điều vẫn có ngay từ lúc khởi đầu,
 điều chúng tôi đã nghe,

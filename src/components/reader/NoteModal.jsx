@@ -30,12 +30,14 @@ export default function NoteModal({ isOpen, onClose, verseNum, initialNote, onSa
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
+            data-ui-layer="modal-backdrop"
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            data-ui-layer="modal-content"
             className="relative w-full max-w-lg bg-white dark:bg-stone-900 rounded-3xl shadow-2xl border border-stone-200 dark:border-stone-800 overflow-hidden flex flex-col max-h-[80vh]"
           >
             <div className="flex items-center justify-between p-4 border-b border-stone-200 dark:border-stone-800">

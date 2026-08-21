@@ -1,6 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cn', 1, 'Nguyên văn theo Kinh Thánh Công Giáo, bản dịch của Nhóm Các Giờ Kinh Phụng Vụ. Phần audio do Giu-se Định và Ma-ri-a Kim Hồi, cùng các anh chị em thanhlinh.net thực hiện.
-[PART] Chương 1
-[PART] ĐỀ TỰA TỔNG QUÁT
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cn', 1, '[PART] ĐỀ TỰA TỔNG QUÁT
 (1) Đây là những châm ngôn của Sa-lô-môn, ông là con vua Đa-vít và là vua Ít-ra-en.
 (2) Các châm ngôn này nhằm giúp con người
 biết lẽ khôn ngoan và nhận lời nghiêm huấn,

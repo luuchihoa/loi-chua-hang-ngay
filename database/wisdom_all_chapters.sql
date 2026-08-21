@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'kn', 1, '[PART] Chương 1
-[PART] I. ĐỨC KHÔN NGOAN VÀ SỐ PHẬN CON NGƯỜI
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'kn', 1, '[PART] I. ĐỨC KHÔN NGOAN VÀ SỐ PHẬN CON NGƯỜI
 [SECTION] Tìm kiếm Thiên Chúa và tránh xa tội lỗi
 (1) Hãy yêu chuộng đức công chính,
 hỡi những người cai trị trần gian,

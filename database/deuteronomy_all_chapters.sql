@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dnl', 1, '[PART] Chương 1
-[PART] I. NHỮNG DIỄN TỪ MỞ ĐẦU
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dnl', 1, '[PART] I. NHỮNG DIỄN TỪ MỞ ĐẦU
 [PART] DIỄN TỪ THỨ NHẤT CỦA ÔNG MÔ-SÊ
 [SECTION] Khung cảnh thời gian và không gian
 (1) Đây là những lời ông Mô-sê nói với toàn thể Ít-ra-en, ở bên kia sông Gio-đan, trong sa mạc, trong thung lũng A-ra-va, đối diện với Xúp, giữa Pa-ran, Tô-phen, La-van, Kha-xê-rốt và Đi Da-háp. (2) Từ núi Khô-rếp đến Ca-đê Bác-nê-a, qua đường núi Xê-ia, là mười một ngày đường. (3) Năm thứ bốn mươi, tháng thứ mười một, ngày thứ nhất trong tháng, ông Mô-sê nói với con cái Ít-ra-en, chiếu theo tất cả những gì ĐỨC CHÚA đã truyền cho ông nói với họ. (4) Ông đã đánh bại Xi-khôn, vua người E-mô-ri, đóng đô ở Khét-bôn, và tại Ét-re-i, đã đánh bại Ốc, vua miền Ba-san, đóng đô ở Át-ta-rốt. (5) Sau đó, ở bên kia sông Gio-đan, trong đất Mô-áp, ông Mô-sê bắt đầu trình bày luật sau đây. Ông nói:

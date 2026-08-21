@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dc', 1, '[PART] Chương 1
-[PART] ĐỀ SÁCH VÀ LỜI TỰA
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dc', 1, '[PART] ĐỀ SÁCH VÀ LỜI TỰA
 (1) Bài ca tuyệt diệu của Sa-lô-môn.
 [SECTION] NÀNG
 (2) Ước gì chàng hôn ta những nụ hôn chính môi miệng chàng!

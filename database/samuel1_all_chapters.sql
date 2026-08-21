@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1sm', 1, '[PART] Chương 1
-[PART] I. ÔNG SA-MU-EN
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1sm', 1, '[PART] I. ÔNG SA-MU-EN
 [PART] 1. THỜI THƠ ẤU CỦA ÔNG SA-MU-EN
 [SECTION] Hành hương Si-lô
 (1) Có một người quê thành Ra-ma-tha-gim Xô-phim, thuộc miền núi Ép-ra-im, tên là En-ca-na, con ông Giơ-rô-kham; ông Giơ-rô-kham là con ông Ê-li-hu, ông Ê-li-hu là con ông Tô-khu, ông Tô-khu là con ông Xúp, người Ép-ra-tha. (2) Người ấy có hai vợ, một bà tên là An-na, một bà tên là Pơ-nin-na. Bà Pơ-nin-na có con, còn bà An-na không có con. (3) Hằng năm, người ấy từ thành mình lên thờ lạy và dâng hy lễ cho ĐỨC CHÚA các đạo binh tại Si-lô. Ở đó có hai con trai ông Ê-li là Khóp-ni và Pin-khát làm tư tế của ĐỨC CHÚA.

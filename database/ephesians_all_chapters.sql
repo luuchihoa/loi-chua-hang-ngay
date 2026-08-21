@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ep', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ep', 1, '[SECTION] Lời mở đầu
 (1) Tôi là Phao-lô, bởi ý Thiên Chúa được làm Tông Đồ của Đức Ki-tô Giê-su, kính gửi dân thánh tại Ê-phê-xô, là những người tin vào Đức Ki-tô Giê-su. (2) Xin Thiên Chúa là Cha chúng ta, và xin Chúa Giê-su Ki-tô ban cho anh em ân sủng và bình an.
 [PART] I. MẦU NHIỆM CỨU ĐỘ: ĐỨC KI-TÔ VÀ HỘI THÁNH
 [SECTION] Kế hoạch cứu độ của Thiên Chúa

@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ge', 1, '[PART] Chương 1
-[PART] TỰA ĐỀ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ge', 1, '[PART] TỰA ĐỀ
 (1) Lời ĐỨC CHÚA ngỏ với ông Giô-en, con ông Pơ-thu-ên.
 [PART] I. NẠN CHÂU CHẤU
 [PART] 1. TOÀN DÂN SÁM HỐI VÀ CẦU KHẨN

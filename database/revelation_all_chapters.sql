@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'kh', 1, '[PART] Chương 1
-[SECTION] Lời tựa
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'kh', 1, '[SECTION] Lời tựa
 (1) Mặc khải của Đức Giê-su Ki-tô, mặc khải mà Thiên Chúa đã ban cho Người, để Người tỏ cho các tôi tớ Người biết những việc sắp phải xảy đến. Người đã sai thiên thần của Người đến báo cho ông Gio-an là tôi tớ của Người biết mặc khải đó. (2) Ông Gio-an đã làm chứng về lời của Thiên Chúa và về lời chứng của Đức Giê-su Ki-tô, về những gì ông đã thấy. (3) Phúc thay người đọc, phúc thay những ai nghe những sấm ngôn đó và tuân giữ các điều chép trong đó, vì thời giờ đã gần đến!
 [PART] I. THƯ GỬI CÁC HỘI THÁNH A-XI-A
 [SECTION] Lời mở đầu
@@ -29,8 +28,8 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'kh'
 [PART] 1. CHUẨN BỊ “NGÀY LỚN LAO” CỦA THIÊN CHÚA
 [SECTION] Thiên Chúa trao vận mệnh thế giới cho Con Chiên
 (1) Sau đó, tôi được một thị kiến. Kìa một cái cửa mở ra ở trên trời, và tiếng mà trước đây tôi nghe nói với tôi như thể tiếng kèn, bảo tôi rằng: “Lên đây, Ta sẽ chỉ cho ngươi thấy những điều phải xảy ra sau đó.” (2) Lập tức tôi xuất thần. Kìa một cái ngai đặt ở trên trời và có một Đấng ngự trên ngai. (3) Đấng ngự đó trông giống như ngọc thạch và xích não. Chung quanh ngai có cầu vồng trông giống như bích ngọc. (4) Chung quanh ngai có hai mươi bốn ngai khác, và trên những ngai đó có hai mươi bốn vị Kỳ Mục; các vị đang ngồi, mình mặc áo trắng, đầu đội triều thiên vàng. (5) Từ ngai phát ra ánh chớp, tiếng sấm tiếng sét. Bảy ngọn đuốc, tức là bảy thần khí của Thiên Chúa cháy sáng trước ngai. (6) Trước ngai có cái gì như biển trong vắt tựa pha lê. Ở giữa ngai và chung quanh ngai có bốn Con Vật, đằng trước và đằng sau đầy những mắt. (7) Con Vật thứ nhất giống như sư tử, Con Vật thứ hai giống như bò tơ, Con Vật thứ ba có mặt như mặt người, Con Vật thứ bốn giống như đại bàng đang bay. (8) Bốn Con Vật ấy, mỗi con có sáu cánh, chung quanh và bên trong đầy những mắt. Ngày đêm chúng không ngừng hô lên rằng:
-[SECTION] Thánh! Thánh! Chí Thánh!
-[SECTION] Đức Chúa, Thiên Chúa toàn năng,
+Thánh! Thánh! Chí Thánh!
+Đức Chúa, Thiên Chúa toàn năng,
 Đấng đã có, hiện có và đang đến!
 (9) Mỗi khi những Con Vật ấy kính dâng vinh quang, danh dự và lời tạ ơn lên Đấng ngự trên ngai, Đấng hằng sống đến muôn thuở muôn đời, (10) thì hai mươi bốn vị Kỳ Mục phủ phục xuống trước mặt Đấng ngự trên ngai mà thờ lạy Người, Đấng hằng sống đến muôn thuở muôn đời, rồi đặt triều thiên của mình xuống trước ngai mà nói:
 (11) “Lạy Chúa

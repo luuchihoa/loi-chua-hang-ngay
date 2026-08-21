@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gdt', 1, '[PART] Chương 1
-[PART] I. CUỘC VIỄN CHINH CỦA HÔ-LÔ-PHÉC-NÊ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'gdt', 1, '[PART] I. CUỘC VIỄN CHINH CỦA HÔ-LÔ-PHÉC-NÊ
 [SECTION] Na-bu-cô-đô-nô-xo và Ắc-phắc-xát
 (1) Năm thứ mười hai triều đại vua Na-bu-cô-đô-nô-xo cai trị người Át-sua ở Ni-ni-vê, một thành phố lớn, là lúc vua Ắc-phắc-xát cai trị người Mê-đi ở Éc-ba-tan. (2) Ông Ắc-phắc-xát dùng loại đá đẽo rộng một thước rưỡi, dài ba thước xây một thành lũy chung quanh Éc-ba-tan. Ông làm tường thành cao ba mươi lăm thước và dài hai mươi lăm thước. (3) Tại các cổng thành, ông cũng dựng các tháp cao năm mươi thước đặt trên nền móng rộng ba mươi thước. (4) Ông làm các cổng thành, mỗi cổng cao ba mươi lăm thước và rộng hai mươi thước để các đạo quân hùng mạnh xuất trận và bộ binh diễu hành.
 (5) Trong những ngày ấy, vua Na-bu-cô-đô-nô-xo giao chiến với vua Ắc-phắc-xát tại đồng bằng rộng lớn, tức đồng bằng thuộc lãnh thổ Ra-gao. (6) Tất cả dân cư miền núi, tất cả dân cư ở Êu-phơ-rát, Tích-ra, Hy-đát-pê và đồng bằng thuộc quyền A-ri-ốc, vua người Ê-ly-mai đều về phe với ông. Cũng có rất nhiều sắc tộc kéo đến tham chiến với con cái Khe-le-út.

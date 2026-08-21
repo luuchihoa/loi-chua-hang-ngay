@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '2pr', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '2pr', 1, '[SECTION] Lời mở đầu
 (1) Tôi là Si-mê-ôn Phê-rô, tôi tớ và Tông Đồ của Đức Giê-su Ki-tô, kính gửi những người, nhờ sự công chính của Đức Giê-su Ki-tô là Thiên Chúa và là Đấng cứu độ chúng ta, cũng đã lãnh nhận một đức tin quý giá như chúng tôi. (2) Chúc anh em được đầy tràn ân sủng và bình an, nhờ được biết Thiên Chúa và Đức Giê-su, Chúa chúng ta.
 [SECTION] Lòng rộng rãi của Thiên Chúa
 (3) Thật vậy, Đức Ki-tô đã lấy thần lực của Người mà ban tặng chúng ta tất cả những gì giúp chúng ta được sống và sống đạo đức, khi Người cho chúng ta biết Đấng đã dùng vinh quang và sức mạnh của mình mà kêu gọi chúng ta. (4) Nhờ vinh quang và sức mạnh ấy, Thiên Chúa đã ban tặng chúng ta những gì rất quý báu và trọng đại Người đã hứa, để nhờ đó, anh em được thông phần bản tính Thiên Chúa, sau khi đã thoát khỏi cảnh hư đốn do dục vọng gây ra trong trần gian.

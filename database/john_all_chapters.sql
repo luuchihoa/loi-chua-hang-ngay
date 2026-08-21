@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ga', 1, '[PART] Chương 1
-[PART] I. LỜI TỰA
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ga', 1, '[PART] I. LỜI TỰA
 (1) Lúc khởi đầu đã có Ngôi Lời.
 Ngôi Lời vẫn hướng về Thiên Chúa,
 và Ngôi Lời là Thiên Chúa.
@@ -50,6 +49,7 @@ và là Đấng hằng ở nơi cung lòng Chúa Cha,
 chính Người đã tỏ cho chúng ta biết.
 [PART] II. SỨ VỤ CỦA ĐỨC GIÊ-SU
 [PART] 1. LOAN BÁO NHIỆM CỤC MỚI
+[PART] A. TUẦN LỄ KHAI MẠC
 [SECTION] Lời chứng của ông Gio-an
 (19) Và đây là lời chứng của ông Gio-an, khi người Do-thái từ Giê-ru-sa-lem cử một số tư tế và mấy thầy Lê-vi đến hỏi ông: “Ông là ai?” (20) Ông tuyên bố thẳng thắn, ông tuyên bố rằng: “Tôi không phải là Đấng Ki-tô.” (21) Họ lại hỏi ông: “Vậy thì thế nào? Ông có phải là ông Ê-li-a không?” Ông nói: “Không phải.” – “Ông có phải là vị ngôn sứ chăng?” Ông đáp: “Không.” (22) Họ liền nói với ông: “Thế ông là ai, để chúng tôi còn trả lời cho những người đã cử chúng tôi đến? Ông nói gì về chính ông?” (23) Ông nói: Tôi là tiếng người hô trong hoang địa: Hãy sửa đường cho thẳng để Đức Chúa đi, như ngôn sứ I-sai-a đã nói. (24) Trong nhóm được cử đi, có mấy người thuộc phái Pha-ri-sêu. (25) Họ hỏi ông: “Vậy tại sao ông làm phép rửa, nếu ông không phải là Đấng Ki-tô, cũng không phải là ông Ê-li-a hay vị ngôn sứ?” (26) Ông Gio-an trả lời: “Tôi đây làm phép rửa trong nước. Nhưng có một vị đang ở giữa các ông mà các ông không biết. (27) Người sẽ đến sau tôi và tôi không đáng cởi quai dép cho Người.” (28) Các việc đó đã xảy ra tại Bê-ta-ni-a, bên kia sông Gio-đan, nơi ông Gio-an làm phép rửa.
 (29) Hôm sau, ông Gio-an thấy Đức Giê-su tiến về phía mình, liền nói: “Đây là Chiên Thiên Chúa, đây Đấng xóa bỏ tội trần gian. (30) Chính Người là Đấng tôi đã nói tới khi bảo rằng: Có người đến sau tôi, nhưng trổi hơn tôi, vì có trước tôi.
@@ -63,6 +63,7 @@ chính Người đã tỏ cho chúng ta biết.
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ga', 2, '[SECTION] Tiệc cưới Ca-na
 (1) Ngày thứ ba, có tiệc cưới tại Ca-na miền Ga-li-lê. Trong tiệc cưới có thân mẫu Đức Giê-su. (2) Đức Giê-su và các môn đệ cũng được mời tham dự. (3) Khi thấy thiếu rượu, thân mẫu Đức Giê-su nói với Người: “Họ hết rượu rồi.” (4) Đức Giê-su đáp: “Thưa bà, chuyện đó can gì đến bà và tôi? Giờ của tôi chưa đến.” (5) Thân mẫu Người nói với gia nhân: “Người bảo gì, các anh cứ việc làm theo.”
 (6) Ở đó có đặt sáu chum đá dùng vào việc thanh tẩy theo thói tục người Do-thái, mỗi chum chứa được khoảng tám mươi hoặc một trăm hai mươi lít nước. (7) Đức Giê-su bảo họ: “Các anh đổ đầy nước vào chum đi!” Và họ đổ đầy tới miệng. (8) Rồi Người nói với họ: “Bây giờ các anh múc và đem cho ông quản tiệc.” Họ liền đem cho ông. (9) Khi người quản tiệc nếm thử nước đã hóa thành rượu (mà không biết rượu từ đâu ra, còn gia nhân đã múc nước thì biết), ông mới gọi tân lang lại (10) và nói: “Ai ai cũng thết rượu ngon trước, và khi khách đã ngà ngà mới đãi rượu xoàng hơn. Còn anh, anh lại giữ rượu ngon mãi cho đến bây giờ.” (11) Đức Giê-su đã làm dấu lạ đầu tiên này tại Ca-na miền Ga-li-lê và bày tỏ vinh quang của Người. Các môn đệ đã tin vào Người. (12) Sau đó, Người cùng với thân mẫu, anh em và các môn đệ xuống Ca-phác-na-um và ở lại đó ít ngày.
+[PART] B. LỄ VƯỢT QUA THỨ NHẤT
 [SECTION] Đức Giê-su tẩy uế Đền Thờ
 (13) Gần đến lễ Vượt Qua của người Do-thái, Đức Giê-su lên thành Giê-ru-sa-lem. (14) Người thấy trong Đền Thờ có những kẻ bán chiên, bò, bồ câu, và những người đang ngồi đổi tiền. (15) Người liền lấy dây làm roi mà xua đuổi tất cả chiên cũng như bò, ra khỏi Đền Thờ; còn tiền của những người đổi bạc, Người đổ tung ra, và lật nhào bàn ghế của họ. (16) Người nói với những kẻ bán bồ câu: “Đem tất cả những thứ này ra khỏi đây, đừng biến nhà Cha tôi thành nơi buôn bán.” (17) Các môn đệ của Người nhớ lại lời đã chép trong Kinh Thánh: Vì nhiệt tâm lo việc nhà Chúa, mà tôi đây sẽ phải thiệt thân.
 (18) Người Do-thái hỏi Đức Giê-su: “Ông lấy dấu lạ nào chứng tỏ cho chúng tôi thấy là ông có quyền làm như thế?” (19) Đức Giê-su đáp: “Các ông cứ phá hủy Đền Thờ này đi; nội ba ngày, tôi sẽ xây dựng lại.” (20) Người Do-thái nói: “Đền Thờ này phải mất bốn mươi sáu năm mới xây xong, thế mà nội trong ba ngày ông xây lại được sao?” (21) Nhưng Đền Thờ Đức Giê-su muốn nói ở đây là chính thân thể Người. (22) Vậy, khi Người từ cõi chết trỗi dậy, các môn đệ nhớ lại Người đã nói điều đó, họ tin vào Kinh Thánh và lời Đức Giê-su đã nói.

@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1tx', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1tx', 1, '[SECTION] Lời mở đầu
 (1) Chúng tôi là Phao-lô, Xin-va-nô và Ti-mô-thê, kính gửi Hội Thánh Thê-xa-lô-ni-ca ở trong Thiên Chúa Cha, và trong Chúa Giê-su Ki-tô. Chúc anh em được ân sủng và bình an.
 [SECTION] Tạ ơn Thiên Chúa và khen ngợi cộng đoàn
 (2) Chúng tôi hằng tạ ơn Thiên Chúa về tất cả anh em. Chúng tôi nhắc đến anh em trong lời cầu nguyện, (3) và trước mặt Thiên Chúa là Cha chúng ta, chúng tôi không ngừng nhớ đến những việc anh em làm vì lòng tin, những nỗi khó nhọc anh em gánh vác vì lòng mến, và những gì anh em kiên nhẫn chịu đựng vì trông đợi Chúa chúng ta là Đức Giê-su Ki-tô.

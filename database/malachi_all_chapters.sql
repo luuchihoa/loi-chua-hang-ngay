@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ml', 1, '[PART] Chương 1
-(1) Lời sấm.
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ml', 1, '(1) Lời sấm.
 Lời ĐỨC CHÚA phán với Ít-ra-en qua trung gian ông Ma-la-khi.
 [SECTION] Tình thương của Thiên Chúa đối với Ít-ra-en
 (2) Ta đã yêu thương các ngươi, ĐỨC CHÚA phán. – Thế mà các ngươi nói: Ngài yêu thương chúng con ở chỗ nào? – Ê-xau chẳng phải là anh của Gia-cóp sao? – sấm ngôn của ĐỨC CHÚA. Vậy mà Ta lại yêu thương Gia-cóp. (3) Còn Ê-xau, Ta đã ghét nó. Ta đã biến núi non của nó thành chốn bỏ hoang, và gia nghiệp của nó thành nơi cư ngụ cho loài lang sói. (4) Nếu Ê-đôm nói: “Chúng ta đã bị phá hủy, nhưng chúng ta sẽ tái thiết từ những đống hoang tàn đổ nát.” ĐỨC CHÚA các đạo binh phán thế này: phần chúng, chúng cứ tái thiết; phần Ta, Ta sẽ phá đổ. Người ta sẽ gọi chúng là “lãnh thổ của gian ác” và “dân bị ĐỨC CHÚA giáng cơn thịnh nộ đến muôn đời”. (5) Mắt các ngươi sẽ thấy điều đó và các ngươi sẽ nói: ĐỨC CHÚA vĩ đại, ở cả bên ngoài lãnh thổ Ít-ra-en.

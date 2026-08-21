@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'hs', 1, '[PART] Chương 1
-[PART] TỰA ĐỀ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'hs', 1, '[PART] TỰA ĐỀ
 (1) Lời ĐỨC CHÚA phán với ông Hô-sê, con ông Bơ-ê-ri, dưới thời các vua Út-di-gia, Giô-tham, A-khát và Khít-ki-gia trị vì Giu-đa, và dưới thời vua Gia-róp-am con vua Giô-át trị vì Ít-ra-en.
 [PART] I. HÔN NHÂN CỦA ÔNG HÔ-SÊ: MỘT BIỂU TƯỢNG
 [SECTION] Ông Hô-sê kết hôn và sinh con

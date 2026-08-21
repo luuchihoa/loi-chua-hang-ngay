@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '3ga', 1, '[PART] Chương 1
-[SECTION] Lời chào
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '3ga, 1, '[SECTION] Lời chào
 (1) Tôi là kỳ mục, gửi anh Gai-ô thân mến, người mà tôi thật sự quý mến. (2) Anh thân mến, tôi cầu chúc anh được mọi bề thịnh đạt: thể xác mạnh khỏe và tinh thần phấn chấn.
 [SECTION] Ca tụng ông Gai-ô
 (3) Quả thật, tôi rất vui mừng bởi có những anh em đến đây và làm chứng là anh gắn bó với sự thật, như anh vẫn sống trong sự thật. (4) Không có gì làm tôi vui sướng bằng khi nghe biết con cái tôi sống sự thật.
@@ -9,4 +8,4 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '3ga
 [SECTION] Làm chứng cho ông Đê-mết-ri-ô
 (12) Mọi người đều làm chứng tốt cho anh Đê-mết-ri-ô, và chính sự thật cũng làm chứng như vậy. Cả chúng tôi nữa, chúng tôi cũng làm chứng cho anh ấy, và anh biết rằng lời chứng của chúng tôi là xác thực.
 [SECTION] Lời kết thúc
-(13) Tôi còn có nhiều điều đáng lẽ phải viết cho anh, nhưng tôi không muốn dùng bút mực mà viết cho anh. (14) Tôi hy vọng sắp được gặp anh, và chúng ta sẽ nói chuyện trực tiếp. (15) Chúc anh được bình an! Các bạn hữu gửi lời chào anh. Cho tôi gửi lời chào các bạn hữu, đích danh từng người một.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
+(13) Tôi còn có nhiều điều đáng lẽ phải viết cho anh, nhưng tôi không muốn dùng bút mực mà viết cho anh. (14) Tôi hy vọng sắp được gặp anh, và chúng ta sẽ nói chuyện trực tiếp. (15) Chúc anh được bình an! Các bạn hữu gửi lời chào anh. Cho tôi gửi lời chào các bạn hữu, đích danh từng người một.) ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;

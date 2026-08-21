@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mc', 1, '[PART] Chương 1
-[PART] I. GIAI ĐOẠN DỌN ĐƯỜNG CHO SỨ VỤ CỦA ĐỨC GIÊ-SU
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mc', 1, '[PART] I. GIAI ĐOẠN DỌN ĐƯỜNG CHO SỨ VỤ CỦA ĐỨC GIÊ-SU
 (1) Khởi đầu Tin Mừng Đức Giê-su Ki-tô, Con Thiên Chúa:
 [SECTION] Ông Gio-an Tẩy Giả rao giảng
 (2) Trong sách ngôn sứ I-sai-a có chép rằng: Này Ta sai sứ giả của Ta đi trước mặt Con, người sẽ dọn đường cho Con. (3) Có tiếng người hô trong hoang địa: Hãy dọn sẵn con đường của Đức Chúa, sửa lối cho thẳng để Người đi.
@@ -98,13 +97,13 @@ Rồi Người đi các làng chung quanh mà giảng dạy. (7) Người gọi 
 
 INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'mc', 7, '[SECTION] Tranh luận về những truyền thống người Pha-ri-sêu
 (1) Có những người Pha-ri-sêu và một số kinh sư tụ họp quanh Đức Giê-su. Họ là những người từ Giê-ru-sa-lem đến. (2) Họ thấy vài môn đệ của Người dùng bữa mà tay còn ô uế, nghĩa là chưa rửa. (3) Thật vậy, người Pha-ri-sêu cũng như mọi người Do-thái đều nắm giữ truyền thống của tiền nhân: họ không ăn gì, khi chưa rửa tay cẩn thận; (4) thức gì mua ngoài chợ về, cũng phải rảy nước đã rồi mới ăn; họ còn giữ nhiều tập tục khác nữa như rửa chén bát, bình lọ và các đồ đồng. (5) Vậy, người Pha-ri-sêu và kinh sư hỏi Đức Giê-su: “Sao các môn đệ của ông không theo truyền thống của tiền nhân, cứ để tay ô uế mà dùng bữa?” (6) Người trả lời họ: “Ngôn sứ I-sai-a thật đã nói tiên tri rất đúng về các ông là những kẻ đạo đức giả, khi viết rằng:
-[SECTION] Dân này tôn kính Ta
-[SECTION] bằng môi bằng miệng,
-[SECTION] còn lòng chúng thì lại xa Ta.
+Dân này tôn kính Ta
+bằng môi bằng miệng,
+còn lòng chúng thì lại xa Ta.
 (7) Chúng có thờ phượng Ta
-[SECTION] thì cũng vô ích,
-[SECTION] vì giáo lý chúng giảng dạy
-[SECTION] chỉ là giới luật phàm nhân.
+thì cũng vô ích,
+vì giáo lý chúng giảng dạy
+chỉ là giới luật phàm nhân.
 (8) Các ông gạt bỏ điều răn của Thiên Chúa, mà duy trì truyền thống của người phàm.” (9) Người còn nói: “Các ông thật khéo coi thường điều răn của Thiên Chúa để nắm giữ truyền thống của các ông. (10) Quả thế, ông Mô-sê đã dạy rằng: Ngươi hãy thờ cha kính mẹ và kẻ nào nguyền rủa cha mẹ, thì phải bị xử tử! (11) Còn các ông, các ông lại bảo: ‘Người nào nói với cha với mẹ rằng: những gì con có để giúp cha mẹ đều là co-ban nghĩa là lễ phẩm đã dâng cho Chúa’ rồi, (12) và các ông không để cho người ấy làm gì để giúp cha mẹ nữa. (13) Thế là các ông lấy truyền thống các ông đã truyền lại cho nhau mà hủy bỏ lời Thiên Chúa. Các ông còn làm nhiều điều khác giống như vậy nữa!”
 [SECTION] Cái gì làm cho con người ra ô uế?
 (14) Sau đó, Đức Giê-su lại gọi đám đông tới mà bảo: “Xin mọi người nghe tôi nói đây, và hiểu cho rõ: (15) Không có cái gì từ bên ngoài vào trong con người lại có thể làm cho con người ra ô uế được; nhưng chính cái từ con người xuất ra, là cái làm cho con người ra ô uế. (16) Ai có tai nghe thì nghe!”

@@ -36,7 +36,7 @@ export default function WeekRibbon({ selectedDate, onSelectDate, theme }) {
                   : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
             }`}
           >
-            <span className={`text-[10px] font-bold uppercase ${index === 6 && !isSelected ? 'text-rose-500' : ''}`}>
+            <span className={`text-[10px] font-bold uppercase ${index === 6 && !isSelected ? 'text-rose-600' : ''}`}>
               {DAY_LABELS[index]}
             </span>
             <span className="text-[13px] font-extrabold mt-0.5">{day.getDate()}</span>

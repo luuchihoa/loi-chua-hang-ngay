@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ov', 1, '[PART] Chương 1
-[SECTION] Tên sách
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'ov', 1, '[SECTION] Tên sách
 (1) Thị kiến của ông Ô-va-đi-a.
 [SECTION] Lời tựa
 (1c) Chúng tôi đã nghe lời ĐỨC CHÚA truyền đạt.

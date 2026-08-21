@@ -6,6 +6,7 @@ const BiblePage = React.lazy(() => import('../pages/BiblePage.jsx'));
 const BibleAudioPage = React.lazy(() => import('../pages/BibleAudioPage.jsx'));
 const CalendarPage = React.lazy(() => import('../pages/CalendarPage.jsx'));
 const BookmarksPage = React.lazy(() => import('../pages/BookmarksPage.jsx'));
+const AdminFeedbackPage = React.lazy(() => import('../pages/AdminFeedbackPage.jsx'));
 const AudioStudioPage = import.meta.env.DEV
   ? React.lazy(() => import('../pages/AudioStudioPage.jsx'))
   : null;
@@ -34,6 +35,7 @@ export default function AppRoutes() {
       <Route path="/bible-audio" element={<LazyPage><BibleAudioPage /></LazyPage>} />
       <Route path="/calendar" element={<LazyPage><CalendarPage /></LazyPage>} />
       <Route path="/bookmarks" element={<LazyPage><BookmarksPage /></LazyPage>} />
+      <Route path="/admin" element={<LazyPage><AdminFeedbackPage /></LazyPage>} />
       {import.meta.env.DEV && AudioStudioPage && (
         <Route path="/studio-audio" element={<LazyPage><AudioStudioPage /></LazyPage>} />
       )}

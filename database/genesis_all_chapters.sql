@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'st', 1, '[PART] Chương 1
-[PART] I. NGUỒN GỐC VŨ TRỤ VÀ NHÂN LOẠI
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'st', 1, '[PART] I. NGUỒN GỐC VŨ TRỤ VÀ NHÂN LOẠI
 [PART] 1. THIÊN CHÚA SÁNG TẠO. CON NGƯỜI SA NGÃ.
 [SECTION] Thiên Chúa sáng tạo trời đất
 (1) Lúc khởi đầu, Thiên Chúa sáng tạo trời đất. (2) Đất còn trống rỗng, chưa có hình dạng, bóng tối bao trùm vực thẳm, và thần khí Thiên Chúa bay lượn trên mặt nước.

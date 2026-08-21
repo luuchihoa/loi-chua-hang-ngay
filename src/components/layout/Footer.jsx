@@ -1,12 +1,14 @@
 import React from 'react';
-import { Heart, BookOpen, Sparkles, ShieldCheck, Download } from 'lucide-react';
+import { Heart, BookOpen, Sparkles, ShieldCheck, Download, MessageCircleHeart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
 import SocialIconSVG from '../common/SocialIconSVG.jsx';
+import { useFeedback } from '../../context/FeedbackContext.jsx';
 
 export default function Footer() {
   const { openInstallModal } = usePWAInstall();
+  const { openFeedback } = useFeedback();
   return (
     <footer className="w-full pt-10 pb-24 md:pb-10 border-t border-stone-200/80 dark:border-stone-800/80 glass-panel transition-colors relative">
       <div className="max-w-5xl mx-auto px-4 text-center">
@@ -57,6 +59,12 @@ export default function Footer() {
             title="Hướng dẫn cài đặt ứng dụng lên iPhone & Android"
           >
             <Download className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Cài đặt App (iOS / Android)
+          </button>
+          <button
+            onClick={() => openFeedback()}
+            className="flex items-center gap-1.5 bg-stone-100 dark:bg-stone-800/90 hover:bg-amber-50 dark:hover:bg-amber-900/30 text-stone-700 dark:text-stone-300 hover:text-amber-700 dark:hover:text-amber-300 border border-stone-200/80 dark:border-stone-700/80 px-3 py-1 rounded-full transition-all cursor-pointer font-bold active:scale-95 text-[11px]"
+          >
+            <MessageCircleHeart className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Góp ý
           </button>
           {import.meta.env.DEV && (
             <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/80 px-2.5 py-1 rounded-full border border-stone-200/60 dark:border-stone-700/60">

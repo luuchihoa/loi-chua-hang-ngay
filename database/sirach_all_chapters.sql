@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'hc', 1, '[PART] Chương 1
-[PART] I. TUYỂN TẬP CÁC CHÂM NGÔN
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'hc', 1, '[PART] I. TUYỂN TẬP CÁC CHÂM NGÔN
 [SECTION] Nguồn gốc khôn ngoan
 (1) Tất cả sự khôn ngoan đều phát xuất từ Đức Chúa,
 và khôn ngoan vẫn ở với Người đến muôn đời.

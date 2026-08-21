@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cv', 1, '[PART] Chương 1
-[SECTION] Lời tựa
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cv', 1, '[SECTION] Lời tựa
 (1) Thưa ngài Thê-ô-phi-lô, trong quyển thứ nhất, tôi đã tường thuật tất cả những việc Đức Giê-su làm và những điều Người dạy, kể từ đầu (2) cho tới ngày Người được rước lên trời. Trước ngày ấy, Người đã dạy bảo các Tông Đồ mà Người đã tuyển chọn nhờ Thánh Thần. (3) Người lại còn dùng nhiều cách để chứng tỏ cho các ông thấy là Người vẫn sống sau khi đã chịu khổ hình: trong bốn mươi ngày, Người đã hiện ra nói chuyện với các ông về Nước Thiên Chúa. (4) Một hôm, đang khi dùng bữa với các Tông Đồ, Đức Giê-su truyền cho các ông không được rời khỏi Giê-ru-sa-lem, nhưng phải ở lại mà chờ đợi điều Chúa Cha đã hứa, “điều mà anh em đã nghe Thầy nói tới, (5) đó là: ông Gio-an thì làm phép rửa bằng nước, còn anh em thì trong ít ngày nữa sẽ chịu phép rửa trong Thánh Thần”.
 [SECTION] Thăng thiên
 (6) Bấy giờ những người đang tụ họp ở đó hỏi Người rằng: “Thưa Thầy, có phải bây giờ là lúc Thầy khôi phục vương quốc Ít-ra-en không?” (7) Người đáp: “Anh em không cần biết thời giờ và kỳ hạn Chúa Cha đã toàn quyền sắp đặt, (8) nhưng anh em sẽ nhận được sức mạnh của Thánh Thần khi Người ngự xuống trên anh em. Bấy giờ anh em sẽ là chứng nhân của Thầy tại Giê-ru-sa-lem, trong khắp các miền Giu-đê, Sa-ma-ri và cho đến tận cùng trái đất.”
@@ -9,11 +8,11 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cv'
 (12) Bấy giờ các ông từ núi gọi là núi Ô-liu trở về Giê-ru-sa-lem. Núi này ở gần Giê-ru-sa-lem, cách đoạn đường được phép đi trong ngày sa-bát. (13) Trở về nhà, các ông lên lầu trên, là nơi các ông trú ngụ. Đó là các ông: Phê-rô, Gio-an, Gia-cô-bê, An-rê, Phi-líp-phê, Tô-ma, Ba-tô-lô-mê-ô, Mát-thêu, Gia-cô-bê con ông An-phê, Si-môn thuộc nhóm Quá Khích, và Giu-đa con ông Gia-cô-bê. (14) Tất cả các ông đều đồng tâm nhất trí, chuyên cần cầu nguyện cùng với mấy người phụ nữ, với bà Ma-ri-a thân mẫu Đức Giê-su, và với anh em của Đức Giê-su.
 [SECTION] Chọn ông Mát-thi-a thay thế ông Giu-đa
 (15) Trong những ngày ấy, ông Phê-rô đứng lên giữa các anh em –có khoảng một trăm hai mươi người đang họp mặt– Ông nói: (16) “Thưa anh em, lời Kinh Thánh phải ứng nghiệm, lời mà Thánh Thần đã dùng miệng vua Đa-vít để nói trước về Giu-đa, kẻ đã trở thành tên dẫn đường cho những người bắt Đức Giê-su. (17) Y đã là một người trong số chúng tôi và được tham dự vào công việc phục vụ của chúng tôi. (18) Vậy, con người ấy đã dùng tiền công của tội ác mà tậu một thửa đất; y đã ngã lộn đầu xuống, vỡ bụng, lòi cả ruột gan ra. (19) Điều đó, mọi người ở Giê-ru-sa-lem đều biết, khiến họ đặt tên cho thửa đất ấy là Ha-ken-đa-ma, theo tiếng của họ nghĩa là Đất Máu. (20) Thật thế, trong sách Thánh vịnh có chép rằng:
-[SECTION] Ước gì lều trại nó phải tan hoang,
-[SECTION] không còn ai trú ngụ!
+Ước gì lều trại nó phải tan hoang,
+không còn ai trú ngụ!
 và
-[SECTION] Ước gì người khác
-[SECTION] nhận lấy chức vụ của nó.
+Ước gì người khác
+nhận lấy chức vụ của nó.
 (21) “Vậy phải làm thế này: có những anh em đã cùng chúng tôi đi theo Chúa Giê-su suốt thời gian Người sống giữa chúng ta, (22) kể từ khi Người được ông Gio-an làm phép rửa cho đến ngày Người lìa bỏ chúng ta và được rước lên trời. Một trong những anh em đó phải cùng với chúng tôi làm chứng rằng Người đã phục sinh.”
 (23) Họ đề cử hai người: ông Giô-xếp, biệt danh là Ba-sa-ba, cũng gọi là Giút-tô, và ông Mát-thi-a. (24) Họ cầu nguyện rằng: “Lạy Chúa, chính Chúa thấu suốt lòng mọi người; giữa hai người này, xin chỉ cho thấy Chúa chọn ai (25) để nhận chỗ trong sứ vụ Tông Đồ, chỗ Giu-đa đã bỏ để đi về nơi dành cho y.” (26) Họ rút thăm, thăm trúng ông Mát-thi-a: ông được kể thêm vào số mười một Tông Đồ.') ON CONFLICT (translation_id, book_id, chapter) DO UPDATE SET content = EXCLUDED.content;
 
@@ -86,24 +85,24 @@ INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cv'
 (23) “Khi được chẵn bốn mươi tuổi, ông Mô-sê nảy ra ý định thăm viếng các anh em mình là con cái Ít-ra-en. (24) Thấy một người anh em bị một người Ai-cập làm hại, ông liền bênh, và để trả thù cho người bị áp bức, ông đánh chết người Ai-cập. (25) Ông tưởng các anh em ông sẽ hiểu rằng Thiên Chúa dùng tay ông để ban ơn cứu độ cho họ; nhưng họ thì không hiểu. (26) Ngày hôm sau, đang khi họ đánh lộn thì ông xuất hiện và dàn xếp cho đôi bên làm hòa. Ông nói: ‘Này các người, các người là anh em, tại sao lại xử tệ với nhau?’ (27) Nhưng kẻ đang xử tệ với người đồng bào gạt ông ra và nói: Ai đã đặt ông làm người lãnh đạo và người xét xử chúng tôi? (28) Hay là ông tính giết tôi, y như đã giết tên Ai-cập hôm qua ? (29) Nghe câu nói ấy, ông Mô-sê liền trốn đi và đến trú ngụ ở miền Ma-đi-an. Ở đó ông sinh được hai con trai.
 (30) “Đúng bốn mươi năm sau, một thiên sứ hiện ra với ông tại sa mạc núi Xi-nai, trong ngọn lửa của một bụi cây đang cháy. (31) Ông Mô-sê ngạc nhiên khi thấy thị kiến ấy. Đang khi ông lại gần để xem cho rõ, thì có tiếng Chúa phán với ông: (32) Ta là Thiên Chúa của cha ông ngươi, Thiên Chúa của Áp-ra-ham, I-xa-ác và Gia-cóp. Ông Mô-sê phát run lên, không dám nhìn nữa. (33) Bấy giờ Chúa phán với ông: ‘Cởi dép ở chân ra, vì nơi ngươi đang đứng là đất thánh! (34) Ta đã thấy rõ cảnh khổ cực của dân Ta bên Ai-cập và đã nghe tiếng chúng kêu than, nên Ta xuống giải thoát chúng. Bây giờ, ngươi hãy đi! Ta sai ngươi sang Ai-cập.’
 (35) “Ông Mô-sê này là người mà họ đã từng chối bỏ khi nói: Ai đã đặt ông làm người lãnh đạo và người xét xử?, thì Thiên Chúa lại sai ông làm người lãnh đạo và cứu chuộc, qua trung gian vị thiên sứ đã hiện ra với ông trong bụi gai. (36) Chính ông đã đưa họ ra, bằng cách làm những điềm thiêng dấu lạ tại đất Ai-cập, trong Biển Đỏ và trong sa mạc bốn mươi năm trường. (37) Chính ông Mô-sê đó là người đã nói với con cái Ít-ra-en: Từ giữa đồng bào của anh em, Thiên Chúa sẽ cho đứng lên một ngôn sứ như tôi để giúp anh em. (38) Chính ông là người đã có mặt trong đại hội ở sa mạc, bên cạnh vị thiên sứ nói với ông trên núi Xi-nai, và bên cạnh cha ông chúng ta. Chính ông đã đón nhận những lời hằng sống để ban cho chúng ta. (39) Nhưng cha ông chúng ta đã không muốn vâng lời ông; họ đã gạt ông ra và trong thâm tâm, họ đã quay lại Ai-cập. (40) Họ nói với ông A-ha-ron: Xin ông làm cho chúng tôi những vị thần dẫn đầu chúng tôi, vì cái ông Mô-sê, người đã đưa chúng tôi ra khỏi đất Ai-cập, chúng tôi không biết chuyện gì đã xảy ra cho ông ta. (41) Trong những ngày ấy, họ đã làm tượng một con bê, họ dâng lễ tế cho ngẫu tượng ấy và ăn mừng công trình tay họ làm ra. (42) Bấy giờ Thiên Chúa xoay mặt họ đi, và để mặc họ thờ thiên binh, như có lời chép trong sách các Ngôn Sứ:
-[SECTION] Hỡi nhà Ít-ra-en,
-[SECTION] bốn mươi năm trường trong sa mạc,
-[SECTION] các ngươi có dâng lên Ta
-[SECTION] vật hy sinh và lễ tế nào đâu?
+Hỡi nhà Ít-ra-en,
+bốn mươi năm trường trong sa mạc,
+các ngươi có dâng lên Ta
+vật hy sinh và lễ tế nào đâu?
 (43) Các ngươi đã kiệu lều của thần Mô-lóc
-[SECTION] và ngôi sao của thần Rê-phan,
-[SECTION] là những ảnh tượng
-[SECTION] các ngươi đã làm ra để thờ;
-[SECTION] nên Ta đã đày các ngươi
-[SECTION] tới bên kia Ba-by-lon.
+và ngôi sao của thần Rê-phan,
+là những ảnh tượng
+các ngươi đã làm ra để thờ;
+nên Ta đã đày các ngươi
+tới bên kia Ba-by-lon.
 (44) “Khi ở trong sa mạc, cha ông chúng ta có Lều Chứng Ước, như Đấng phán với ông Mô-sê đã truyền phải làm theo kiểu mẫu ông đã thấy. (45) Lều ấy, cha ông chúng ta đã kế thừa, và đã cùng với ông Giô-suê, đem vào đất chiếm được của các dân ngoại mà Thiên Chúa đã đuổi đi khuất mắt các ông. Lều ở lại đó cho đến thời vua Đa-vít. (46) Vua này đẹp lòng Thiên Chúa và đã xin được tìm một ngôi nhà cho Thiên Chúa của Gia-cóp. (47) Nhưng chính vua Sa-lô-môn mới xây nhà cho Người. (48) Tuy nhiên, Đấng Tối Cao không ở trong những ngôi nhà do tay người phàm làm ra, như lời ngôn sứ đã nói:
 (49) Chúa phán: Trời là ngai của Ta,
-[SECTION] còn đất là bệ dưới chân Ta.
-[SECTION] Các ngươi sẽ xây cho Ta nhà nào,
-[SECTION] và nơi nào
-[SECTION] sẽ là chốn Ta nghỉ ngơi?
+còn đất là bệ dưới chân Ta.
+Các ngươi sẽ xây cho Ta nhà nào,
+và nơi nào
+sẽ là chốn Ta nghỉ ngơi?
 (50) Chẳng phải chính tay Ta
-[SECTION] đã làm nên mọi sự ấy sao?
+đã làm nên mọi sự ấy sao?
 (51) “Hỡi những người cứng đầu cứng cổ, lòng và tai không cắt bì, các ông luôn luôn chống lại Thánh Thần. Cha ông các ông thế nào, thì các ông cũng vậy. (52) Có ngôn sứ nào mà cha ông các ông không bắt bớ? Họ đã giết những vị tiên báo Đấng Công Chính sẽ đến; còn các ông, nay đã trở thành những kẻ phản bội và sát hại Đấng ấy. (53) Các ông là những người đã lãnh nhận Lề Luật do các thiên sứ công bố, nhưng lại chẳng tuân giữ.”
 (54) Khi nghe những lời ấy, lòng họ giận điên lên, và họ nghiến răng căm thù ông Tê-pha-nô.
 [SECTION] Ông Tê-pha-nô bị ném đá. Ông Sao-lô bắt đạo.

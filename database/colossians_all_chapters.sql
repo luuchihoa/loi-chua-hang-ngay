@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cl', 1, '[PART] Chương 1
-[PART] KHAI ĐỀ
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'cl', 1, '[PART] KHAI ĐỀ
 [SECTION] Lời mở đầu
 (1) Tôi là Phao-lô, bởi ý Thiên Chúa được làm Tông Đồ của Đức Ki-tô Giê-su, và anh Ti-mô-thê là người anh em, (2) kính gửi dân thánh tại Cô-lô-xê, là những anh em tín hữu trong Đức Ki-tô. Xin Thiên Chúa là Cha chúng ta ban cho anh em ân sủng và bình an.
 [SECTION] Tạ ơn và cầu xin

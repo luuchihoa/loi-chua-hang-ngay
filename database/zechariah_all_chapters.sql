@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dcr', 1, '[PART] Chương 1
-[PART] PHẦN THỨ NHẤT
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'dcr', 1, '[PART] PHẦN THỨ NHẤT
 [SECTION] Khuyên nhủ sám hối
 (1) Tháng tám năm thứ hai triều Đa-ri-ô, có lời ĐỨC CHÚA phán với ngôn sứ Da-ca-ri-a, con ông Be-réc-gia –ông này là con ông Ít-đô– rằng: (2) “ĐỨC CHÚA bừng bừng nổi giận với cha ông các ngươi. (3) Ngươi hãy bảo chúng: ĐỨC CHÚA các đạo binh phán thế này: Hãy trở lại với Ta –sấm ngôn của ĐỨC CHÚA các đạo binh– và Ta sẽ trở lại với các ngươi, ĐỨC CHÚA các đạo binh phán. (4) Đừng như cha ông các ngươi, những người đã được các ngôn sứ thời xưa cảnh cáo: “ĐỨC CHÚA các đạo binh phán thế này: Hãy từ bỏ lối sống xấu xa và những hành vi gian ác của các ngươi mà trở lại.” Nhưng chúng chẳng nghe, chẳng lưu ý đến Ta –sấm ngôn của ĐỨC CHÚA–. (5) Cha ông các ngươi bây giờ đang ở đâu? Liệu các ngôn sứ có sống mãi không? (6) Thế nhưng các lời và các thánh chỉ Ta đã truyền cho các tôi tớ của Ta là các ngôn sứ, lại chẳng theo sát cha ông các ngươi hay sao? Bấy giờ họ đã trở lại và nói: “ĐỨC CHÚA các đạo binh đã quyết định xử với chúng tôi căn cứ vào lối sống và hành vi của chúng tôi thế nào, thì Người đã hành động như vậy.”
 [SECTION] Thị kiến thứ nhất: các kỵ mã

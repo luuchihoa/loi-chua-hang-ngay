@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'plm', 1, '[PART] Chương 1
-[SECTION] Lời chào thăm
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, 'plm', 1, '[SECTION] Lời chào thăm
 (1) Phao-lô, kẻ bị tù vì Đức Ki-tô Giê-su, cùng với người anh em là Ti-mô-thê, gửi anh Phi-lê-môn, cộng sự viên thân mến của chúng tôi, (2) cùng chị Áp-phi-a và anh Ác-khíp-pô, chiến hữu của chúng tôi, đồng thời kính gửi Hội Thánh họp tại nhà anh. (3) Chúc anh chị em được đầy tràn ân sủng và bình an của Thiên Chúa, Cha chúng ta, và của Chúa Giê-su Ki-tô.
 [SECTION] Tạ ơn và cầu nguyện
 (4) Tôi luôn luôn tạ ơn Thiên Chúa, khi nhớ đến anh trong lời cầu nguyện, (5) bởi được nghe nói về lòng mến và lòng tin của anh đối với Chúa Giê-su: lòng mến và lòng tin ấy có ích cho mọi người trong dân thánh. (6) Chớ gì lòng tin mà anh chia sẻ với chúng tôi trở nên hữu hiệu, giúp anh hiểu biết tất cả những gì tốt chúng ta có thể làm để phục vụ Đức Ki-tô. (7) Thật thế, tôi rất vui mừng và lấy làm an ủi, khi thấy đức bác ái của anh, bởi vì, thưa anh, anh đã làm cho lòng trí các người trong dân thánh được phấn khởi.

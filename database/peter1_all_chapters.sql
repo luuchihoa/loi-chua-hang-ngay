@@ -1,5 +1,4 @@
-INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1pr', 1, '[PART] Chương 1
-[SECTION] Lời mở đầu và lời chào
+INSERT INTO chapters (translation_id, book_id, chapter, content) VALUES (1, '1pr', 1, '[SECTION] Lời mở đầu và lời chào
 (1) Tôi là Phê-rô, Tông Đồ của Đức Giê-su Ki-tô, kính gửi những người được Thiên Chúa kén chọn, những khách lữ hành đang sống tản mác trong các xứ: Pon-tô, Ga-lát, Cáp-pa-đô-ki-a, A-xi-a và Bi-thy-ni-a, (2) những người được Thiên Chúa Cha biết trước và kén chọn, những người được Thần Khí thánh hóa để vâng phục Đức Giê-su Ki-tô và được máu Người tưới rảy. Chúc anh em được đầy tràn ân sủng và bình an.
 [SECTION] Nhập đề. Gia tài Thiên Chúa ban.
 (3) Chúc tụng Thiên Chúa là Thân Phụ Đức Giê-su Ki-tô, Chúa chúng ta! Do lượng hải hà, Người cho chúng ta được tái sinh để nhận lãnh niềm hy vọng sống động, nhờ Đức Giê-su Ki-tô đã từ cõi chết sống lại, (4) để được hưởng gia tài không thể hư hoại, không thể vẩn đục và tàn phai. Gia tài này dành ở trên trời cho anh em, (5) là những người, nhờ lòng tin, được Thiên Chúa quyền năng gìn giữ, hầu được hưởng ơn cứu độ Người đã dành sẵn, và sẽ bày tỏ ra trong thời sau hết.
