@@ -31,13 +31,11 @@ import {
   ShieldCheck,
   Zap,
   HelpCircle,
-  FileAudio,
-  RotateCcw
+  FileAudio
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cleanScriptureTextOnUI, cleanScriptureTextForTTS } from '../utils/scriptureCleaner.js';
 import { fetchAudioAccessStreamUrl } from '../utils/bibleService.js';
-import { useAutoSave } from '../hooks/useAutoSave.js';
 
 // ─── Preset Prosody ─────────────────────────────────────────────────────────
 const PAUSE_PRESETS = [
@@ -170,76 +168,6 @@ export default function AudioStudioPage() {
 
   const resetPauses = () => {
     applyPreset(PAUSE_PRESETS[0]);
-  };
-
-  // State tổng hợp của Studio để tự động lưu (Auto-Save)
-  const projectState = useMemo(() => ({
-    ref,
-    intro,
-    content,
-    section,
-    voice,
-    sectionLabel,
-    paragraphPause,
-    sentencePause,
-    majorPause,
-    mediumPause,
-    activePreset,
-    customVoiceName,
-    customVoiceTrackId
-  }), [
-    ref,
-    intro,
-    content,
-    section,
-    voice,
-    sectionLabel,
-    paragraphPause,
-    sentencePause,
-    majorPause,
-    mediumPause,
-    activePreset,
-    customVoiceName,
-    customVoiceTrackId
-  ]);
-
-  const handleDraftLoaded = useCallback((loadedData) => {
-    if (!loadedData) return;
-    if (loadedData.ref !== undefined) setRef(loadedData.ref);
-    if (loadedData.intro !== undefined) setIntro(loadedData.intro);
-    if (loadedData.content !== undefined) setContent(loadedData.content);
-    if (loadedData.section !== undefined) setSection(loadedData.section);
-    if (loadedData.voice !== undefined) setVoice(loadedData.voice);
-    if (loadedData.sectionLabel !== undefined) setSectionLabel(loadedData.sectionLabel);
-    if (loadedData.paragraphPause !== undefined) setParagraphPause(loadedData.paragraphPause);
-    if (loadedData.sentencePause !== undefined) setSentencePause(loadedData.sentencePause);
-    if (loadedData.majorPause !== undefined) setMajorPause(loadedData.majorPause);
-    if (loadedData.mediumPause !== undefined) setMediumPause(loadedData.mediumPause);
-    if (loadedData.activePreset !== undefined) setActivePreset(loadedData.activePreset);
-    if (loadedData.customVoiceName !== undefined) setCustomVoiceName(loadedData.customVoiceName);
-    if (loadedData.customVoiceTrackId !== undefined) setCustomVoiceTrackId(loadedData.customVoiceTrackId);
-  }, []);
-
-  const { saveStatus, lastSavedAt, hasRestoredDraft, clearDraft } = useAutoSave(
-    'audio_studio_project',
-    projectState,
-    {
-      debounceMs: 800,
-      onDraftLoaded: handleDraftLoaded
-    }
-  );
-
-  const handleResetToDefault = async () => {
-    if (window.confirm("Bạn có chắc muốn đặt lại toàn bộ nội dung về mặc định và xóa bản nháp tự động lưu?")) {
-      await clearDraft();
-      setRef("1 V 3,5.7-12");
-      setIntro("Bài trích sách các Vua quyển thứ nhất.");
-      setContent("Hồi ấy, tại Ghíp-ôn, đang đêm Đức Chúa hiện ra báo mộng cho vua Sa-lô-môn, Thiên Chúa phán : “Ngươi cứ xin đi, Ta sẽ ban cho.” Vua Sa-lô-môn thưa : “Lạy Đức Chúa là Thiên Chúa của con, chính Chúa đã đặt tôi tớ Chúa đây lên ngôi kế vị Đa-vít, thân phụ con...”");
-      setSection("r1");
-      setVoice("hao");
-      setSectionLabel("Bài đọc một.");
-      applyPreset(PAUSE_PRESETS[0]);
-    }
   };
 
   const [rendering, setRendering] = useState(false);
@@ -509,42 +437,8 @@ export default function AudioStudioPage() {
           <Mic size={280} />
         </div>
         <div className="relative z-10">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 backdrop-blur-md border border-amber-400/30 text-amber-100 text-xs font-semibold uppercase tracking-wider">
-              <Sparkles size={14} className="animate-spin" /> Studio Tạo Audio Phụng Vụ AI Pro
-            </div>
-
-            {/* Auto-Save Status Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/30 backdrop-blur-md border border-amber-300/20 text-xs text-amber-100 shadow-sm">
-              {saveStatus === 'saving' && (
-                <>
-                  <RefreshCw size={12} className="animate-spin text-amber-300" />
-                  <span>Đang lưu tự động...</span>
-                </>
-              )}
-              {saveStatus === 'saved' && (
-                <>
-                  <CheckCircle2 size={12} className="text-emerald-400" />
-                  <span>Đã lưu an toàn {lastSavedAt ? `(${lastSavedAt.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })})` : ''}</span>
-                </>
-              )}
-              {saveStatus === 'idle' && (
-                <>
-                  <CheckCircle2 size={12} className="text-amber-300" />
-                  <span>Auto-Save sẵn sàng</span>
-                </>
-              )}
-              {hasRestoredDraft && (
-                <button
-                  type="button"
-                  onClick={handleResetToDefault}
-                  title="Đặt lại bản nháp về mặc định"
-                  className="ml-1 text-amber-300 hover:text-white underline text-[11px] flex items-center gap-1 cursor-pointer transition-colors"
-                >
-                  <RotateCcw size={10} /> Đặt lại
-                </button>
-              )}
-            </div>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 backdrop-blur-md border border-amber-400/30 text-amber-100 text-xs font-semibold uppercase tracking-wider mb-4">
+            <Sparkles size={14} className="animate-spin" /> Studio Tạo Audio Phụng Vụ AI Pro
           </div>
           <h1 className="text-2xl sm:text-4xl font-serif font-bold tracking-tight mb-3">
             Trình Render Audio Bài Đọc Tùy Chỉnh
