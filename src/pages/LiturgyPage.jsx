@@ -1559,6 +1559,8 @@ export default function LiturgyPage() {
     }).join('');
   };
 
+  const formatLiturgyText = formatProseText;
+
   const isHome = location.pathname === '/';
   const isDateSpecific = Boolean(dateStr);
   const formattedDate = selectedDate ? selectedDate.toLocaleDateString('vi-VN') : '';
