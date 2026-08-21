@@ -27,7 +27,7 @@ const allBooks = [
 console.log('🚀 Đang Pre-render HTML tĩnh cho 100% các đường dẫn (Trang chính, 365 Ngày Phụng Vụ, 73 Sách Hub Pages và toàn bộ 1328 Chương Kinh Thánh)...');
 
 const DOMAIN = 'https://loichuamoingay.org';
-const DEFAULT_IMAGE = `${DOMAIN}/logo_loi_chua_moi_ngay.png`;
+const DEFAULT_IMAGE = `${DOMAIN}/og-image.png`;
 
 function createStaticPage(routePath, title, description, jsonLdSchema = null, bodySkeleton = '', robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1') {
   const targetDir = path.join(DIST_DIR, routePath);

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 const DEFAULT_TITLE = 'Lời Chúa Mỗi Ngày – Phụng vụ và Kinh Thánh Công giáo';
 const DEFAULT_DESC = 'Đọc, nghe và sống Lời Chúa mỗi ngày với bài đọc phụng vụ cùng Kinh Thánh Công giáo Việt Nam.';
 const DOMAIN = 'https://loichuamoingay.org';
-const DEFAULT_IMAGE = `${DOMAIN}/logo_loi_chua_moi_ngay.png`;
+const DEFAULT_IMAGE = `${DOMAIN}/og-image.png`;
 
 export default function SEO({
   title,
