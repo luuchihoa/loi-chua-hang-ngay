@@ -36,6 +36,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { cleanScriptureTextOnUI, cleanScriptureTextForTTS } from '../utils/scriptureCleaner.js';
 import { fetchAudioAccessStreamUrl } from '../utils/bibleService.js';
+import { normalizeAudioRef } from '../utils/audioNaming.js';
 
 // ─── Preset Prosody ─────────────────────────────────────────────────────────
 const PAUSE_PRESETS = [
@@ -139,7 +140,9 @@ export default function AudioStudioPage() {
   );
   const [section, setSection] = useState("r1"); // "r1", "r2", "gospel"
   const [voice, setVoice] = useState("hao"); // "hao", "giang", "trieu_duong", "custom"
-  const [sectionLabel, setSectionLabel] = useState("Bài đọc một.");
+  // Lời dẫn "Bài đọc 1/2" nằm ở readings/r1.mp3 và readings/r2.mp3.
+  // File theo ref chỉ chứa phần Kinh Thánh để có thể dùng chung giữa R1/R2.
+  const [sectionLabel, setSectionLabel] = useState("");
   const [customVoiceTrackId, setCustomVoiceTrackId] = useState(null);
   const [customVoiceName, setCustomVoiceName] = useState("");
   const [uploadingVoice, setUploadingVoice] = useState(false);
@@ -282,10 +285,10 @@ export default function AudioStudioPage() {
   const handleSectionChange = (newSec) => {
     setSection(newSec);
     if (newSec === "r1") {
-      setSectionLabel("Bài đọc một.");
+      setSectionLabel("");
       setVoice("hao");
     } else if (newSec === "r2") {
-      setSectionLabel("Bài đọc hai.");
+      setSectionLabel("");
       setVoice("giang");
     } else if (newSec === "gospel") {
       setSectionLabel("");
@@ -306,10 +309,10 @@ export default function AudioStudioPage() {
     }
 
     const esc = (str) => `"${str.replace(/"/g, '\\"')}"`;
-    const cleanRef = ref.trim().replace(/[\.,:;()\\/*?\"<>|]/g, '').replace(/\s*-\s*/g, '-').replace(/\s+/g, '_') || "custom_audio";
-    const sub = section === "r2" ? "readings/r2" : (section === "gospel" ? "gospels" : "readings/r1");
-    const pref = section === "r2" ? "r2" : (section === "gospel" ? "gospel" : "r1");
-    const out = `/Users/tranthithuynhi/loi-chua-hang-ngay/private/audio/${sub}/${pref}_${cleanRef}.mp3`;
+    const cleanRef = normalizeAudioRef(ref) || "custom_audio";
+    const sub = section === "gospel" ? "gospels" : "readings";
+    const pref = "";
+    const out = `/Users/tranthithuynhi/loi-chua-hang-ngay/private/audio/${sub}/${pref}${cleanRef}.mp3`;
     const script = section === "gospel" ? "generate_single_gospel_mp3.py" : "generate_single_reading_mp3.py";
     const voiceArg = '""';
 
@@ -461,7 +464,7 @@ export default function AudioStudioPage() {
             {/* Chọn Loại Bài Đọc */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">
-                Loại Bài Đọc & Tiền Tố Lưu Trữ
+                Loại Bài Đọc
               </label>
               <div className="grid grid-cols-3 gap-3">
                 <button
@@ -474,7 +477,7 @@ export default function AudioStudioPage() {
                   }`}
                 >
                   <Layers size={16} />
-                  Bài Đọc 1 (r1_)
+                  Bài Đọc 1 (lời dẫn r1.mp3)
                 </button>
                 <button
                   type="button"
@@ -486,7 +489,7 @@ export default function AudioStudioPage() {
                   }`}
                 >
                   <Layers size={16} />
-                  Bài Đọc 2 (r2_)
+                  Bài Đọc 2 (lời dẫn r2.mp3)
                 </button>
                 <button
                   type="button"
@@ -498,7 +501,7 @@ export default function AudioStudioPage() {
                   }`}
                 >
                   <Mic size={16} />
-                  Tin Mừng (gospel_)
+                  Tin Mừng (theo ref)
                 </button>
               </div>
             </div>
@@ -520,14 +523,14 @@ export default function AudioStudioPage() {
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1">
-                  Nhãn Câu Mở Đầu (`section_label`)
+                  Lời dẫn trong file nội dung
                 </label>
                 <input
                   type="text"
                   value={sectionLabel}
                   onChange={(e) => setSectionLabel(e.target.value)}
-                  placeholder="Bài đọc một. / Bài đọc hai."
-                  disabled={section === "gospel"}
+                  placeholder="Để trống — r1.mp3 / r2.mp3 sẽ phát lời dẫn chung"
+                  disabled={section !== "gospel"}
                   className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 disabled:opacity-50"
                 />
               </div>
@@ -773,9 +776,9 @@ export default function AudioStudioPage() {
                     key={file.url}
                     type="button"
                     onClick={() => {
-                      const cleanRefPart = file.filename.replace(/^(r1_|r2_|gospel_)/, '').replace(/\.mp3$/, '').replace(/_/g, ' ');
+                      const cleanRefPart = file.confirmedRef || file.filename.replace(/^(r1_|r2_)/, '').replace(/\.mp3$/, '').replace(/_/g, ' ');
                       setRef(cleanRefPart);
-                      const secType = file.prefix === 'gospel' ? 'gospel' : (file.prefix === 'r2' ? 'r2' : 'r1');
+                      const secType = file.categoryKey === 'gospel' ? 'gospel' : (file.primaryUsage?.section === 'r2' ? 'r2' : 'r1');
                       handleSectionChange(secType);
                       setResultAudioUrl(file.url);
                       setResultPath(`/Users/tranthithuynhi/loi-chua-hang-ngay/public${file.url}`);

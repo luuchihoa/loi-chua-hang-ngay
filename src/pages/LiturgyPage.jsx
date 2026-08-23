@@ -199,7 +199,7 @@ export default function LiturgyPage() {
       if (r1Options[r1AltIdx]?.content || activeContent?.r1_content) {
         playlist.push({
           title: 'Bài Đọc 1',
-          text: `Bài đọc 1. ${r1Options[r1AltIdx]?.intro || activeContent?.r1_intro || ''}. ${r1Options[r1AltIdx]?.content || activeContent?.r1_content || ''}`,
+          text: `${r1Options[r1AltIdx]?.intro || activeContent?.r1_intro || ''}. ${r1Options[r1AltIdx]?.content || activeContent?.r1_content || ''}`,
           ref: r1Options[r1AltIdx]?.ref || activeContent?.r1_ref,
           prefix: 'r1'
         });
@@ -209,7 +209,7 @@ export default function LiturgyPage() {
       if (r2Options[r2AltIdx]?.content || activeContent?.r2_content) {
         playlist.push({
           title: 'Bài Đọc 2',
-          text: `Bài đọc 2. ${r2Options[r2AltIdx]?.intro || activeContent?.r2_intro || ''}. ${r2Options[r2AltIdx]?.content || activeContent?.r2_content || ''}`,
+          text: `${r2Options[r2AltIdx]?.intro || activeContent?.r2_intro || ''}. ${r2Options[r2AltIdx]?.content || activeContent?.r2_content || ''}`,
           ref: r2Options[r2AltIdx]?.ref || activeContent?.r2_ref,
           prefix: 'r2'
         });
@@ -2099,7 +2099,7 @@ export default function LiturgyPage() {
                   {/* Nút nghe riêng Bài Đọc 1 */}
                   {renderSectionAudioBadge(
                     'Bài Đọc 1',
-                    `Bài đọc 1. ${r1Options[r1AltIdx]?.intro || activeContent?.r1_intro || ''}. ${r1Options[r1AltIdx]?.content || activeContent?.r1_content || ''}`,
+                    `${r1Options[r1AltIdx]?.intro || activeContent?.r1_intro || ''}. ${r1Options[r1AltIdx]?.content || activeContent?.r1_content || ''}`,
                     r1Options[r1AltIdx]?.ref || activeContent?.r1_ref,
                     'r1'
                   )}
@@ -2155,7 +2155,7 @@ export default function LiturgyPage() {
                   {/* Nút nghe riêng Bài Đọc 2 */}
                   {renderSectionAudioBadge(
                     'Bài Đọc 2',
-                    `Bài đọc 2. ${r2Options[r2AltIdx]?.intro || activeContent?.r2_intro || ''}. ${r2Options[r2AltIdx]?.content || activeContent?.r2_content || ''}`,
+                    `${r2Options[r2AltIdx]?.intro || activeContent?.r2_intro || ''}. ${r2Options[r2AltIdx]?.content || activeContent?.r2_content || ''}`,
                     r2Options[r2AltIdx]?.ref || activeContent?.r2_ref,
                     'r2'
                   )}

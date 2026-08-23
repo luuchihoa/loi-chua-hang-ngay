@@ -1,4 +1,5 @@
 import { fetchAudioAccessStreamUrl } from './bibleService.js';
+import { normalizeAudioRef, getGospelAudioFilename, getReadingAudioFilename } from './audioNaming.js';
 
 export const getAudioApiBase = () => {
   // Hỗ trợ tên cũ VITE_AUDIO_BASE_URL để các deploy R2 hiện có vẫn hoạt động.
@@ -7,25 +8,26 @@ export const getAudioApiBase = () => {
 };
 
 // Phải khớp với format_reading_filename() trong các script render Python.
-// Ví dụ: "1 Ga 4,7-16" -> "1_Ga_47-16".
-const formatRefForFilename = (refStr) => {
-  if (!refStr) return '';
-  return refStr
-    .trim()
-    .replace(/[\.,:;()\\/*?"<>|]/g, '')
-    .replace(/\s*-\s*/g, '-')
-    .replace(/\s+/g, '_')
-    .replace(/_+/g, '_');
-};
+// Ví dụ: "1 Ga 4,7-16" -> "1_Ga_4v7_to_16".
+export const formatRefForFilename = normalizeAudioRef;
 
 const getStaticAudioPath = (refString, section) => {
   const ref = formatRefForFilename(refString);
   if (!ref) return null;
 
   const normalizedSection = (section || 'r1').toLowerCase();
-  if (normalizedSection === 'gospel') return `/gospels/gospel_${ref}.mp3`;
-  if (normalizedSection === 'r2') return `/readings/r2/r2_${ref}.mp3`;
-  return `/readings/r1/r1_${ref}.mp3`;
+  if (normalizedSection === 'gospel') return `/gospels/${getGospelAudioFilename(refString)}`;
+
+  // Bài đọc 1 và 2 dùng chung một kho theo trích dẫn. Ví dụ cùng ref
+  // "1 Cr 13,1-13" chỉ có một file: readings/1_Cr_131-13.mp3.
+  return `/readings/${getReadingAudioFilename(refString)}`;
+};
+
+const getReadingIntroStaticPath = (section) => {
+  const normalizedSection = (section || '').toLowerCase();
+  return normalizedSection === 'r1' || normalizedSection === 'r2'
+    ? `/readings/${normalizedSection}.mp3`
+    : null;
 };
 
 export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
@@ -65,6 +67,46 @@ export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
     }
   } catch (err) {
     console.warn('⚠️ Lỗi kiểm tra & lấy stream audio:', err.message);
+  }
+
+  return { exists: false, streamUrl: null, trackId: null };
+};
+
+// r1.mp3 và r2.mp3 chỉ là lời dẫn chung "Bài đọc 1/2", không gắn với ref.
+export const checkAndGetReadingIntroStreamUrl = async (section) => {
+  const introPath = getReadingIntroStaticPath(section);
+  if (!introPath) return { exists: false, streamUrl: null, trackId: null };
+
+  const apiBase = getAudioApiBase();
+  if (!apiBase) return { exists: false, streamUrl: null, trackId: null };
+
+  const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));
+  if (isStaticStorage) {
+    return {
+      exists: true,
+      streamUrl: `${apiBase}${introPath}`,
+      trackId: `reading-intro:${section}`
+    };
+  }
+
+  try {
+    const res = await fetch(`${apiBase}/api/check-audio`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ intro: section })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.exists && data.trackId) {
+        return {
+          exists: true,
+          streamUrl: await fetchAudioAccessStreamUrl(data.trackId),
+          trackId: data.trackId
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Lỗi lấy lời dẫn bài đọc:', err.message);
   }
 
   return { exists: false, streamUrl: null, trackId: null };

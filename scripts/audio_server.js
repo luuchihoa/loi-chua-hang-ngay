@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { fileURLToPath, URL } from 'url';
 import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
+import { normalizeAudioRef } from '../src/utils/audioNaming.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -103,8 +104,8 @@ function scanPrivateAudioRegistry() {
 
         let categoryKey = 'other';
         let categoryLabel = 'Khác';
-        if (relPath.startsWith('readings/r1')) { categoryKey = 'r1'; categoryLabel = 'Bài Đọc 1'; }
-        else if (relPath.startsWith('readings/r2')) { categoryKey = 'r2'; categoryLabel = 'Bài Đọc 2'; }
+        if (relPath === 'readings/r1.mp3' || relPath === 'readings/r2.mp3') { categoryKey = 'reading_intro'; categoryLabel = 'Lời dẫn bài đọc'; }
+        else if (relPath.startsWith('readings/')) { categoryKey = 'reading'; categoryLabel = 'Bài Đọc'; }
         else if (relPath.startsWith('gospels')) { categoryKey = 'gospel'; categoryLabel = 'Tin Mừng'; }
         else if (relPath.startsWith('bible')) { categoryKey = 'bible'; categoryLabel = 'Kinh Thánh'; }
         else if (relPath.startsWith('custom_voices')) { categoryKey = 'custom_voice'; categoryLabel = 'Giọng Mẫu'; }
@@ -227,12 +228,18 @@ function getBookFullName(shortCode) {
 }
 
 function getCanonicalSlug(ref) {
+  return normalizeAudioRef(ref);
+}
+
+// Chỉ dùng để đọc kho cũ r1_/r2_ trong giai đoạn chuyển đổi.
+function getLegacySlug(ref) {
   if (!ref) return '';
   return ref
-    .replace(/[.,;:\(\)]/g, '')
-    .replace(/\s*-\s*/g, '-')
     .trim()
-    .replace(/\s+/g, '_');
+    .replace(/[\.,:;()\\/*?"<>|]/g, '')
+    .replace(/\s*-\s*/g, '-')
+    .replace(/\s+/g, '_')
+    .replace(/_+/g, '_');
 }
 
 function formatFullScriptureTitle(ref, categoryLabel) {
@@ -398,7 +405,8 @@ async function fetchMetadataFromSupabaseDirect() {
         if (!item.ref) return;
         const slug = getCanonicalSlug(item.ref);
         if (!slug) return;
-        const fname = `${item.prefix}_${slug}.mp3`;
+        // Mỗi thư mục tự xác định loại audio, nên mọi nội dung đều dùng tên theo ref.
+        const fname = `${slug}.mp3`;
 
         if (!map.has(fname)) {
           map.set(fname, []);
@@ -920,29 +928,41 @@ const server = http.createServer(async (req, res) => {
 
     readBodyWithLimit(req, res, (buffer) => {
       try {
-        const { ref = "", section = "r1" } = JSON.parse(buffer.toString());
+        const { ref = "", section = "r1", intro = null } = JSON.parse(buffer.toString());
 
-        let cleanRef = ref.trim()
-          .replace(/[\.,:;()\\/*?"<>|]/g, '')
-          .replace(/\s*-\s*/g, '-')
-          .replace(/\s+/g, '_');
+        // r1.mp3/r2.mp3 là lời dẫn dùng chung, không phụ thuộc trích dẫn.
+        if (intro === 'r1' || intro === 'r2') {
+          const relPath = `readings/${intro}.mp3`;
+          const trackId = relPathToTrackMap.get(relPath);
+          const foundEntry = trackId && trackRegistry.get(trackId);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(foundEntry ? {
+            exists: true,
+            trackId: foundEntry.trackId,
+            filename: foundEntry.filename,
+            size_kb: foundEntry.sizeKb
+          } : { exists: false }));
+          return;
+        }
+
+        let cleanRef = getCanonicalSlug(ref);
+        const legacyCleanRef = getLegacySlug(ref);
 
         if (!cleanRef) cleanRef = "custom_audio";
 
-        const currentSub = section === "r2" ? "readings/r2" : (section === "gospel" ? "gospels" : "readings/r1");
-        const currentPref = section === "r2" ? "r2" : (section === "gospel" ? "gospel" : "r1");
-
-        const searchList = [
-          { sub: currentSub, pref: currentPref },
-          { sub: "gospels", pref: "gospel" },
-          { sub: "readings/r1", pref: "r1" },
-          { sub: "readings/r2", pref: "r2" }
-        ];
+        const searchList = section === "gospel"
+          ? [{ relPath: `gospels/${cleanRef}.mp3` }]
+          : [
+              // Cấu trúc chuẩn: một file nội dung cho mỗi ref, R1/R2 dùng chung.
+              { relPath: `readings/${cleanRef}.mp3` },
+              // Tương thích tạm thời với kho audio cũ trong lúc render lại file mới.
+              { relPath: `readings/r1/r1_${legacyCleanRef}.mp3` },
+              { relPath: `readings/r2/r2_${legacyCleanRef}.mp3` }
+            ];
 
         let foundEntry = null;
         for (const item of searchList) {
-          const filename = `${item.pref}_${cleanRef}.mp3`;
-          const relPath = `${item.sub}/${filename}`;
+          const relPath = item.relPath;
           const trackId = relPathToTrackMap.get(relPath);
           if (trackId && trackRegistry.has(trackId)) {
             foundEntry = trackRegistry.get(trackId);
@@ -1055,7 +1075,7 @@ const server = http.createServer(async (req, res) => {
           content = "",
           voice = "hao",
           section = "r1",
-          section_label = "Bài đọc một.",
+          section_label = "",
           overwrite = true,
           custom_voice_track_id = null,
           pause_config = {}
@@ -1090,24 +1110,19 @@ const server = http.createServer(async (req, res) => {
           resolvedVoicePath = voiceEntry.absPath;
         }
 
-        let outSubfolder = "readings/r1";
-        let prefix = "r1";
+        let outSubfolder = "readings";
+        let prefix = "";
 
         if (section === "r2") {
-          outSubfolder = "readings/r2";
-          prefix = "r2";
         } else if (section === "gospel" || (voice === "trieu_duong" && section !== "r1" && section !== "r2")) {
           outSubfolder = "gospels";
-          prefix = "gospel";
+          prefix = "";
         }
 
-        let cleanRef = ref.trim()
-          .replace(/[\.,:;()\\/*?"<>|]/g, '')
-          .replace(/\s*-\s*/g, '-')
-          .replace(/\s+/g, '_');
+        let cleanRef = getCanonicalSlug(ref);
 
         if (!cleanRef) cleanRef = "custom_audio";
-        const filename = `${prefix}_${cleanRef}.mp3`;
+        const filename = prefix ? `${prefix}_${cleanRef}.mp3` : `${cleanRef}.mp3`;
         const outAbsPath = path.join(AUDIO_PRIVATE_ROOT, outSubfolder, filename);
         const relPath = `${outSubfolder}/${filename}`;
 

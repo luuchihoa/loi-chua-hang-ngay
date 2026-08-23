@@ -26,8 +26,9 @@ Model cache, voice và kết quả được giữ tại `MyDrive/LoiChuaAudio`.
 File MP3 được phân loại tự động:
 
 ```text
-MyDrive/LoiChuaAudio/outputs/readings/r1
-MyDrive/LoiChuaAudio/outputs/readings/r2
+MyDrive/LoiChuaAudio/outputs/readings/r1.mp3       # lời dẫn “Bài đọc 1”
+MyDrive/LoiChuaAudio/outputs/readings/r2.mp3       # lời dẫn “Bài đọc 2”
+MyDrive/LoiChuaAudio/outputs/readings/<ref>.mp3    # nội dung dùng chung cho R1/R2
 MyDrive/LoiChuaAudio/outputs/gospels
 ```
 
@@ -37,3 +38,4 @@ MyDrive/LoiChuaAudio/outputs/gospels
 - Mỗi phiên chỉ tải model lên GPU một lần. Cell render có thể chạy lại nhiều lần.
 - `OVERWRITE = False` sẽ tái sử dụng file đã có; bật thành `True` khi muốn tạo lại.
 - Chỉ sử dụng voice mẫu mà bạn có quyền sử dụng.
+- Xem [quy ước tên file MP3](AUDIO_FILE_NAMING.md) trước khi render hoặc upload.

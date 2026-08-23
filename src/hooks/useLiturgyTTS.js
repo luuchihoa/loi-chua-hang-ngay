@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { checkAndGetAudioStreamUrl } from '../utils/audioLookup.js';
+import { checkAndGetAudioStreamUrl, checkAndGetReadingIntroStreamUrl } from '../utils/audioLookup.js';
 import { cleanScriptureTextOnUI, cleanScriptureTextForTTS } from '../utils/scriptureCleaner.js';
 
 export function useLiturgyTTS() {
@@ -137,23 +137,36 @@ export function useLiturgyTTS() {
   const playAudioOrMp3 = useCallback(async (text, sectionTitle = 'Bài Đọc', refString = null, prefix = 'gospel') => {
     stop();
     const currentToken = playTokenRef.current;
-    
-    let matchedAudioUrl = null;
+
+    const tracks = [];
+    // Bài đọc dùng lời dẫn chung r1.mp3/r2.mp3, sau đó mới tới file theo ref.
+    if (prefix === 'r1' || prefix === 'r2') {
+      const introAccess = await checkAndGetReadingIntroStreamUrl(prefix);
+      if (introAccess?.exists && introAccess.streamUrl) tracks.push({ url: introAccess.streamUrl, kind: 'intro' });
+    }
     if (refString) {
       const accessObj = await checkAndGetAudioStreamUrl(refString, prefix);
       if (accessObj && accessObj.exists && accessObj.streamUrl) {
-        matchedAudioUrl = accessObj.streamUrl;
+        tracks.push({ url: accessObj.streamUrl, kind: 'content' });
       }
     }
 
     if (currentToken !== playTokenRef.current) return;
 
-    if (matchedAudioUrl) {
+    const playTrack = (index) => {
+      const track = tracks[index];
+      if (!track) {
+        // Không có file nội dung: dùng TTS từ nội dung của bài đọc.
+        speakWithWebSpeech(text, sectionTitle);
+        return;
+      }
+
       const audio = new Audio();
       audio.preload = 'none';
-      audio.src = matchedAudioUrl;
+      audio.src = track.url;
       audio.playbackRate = rate;
       audioObjRef.current = audio;
+      let trackSettled = false;
 
       audio.onplay = () => {
         if (currentToken !== playTokenRef.current) {
@@ -166,24 +179,42 @@ export function useLiturgyTTS() {
       };
 
       audio.onended = () => {
+        if (trackSettled) return;
+        trackSettled = true;
         if (currentToken === playTokenRef.current) {
           audioObjRef.current = null;
-          setIsPlaying(false);
-          setIsPaused(false);
-          setCurrentSection(null);
+          if (index + 1 < tracks.length) playTrack(index + 1);
+          else if (track.kind === 'intro') {
+            // Có lời dẫn nhưng chưa có file nội dung: vẫn đọc phần Kinh Thánh bằng TTS.
+            speakWithWebSpeech(text, sectionTitle);
+          } else {
+            setIsPlaying(false);
+            setIsPaused(false);
+            setCurrentSection(null);
+          }
         }
       };
 
       audio.onerror = () => {
-        speakWithWebSpeech(text, sectionTitle);
+        if (trackSettled) return;
+        trackSettled = true;
+        if (currentToken !== playTokenRef.current) return;
+        // Thiếu lời dẫn không làm hỏng bài đọc; bỏ qua nó. Lỗi file nội dung
+        // mới chuyển sang Web Speech.
+        if (track.kind === 'intro') playTrack(index + 1);
+        else speakWithWebSpeech(text, sectionTitle);
       };
 
       audio.play().catch(() => {
-        speakWithWebSpeech(text, sectionTitle);
+        if (trackSettled) return;
+        trackSettled = true;
+        if (currentToken !== playTokenRef.current) return;
+        if (track.kind === 'intro') playTrack(index + 1);
+        else speakWithWebSpeech(text, sectionTitle);
       });
-    } else {
-      speakWithWebSpeech(text, sectionTitle);
-    }
+    };
+
+    playTrack(0);
   }, [rate, stop]);
 
   const playPlaylist = useCallback((items) => {
@@ -204,23 +235,35 @@ export function useLiturgyTTS() {
 
       playlistIndexRef.current = index;
       const currentItem = playlistItemsRef.current[index];
-      let matchedAudioUrl = null;
+      const tracks = [];
+
+      if (currentItem.prefix === 'r1' || currentItem.prefix === 'r2') {
+        const introAccess = await checkAndGetReadingIntroStreamUrl(currentItem.prefix);
+        if (introAccess?.exists && introAccess.streamUrl) tracks.push({ url: introAccess.streamUrl, kind: 'intro' });
+      }
 
       if (currentItem.ref) {
         const accessObj = await checkAndGetAudioStreamUrl(currentItem.ref, currentItem.prefix || 'r1');
         if (accessObj && accessObj.exists && accessObj.streamUrl) {
-          matchedAudioUrl = accessObj.streamUrl;
+          tracks.push({ url: accessObj.streamUrl, kind: 'content' });
         }
       }
 
       if (currentToken !== playTokenRef.current) return;
 
-      if (matchedAudioUrl) {
+      const playTrack = (trackIndex) => {
+        const track = tracks[trackIndex];
+        if (!track) {
+          speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
+          return;
+        }
+
         const audio = new Audio();
         audio.preload = 'none';
-        audio.src = matchedAudioUrl;
+        audio.src = track.url;
         audio.playbackRate = rate;
         audioObjRef.current = audio;
+        let trackSettled = false;
 
         audio.onplay = () => {
           if (currentToken !== playTokenRef.current) {
@@ -233,26 +276,37 @@ export function useLiturgyTTS() {
         };
 
         audio.onended = () => {
+          if (trackSettled) return;
+          trackSettled = true;
           if (currentToken === playTokenRef.current) {
             audioObjRef.current = null;
-            playNext(index + 1);
+            if (trackIndex + 1 < tracks.length) playTrack(trackIndex + 1);
+            else if (track.kind === 'intro') {
+              speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
+            } else playNext(index + 1);
           }
         };
 
         audio.onerror = () => {
+          if (trackSettled) return;
+          trackSettled = true;
           if (currentToken === playTokenRef.current) {
-            speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
+            if (track.kind === 'intro') playTrack(trackIndex + 1);
+            else speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
           }
         };
 
         audio.play().catch(() => {
+          if (trackSettled) return;
+          trackSettled = true;
           if (currentToken === playTokenRef.current) {
-            speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
+            if (track.kind === 'intro') playTrack(trackIndex + 1);
+            else speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
           }
         });
-      } else {
-        speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
-      }
+      };
+
+      playTrack(0);
     };
 
     playNext(0);

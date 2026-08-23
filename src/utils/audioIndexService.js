@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { getBookById } from './bibleService.js';
+import { normalizeAudioRef } from './audioNaming.js';
 
 const DEFAULT_INDEX = {
   version: '1.0.0',
   bible: ['st_1', 'mt_1', 'mt_2', 'mt_3', 'mt_4', 'mt_5', 'mc_1', 'lc_1', 'ga_1', 'ga_3'],
-  liturgy: ['gospel_Mt_1331-35', 'gospel_Ga_1119-27', 'r1_1_Ga_47-16']
+  liturgy: []
 };
 
 let audioIndexCache = DEFAULT_INDEX;
@@ -77,9 +78,8 @@ export const hasBibleChapterAudio = (bookIdOrShort, chapter) => {
 
 export const hasLiturgyAudio = (refString, section = 'r1') => {
   if (!refString) return false;
-  const cleanRef = refString.trim().replace(/[\.,:;()\\/*?"<>|]/g, '').replace(/\s+/g, '_');
-  const sec = (section || 'r1').toLowerCase();
-  const key = `${sec}_${cleanRef}`;
+  const cleanRef = normalizeAudioRef(refString);
+  const key = cleanRef;
 
   const index = getAudioIndex();
   if (Array.isArray(index.liturgy)) {

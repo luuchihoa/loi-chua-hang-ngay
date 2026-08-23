@@ -4,19 +4,27 @@ import asyncio
 import re
 import glob
 import edge_tts
+import unicodedata
 
 VOICE = "vi-VN-HoaiMyNeural"
 
-def format_ref_filename(prefix, ref_str):
+def format_ref_filename(ref_str):
+    """Khớp chính xác src/utils/audioNaming.js::normalizeAudioRef()."""
     if not ref_str:
         return None
-    clean = re.sub(r'[\\\/:*?"<>|()]', '', ref_str.strip())
-    clean = re.sub(r'[\.,]', '', clean)
+    clean = unicodedata.normalize("NFC", ref_str).strip()
+    clean = re.sub(r'[.,:;]+$', '', clean)
+    clean = re.sub(r'[()\\/*?"<>|]', '', clean)
+    # Giữ cấu trúc chương/câu và khoảng câu, khớp audioNaming.js.
+    clean = re.sub(r'\s*[,.:]\s*', 'v', clean)
+    clean = re.sub(r'\s*-\s*', '_to_', clean)
+    clean = re.sub(r'\s*;\s*', '_and_', clean)
     clean = re.sub(r'\s+', '_', clean)
     clean = re.sub(r'_+', '_', clean)
+    clean = clean.strip('_')
     if not clean:
         return None
-    return f"{prefix}_{clean}.mp3"
+    return f"{clean}.mp3"
 
 def strip_html(html):
     if not html:
@@ -115,12 +123,12 @@ async def batch_generate_readings():
         r1_content = item.get("r1_content")
         r1_intro = item.get("r1_intro", "")
         if r1_ref and r1_content:
-            f_name = format_ref_filename("r1", r1_ref)
+            f_name = format_ref_filename(r1_ref)
             if f_name and f_name not in seen_items:
                 seen_items.add(f_name)
                 out_path = os.path.join(folder, f_name)
                 if not os.path.exists(out_path) or os.path.getsize(out_path) < 5000:
-                    full_txt = f"Bài đọc 1. {r1_intro}. {r1_content}" if r1_intro else f"Bài đọc 1. {r1_content}"
+                    full_txt = f"{r1_intro}. {r1_content}" if r1_intro else r1_content
                     targets.append({"ref": r1_ref, "text": full_txt, "out": out_path, "name": f_name})
 
         # 2. Bài Đọc 2
@@ -128,12 +136,12 @@ async def batch_generate_readings():
         r2_content = item.get("r2_content")
         r2_intro = item.get("r2_intro", "")
         if r2_ref and r2_content:
-            f_name = format_ref_filename("r2", r2_ref)
+            f_name = format_ref_filename(r2_ref)
             if f_name and f_name not in seen_items:
                 seen_items.add(f_name)
                 out_path = os.path.join(folder, f_name)
                 if not os.path.exists(out_path) or os.path.getsize(out_path) < 5000:
-                    full_txt = f"Bài đọc 2. {r2_intro}. {r2_content}" if r2_intro else f"Bài đọc 2. {r2_content}"
+                    full_txt = f"{r2_intro}. {r2_content}" if r2_intro else r2_content
                     targets.append({"ref": r2_ref, "text": full_txt, "out": out_path, "name": f_name})
 
     print(f"📊 Tìm thấy {len(targets)} bài đọc (BĐ1 & BĐ2) độc bản cần tạo MP3.")
