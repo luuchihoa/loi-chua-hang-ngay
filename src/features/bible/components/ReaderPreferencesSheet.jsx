@@ -1,6 +1,6 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, Type, AlignJustify, Palette, ScanText } from 'lucide-react';
+import { X, Type, AlignJustify } from 'lucide-react';
 
 const FONT_OPTIONS = [
   { value: 'normal', label: 'Nhỏ' },
@@ -14,12 +14,6 @@ const LINE_OPTIONS = [
   { value: 'relaxed', label: 'Thoáng' },
 ];
 
-const THEME_OPTIONS = [
-  { value: 'light', label: 'Sáng' },
-  { value: 'sepia', label: 'Giấy' },
-  { value: 'dark', label: 'Tối' },
-];
-
 export default function ReaderPreferencesSheet({
   isOpen,
   onClose,
@@ -27,10 +21,6 @@ export default function ReaderPreferencesSheet({
   setFontSize,
   lineHeight,
   setLineHeight,
-  readingTheme,
-  setReadingTheme,
-  showRedLetter,
-  setShowRedLetter,
 }) {
   return (
     <AnimatePresence>
@@ -74,29 +64,6 @@ export default function ReaderPreferencesSheet({
 
               <PreferenceGroup icon={AlignJustify} label="Khoảng cách dòng">
                 <SegmentedOptions options={LINE_OPTIONS} value={lineHeight} onChange={setLineHeight} />
-              </PreferenceGroup>
-
-              <PreferenceGroup icon={Palette} label="Màu giấy đọc">
-                <SegmentedOptions options={THEME_OPTIONS} value={readingTheme} onChange={setReadingTheme} />
-              </PreferenceGroup>
-
-              <PreferenceGroup icon={ScanText} label="Lời Đức Giê-su">
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={showRedLetter}
-                  onClick={() => setShowRedLetter(!showRedLetter)}
-                  className={`flex min-h-[48px] w-full items-center justify-between rounded-2xl border px-4 text-left transition-colors ${
-                    showRedLetter
-                      ? 'border-rose-700 bg-rose-50 text-rose-900 dark:bg-rose-950/35 dark:text-rose-200'
-                      : 'border-stone-200 bg-stone-50 text-stone-700 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300'
-                  }`}
-                >
-                  <span className="text-xs font-bold">Hiển thị lời nói của Đức Giê-su bằng màu đỏ</span>
-                  <span aria-hidden="true" className={`relative h-6 w-11 rounded-full transition-colors ${showRedLetter ? 'bg-rose-700' : 'bg-stone-300 dark:bg-stone-600'}`}>
-                    <span className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${showRedLetter ? 'translate-x-6' : 'translate-x-1'}`} />
-                  </span>
-                </button>
               </PreferenceGroup>
 
             </div>

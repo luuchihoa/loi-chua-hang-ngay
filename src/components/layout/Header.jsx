@@ -22,9 +22,6 @@ export default function Header() {
     { path: '/', label: 'Lời Chúa', isActive: location.pathname === '/' || location.pathname === '/liturgy' },
     { path: '/bible', label: 'Sách Kinh Thánh', isActive: location.pathname.startsWith('/bible') && !location.pathname.startsWith('/bible-audio') },
     { path: '/bible-audio', label: 'Kinh Thánh Audio', isActive: location.pathname === '/bible-audio' },
-    ...(import.meta.env.DEV
-      ? [{ path: '/studio-audio', label: 'Studio AI', isActive: location.pathname === '/studio-audio' }]
-      : []),
   ];
 
   const desktopNavRef = useRef(null);

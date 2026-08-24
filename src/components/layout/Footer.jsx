@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, BookOpen, Sparkles, ShieldCheck, Download, MessageCircleHeart } from 'lucide-react';
+import { Heart, BookOpen, ShieldCheck, Download, MessageCircleHeart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePWAInstall } from '../../context/PWAInstallContext.jsx';
 import { BRAND } from '../../config/brand.js';
@@ -66,11 +66,6 @@ export default function Footer() {
           >
             <MessageCircleHeart className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Góp ý
           </button>
-          {import.meta.env.DEV && (
-            <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/80 px-2.5 py-1 rounded-full border border-stone-200/60 dark:border-stone-700/60">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Công cụ Studio AI nội bộ
-            </span>
-          )}
         </div>
 
         {/* Copyright & Heart footer */}

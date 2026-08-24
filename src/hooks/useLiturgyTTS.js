@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { checkAndGetAudioStreamUrl, checkAndGetReadingIntroStreamUrl } from '../utils/audioLookup.js';
+import { checkAndGetAudioStreamUrl, checkAndGetLiturgyMusicStreamUrl, checkAndGetReadingIntroStreamUrl } from '../utils/audioLookup.js';
 import { cleanScriptureTextOnUI, cleanScriptureTextForTTS } from '../utils/scriptureCleaner.js';
 
 export function useLiturgyTTS() {
@@ -222,7 +222,15 @@ export function useLiturgyTTS() {
     if (!items || items.length === 0) return;
 
     const currentToken = playTokenRef.current;
-    playlistItemsRef.current = items;
+    playlistItemsRef.current = [
+      { type: 'music', music: 'intro', title: 'Nhạc mở đầu' },
+      ...items.flatMap((item, index) => (
+        index === 0
+          ? [item]
+          : [{ type: 'music', music: 'transition', title: 'Nhạc chuyển đoạn' }, item]
+      )),
+      { type: 'music', music: 'outro', title: 'Nhạc kết' },
+    ];
     playlistIndexRef.current = 0;
 
     const playNext = async (index) => {
@@ -237,12 +245,15 @@ export function useLiturgyTTS() {
       const currentItem = playlistItemsRef.current[index];
       const tracks = [];
 
-      if (currentItem.prefix === 'r1' || currentItem.prefix === 'r2') {
+      if (currentItem.type === 'music') {
+        const musicAccess = await checkAndGetLiturgyMusicStreamUrl(currentItem.music);
+        if (musicAccess?.exists && musicAccess.streamUrl) tracks.push({ url: musicAccess.streamUrl, kind: 'music' });
+      } else if (currentItem.prefix === 'r1' || currentItem.prefix === 'r2') {
         const introAccess = await checkAndGetReadingIntroStreamUrl(currentItem.prefix);
         if (introAccess?.exists && introAccess.streamUrl) tracks.push({ url: introAccess.streamUrl, kind: 'intro' });
       }
 
-      if (currentItem.ref) {
+      if (currentItem.type !== 'music' && currentItem.ref) {
         const accessObj = await checkAndGetAudioStreamUrl(currentItem.ref, currentItem.prefix || 'r1');
         if (accessObj && accessObj.exists && accessObj.streamUrl) {
           tracks.push({ url: accessObj.streamUrl, kind: 'content' });
@@ -254,6 +265,10 @@ export function useLiturgyTTS() {
       const playTrack = (trackIndex) => {
         const track = tracks[trackIndex];
         if (!track) {
+          if (currentItem.type === 'music') {
+            playNext(index + 1);
+            return;
+          }
           speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
           return;
         }
@@ -261,7 +276,7 @@ export function useLiturgyTTS() {
         const audio = new Audio();
         audio.preload = 'none';
         audio.src = track.url;
-        audio.playbackRate = rate;
+        audio.playbackRate = currentItem.type === 'music' ? 1 : rate;
         audioObjRef.current = audio;
         let trackSettled = false;
 
@@ -291,7 +306,8 @@ export function useLiturgyTTS() {
           if (trackSettled) return;
           trackSettled = true;
           if (currentToken === playTokenRef.current) {
-            if (track.kind === 'intro') playTrack(trackIndex + 1);
+            if (track.kind === 'music') playNext(index + 1);
+            else if (track.kind === 'intro') playTrack(trackIndex + 1);
             else speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
           }
         };
@@ -300,7 +316,8 @@ export function useLiturgyTTS() {
           if (trackSettled) return;
           trackSettled = true;
           if (currentToken === playTokenRef.current) {
-            if (track.kind === 'intro') playTrack(trackIndex + 1);
+            if (track.kind === 'music') playNext(index + 1);
+            else if (track.kind === 'intro') playTrack(trackIndex + 1);
             else speakWithWebSpeech(currentItem.text || currentItem.title, currentItem.title, () => playNext(index + 1));
           }
         });

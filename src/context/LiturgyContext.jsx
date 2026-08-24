@@ -13,15 +13,10 @@ export function LiturgyProvider({ children }) {
     return localStorage.getItem('theme_mode') || 'light';
   });
 
-  const [readingTheme, setReadingTheme] = useState(() => {
-    return localStorage.getItem('reading_theme') || 'light';
-  });
-
   // 3. Tùy chỉnh Chữ & Định dạng (Typography)
   const [fontSize, setFontSize] = useState(() => localStorage.getItem('font_size') || 'medium');
   const [fontStyle, setFontStyle] = useState(() => localStorage.getItem('font_style') || 'serif');
   const [lineHeight, setLineHeight] = useState(() => localStorage.getItem('line_height') || 'normal');
-  const [showRedLetter, setShowRedLetter] = useState(() => localStorage.getItem('show_red_letter') !== 'false');
 
   // 4. Trạng thái Đã lưu (Bookmarks) & Lịch sử đọc (Reading History)
   const [bookmarks, setBookmarks] = useState(() => {
@@ -73,11 +68,6 @@ export function LiturgyProvider({ children }) {
     }
   }, [themeMode]);
 
-  // Sync Reading Theme & Settings vào LocalStorage
-  useEffect(() => {
-    localStorage.setItem('reading_theme', readingTheme);
-  }, [readingTheme]);
-
   useEffect(() => {
     localStorage.setItem('font_size', fontSize);
   }, [fontSize]);
@@ -89,10 +79,6 @@ export function LiturgyProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('line_height', lineHeight);
   }, [lineHeight]);
-
-  useEffect(() => {
-    localStorage.setItem('show_red_letter', showRedLetter);
-  }, [showRedLetter]);
 
   useEffect(() => {
     localStorage.setItem('saved_liturgies', JSON.stringify(bookmarks));
@@ -136,7 +122,6 @@ export function LiturgyProvider({ children }) {
   const cycleTheme = useCallback(() => {
     setThemeMode(prev => {
       const next = prev === 'light' ? 'sepia' : (prev === 'sepia' ? 'dark' : 'light');
-      setReadingTheme(next); // cycleTheme should also sync readingTheme
       return next;
     });
   }, []);
@@ -209,11 +194,9 @@ export function LiturgyProvider({ children }) {
     selectedDate,
     isToday,
     themeMode,
-    readingTheme,
     fontSize,
     fontStyle,
     lineHeight,
-    showRedLetter,
     bookmarks,
     readingHistory,
     isReadingSheetOpen,
@@ -222,11 +205,9 @@ export function LiturgyProvider({ children }) {
     selectedDate,
     isToday,
     themeMode,
-    readingTheme,
     fontSize,
     fontStyle,
     lineHeight,
-    showRedLetter,
     bookmarks,
     readingHistory,
     isReadingSheetOpen,
@@ -239,14 +220,12 @@ export function LiturgyProvider({ children }) {
     goToPrevDay,
     goToToday,
     setThemeMode,
-    setReadingTheme,
     cycleTheme,
     setFontSize,
     cycleFontSize,
     setFontStyle,
     setLineHeight,
     cycleLineHeight,
-    setShowRedLetter,
     isBookmarked,
     toggleBookmark,
     recordReadingHistory,

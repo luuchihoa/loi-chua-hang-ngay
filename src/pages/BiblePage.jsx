@@ -53,7 +53,6 @@ import {
   saveBookReadingProgress,
 } from '../features/bible/utils/readingProgress.js';
 
-// ── Liturgical color → Tailwind accent map ─────────────────────────
 const LITURGY_ACCENT = {
   amber:   { badge: 'bg-amber-100/60 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300' },
   emerald: { badge: 'bg-emerald-100/60 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300' },
@@ -61,14 +60,12 @@ const LITURGY_ACCENT = {
   rose:    { badge: 'bg-rose-100/60 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300' },
 };
 
-// ──────────────────────────────────────────────────────────────────
 export default function BiblePage() {
   useAudioIndex();
   const { bookId: urlBookId, chapterNum: urlChapter } = useParams();
   const navigate = useNavigate();
   const allBooks = useMemo(() => getAllBooks(), []);
 
-  // ── Determine initial book + chapter (URL → localStorage → default) ──
   const getInitialState = () => {
     if (urlBookId) {
       const book = getBookById(urlBookId);
@@ -82,9 +79,8 @@ export default function BiblePage() {
     return { bookId: 'mat', chapter: 1, verse: 1 };
   };
 
-  const initial = useMemo(getInitialState, []); // only once on mount
+  const initial = useMemo(getInitialState, []);
 
-  // ── Navigation State ────────────────────────────────────────────
   const [selectedBookId, setSelectedBookId] = useState(initial.bookId);
   const [chapterNum, setChapterNum]         = useState(initial.chapter);
   const [searchQuery, setSearchQuery]       = useState('');
@@ -96,12 +92,10 @@ export default function BiblePage() {
       : null
   ));
 
-  // Infer testament from active book
   const activeBook = useMemo(() => getBookById(selectedBookId) || allBooks[0], [selectedBookId, allBooks]);
   const [testament, setTestament] = useState(activeBook.testament || 'new');
 
-  // ── Reader State ─────────────────────────────────────────────────
-  const [selectedVerses, setSelectedVerses] = useState([]); // array of vNum
+  const [selectedVerses, setSelectedVerses] = useState([]);
   const [isMultiSelect, setIsMultiSelect]   = useState(false);
   const [activeFootnote, setActiveFootnote] = useState(null);
   const [copiedVerse, setCopiedVerse]       = useState(null);
@@ -117,11 +111,10 @@ export default function BiblePage() {
     return localStorage.getItem('bible_swipe_hint_seen') !== 'true';
   });
 
-  // ── Load Chapter Data (React Query Cache) ────────────────────────
   const { data: chapterData, isLoading: isLoadingChapter, error: queryError, refetch } = useQuery({
     queryKey: ['chapter', activeBook.id, chapterNum],
     queryFn: () => getChapterContent(activeBook.id, chapterNum),
-    staleTime: 1000 * 60 * 60 * 24, // 24 hours caching in memory
+    staleTime: 1000 * 60 * 60 * 24,
   });
 
   // Chỉ hỏi server về audio của sách đang mở; không tải manifest của toàn bộ 73 sách.
@@ -137,13 +130,11 @@ export default function BiblePage() {
   
   const chapterError = queryError ? 'Không thể tải Lời Chúa. Vui lòng kiểm tra kết nối mạng.' : null;
 
-  // Show auto-dismiss toast helper
   const triggerToast = useCallback((msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
   }, []);
 
-  // ── Re-sync state when URL params change after mount ────────────
   useEffect(() => {
     if (!urlBookId) return;
     const book = getBookById(urlBookId);
@@ -158,12 +149,10 @@ export default function BiblePage() {
     }
   }, [urlBookId, urlChapter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Go-to input ─────────────────────────────────────────────────
   const [goToInput, setGoToInput]   = useState('');
   const [goToError, setGoToError]   = useState(false);
   const goToRef                     = useRef(null);
 
-  // ── Audio State ──────────────────────────────────────────────────
   const [currentAudioTrack, setCurrentAudioTrack] = useState(null);
   const [activeAudioVerse, setActiveAudioVerse]   = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
@@ -174,14 +163,9 @@ export default function BiblePage() {
     setIsAudioLoading(false);
   }, [activeBook.id, chapterNum]);
 
-  // ── Context ──────────────────────────────────────────────────────
   const {
-    readingTheme,
-    setReadingTheme,
     fontSize,
     setFontSize,
-    showRedLetter,
-    setShowRedLetter,
     lineHeight,
     setLineHeight,
     toggleBookmark,
@@ -189,13 +173,10 @@ export default function BiblePage() {
   } = useLiturgy();
   const prefersReducedMotion = useReducedMotion();
 
-  // ── Highlight Hook ───────────────────────────────────────────────
   const { getHighlight, setHighlight } = useVerseHighlight();
 
-  // ── Note Hook ────────────────────────────────────────────────────
   const { getNote, saveNote, deleteNote } = useVerseNote();
 
-  // ── Verse Refs (audio-text scroll) ───────────────────────────────
   const verseRefs = useRef({});
   const virtuosoRef = useRef(null);
   const queuedProgressRef = useRef(null);
@@ -625,34 +606,6 @@ export default function BiblePage() {
     }
   }, [goToInput, allBooks]);
 
-  // ── Theme helpers ────────────────────────────────────────────────
-  const getThemeClass = () => {
-    if (readingTheme === 'sepia') return 'theme-sepia';
-    return '';
-  };
-
-  // Header nằm ngoài BiblePage, nên đồng bộ một class ở root trong lúc trang đọc dùng nền Giấy.
-  //
-  // LƯU Ý QUAN TRỌNG: KHÔNG toggle class `theme-sepia` ở đây.
-  // `theme-sepia` đã được LiturgyContext.jsx quản lý độc quyền dựa trên
-  // `themeMode` (theme toàn app: light/dark/sepia). `readingTheme` ở đây
-  // là một state KHÁC, độc lập (theme "giấy" riêng cho trang đọc, có thể
-  // khác với themeMode). Trước đây có thử đồng bộ luôn `theme-sepia` theo
-  // readingTheme tại đây — gây bug nghiêm trọng: khi rời trang đọc (unmount),
-  // cleanup xóa `theme-sepia` khỏi <html> VÔ ĐIỀU KIỆN, xóa mất luôn theme
-  // sepia toàn app dù themeMode vẫn đang là 'sepia' (LiturgyContext không
-  // chạy lại effect vì themeMode không đổi) → giao diện bị "reset" khi
-  // chuyển tab. Chỉ dùng riêng `reader-sepia` — class này không bị ai khác
-  // đụng vào, còn index.css đã được cập nhật để các rule sepia-cho-trang-đọc
-  // kích hoạt theo `html.theme-sepia, html.reader-sepia` (OR), nên vẫn chạy
-  // đúng dù đọc Sepia độc lập với themeMode toàn app hay không.
-  useEffect(() => {
-    const root = document.documentElement;
-    const isSepia = readingTheme === 'sepia';
-    root.classList.toggle('reader-sepia', isSepia);
-    return () => root.classList.remove('reader-sepia');
-  }, [readingTheme]);
-
   const initialVerseIndex = useMemo(() => {
     if (selectedVerses.length === 1 && chapterData?.verses) {
       const idx = chapterData.verses.findIndex(v => v.num === selectedVerses[0]);
@@ -700,10 +653,7 @@ export default function BiblePage() {
   const LINE_HEIGHT_CLASSES = { compact: 'leading-snug', normal: 'leading-normal', relaxed: 'leading-loose sm:leading-[2.5]' };
   const getLineHeightClass = () => LINE_HEIGHT_CLASSES[lineHeight] || LINE_HEIGHT_CLASSES.normal;
 
-  // ── Render Footnotes (click popover) ─────────────────────────────
-  // Class dùng chung cho số câu (dạng superscript nhỏ, không còn badge nền màu)
-  // đầu dòng VÀ span-rỗng thay thế khi dòng không có số câu, để đảm bảo mép
-  // trái nội dung luôn thẳng hàng tuyệt đối.
+  // Giữ lề trái thẳng hàng cho cả dòng có và không có số câu.
   const VERSE_INDENT_CLASS = 'w-4 sm:w-5 shrink-0';
   const VERSE_NUMBER_CLASS =
     'font-mono text-amber-700 dark:text-amber-400 select-none';
@@ -718,7 +668,6 @@ export default function BiblePage() {
           const trimmed = line.trim();
           if (!trimmed) return <div key={idx} className="h-2" />;
 
-          // 1. Tiêu đề Phần lớn [PART]
           if (trimmed.startsWith('[PART]')) {
             const partText = trimmed.replace('[PART]', '').trim();
             return (
@@ -730,7 +679,6 @@ export default function BiblePage() {
             );
           }
 
-          // 2. Tiêu đề Tiểu mục [SECTION]
           if (trimmed.startsWith('[SECTION]')) {
             const sectionText = trimmed.replace('[SECTION]', '').trim();
             return (
@@ -742,15 +690,9 @@ export default function BiblePage() {
             );
           }
 
-          // 3. Mọi dòng còn lại (thơ hay văn xuôi đều xử lý giống hệt nhau):
-          //    - Nếu dòng bắt đầu bằng (số) -> cắt ra làm số câu nhỏ (superscript) cột trái.
-          //    - Nếu không -> cột trái là span rỗng cùng kích thước, để mép
-          //      trái nội dung luôn thẳng hàng bất kể dòng có số câu hay không.
-          //    - Số câu nằm giữa dòng vẫn được tách thành số nhỏ (superscript) inline.
           const leadingMatch = trimmed.match(/^\((\d+[a-z]?|\d+-\d+)\)\s*(.*)/);
           const restOfLine = leadingMatch ? leadingMatch[2] : trimmed;
 
-          // Tách các số câu còn sót lại nằm rải rác trong phần nội dung còn lại
           const parts = restOfLine.split(/(\(\d+[a-z]?\)|\(\d+-\d+\))/g).filter(Boolean);
           const contentElements = parts.map((part, i) => {
             const markerMatch = part.match(/^\((\d+[a-z]?|\d+-\d+)\)$/);
@@ -771,10 +713,6 @@ export default function BiblePage() {
             );
           });
 
-          // Badge/spacer đặt inline-block ngay đầu đoạn văn (không dùng flex),
-          // nên nó chỉ chiếm chỗ trên DÒNG HIỂN THỊ ĐẦU TIÊN. Các dòng do
-          // trình duyệt tự word-wrap tiếp theo sẽ tự quay về sát lề trái của
-          // <p>, không bị "kéo lệch" theo toàn bộ chiều cao đoạn văn.
           return (
             <p
               key={idx}
@@ -883,7 +821,7 @@ export default function BiblePage() {
     : `https://loichuamoingay.org/bible/${activeBook?.id}/${chapterNum}`;
 
   return (
-    <div className={`bible-reader-page min-h-screen flex flex-col md:flex-row pb-[calc(7rem+env(safe-area-inset-bottom,0px))] md:pb-0 ${getThemeClass()}`}>
+    <div className="bible-reader-page min-h-screen flex flex-col md:flex-row pb-[calc(7rem+env(safe-area-inset-bottom,0px))] md:pb-0">
       <SEO 
         title={pageTitle}
         description={pageDesc}
@@ -1144,7 +1082,6 @@ export default function BiblePage() {
                       const verseNumber = Number(v.num);
                       const isBm = isVerseBookmarked(verseNumber);
                       const isSelected = selectedVerses.some(num => Number(num) === verseNumber);
-                      const isRedLetter = showRedLetter && v.speaker === 'jesus';
                       const isAudioActive = Number(activeAudioVerse) === verseNumber;
                       const highlightColor = getHighlight(activeBook.id, chapterNum, verseNumber);
                       const highlightClass = highlightColor ? HIGHLIGHT_COLORS[highlightColor]?.bg : null;
@@ -1214,9 +1151,7 @@ export default function BiblePage() {
                             </div>
 
                             <div className="flex-1 space-y-3">
-                              <p className={`text-stone-800 dark:text-stone-200 transition-colors ${
-                                isRedLetter ? 'text-rose-700 dark:text-rose-400 font-medium' : ''
-                              } ${isAudioActive ? 'audio-active-verse -mx-2 px-3 py-1.5 shadow-xs font-medium' : ''} ${highlightClass || ''}`}>
+                              <p className={`text-stone-800 dark:text-stone-200 transition-colors ${isAudioActive ? 'audio-active-verse -mx-2 px-3 py-1.5 shadow-xs font-medium' : ''} ${highlightClass || ''}`}>
                                 {renderVerseText(v.text, v.footnotes)}
                               </p>
                             </div>
@@ -1381,10 +1316,6 @@ export default function BiblePage() {
         setFontSize={setFontSize}
         lineHeight={lineHeight}
         setLineHeight={setLineHeight}
-        readingTheme={readingTheme}
-        setReadingTheme={setReadingTheme}
-        showRedLetter={showRedLetter}
-        setShowRedLetter={setShowRedLetter}
       />
 
       {/* Note Modal */}

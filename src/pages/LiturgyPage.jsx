@@ -25,9 +25,6 @@ function getLiturgicalCycles(year) {
   return { sundayCycle, weekdayCycle };
 }
 
-// ─────────────────────────────────────────────────────────────
-// BẢNG MÀU PHỤNG VỤ ĐỘNG (Dynamic Liturgical Theme System)
-// ─────────────────────────────────────────────────────────────
 const LITURGICAL_THEMES = {
   amber: {
     name: 'Vàng / Trắng (Mùa Phục Sinh & Giáng Sinh / Lễ Trọng)',
@@ -91,9 +88,6 @@ const LITURGICAL_THEMES = {
   }
 };
 
-// ─────────────────────────────────────────────────────────────
-// PAGE COMPONENT MAIN
-// ─────────────────────────────────────────────────────────────
 export default function LiturgyPage() {
   const { heroReveal } = usePageMotion();
   const location = useLocation();
@@ -807,55 +801,6 @@ export default function LiturgyPage() {
 
             return Object.keys(merged).length > 0 ? merged : null;
           };
-          // const getDataForKey = (targetKey, preferredCycle = null) => {
-          //   if (!targetKey) return null;
-          //   const matches = data.filter(d => d.liturgy_key === targetKey);
-          //   if (matches.length === 0) return null;
-
-          //   const reqCycle = preferredCycle || cycles.sundayCycle;
-          //   // 1. Tìm chính xác dòng khớp với Chu kỳ Năm hiện tại (A, B, C hoặc I, II)
-          //   const exactCycleRow = matches.find(d => d.cycle === reqCycle || d.cycle === cycles.sundayCycle || d.cycle === cycles.weekdayCycle);
-            
-          //   // 2. Tìm dòng cycle = 'all' (Chứa dữ liệu chung B & C hoặc thông tin cố định)
-          //   const allRow = matches.find(d => d.cycle === 'all');
-            
-          //   // 3. Dòng dự phòng cuối cùng (chỉ dùng khi hoàn toàn KHÔNG CÓ dòng trùng năm lẫn dòng 'all')
-          //   const fallbackRow = matches.find(d => d.cycle !== 'all') || matches[0];
-
-          //   // Nếu có exactCycleRow thì lấy exactCycleRow; nếu không thì lấy allRow; nếu không có cả 2 mới lấy fallbackRow
-          //   const cycleRow = exactCycleRow || (allRow ? null : fallbackRow);
-
-          //   const merged = {};
-          //   const allFields = [
-          //     'title', 'quote', 
-          //     'r1_ref', 'r1_quote', 'r1_intro', 'r1_content', 
-          //     'psalm_ref', 'psalm_content', 
-          //     'r2_ref', 'r2_quote', 'r2_intro', 'r2_content', 
-          //     'gospel_ref', 'gospel_alleluia', 'gospel_intro', 'gospel_content', 
-          //     'reflection', 'extra_readings'
-          //   ];
-
-          //   const isNonEmpty = (val) => {
-          //     if (!val) return false;
-          //     if (Array.isArray(val)) return val.length > 0;
-          //     const plainText = val.toString().replace(/<[^>]*>/g, '').trim();
-          //     return plainText.length > 0;
-          //   };
-
-          //   for (const f of allFields) {
-          //     const valFromCycle = cycleRow?.[f];
-          //     const valFromAll = allRow?.[f];
-
-          //     if (isNonEmpty(valFromCycle)) {
-          //       merged[f] = valFromCycle;
-          //     } else if (isNonEmpty(valFromAll)) {
-          //       merged[f] = valFromAll;
-          //     }
-          //   }
-
-          //   return Object.keys(merged).length > 0 ? merged : null;
-          // };
-
           const feastData = getDataForKey(currentInfo.key) 
                          || getDataForKey(`feast_${mPadded}_${dPadded}`) 
                          || getDataForKey(`fixed_${mPadded}_${dPadded}`)
@@ -1996,7 +1941,7 @@ export default function LiturgyPage() {
                     </button>
 
                     {/* Popover Chú Thích Bật Ra */}
-                    <div className={`absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-64 p-3 bg-stone-900/95 dark:bg-stone-950/95 text-stone-100 text-[11px] rounded-2xl shadow-xl backdrop-blur-md border border-stone-700/80 z-50 leading-relaxed text-left animate-in fade-in zoom-in-95 duration-150 font-sans pointer-events-none ${showInfoTooltip ? 'block' : 'hidden group-hover:block'}`}>
+                    <div className={`theme-invariant absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-64 p-3 bg-stone-900/95 dark:bg-stone-950/95 text-stone-100 text-[11px] rounded-2xl shadow-xl backdrop-blur-md border border-stone-700/80 z-50 leading-relaxed text-left animate-in fade-in zoom-in-95 duration-150 font-sans pointer-events-none ${showInfoTooltip ? 'block' : 'hidden group-hover:block'}`}>
                       <p className="font-semibold text-amber-400 mb-1 flex items-center gap-1">
                         <Sparkles className="w-3 h-3" /> Quy Tắc Phụng Vụ:
                       </p>

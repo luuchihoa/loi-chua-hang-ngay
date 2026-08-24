@@ -30,6 +30,49 @@ const getReadingIntroStaticPath = (section) => {
     : null;
 };
 
+const LITURGY_MUSIC_FILES = {
+  intro: 'liturgy_intro_v1.mp3',
+  transition: 'reading_transition_v1.mp3',
+  outro: 'liturgy_outro_v1.mp3',
+};
+
+export const checkAndGetLiturgyMusicStreamUrl = async (music) => {
+  const filename = LITURGY_MUSIC_FILES[music];
+  const apiBase = getAudioApiBase();
+  if (!filename || !apiBase) return { exists: false, streamUrl: null, trackId: null };
+
+  const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));
+  if (isStaticStorage) {
+    return {
+      exists: true,
+      streamUrl: `${apiBase}/music/${filename}`,
+      trackId: `music:${music}`,
+    };
+  }
+
+  try {
+    const res = await fetch(`${apiBase}/api/check-audio`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ music }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.exists && data.trackId) {
+        return {
+          exists: true,
+          streamUrl: await fetchAudioAccessStreamUrl(data.trackId),
+          trackId: data.trackId,
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Lỗi lấy nhạc phụng vụ:', err.message);
+  }
+
+  return { exists: false, streamUrl: null, trackId: null };
+};
+
 export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
   if (!refString) return { exists: false, streamUrl: null, trackId: null };
   const apiBase = getAudioApiBase();

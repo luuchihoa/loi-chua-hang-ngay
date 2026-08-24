@@ -107,6 +107,7 @@ function scanPrivateAudioRegistry() {
         if (relPath === 'readings/r1.mp3' || relPath === 'readings/r2.mp3') { categoryKey = 'reading_intro'; categoryLabel = 'Lời dẫn bài đọc'; }
         else if (relPath.startsWith('readings/')) { categoryKey = 'reading'; categoryLabel = 'Bài Đọc'; }
         else if (relPath.startsWith('gospels')) { categoryKey = 'gospel'; categoryLabel = 'Tin Mừng'; }
+        else if (relPath.startsWith('music/')) { categoryKey = 'music'; categoryLabel = 'Nhạc phụng vụ'; }
         else if (relPath.startsWith('bible')) { categoryKey = 'bible'; categoryLabel = 'Kinh Thánh'; }
         else if (relPath.startsWith('custom_voices')) { categoryKey = 'custom_voice'; categoryLabel = 'Giọng Mẫu'; }
 
@@ -928,7 +929,26 @@ const server = http.createServer(async (req, res) => {
 
     readBodyWithLimit(req, res, (buffer) => {
       try {
-        const { ref = "", section = "r1", intro = null } = JSON.parse(buffer.toString());
+        const { ref = "", section = "r1", intro = null, music = null } = JSON.parse(buffer.toString());
+
+        const musicFiles = {
+          intro: 'liturgy_intro_v1.mp3',
+          transition: 'reading_transition_v1.mp3',
+          outro: 'liturgy_outro_v1.mp3',
+        };
+        if (musicFiles[music]) {
+          const relPath = `music/${musicFiles[music]}`;
+          const trackId = relPathToTrackMap.get(relPath);
+          const foundEntry = trackId && trackRegistry.get(trackId);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(foundEntry ? {
+            exists: true,
+            trackId: foundEntry.trackId,
+            filename: foundEntry.filename,
+            size_kb: foundEntry.sizeKb
+          } : { exists: false }));
+          return;
+        }
 
         // r1.mp3/r2.mp3 là lời dẫn dùng chung, không phụ thuộc trích dẫn.
         if (intro === 'r1' || intro === 'r2') {

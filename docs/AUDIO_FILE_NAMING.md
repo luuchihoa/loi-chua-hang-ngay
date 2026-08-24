@@ -9,6 +9,18 @@
 | Nội dung Bài đọc 1 hoặc 2 | `readings/<ref-chuẩn>.mp3` | `readings/1_Cr_13v1_to_13.mp3` |
 | Tin Mừng | `gospels/<ref-chuẩn>.mp3` | `gospels/1_Cr_13v1_to_13.mp3` |
 
+## Nhạc phát toàn bộ
+
+Các file này là nhạc không lời chung, chỉ xuất hiện khi phát toàn bộ bài đọc:
+
+```text
+music/liturgy_intro_v1.mp3
+music/reading_transition_v1.mp3
+music/liturgy_outro_v1.mp3
+```
+
+Không phát các file này khi nghe riêng một bài đọc. Nhạc nền dưới giọng đọc phải được mix sẵn trong file nội dung theo `ref`; không phát song song trong trình duyệt.
+
 ## Chuẩn hoá `ref`
 
 1. Chuẩn hoá Unicode NFC và bỏ khoảng trắng đầu/cuối.

@@ -12,6 +12,11 @@ readings/
 
 gospels/
   <ref-chuan>.mp3                     # nội dung Tin Mừng
+
+music/
+  liturgy_intro_v1.mp3                # phát trước playlist đầy đủ
+  reading_transition_v1.mp3           # phát giữa hai bài đọc
+  liturgy_outro_v1.mp3                # phát sau bài cuối
 ```
 
 ## 2. Quy tắc tạo `<ref-chuan>`
@@ -44,6 +49,8 @@ Hai ref khác nhau phải luôn sinh ra hai tên khác nhau. Ví dụ `1 Cr 1,11
 - `readings/r2.mp3`: chỉ câu “Bài đọc 2”.
 - Mọi `readings/<ref-chuan>.mp3`: chỉ đọc lời dẫn Kinh Thánh riêng của trích dẫn và nội dung; **không đọc lại** “Bài đọc 1” hoặc “Bài đọc 2”.
 - Mọi `gospels/<ref-chuan>.mp3`: chỉ đọc lời dẫn và nội dung Tin Mừng.
+- Các file trong `music/` là nhạc không lời dùng chung, không gắn với `ref` và không dùng khi nghe riêng một bài đọc.
+- Nhạc nền dưới giọng đọc phải được mix sẵn trong file nội dung; trình duyệt không phát nhạc nền song song.
 
 ## 5. Pseudocode
 
