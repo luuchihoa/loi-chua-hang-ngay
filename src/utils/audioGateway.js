@@ -25,7 +25,8 @@ const getTurnstileToken = async () => {
     return await new Promise((resolve, reject) => {
       const widgetId = turnstile.render(mount, {
         sitekey: siteKey,
-        size: 'invisible',
+        execution: 'execute',
+        appearance: 'interaction-only',
         callback: resolve,
         'error-callback': () => reject(new Error('Xác minh bảo mật không thành công')),
         'expired-callback': () => reject(new Error('Xác minh bảo mật đã hết hạn')),
