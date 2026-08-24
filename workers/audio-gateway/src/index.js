@@ -164,15 +164,18 @@ const streamAudio = async (request, env, cors) => {
     return json({ error: 'Audio token invalid or expired' }, 401, cors);
   }
 
-  const objectHead = await fetchObject(payload.path, env, { method: 'HEAD' });
-  if (isObjectMissing(objectHead)) return json({ error: 'Audio not found' }, 404, cors);
-  if (!objectHead.ok) return json({ error: 'Audio storage unavailable' }, 503, cors);
   const range = request.headers.get('Range');
   const object = await fetchObject(payload.path, env, {
     method: request.method,
     headers: range ? { Range: range } : undefined,
   });
   if (isObjectMissing(object)) return json({ error: 'Audio not found' }, 404, cors);
+  if (object.status === 416) {
+    const headers = new Headers(cors);
+    const contentRange = object.headers.get('Content-Range');
+    if (contentRange) headers.set('Content-Range', contentRange);
+    return new Response(null, { status: 416, headers });
+  }
   if (!object.ok && object.status !== 206) return json({ error: 'Audio storage unavailable' }, 503, cors);
   const headers = new Headers(cors);
   headers.set('Content-Type', object.headers.get('Content-Type') || 'audio/mpeg');
@@ -204,9 +207,6 @@ const handleTicket = async (request, env, cors) => {
   const input = await request.json().catch(() => null);
   const path = input && resolveAudioPath(input);
   if (!path) return json({ error: 'Audio request invalid' }, 400, cors);
-  const object = await fetchObject(path, env, { method: 'HEAD' });
-  if (isObjectMissing(object)) return json({ exists: false }, 404, cors);
-  if (!object.ok) return json({ error: 'Audio storage unavailable' }, 503, cors);
   const exp = Math.floor(Date.now() / 1000) + Math.min(Math.max(Number(env.TICKET_TTL_SECONDS) || 120, 30), 300);
   const token = await encryptTicket({ path, exp, ip: getClientIp(request) }, env);
   return json({ exists: true, streamUrl: `${new URL(request.url).origin}/v1/stream?token=${encodeURIComponent(token)}`, expiresAt: exp }, 200, cors);
