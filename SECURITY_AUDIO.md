@@ -18,8 +18,8 @@ Tài liệu này mô tả kiến trúc bảo mật và các biện pháp hardeni
 ---
 
 ### 2. Quản Lý Thư Mục Lưu Trữ & Private Buckets (Cloudflare R2 / Object Storage)
-* **Bucket Riêng Tư (Private Bucket):** Cấu hình bucket lưu trữ MP3 trên Cloudflare R2 / Supabase Storage ở chế độ `Private`.
-* **Chặn Truy Cập Tĩnh Trực Tiếp:** Chặn toàn bộ các request tải trực tiếp file MP3 thô không có tham số chữ ký token qua URL công cộng.
+* **Bucket Riêng Tư (Private Bucket):** R2 production chỉ được đọc qua `workers/audio-gateway`; không dùng URL `.r2.dev` hoặc custom domain trỏ thẳng bucket.
+* **Chặn Truy Cập Tĩnh Trực Tiếp:** Worker cấp URL stream AES-GCM hết hạn ngắn sau khi kiểm tra phiên; xem [hướng dẫn triển khai](docs/AUDIO_GATEWAY_DEPLOYMENT.md).
 
 ---
 

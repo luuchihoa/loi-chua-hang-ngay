@@ -1,5 +1,6 @@
 import { fetchAudioAccessStreamUrl } from './bibleService.js';
 import { normalizeAudioRef, getGospelAudioFilename, getReadingAudioFilename } from './audioNaming.js';
+import { isAudioGatewayEnabled, requestAudioGatewayTicket } from './audioGateway.js';
 
 export const getAudioApiBase = () => {
   // Hỗ trợ tên cũ VITE_AUDIO_BASE_URL để các deploy R2 hiện có vẫn hoạt động.
@@ -39,7 +40,16 @@ const LITURGY_MUSIC_FILES = {
 export const checkAndGetLiturgyMusicStreamUrl = async (music) => {
   const filename = LITURGY_MUSIC_FILES[music];
   const apiBase = getAudioApiBase();
-  if (!filename || !apiBase) return { exists: false, streamUrl: null, trackId: null };
+  if (!filename) return { exists: false, streamUrl: null, trackId: null };
+
+  if (isAudioGatewayEnabled()) {
+    const ticket = await requestAudioGatewayTicket({ kind: 'music', music });
+    return ticket
+      ? { exists: true, streamUrl: ticket.streamUrl, trackId: `music:${music}` }
+      : { exists: false, streamUrl: null, trackId: null };
+  }
+
+  if (!apiBase) return { exists: false, streamUrl: null, trackId: null };
 
   const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));
   if (isStaticStorage) {
@@ -76,6 +86,18 @@ export const checkAndGetLiturgyMusicStreamUrl = async (music) => {
 export const checkAndGetAudioStreamUrl = async (refString, section = 'r1') => {
   if (!refString) return { exists: false, streamUrl: null, trackId: null };
   const apiBase = getAudioApiBase();
+
+  if (isAudioGatewayEnabled()) {
+    const ticket = await requestAudioGatewayTicket({
+      kind: section === 'gospel' ? 'gospel' : 'reading',
+      ref: refString,
+      section,
+    });
+    return ticket
+      ? { exists: true, streamUrl: ticket.streamUrl, trackId: `${section}:${refString}` }
+      : { exists: false, streamUrl: null, trackId: null };
+  }
+
   if (!apiBase) return { exists: false, streamUrl: null, trackId: null };
 
   const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));
@@ -121,6 +143,14 @@ export const checkAndGetReadingIntroStreamUrl = async (section) => {
   if (!introPath) return { exists: false, streamUrl: null, trackId: null };
 
   const apiBase = getAudioApiBase();
+
+  if (isAudioGatewayEnabled()) {
+    const ticket = await requestAudioGatewayTicket({ kind: 'reading-intro', section });
+    return ticket
+      ? { exists: true, streamUrl: ticket.streamUrl, trackId: `reading-intro:${section}` }
+      : { exists: false, streamUrl: null, trackId: null };
+  }
+
   if (!apiBase) return { exists: false, streamUrl: null, trackId: null };
 
   const isStaticStorage = apiBase.includes('.r2.dev') || apiBase.includes('r2.cloudflarestorage.com') || (!apiBase.includes('localhost:5005') && !apiBase.includes('/api'));

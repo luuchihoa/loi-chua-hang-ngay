@@ -24,6 +24,7 @@ import {
   getBibleAudioFilename,
 } from '../utils/bibleService.js';
 import { hasBibleChapterAudio, useAudioIndex } from '../utils/audioIndexService.js';
+import { isAudioGatewayEnabled, requestAudioGatewayTicket } from '../utils/audioGateway.js';
 
 const RAW_AUDIO_API_BASE =
   import.meta.env.VITE_AUDIO_API_BASE ||
@@ -372,6 +373,29 @@ export default function BibleAudioPage() {
       const isStaticStorage =
         AUDIO_API_BASE.includes('.r2.dev') ||
         AUDIO_API_BASE.includes('r2.cloudflarestorage.com');
+
+      if (isAudioGatewayEnabled()) {
+        if (loadingTrackId) return;
+        setLoadingTrackId(trackId);
+        requestAudioGatewayTicket({ kind: 'bible', bookId: targetBook.id, chapter: chapNum })
+          .then((ticket) => {
+            if (ticket?.streamUrl) {
+              setCurrentTrack({
+                trackId,
+                title: `${targetBook.name} · Chương ${chapNum}`,
+                subtitle: `${targetBook.testament === 'old' ? 'Cựu Ước' : 'Tân Ước'} • ${targetBook.short}`,
+                category: 'Kinh Thánh',
+                url: ticket.streamUrl,
+                filename,
+                bookId: targetBook.id,
+                chapter: chapNum,
+              });
+              pushRecent(targetBook.id, chapNum);
+            }
+          })
+          .finally(() => setLoadingTrackId(null));
+        return;
+      }
 
       if (isStaticStorage) {
         setCurrentTrack({
