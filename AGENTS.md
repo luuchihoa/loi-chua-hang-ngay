@@ -12,7 +12,7 @@
 - Phụng vụ đọc từ Supabase; cache phía trình duyệt ở `src/utils/liturgyCache.js`.
 - Audio phụng vụ được suy từ `ref` bằng `src/utils/audioNaming.js` và tra URL tại `src/utils/audioLookup.js`; không thêm manifest mới.
 - R2 dùng `readings/r1.mp3`, `readings/r2.mp3`, `readings/<ref>.mp3`, `gospels/<ref>.mp3`; quy tắc chi tiết ở `docs/AUDIO_FILE_NAMING.md`.
-- Playlist phụng vụ đầy đủ chèn tuần tự `music/liturgy_intro_v4.mp3`, `music/reading_transition_v4.mp3` và `music/liturgy_outro_v4.mp3`; không phát nhạc nền song song với giọng đọc.
+- Playlist phụng vụ đầy đủ chèn tuần tự `music/liturgy_intro_v5.mp3`, `music/reading_transition_v5.mp3` và `music/liturgy_outro_v5.mp3`; không phát nhạc nền song song với giọng đọc.
 
 ## Quy tắc thay đổi
 

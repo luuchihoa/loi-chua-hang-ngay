@@ -932,9 +932,9 @@ const server = http.createServer(async (req, res) => {
         const { ref = "", section = "r1", intro = null, music = null } = JSON.parse(buffer.toString());
 
         const musicFiles = {
-          intro: 'liturgy_intro_v4.mp3',
-          transition: 'reading_transition_v4.mp3',
-          outro: 'liturgy_outro_v4.mp3',
+          intro: 'liturgy_intro_v5.mp3',
+          transition: 'reading_transition_v5.mp3',
+          outro: 'liturgy_outro_v5.mp3',
         };
         if (musicFiles[music]) {
           const relPath = `music/${musicFiles[music]}`;

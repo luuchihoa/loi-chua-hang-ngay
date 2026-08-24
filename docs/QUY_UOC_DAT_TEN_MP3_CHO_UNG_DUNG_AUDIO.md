@@ -14,9 +14,9 @@ gospels/
   <ref-chuan>.mp3                     # nội dung Tin Mừng
 
 music/
-  liturgy_intro_v4.mp3                # phát trước playlist đầy đủ
-  reading_transition_v4.mp3           # phát giữa hai bài đọc
-  liturgy_outro_v4.mp3                # phát sau bài cuối
+  liturgy_intro_v5.mp3                # phát trước playlist đầy đủ
+  reading_transition_v5.mp3           # phát giữa hai bài đọc
+  liturgy_outro_v5.mp3                # phát sau bài cuối
 ```
 
 ## 2. Quy tắc tạo `<ref-chuan>`

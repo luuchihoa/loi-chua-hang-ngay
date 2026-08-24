@@ -14,9 +14,9 @@
 Các file này là nhạc không lời chung, chỉ xuất hiện khi phát toàn bộ bài đọc:
 
 ```text
-music/liturgy_intro_v4.mp3
-music/reading_transition_v4.mp3
-music/liturgy_outro_v4.mp3
+music/liturgy_intro_v5.mp3
+music/reading_transition_v5.mp3
+music/liturgy_outro_v5.mp3
 ```
 
 Không phát các file này khi nghe riêng một bài đọc. Nhạc nền dưới giọng đọc phải được mix sẵn trong file nội dung theo `ref`; không phát song song trong trình duyệt.

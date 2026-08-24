@@ -31,9 +31,9 @@ const getReadingIntroStaticPath = (section) => {
 };
 
 const LITURGY_MUSIC_FILES = {
-  intro: 'liturgy_intro_v4.mp3',
-  transition: 'reading_transition_v4.mp3',
-  outro: 'liturgy_outro_v4.mp3',
+  intro: 'liturgy_intro_v5.mp3',
+  transition: 'reading_transition_v5.mp3',
+  outro: 'liturgy_outro_v5.mp3',
 };
 
 export const checkAndGetLiturgyMusicStreamUrl = async (music) => {
