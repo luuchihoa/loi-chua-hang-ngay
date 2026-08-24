@@ -5,7 +5,7 @@ compatibility_date = "2026-08-24"
 [[kv_namespaces]]
 binding = "AUDIO_RATE_LIMITS"
 # Tạo namespace ở tài khoản sở hữu website, rồi thay giá trị này trước khi deploy.
-id = "REPLACE_WITH_WEBSITE_ACCOUNT_KV_NAMESPACE_ID"
+id = "6ee2c65a57c14790bdb8d49d95e6243f"
 
 [[routes]]
 pattern = "audio.loichuamoingay.org"
