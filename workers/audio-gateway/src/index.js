@@ -1,4 +1,5 @@
 import { resolveAudioPath } from './audioPath.js';
+import { AwsClient } from 'aws4fetch';
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -139,17 +140,21 @@ const verifyTurnstile = async (token, request, env) => {
   return result.success === true;
 };
 
-const parseRange = (value, size) => {
-  if (!value) return null;
-  const match = /^bytes=(\d*)-(\d*)$/.exec(value.trim());
-  if (!match) return 'invalid';
-  const [, startRaw, endRaw] = match;
-  if (!startRaw && !endRaw) return 'invalid';
-  const start = startRaw ? Number(startRaw) : Math.max(0, size - Number(endRaw));
-  const end = endRaw ? Math.min(Number(endRaw), size - 1) : size - 1;
-  if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || start > end || start >= size) return 'invalid';
-  return { offset: start, length: end - start + 1 };
+const objectUrl = (path, env) => {
+  const endpoint = (env.R2_S3_ENDPOINT || `https://${env.R2_STORAGE_ACCOUNT_ID}.r2.cloudflarestorage.com`).replace(/\/+$/, '');
+  const key = path.split('/').map(encodeURIComponent).join('/');
+  return `${endpoint}/${encodeURIComponent(env.R2_BUCKET_NAME)}/${key}`;
 };
+
+// Cross-account R2 access is signed inside the Worker; credentials never reach the browser.
+const fetchObject = (path, env, init) => new AwsClient({
+  accessKeyId: env.R2_ACCESS_KEY_ID,
+  secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+  service: 's3',
+  region: 'auto',
+}).fetch(objectUrl(path, env), init);
+
+const isObjectMissing = (response) => response.status === 404;
 
 const streamAudio = async (request, env, cors) => {
   if (await isRateLimited(request, env, 'stream')) return json({ error: 'Too many requests' }, 429, cors);
@@ -159,28 +164,26 @@ const streamAudio = async (request, env, cors) => {
     return json({ error: 'Audio token invalid or expired' }, 401, cors);
   }
 
-  const objectHead = await env.AUDIO_BUCKET.head(payload.path);
-  if (!objectHead) return json({ error: 'Audio not found' }, 404, cors);
-  const range = parseRange(request.headers.get('Range'), objectHead.size);
-  if (range === 'invalid') {
-    return new Response(null, { status: 416, headers: { ...cors, 'Content-Range': `bytes */${objectHead.size}` } });
-  }
-
-  const object = await env.AUDIO_BUCKET.get(payload.path, range ? { range } : undefined);
-  if (!object) return json({ error: 'Audio not found' }, 404, cors);
+  const objectHead = await fetchObject(payload.path, env, { method: 'HEAD' });
+  if (isObjectMissing(objectHead)) return json({ error: 'Audio not found' }, 404, cors);
+  if (!objectHead.ok) return json({ error: 'Audio storage unavailable' }, 503, cors);
+  const range = request.headers.get('Range');
+  const object = await fetchObject(payload.path, env, {
+    method: request.method,
+    headers: range ? { Range: range } : undefined,
+  });
+  if (isObjectMissing(object)) return json({ error: 'Audio not found' }, 404, cors);
+  if (!object.ok && object.status !== 206) return json({ error: 'Audio storage unavailable' }, 503, cors);
   const headers = new Headers(cors);
-  object.writeHttpMetadata(headers);
-  headers.set('Content-Type', object.httpMetadata?.contentType || 'audio/mpeg');
+  headers.set('Content-Type', object.headers.get('Content-Type') || 'audio/mpeg');
   headers.set('Accept-Ranges', 'bytes');
   headers.set('Cache-Control', 'private, no-store');
   headers.set('X-Content-Type-Options', 'nosniff');
-  if (range) {
-    headers.set('Content-Range', `bytes ${range.offset}-${range.offset + range.length - 1}/${objectHead.size}`);
-    headers.set('Content-Length', String(range.length));
-  } else {
-    headers.set('Content-Length', String(objectHead.size));
+  for (const name of ['Content-Length', 'Content-Range', 'Last-Modified', 'ETag']) {
+    const value = object.headers.get(name);
+    if (value) headers.set(name, value);
   }
-  return new Response(request.method === 'HEAD' ? null : object.body, { status: range ? 206 : 200, headers });
+  return new Response(request.method === 'HEAD' ? null : object.body, { status: object.status, headers });
 };
 
 const handleSession = async (request, env, cors) => {
@@ -201,8 +204,9 @@ const handleTicket = async (request, env, cors) => {
   const input = await request.json().catch(() => null);
   const path = input && resolveAudioPath(input);
   if (!path) return json({ error: 'Audio request invalid' }, 400, cors);
-  const object = await env.AUDIO_BUCKET.head(path);
-  if (!object) return json({ exists: false }, 404, cors);
+  const object = await fetchObject(path, env, { method: 'HEAD' });
+  if (isObjectMissing(object)) return json({ exists: false }, 404, cors);
+  if (!object.ok) return json({ error: 'Audio storage unavailable' }, 503, cors);
   const exp = Math.floor(Date.now() / 1000) + Math.min(Math.max(Number(env.TICKET_TTL_SECONDS) || 120, 30), 300);
   const token = await encryptTicket({ path, exp, ip: getClientIp(request) }, env);
   return json({ exists: true, streamUrl: `${new URL(request.url).origin}/v1/stream?token=${encodeURIComponent(token)}`, expiresAt: exp }, 200, cors);
@@ -213,7 +217,8 @@ export default {
     const cors = corsHeaders(request, env);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (!enforceOrigin(request, env)) return json({ error: 'Origin not allowed' }, 403, cors);
-    if (!env.AUDIO_BUCKET || !env.AUDIO_TOKEN_ENCRYPTION_KEY || !env.AUDIO_SESSION_SIGNING_SECRET) {
+    if (!env.R2_STORAGE_ACCOUNT_ID || !env.R2_BUCKET_NAME || !env.R2_ACCESS_KEY_ID || !env.R2_SECRET_ACCESS_KEY
+      || !env.AUDIO_TOKEN_ENCRYPTION_KEY || !env.AUDIO_SESSION_SIGNING_SECRET) {
       return json({ error: 'Audio gateway is not configured' }, 503, cors);
     }
 

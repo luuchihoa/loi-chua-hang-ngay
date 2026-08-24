@@ -6,14 +6,19 @@ Chỉ Cloudflare Worker được đọc bucket R2. Trình duyệt nhận URL str
 
 ## Cấu hình Cloudflare
 
-1. Tạo Worker từ `workers/audio-gateway/wrangler.toml` và bind bucket `audio` vào `AUDIO_BUCKET` với quyền đọc.
-2. Tạo KV namespace, bind tên `AUDIO_RATE_LIMITS` để quota dùng chung giữa các Worker isolate.
-3. Đặt secrets qua Wrangler hoặc Dashboard:
+Tài khoản sở hữu website và tài khoản lưu R2 có thể khác nhau. Không chuyển bucket: deploy Worker tại **tài khoản sở hữu zone `loichuamoingay.org`** để gắn `audio.loichuamoingay.org`; Worker gọi R2 S3 API của tài khoản lưu trữ bằng token chỉ-đọc.
+
+1. Ở **tài khoản R2**, tạo R2 API token mới, giới hạn bucket `audio` và quyền **Object Read**. Lưu Access Key ID và Secret Access Key ở trình quản lý mật khẩu; secret chỉ hiện một lần.
+2. Ở **tài khoản website**, tạo KV namespace `AUDIO_RATE_LIMITS`, rồi thay ID trong `workers/audio-gateway/wrangler.toml`.
+3. Ở **tài khoản website**, đặt secrets qua Wrangler hoặc Dashboard:
    - `AUDIO_TOKEN_ENCRYPTION_KEY`: 32 byte ngẫu nhiên ở dạng base64url.
    - `AUDIO_SESSION_SIGNING_SECRET`: chuỗi ngẫu nhiên tối thiểu 32 ký tự.
+   - `R2_STORAGE_ACCOUNT_ID`: Account ID của tài khoản lưu R2.
+   - `R2_BUCKET_NAME`: `audio`.
+   - `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`: cặp token chỉ-đọc của bước 1.
    - `TURNSTILE_SECRET`: secret của Turnstile invisible.
    - `ALLOWED_ORIGINS`: danh sách domain web, phân cách bằng dấu phẩy.
-4. Cấu hình route Worker ở cùng domain web hoặc một subdomain riêng; nếu dùng subdomain, thêm đúng URL đó vào `VITE_AUDIO_GATEWAY_BASE`.
+4. Deploy Worker từ **tài khoản website**. `[[routes]]` sẽ tạo custom domain `audio.loichuamoingay.org` trong zone cùng tài khoản.
 5. Tạo Turnstile invisible, đặt site key vào `VITE_TURNSTILE_SITE_KEY` và secret vào Worker.
 6. Thêm WAF rate limiting cho `/v1/session`, `/v1/ticket`, `/v1/stream` theo ngưỡng tương ứng 6, 12 và 40 request/phút/IP.
 
@@ -23,6 +28,10 @@ Ví dụ tạo secrets:
 cd workers/audio-gateway
 openssl rand -base64 32 | tr '+/' '-_' | tr -d '=' | npx wrangler secret put AUDIO_TOKEN_ENCRYPTION_KEY
 npx wrangler secret put AUDIO_SESSION_SIGNING_SECRET
+npx wrangler secret put R2_STORAGE_ACCOUNT_ID
+npx wrangler secret put R2_BUCKET_NAME
+npx wrangler secret put R2_ACCESS_KEY_ID
+npx wrangler secret put R2_SECRET_ACCESS_KEY
 npx wrangler secret put TURNSTILE_SECRET
 npx wrangler secret put ALLOWED_ORIGINS
 ```

@@ -2,17 +2,13 @@ name = "loi-chua-audio-gateway"
 main = "src/index.js"
 compatibility_date = "2026-08-24"
 
-[[r2_buckets]]
-binding = "AUDIO_BUCKET"
-bucket_name = "audio"
-
 [[kv_namespaces]]
 binding = "AUDIO_RATE_LIMITS"
-id = "d81eae97bfe743a19e4fc7192117f94c"
+# Tạo namespace ở tài khoản sở hữu website, rồi thay giá trị này trước khi deploy.
+id = "REPLACE_WITH_WEBSITE_ACCOUNT_KV_NAMESPACE_ID"
 
 [[routes]]
 pattern = "audio.loichuamoingay.org"
 custom_domain = true
 
-# Thiết lập ALLOWED_ORIGINS trong Dashboard hoặc qua `wrangler secret put` trước khi deploy.
-# Khai báo KV binding AUDIO_RATE_LIMITS sau khi tạo namespace để rate-limit có hiệu lực qua nhiều isolate.
+# Worker thuộc tài khoản website; audio được đọc chéo tài khoản qua R2 S3 API và secret chỉ-đọc.
