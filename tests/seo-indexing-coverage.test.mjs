@@ -21,8 +21,6 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
 
   const totalChapters = allBooks.reduce((sum, b) => sum + b.chapters, 0);
   const currentYear = new Date().getFullYear();
-  const isLeap = (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0;
-  const totalLiturgyDays = isLeap ? 366 : 365;
 
   await t.test('robots.txt does not block valid pages and allows full indexing', () => {
     assert.ok(fs.existsSync(robotsPath), 'public/robots.txt must exist');
@@ -34,7 +32,7 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
     assert.ok(robotsContent.includes('Sitemap: https://loichuamoingay.org/sitemap.xml'), 'robots.txt must include Sitemap link');
   });
 
-  await t.test('sitemap.xml covers 100% of routes (Static, 365 Liturgy Days, 73 Book Hubs, 1328 Chapters)', () => {
+  await t.test('sitemap.xml contains only canonical pages with published Bible content', () => {
     assert.ok(fs.existsSync(sitemapPath), 'public/sitemap.xml must exist');
     const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
 
@@ -42,7 +40,7 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
       u.replace(/<\/?loc>/g, '')
     );
 
-    const expectedTotal = 5 + allBooks.length + totalChapters + totalLiturgyDays; // 5 static + 73 hubs + 1328 chapters + 365 days = 1771
+    const expectedTotal = 5 + allBooks.length + totalChapters;
     assert.equal(urls.length, expectedTotal, `Sitemap must contain exactly ${expectedTotal} URLs, found ${urls.length}`);
 
     // Verify critical static routes
@@ -52,10 +50,7 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
     assert.ok(urls.includes('https://loichuamoingay.org/bible-audio'), 'Sitemap must include /bible-audio');
     assert.ok(urls.includes('https://loichuamoingay.org/calendar'), 'Sitemap must include /calendar');
 
-    // Verify 365 daily liturgy samples
-    assert.ok(urls.includes(`https://loichuamoingay.org/liturgy/${currentYear}-01-01`), 'Sitemap must include New Year liturgy');
-    assert.ok(urls.includes(`https://loichuamoingay.org/liturgy/${currentYear}-10-10`), 'Sitemap must include Oct 10 liturgy');
-    assert.ok(urls.includes(`https://loichuamoingay.org/liturgy/${currentYear}-12-25`), 'Sitemap must include Christmas liturgy');
+    assert.ok(!urls.some((url) => url.startsWith('https://loichuamoingay.org/liturgy/')), 'Placeholder liturgy dates must not be submitted for indexing');
 
     // Verify all 73 book hubs
     allBooks.forEach(b => {
@@ -120,8 +115,6 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
 
     const sampleRoutes = [
       '/liturgy',
-      `/liturgy/${currentYear}-10-10`,
-      `/liturgy/${currentYear}-12-25`,
       '/bible',
       '/bible-audio',
       '/calendar',
@@ -152,6 +145,10 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
 
       // JSON-LD Structured Data check
       assert.ok(html.includes('<script type="application/ld+json">'), `Missing JSON-LD schema in ${route}`);
+
+      if (route.startsWith('/bible/') && /\/\d+$/.test(route)) {
+        assert.ok(!html.includes('Đang tải toàn văn'), `Bible chapter must contain published text in ${route}`);
+      }
     });
   });
 });

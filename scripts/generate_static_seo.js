@@ -1,9 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const TEMPLATE_PATH = path.join(DIST_DIR, 'index.html');
@@ -24,10 +27,80 @@ const allBooks = [
   ...(bibleData.new_testament || []).map(b => ({ ...b, testament: 'new' }))
 ];
 
-console.log('🚀 Đang Pre-render HTML tĩnh cho 100% các đường dẫn (Trang chính, 365 Ngày Phụng Vụ, 73 Sách Hub Pages và toàn bộ 1328 Chương Kinh Thánh)...');
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Thiếu VITE_SUPABASE_URL hoặc VITE_SUPABASE_ANON_KEY để prerender nội dung Kinh Thánh.');
+}
+
+const seoSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
+
+const chapterKey = (bookId, chapter) => `${bookId}:${chapter}`;
+
+const loadChapterContent = async () => {
+  const contentByChapter = new Map();
+  const pageSize = 1000;
+
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await seoSupabase
+      .from('chapters')
+      .select('book_id, chapter, content')
+      .order('book_id', { ascending: true })
+      .order('chapter', { ascending: true })
+      .range(from, from + pageSize - 1);
+
+    if (error) throw new Error(`Không thể tải chapters từ Supabase: ${error.message}`);
+    for (const row of data || []) {
+      if (row.book_id && Number.isInteger(row.chapter) && row.content?.trim()) {
+        contentByChapter.set(chapterKey(row.book_id, row.chapter), row.content.trim());
+      }
+    }
+    if (!data || data.length < pageSize) break;
+  }
+
+  const missing = allBooks.flatMap((book) => Array.from(
+    { length: book.chapters },
+    (_, index) => chapterKey(book.id, index + 1),
+  )).filter((key) => !contentByChapter.has(key));
+
+  if (missing.length) {
+    throw new Error(`Thiếu nội dung ${missing.length} chương Kinh Thánh; dừng build để không phát hành HTML mỏng. Ví dụ: ${missing.slice(0, 8).join(', ')}`);
+  }
+
+  return contentByChapter;
+};
+
+const bibleChapterContent = await loadChapterContent();
+
+console.log('🚀 Đang prerender trang chính, 73 sách và toàn văn 1328 chương Kinh Thánh...');
 
 const DOMAIN = 'https://loichuamoingay.org';
 const DEFAULT_IMAGE = `${DOMAIN}/og-image.png`;
+
+const escapeHtml = (value) => String(value)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#039;');
+
+const renderChapterContent = (content) => content
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => {
+    const part = /^\[(?:PART|SECTION)\]\s*(.+)$/i.exec(line);
+    if (part) return `<h2 class="mt-8 text-xl font-serif font-bold text-amber-900 dark:text-amber-100">${escapeHtml(part[1])}</h2>`;
+
+    const verse = /^\(([^)]+)\)\s*(.*)$/.exec(line);
+    if (verse) return `<p class="leading-8 text-stone-800 dark:text-stone-100"><sup class="mr-1 font-semibold text-amber-800 dark:text-amber-300">${escapeHtml(verse[1])}</sup>${escapeHtml(verse[2])}</p>`;
+
+    return `<p class="leading-8 text-stone-800 dark:text-stone-100">${escapeHtml(line)}</p>`;
+  })
+  .join('\n');
 
 function createStaticPage(routePath, title, description, jsonLdSchema = null, bodySkeleton = '', robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1') {
   const targetDir = path.join(DIST_DIR, routePath);
@@ -258,7 +331,8 @@ for (let d = 0; d < totalDays; d++) {
         }
       ]
     },
-    liturgySkeleton
+    liturgySkeleton,
+    'noindex, follow'
   );
   generatedCount++;
 }
@@ -266,6 +340,7 @@ for (let d = 0; d < totalDays; d++) {
 // ─────────────────────────────────────────────────────────────
 // 3. PRE-RENDER 73 HUB PAGES CHO 73 SÁCH KINH THÁNH (/bible/[bookId])
 // ─────────────────────────────────────────────────────────────
+const bibleSitemapUrls = [];
 allBooks.forEach((book) => {
   const isOT = book.testament === 'old';
   const testamentName = isOT ? 'Cựu Ước' : 'Tân Ước';
@@ -361,6 +436,7 @@ allBooks.forEach((book) => {
       ? `<a href="/bible/${book.id}/${c + 1}" class="px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-amber-600 hover:text-white transition-colors">Chương ${c + 1} ›</a>`
       : '';
 
+    const chapterContent = bibleChapterContent.get(chapterKey(book.id, c));
     const chapterSkeleton = `
       <div class="min-h-screen bg-stone-50 dark:bg-stone-950 p-4 md:p-8 text-stone-800 dark:text-stone-200">
         <div class="max-w-4xl mx-auto">
@@ -392,9 +468,9 @@ allBooks.forEach((book) => {
             <div>${nextLink}</div>
           </nav>
 
-          <div class="p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm text-center">
-            <p class="text-sm font-medium text-stone-600 dark:text-stone-300">Đang tải toàn văn Lời Chúa Sách ${book.name} Chương ${c} và bản thu âm Audio chất lượng cao...</p>
-          </div>
+          <article class="space-y-4 rounded-2xl bg-white p-6 shadow-sm border border-stone-200 dark:bg-stone-900 dark:border-stone-800" aria-label="Toàn văn Sách ${book.name} chương ${c}">
+            ${renderChapterContent(chapterContent)}
+          </article>
         </div>
       </div>
     `;
@@ -439,9 +515,19 @@ allBooks.forEach((book) => {
       },
       chapterSkeleton
     );
+    bibleSitemapUrls.push(`${DOMAIN}/bible/${book.id}/${c}`);
     generatedCount++;
   }
 });
 
-console.log(`✅ Đã hoàn tất Pre-rendering static HTML cho toàn bộ ${generatedCount} đường dẫn tĩnh trong dist/!`);
+const staticSitemapUrls = [`${DOMAIN}/`, ...staticPages
+  .filter((page) => page.path !== '/bookmarks')
+  .map((page) => `${DOMAIN}${page.path}`)];
+const bookSitemapUrls = allBooks.map((book) => `${DOMAIN}/bible/${book.id}`);
+const sitemapUrls = [...staticSitemapUrls, ...bookSitemapUrls, ...bibleSitemapUrls];
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`;
 
+fs.writeFileSync(path.join(__dirname, '../public/sitemap.xml'), sitemapXml, 'utf8');
+fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+
+console.log(`✅ Đã hoàn tất Pre-rendering static HTML cho toàn bộ ${generatedCount} đường dẫn tĩnh trong dist/!`);
