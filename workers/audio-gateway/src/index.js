@@ -1,4 +1,4 @@
-import { resolveAudioPath } from './audioPath.js';
+import { resolveAudioPath, resolveLiturgyHlsPrefix } from './audioPath.js';
 import { AwsClient } from 'aws4fetch';
 
 const encoder = new TextEncoder();
@@ -189,6 +189,65 @@ const streamAudio = async (request, env, cors) => {
   return new Response(request.method === 'HEAD' ? null : object.body, { status: object.status, headers });
 };
 
+const HLS_FILE_TYPES = {
+  'index.m3u8': 'application/vnd.apple.mpegurl; charset=utf-8',
+  'init.mp4': 'video/mp4',
+};
+
+const isSafeHlsFile = (value) => value === 'index.m3u8'
+  || value === 'init.mp4'
+  || /^segment-\d{5}\.m4s$/.test(value || '');
+
+const hlsContentType = (filename) => HLS_FILE_TYPES[filename] || 'video/iso.segment';
+
+const streamHls = async (request, env, cors) => {
+  if (await isRateLimited(request, env, 'stream')) return json({ error: 'Too many requests' }, 429, cors);
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token');
+  const file = url.searchParams.get('file') || 'index.m3u8';
+  const payload = token && await decryptTicket(token, env);
+
+  if (!payload || payload.scope !== 'hls' || payload.exp < Math.floor(Date.now() / 1000)
+    || payload.ip !== getClientIp(request) || !isSafeHlsFile(file)) {
+    return json({ error: 'HLS token invalid or expired' }, 401, cors);
+  }
+
+  const object = await fetchObject(`${payload.prefix}/${file}`, env, {
+    method: request.method,
+    headers: request.headers.get('Range') ? { Range: request.headers.get('Range') } : undefined,
+  });
+  if (isObjectMissing(object)) return json({ error: 'HLS stream not found' }, 404, cors);
+  if (!object.ok && object.status !== 206) return json({ error: 'Audio storage unavailable' }, 503, cors);
+
+  const headers = new Headers(cors);
+  headers.set('Content-Type', hlsContentType(file));
+  headers.set('Accept-Ranges', 'bytes');
+  headers.set('Cache-Control', 'private, no-store');
+  headers.set('X-Content-Type-Options', 'nosniff');
+  for (const name of ['Content-Length', 'Content-Range', 'Last-Modified', 'ETag']) {
+    const value = object.headers.get(name);
+    if (value) headers.set(name, value);
+  }
+
+  if (file !== 'index.m3u8' || request.method === 'HEAD') {
+    return new Response(request.method === 'HEAD' ? null : object.body, { status: object.status, headers });
+  }
+
+  const playlist = await object.text();
+  const base = new URL(request.url).origin;
+  const streamUrlFor = (filename) => `${base}/v1/hls?token=${encodeURIComponent(token)}&file=${encodeURIComponent(filename)}`;
+  const rewritten = playlist.split('\n').map((line) => {
+    const filename = line.trim();
+    if (filename.startsWith('#EXT-X-MAP:')) {
+      return line.replace(/URI="([^"]+)"/, (match, value) => (isSafeHlsFile(value) ? `URI="${streamUrlFor(value)}"` : match));
+    }
+    if (!filename || filename.startsWith('#') || !isSafeHlsFile(filename)) return line;
+    return streamUrlFor(filename);
+  }).join('\n');
+  headers.delete('Content-Length');
+  return new Response(rewritten, { status: 200, headers });
+};
+
 const handleSession = async (request, env, cors) => {
   if (await isRateLimited(request, env, 'session')) return json({ error: 'Too many requests' }, 429, cors);
   const { turnstileToken } = await request.json().catch(() => ({}));
@@ -212,6 +271,29 @@ const handleTicket = async (request, env, cors) => {
   return json({ exists: true, streamUrl: `${new URL(request.url).origin}/v1/stream?token=${encodeURIComponent(token)}`, expiresAt: exp }, 200, cors);
 };
 
+const handleHlsTicket = async (request, env, cors) => {
+  if (await isRateLimited(request, env, 'ticket')) return json({ error: 'Too many requests' }, 429, cors);
+  const authorization = request.headers.get('Authorization') || '';
+  const session = await verifySession(authorization.replace(/^Bearer\s+/i, ''), request, env);
+  if (!session) return json({ error: 'Audio session invalid or expired' }, 401, cors);
+
+  const input = await request.json().catch(() => null);
+  const prefix = input && resolveLiturgyHlsPrefix(input);
+  if (!prefix) return json({ error: 'HLS request invalid' }, 400, cors);
+
+  const playlist = await fetchObject(`${prefix}/index.m3u8`, env, { method: 'HEAD' });
+  if (isObjectMissing(playlist)) return json({ exists: false }, 200, cors);
+  if (!playlist.ok) return json({ error: 'Audio storage unavailable' }, 503, cors);
+
+  const exp = Math.floor(Date.now() / 1000) + 7200;
+  const token = await encryptTicket({ scope: 'hls', prefix, exp, ip: getClientIp(request) }, env);
+  return json({
+    exists: true,
+    streamUrl: `${new URL(request.url).origin}/v1/hls?token=${encodeURIComponent(token)}`,
+    expiresAt: exp,
+  }, 200, cors);
+};
+
 export default {
   async fetch(request, env) {
     const cors = corsHeaders(request, env);
@@ -225,7 +307,9 @@ export default {
     const pathname = new URL(request.url).pathname;
     if (request.method === 'POST' && pathname === '/v1/session') return handleSession(request, env, cors);
     if (request.method === 'POST' && pathname === '/v1/ticket') return handleTicket(request, env, cors);
+    if (request.method === 'POST' && pathname === '/v1/hls-ticket') return handleHlsTicket(request, env, cors);
     if ((request.method === 'GET' || request.method === 'HEAD') && pathname === '/v1/stream') return streamAudio(request, env, cors);
+    if ((request.method === 'GET' || request.method === 'HEAD') && pathname === '/v1/hls') return streamHls(request, env, cors);
     return json({ error: 'Not found' }, 404, cors);
   },
 };

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeAudioRef, resolveAudioPath } from '../workers/audio-gateway/src/audioPath.js';
+import { normalizeAudioRef, resolveAudioPath, resolveLiturgyHlsPrefix } from '../workers/audio-gateway/src/audioPath.js';
 
 test('Audio gateway path resolution', async (t) => {
   await t.test('uses the same stable ref slug as the client', () => {
@@ -15,5 +15,11 @@ test('Audio gateway path resolution', async (t) => {
     assert.equal(resolveAudioPath({ kind: 'music', music: 'intro' }), 'music/liturgy_intro_v5.mp3');
     assert.equal(resolveAudioPath({ kind: 'bible', bookId: 'john', chapter: 3 }), 'bible/john_3.mp3');
     assert.equal(resolveAudioPath({ kind: 'bible', bookId: '../private', chapter: 3 }), null);
+  });
+
+  await t.test('limits HLS playback to a date and a safe variant directory', () => {
+    assert.equal(resolveLiturgyHlsPrefix({ date: '2026-08-28', variant: 'weekday' }), 'hls/liturgy/2026-08-28/weekday');
+    assert.equal(resolveLiturgyHlsPrefix({ date: '2026/08/28', variant: 'weekday' }), null);
+    assert.equal(resolveLiturgyHlsPrefix({ date: '2026-08-28', variant: '../all-audio' }), null);
   });
 });

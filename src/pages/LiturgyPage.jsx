@@ -235,7 +235,13 @@ export default function LiturgyPage() {
       }
 
       if (playlist.length > 0) {
-        tts.playPlaylist(playlist);
+        const date = [
+          selectedDate.getFullYear(),
+          String(selectedDate.getMonth() + 1).padStart(2, '0'),
+          String(selectedDate.getDate()).padStart(2, '0'),
+        ].join('-');
+        const variant = activeMassIdx > 0 ? `mass-${activeMassIdx}` : (activeReadingMode || 'weekday');
+        tts.playPlaylist(playlist, { date, variant });
       }
     }
   };

@@ -41,3 +41,8 @@ export const resolveAudioPath = ({ kind, ref, section, music, bookId, chapter })
 
   return null;
 };
+
+export const resolveLiturgyHlsPrefix = ({ date, variant = 'default' }) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '') || !/^[a-z0-9_-]+$/i.test(variant)) return null;
+  return `hls/liturgy/${date}/${variant}`;
+};

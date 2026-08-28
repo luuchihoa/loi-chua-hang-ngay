@@ -93,3 +93,39 @@ export const requestAudioGatewayTicket = async (request) => {
     return null;
   }
 };
+
+export const isStandaloneIOSPwa = () => {
+  if (typeof window === 'undefined') return false;
+  const isIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent)
+    || (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
+  return isIOS && (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches);
+};
+
+export const requestLiturgyHlsStream = async ({ date, variant = 'weekday' }) => {
+  const base = gatewayBase();
+  if (!base) return null;
+
+  try {
+    const token = await getSession();
+    let response = await fetch(`${base}/v1/hls-ticket`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ date, variant }),
+    });
+    if (response.status === 401) {
+      session = null;
+      const refreshed = await getSession();
+      response = await fetch(`${base}/v1/hls-ticket`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${refreshed}` },
+        body: JSON.stringify({ date, variant }),
+      });
+    }
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data?.exists && data.streamUrl ? data : null;
+  } catch (error) {
+    console.warn('⚠️ Không thể lấy quyền phát HLS:', error.message);
+    return null;
+  }
+};

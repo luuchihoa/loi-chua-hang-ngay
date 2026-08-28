@@ -108,6 +108,12 @@ function getContentType(filePath) {
       return 'audio/flac';
     case '.json':
       return 'application/json; charset=utf-8';
+    case '.m3u8':
+      return 'application/vnd.apple.mpegurl; charset=utf-8';
+    case '.m4s':
+      return 'video/iso.segment';
+    case '.mp4':
+      return 'video/mp4';
     case '.srt':
     case '.txt':
       return 'text/plain; charset=utf-8';
@@ -120,7 +126,7 @@ function getContentType(filePath) {
 
 function getCacheControl(filePath) {
   const ext = path.extname(filePath).toLowerCase();
-  if (['.mp3', '.wav', '.m4a', '.aac', '.ogg', '.flac', '.srt', '.vtt'].includes(ext)) {
+  if (['.mp3', '.wav', '.m4a', '.aac', '.ogg', '.flac', '.m3u8', '.m4s', '.mp4', '.srt', '.vtt'].includes(ext)) {
     return 'public, max-age=31536000, immutable';
   }
   if (ext === '.json') {
@@ -205,14 +211,14 @@ async function fetchRemoteR2Objects(s3Client, bucketName) {
 }
 
 async function uploadFileWithRetry(s3Client, fileObj, bucketName, maxRetries = 3) {
-  const fileStream = fs.createReadStream(fileObj.fullPath);
+  const body = fs.readFileSync(fileObj.fullPath);
   const contentType = getContentType(fileObj.fullPath);
   const cacheControl = getCacheControl(fileObj.fullPath);
 
   const command = new PutObjectCommand({
     Bucket: bucketName,
     Key: fileObj.relativeKey,
-    Body: fileStream,
+    Body: body,
     ContentType: contentType,
     CacheControl: cacheControl
   });

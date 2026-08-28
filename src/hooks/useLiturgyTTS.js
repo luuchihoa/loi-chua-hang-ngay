@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { checkAndGetAudioStreamUrl, checkAndGetLiturgyMusicStreamUrl, checkAndGetReadingIntroStreamUrl } from '../utils/audioLookup.js';
+import { isStandaloneIOSPwa, requestLiturgyHlsStream } from '../utils/audioGateway.js';
 import { cleanScriptureTextOnUI, cleanScriptureTextForTTS } from '../utils/scriptureCleaner.js';
 
 const createPreloadedAudio = (url) => {
@@ -243,11 +244,39 @@ export function useLiturgyTTS() {
     playTrack(0);
   }, [rate, stop]);
 
-  const playPlaylist = useCallback((items) => {
+  const playPlaylist = useCallback(async (items, hlsRequest = null) => {
     stop();
     if (!items || items.length === 0) return;
 
     const currentToken = playTokenRef.current;
+    if (hlsRequest && isStandaloneIOSPwa()) {
+      const hlsAccess = await requestLiturgyHlsStream(hlsRequest);
+      if (currentToken !== playTokenRef.current) return;
+      if (hlsAccess?.streamUrl) {
+        const audio = createPreloadedAudio(hlsAccess.streamUrl);
+        audioObjRef.current = audio;
+        audio.onplay = () => {
+          if (currentToken !== playTokenRef.current) {
+            audio.pause();
+            return;
+          }
+          setIsPlaying(true);
+          setIsPaused(false);
+          setCurrentSection('Đang phát tất cả bài đọc');
+        };
+        audio.onended = () => {
+          if (currentToken === playTokenRef.current) stop();
+        };
+        audio.onerror = () => {
+          if (currentToken === playTokenRef.current) stop();
+        };
+        audio.play().catch(() => {
+          if (currentToken === playTokenRef.current) stop();
+        });
+        return;
+      }
+    }
+
     playlistItemsRef.current = [
       { type: 'music', music: 'intro', title: 'Nhạc mở đầu' },
       ...items.flatMap((item, index) => (

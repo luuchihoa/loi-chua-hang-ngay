@@ -20,6 +20,7 @@
     "rebuild:bible-manifest": "node scripts/rebuild_bible_audio_manifest.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1120.0",
     "@supabase/supabase-js": "^2.110.0",
     "@tanstack/react-query": "^5.101.4",
     "amlich.js": "^1.0.6",

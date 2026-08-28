@@ -34,6 +34,11 @@ if (prefixArg) {
   subPrefix = prefixArg.split('=')[1].replace(/^\/+/, '').replace(/\/+$/, '');
 }
 
+const keysArg = args.find((a) => a.startsWith('--keys='));
+const requestedKeys = keysArg
+  ? new Set(keysArg.slice('--keys='.length).split(',').map((key) => key.trim()).filter(Boolean))
+  : null;
+
 let concurrency = 8;
 const concurrencyArg = args.find((a) => a.startsWith('--concurrency='));
 if (concurrencyArg) {
@@ -49,6 +54,7 @@ if (SHOW_HELP) {
   npm run pull:r2:dry          : Chạy thử nghiệm xem danh sách file sẽ tải
   node scripts/pull_audio_r2.js --force          : Ghi đè toàn bộ file từ R2
   node scripts/pull_audio_r2.js --prefix=sub     : Chỉ tải thư mục sub/
+  node scripts/pull_audio_r2.js --keys=readings/r1.mp3,gospels/Mt_1v1_to_5.mp3
 `);
   process.exit(0);
 }
@@ -155,11 +161,20 @@ async function main() {
   });
 
   const remoteFiles = await fetchRemoteR2Objects(s3Client, R2_BUCKET_NAME, subPrefix);
+  const selectedFiles = requestedKeys
+    ? remoteFiles.filter((item) => requestedKeys.has(item.key))
+    : remoteFiles;
+  if (requestedKeys) {
+    const foundKeys = new Set(selectedFiles.map((item) => item.key));
+    const missingKeys = [...requestedKeys].filter((key) => !foundKeys.has(key));
+    if (missingKeys.length) throw new Error(`Không tìm thấy object R2: ${missingKeys.join(', ')}`);
+  }
+
   const toDownload = [];
   let existingCount = 0;
   let existingBytes = 0;
 
-  for (const rem of remoteFiles) {
+  for (const rem of selectedFiles) {
     const localPath = path.join(AUDIO_PRIVATE_ROOT, rem.key);
     if (!fs.existsSync(localPath)) {
       toDownload.push(rem);

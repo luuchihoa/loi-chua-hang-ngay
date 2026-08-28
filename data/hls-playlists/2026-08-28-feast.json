@@ -1,0 +1,11 @@
+{
+  "date": "2026-08-28",
+  "variant": "feast",
+  "tracks": [
+    { "title": "Nhạc mở đầu", "path": "private/audio/music/liturgy_intro_v5.mp3" },
+    { "title": "Bài Đọc 1", "path": "private/audio/readings/r1/r1_1_Ga_47-16.mp3" },
+    { "title": "Nhạc chuyển đoạn", "path": "private/audio/music/reading_transition_v5.mp3" },
+    { "title": "Tin Mừng", "path": "private/audio/gospels/gospel_Mt_23v8_to_12.mp3" },
+    { "title": "Nhạc kết", "path": "private/audio/music/liturgy_outro_v5.mp3" }
+  ]
+}
