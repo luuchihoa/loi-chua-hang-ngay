@@ -4,6 +4,7 @@ import { AwsClient } from 'aws4fetch';
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 const memoryLimits = new Map();
+const hlsBundleExistence = new Map();
 
 const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(data), {
   status,
@@ -156,6 +157,19 @@ const fetchObject = (path, env, init) => new AwsClient({
 
 const isObjectMissing = (response) => response.status === 404;
 
+const getHlsBundleStatus = async (prefix, env) => {
+  const now = Date.now();
+  const cached = hlsBundleExistence.get(prefix);
+  if (cached?.expiresAt > now) return cached.exists;
+
+  const playlist = await fetchObject(`${prefix}/index.m3u8`, env, { method: 'HEAD' });
+  if (!playlist.ok && !isObjectMissing(playlist)) return null;
+  const exists = !isObjectMissing(playlist);
+  hlsBundleExistence.set(prefix, { exists, expiresAt: now + (exists ? 5 * 60_000 : 30_000) });
+  if (hlsBundleExistence.size > 100) hlsBundleExistence.delete(hlsBundleExistence.keys().next().value);
+  return exists;
+};
+
 const streamAudio = async (request, env, cors) => {
   if (await isRateLimited(request, env, 'stream')) return json({ error: 'Too many requests' }, 429, cors);
   const token = new URL(request.url).searchParams.get('token');
@@ -281,9 +295,9 @@ const handleHlsTicket = async (request, env, cors) => {
   const prefix = input && resolveLiturgyHlsPrefix(input);
   if (!prefix) return json({ error: 'HLS request invalid' }, 400, cors);
 
-  const playlist = await fetchObject(`${prefix}/index.m3u8`, env, { method: 'HEAD' });
-  if (isObjectMissing(playlist)) return json({ exists: false }, 200, cors);
-  if (!playlist.ok) return json({ error: 'Audio storage unavailable' }, 503, cors);
+  const exists = await getHlsBundleStatus(prefix, env);
+  if (exists === false) return json({ exists: false }, 200, cors);
+  if (exists === null) return json({ error: 'Audio storage unavailable' }, 503, cors);
 
   const exp = Math.floor(Date.now() / 1000) + 7200;
   const token = await encryptTicket({ scope: 'hls', prefix, exp, ip: getClientIp(request) }, env);

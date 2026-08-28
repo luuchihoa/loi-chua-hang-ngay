@@ -175,6 +175,8 @@ export default function LiturgyPage() {
       } else {
         tts.pause();
       }
+    } else if (tts.isPreparing) {
+      tts.stop();
     } else {
       const playlist = [];
 
@@ -1104,6 +1106,25 @@ export default function LiturgyPage() {
     setActiveMassIdx(0);
   }, [content]);
 
+  useEffect(() => {
+    if (!content) return undefined;
+    const date = [
+      selectedDate.getFullYear(),
+      String(selectedDate.getMonth() + 1).padStart(2, '0'),
+      String(selectedDate.getDate()).padStart(2, '0'),
+    ].join('-');
+    const variant = activeMassIdx > 0 ? `mass-${activeMassIdx}` : (activeReadingMode || 'weekday');
+    const warmAudio = () => { void tts.preparePlaylist({ date, variant }); };
+    const idleId = typeof window.requestIdleCallback === 'function'
+      ? window.requestIdleCallback(warmAudio, { timeout: 1500 })
+      : window.setTimeout(warmAudio, 250);
+
+    return () => {
+      if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
+    };
+  }, [activeMassIdx, activeReadingMode, content, selectedDate, tts.preparePlaylist]);
+
   // Nội dung Thánh Lễ đang chọn (Lễ chính hoặc Lễ Vọng/Lễ Phụ)
   const activeContent = useMemo(() => {
     if (!content) return null;
@@ -1734,18 +1755,20 @@ export default function LiturgyPage() {
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button 
                   onClick={handleToggleAudio}
-                  aria-label={tts.isPlaying ? (tts.isPaused ? "Tiếp tục phát" : "Tạm dừng") : "Phát tất cả bài đọc"}
+                  aria-label={tts.isPreparing ? "Dừng chuẩn bị phát" : (tts.isPlaying ? (tts.isPaused ? "Tiếp tục phát" : "Tạm dừng") : "Phát tất cả bài đọc")}
                   className={`flex items-center justify-center w-11 h-11 rounded-full ${theme.btnBg} transition-all active:scale-95 shadow-xs shrink-0`}
-                  title={tts.isPlaying ? (tts.isPaused ? "Tiếp tục phát" : "Tạm dừng") : "Phát toàn bộ các bài đọc theo thứ tự"}
+                  title={tts.isPreparing ? "Dừng chuẩn bị phát" : (tts.isPlaying ? (tts.isPaused ? "Tiếp tục phát" : "Tạm dừng") : "Phát toàn bộ các bài đọc theo thứ tự")}
                 >
-                  {tts.isPlaying && !tts.isPaused ? (
+                  {tts.isPreparing ? (
+                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                  ) : tts.isPlaying && !tts.isPaused ? (
                     <PauseCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                   ) : (
                     <PlayCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                   )}
                 </button>
 
-                {tts.isPlaying && (
+                {(tts.isPlaying || tts.isPreparing) && (
                   <button
                     onClick={tts.stop}
                     className="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 hover:bg-red-200 transition-colors"
@@ -1758,7 +1781,7 @@ export default function LiturgyPage() {
                 <div className="flex flex-col justify-center flex-1 min-w-0">
                   <h4 className="text-[11px] sm:text-[12px] font-bold text-stone-900 dark:text-stone-100 flex items-center gap-1">
                     <Volume2 className="w-3.5 h-3.5 text-amber-500" /> 
-                    {tts.isPlaying ? (tts.isPaused ? "Đã tạm dừng" : (tts.currentSection || "Đang phát...")) : "Phát tất cả Bài Đọc"}
+                    {tts.isPreparing ? "Đang chuẩn bị phát..." : (tts.isPlaying ? (tts.isPaused ? "Đã tạm dừng" : (tts.currentSection || "Đang phát...")) : "Phát tất cả Bài Đọc")}
                   </h4>
                 </div>
 

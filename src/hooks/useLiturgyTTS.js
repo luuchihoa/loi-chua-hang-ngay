@@ -14,6 +14,7 @@ const createPreloadedAudio = (url) => {
 export function useLiturgyTTS() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isPreparing, setIsPreparing] = useState(false);
   const [currentSection, setCurrentSection] = useState(null);
   const [rate, setRateState] = useState(1);
   
@@ -22,6 +23,7 @@ export function useLiturgyTTS() {
   const playlistItemsRef = useRef([]);
   const playlistIndexRef = useRef(0);
   const preparedPlaylistRef = useRef(new Map());
+  const preparedHlsRef = useRef(new Map());
 
   const clearPreparedTracks = () => {
     for (const prepared of preparedPlaylistRef.current.values()) {
@@ -64,6 +66,7 @@ export function useLiturgyTTS() {
 
     setIsPlaying(false);
     setIsPaused(false);
+    setIsPreparing(false);
     setCurrentSection(null);
   }, []);
 
@@ -118,6 +121,7 @@ export function useLiturgyTTS() {
       utterance.onstart = () => {
         setIsPlaying(true);
         setIsPaused(false);
+        setIsPreparing(false);
         setCurrentSection(`${sectionTitle}`);
       };
 
@@ -202,6 +206,7 @@ export function useLiturgyTTS() {
         }
         setIsPlaying(true);
         setIsPaused(false);
+        setIsPreparing(false);
         setCurrentSection(`${sectionTitle}`);
       };
 
@@ -244,16 +249,59 @@ export function useLiturgyTTS() {
     playTrack(0);
   }, [rate, stop]);
 
+  // iOS standalone PWA needs one native HLS stream to continue in the background.
+  // Prepare it while the reader is looking at the page, but never start playback early.
+  const preparePlaylist = useCallback(async (hlsRequest = null) => {
+    if (!hlsRequest || !isStandaloneIOSPwa()) return null;
+    const cacheKey = `${hlsRequest.date}:${hlsRequest.variant || 'weekday'}`;
+    const existing = preparedHlsRef.current.get(cacheKey);
+    if (existing) return existing;
+
+    const prepared = (async () => {
+      const hlsAccess = await requestLiturgyHlsStream(hlsRequest);
+      if (!hlsAccess?.streamUrl) return null;
+
+      const audio = createPreloadedAudio(hlsAccess.streamUrl);
+      audio.preload = 'auto';
+      return { audio, streamUrl: hlsAccess.streamUrl };
+    })();
+    preparedHlsRef.current.set(cacheKey, prepared);
+    prepared.then((value) => {
+      if (!value && preparedHlsRef.current.get(cacheKey) === prepared) {
+        preparedHlsRef.current.delete(cacheKey);
+      }
+    }).catch(() => {
+      if (preparedHlsRef.current.get(cacheKey) === prepared) preparedHlsRef.current.delete(cacheKey);
+    });
+
+    // A reader can move between a small number of tabs. Keep preparation bounded.
+    if (preparedHlsRef.current.size > 3) {
+      const [oldKey, oldPrepared] = preparedHlsRef.current.entries().next().value;
+      if (oldKey !== cacheKey) {
+        preparedHlsRef.current.delete(oldKey);
+        Promise.resolve(oldPrepared).then((value) => {
+          if (value?.audio && value.audio !== audioObjRef.current) {
+            value.audio.pause();
+            value.audio.removeAttribute('src');
+            value.audio.load();
+          }
+        }).catch(() => {});
+      }
+    }
+    return prepared;
+  }, []);
+
   const playPlaylist = useCallback(async (items, hlsRequest = null) => {
     stop();
     if (!items || items.length === 0) return;
 
     const currentToken = playTokenRef.current;
+    setIsPreparing(true);
     if (hlsRequest && isStandaloneIOSPwa()) {
-      const hlsAccess = await requestLiturgyHlsStream(hlsRequest);
+      const preparedHls = await preparePlaylist(hlsRequest);
       if (currentToken !== playTokenRef.current) return;
-      if (hlsAccess?.streamUrl) {
-        const audio = createPreloadedAudio(hlsAccess.streamUrl);
+      if (preparedHls?.streamUrl) {
+        const audio = preparedHls.audio;
         audioObjRef.current = audio;
         audio.onplay = () => {
           if (currentToken !== playTokenRef.current) {
@@ -262,13 +310,17 @@ export function useLiturgyTTS() {
           }
           setIsPlaying(true);
           setIsPaused(false);
+          setIsPreparing(false);
           setCurrentSection('Đang phát tất cả bài đọc');
         };
         audio.onended = () => {
           if (currentToken === playTokenRef.current) stop();
         };
         audio.onerror = () => {
-          if (currentToken === playTokenRef.current) stop();
+          if (currentToken === playTokenRef.current) {
+            preparedHlsRef.current.delete(`${hlsRequest.date}:${hlsRequest.variant || 'weekday'}`);
+            stop();
+          }
         };
         audio.play().catch(() => {
           if (currentToken === playTokenRef.current) stop();
@@ -358,6 +410,7 @@ export function useLiturgyTTS() {
           }
           setIsPlaying(true);
           setIsPaused(false);
+          setIsPreparing(false);
           setCurrentSection(`${currentItem.title}`);
         };
 
@@ -398,7 +451,7 @@ export function useLiturgyTTS() {
     };
 
     playNext(0);
-  }, [rate, stop]);
+  }, [preparePlaylist, rate, stop]);
 
   const changeRate = (newRate) => {
     setRateState(newRate);
@@ -416,10 +469,12 @@ export function useLiturgyTTS() {
   return {
     isPlaying,
     isPaused,
+    isPreparing,
     currentSection,
     rate,
     playAudioOrMp3,
     playPlaylist,
+    preparePlaylist,
     pause,
     resume,
     stop,
