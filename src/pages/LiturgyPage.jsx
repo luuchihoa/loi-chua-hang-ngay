@@ -259,7 +259,7 @@ export default function LiturgyPage() {
           }}
           className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold transition-all active:scale-95 shadow-2xs border ${
             isPlayingThis
-              ? 'theme-invariant bg-amber-500 text-white border-amber-600 shadow-sm animate-pulse'
+              ? 'theme-invariant bg-amber-500 text-white border-amber-600 shadow-sm'
               : 'bg-amber-50/90 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/60 hover:bg-amber-100 dark:hover:bg-amber-900/60'
           }`}
           title={isPlayingThis ? (isPausedThis ? "Tiếp tục" : "Tạm dừng") : `Nghe riêng ${sectionTitle}`}
