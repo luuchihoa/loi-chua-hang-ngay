@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
+import { getSupabaseConfig } from '../src/lib/supabaseConfig.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,12 +28,7 @@ const allBooks = [
   ...(bibleData.new_testament || []).map(b => ({ ...b, testament: 'new' }))
 ];
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Thiếu VITE_SUPABASE_URL hoặc VITE_SUPABASE_ANON_KEY để prerender nội dung Kinh Thánh.');
-}
+const { url: supabaseUrl, anonKey: supabaseAnonKey } = getSupabaseConfig(process.env);
 
 const seoSupabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: { persistSession: false, autoRefreshToken: false },
