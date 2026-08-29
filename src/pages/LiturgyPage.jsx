@@ -660,6 +660,7 @@ export default function LiturgyPage() {
   };
 
   useEffect(() => {
+    let isCurrentRequest = true;
     const fetchFullReading = async () => {
       setLoading(true);
       try {
@@ -741,6 +742,8 @@ export default function LiturgyPage() {
           .from('liturgy_contents')
           .select('*')
           .in('liturgy_key', keysToFetch);
+
+        if (!isCurrentRequest) return;
 
         if (error) {
           console.error('[Liturgy] Supabase error:', error);
@@ -1066,14 +1069,16 @@ export default function LiturgyPage() {
           setContent(null);
         }
       } catch (err) {
+        if (!isCurrentRequest) return;
         console.error(err);
         setContent(null);
       } finally {
-        setLoading(false);
+        if (isCurrentRequest) setLoading(false);
       }
     };
 
     fetchFullReading();
+    return () => { isCurrentRequest = false; };
   }, [selectedDate]);
 
   const handleSwitchReadingMode = (mode) => {
