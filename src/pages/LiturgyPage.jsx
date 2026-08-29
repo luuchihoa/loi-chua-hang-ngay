@@ -673,7 +673,6 @@ export default function LiturgyPage() {
               setReadingModes(cached.readingModes || { weekday: null, feast: null });
               setActiveReadingMode(cached.activeReadingMode || 'weekday');
               setLoading(false);
-              return;
             } 
             // Cấu trúc cũ (legacy content object phẳng)
             else if (cached.r1_content || cached.gospel_content || cached.psalm_content || (cached.title && typeof cached.title === 'string' && !cached.content)) {
@@ -681,7 +680,6 @@ export default function LiturgyPage() {
               setReadingModes({ weekday: null, feast: null });
               setActiveReadingMode('weekday');
               setLoading(false);
-              return;
             }
             // Nếu cache rỗng hoặc không đúng format -> bỏ qua để fetch mới từ Supabase
           }

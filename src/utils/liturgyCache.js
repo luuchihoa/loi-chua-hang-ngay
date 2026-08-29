@@ -1,4 +1,4 @@
-const CACHE_PREFIX = 'loi_chua_hang_ngay_cache_v5_';
+const CACHE_PREFIX = 'loi_chua_hang_ngay_cache_v6_';
 const CACHE_TTL_DAYS = 7;
 
 // Tắt cache khi chạy dev server (npm run dev) để dễ test dữ liệu mới
@@ -85,4 +85,3 @@ export function setCachedLiturgy(date, data, extraKey = '') {
     console.warn("Lỗi lưu cache phụng vụ:", err);
   }
 }
-
