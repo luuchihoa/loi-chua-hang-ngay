@@ -1227,7 +1227,7 @@ export default function LiturgyPage() {
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
       const iconType = isLong ? 'long' : isShort ? 'short' : 'alt';
       const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
-      const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
+      const baseFull = a.ref && iconType === 'alt' ? `Hoặc: ${a.ref}` : (a.option_label || a.title || baseShort);
       return {
         ...a,
         iconType,
@@ -1255,7 +1255,7 @@ export default function LiturgyPage() {
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
       const iconType = isLong ? 'long' : isShort ? 'short' : 'alt';
       const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
-      const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
+      const baseFull = a.ref && iconType === 'alt' ? `Hoặc: ${a.ref}` : (a.option_label || a.title || baseShort);
       return {
         ...a,
         iconType,
@@ -1284,7 +1284,7 @@ export default function LiturgyPage() {
       const isShort = (a.title || a.option_label || '').toLowerCase().includes('ngắn');
       const iconType = isLong ? 'long' : isShort ? 'short' : 'alt';
       const baseShort = isLong ? 'Bản Dài' : isShort ? 'Bản Ngắn' : `Tùy Chọn ${i + 1}`;
-      const baseFull = a.option_label || a.title || (a.ref ? `${baseShort} (${a.ref})` : baseShort);
+      const baseFull = a.ref && iconType === 'alt' ? `Hoặc: ${a.ref}` : (a.option_label || a.title || baseShort);
       return {
         ...a,
         iconType,
