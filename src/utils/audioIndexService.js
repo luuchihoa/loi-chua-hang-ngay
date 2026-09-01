@@ -39,11 +39,27 @@ export const subscribeAudioIndex = (fn) => {
   return () => listeners.delete(fn);
 };
 
-export const loadAudioIndex = async () => {
+export const loadAudioIndex = async ({ force = false } = {}) => {
+  if (force) audioIndexPromise = null;
   if (!audioIndexPromise) {
-    audioIndexPromise = fetch('/audio_index.json')
-      .then(res => (res.ok ? res.json() : null))
-      .then(data => {
+    const gateway = (import.meta.env.VITE_AUDIO_GATEWAY_BASE || '').replace(/\/+$/, '');
+    const suffix = force ? `?t=${Date.now()}` : '';
+    audioIndexPromise = Promise.allSettled([
+      fetch(`/audio_index.json${suffix}`).then(res => (res.ok ? res.json() : null)),
+      gateway ? fetch(`${gateway}/v1/audio-index${suffix}`).then(res => (res.ok ? res.json() : null)) : null,
+    ])
+      .then(([staticResult, remoteResult]) => {
+        const staticData = staticResult.status === 'fulfilled' ? staticResult.value : null;
+        const remoteData = remoteResult.status === 'fulfilled' ? remoteResult.value : null;
+        const data = staticData || remoteData
+          ? {
+              ...(staticData || {}),
+              version: remoteData?.version || staticData?.version,
+              updatedAt: remoteData?.updatedAt || staticData?.updatedAt,
+              bible: [...new Set([...(staticData?.bible || []), ...(remoteData?.bible || [])])],
+              liturgy: staticData?.liturgy || [],
+            }
+          : null;
         if (data && Array.isArray(data.bible)) {
           audioIndexCache = data;
           try {
@@ -54,7 +70,8 @@ export const loadAudioIndex = async () => {
         }
         return audioIndexCache;
       })
-      .catch(() => audioIndexCache);
+      .catch(() => audioIndexCache)
+      .finally(() => { audioIndexPromise = null; });
   }
   return await audioIndexPromise;
 };

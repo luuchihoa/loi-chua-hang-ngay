@@ -11,4 +11,7 @@ id = "6ee2c65a57c14790bdb8d49d95e6243f"
 pattern = "audio.loichuamoingay.org"
 custom_domain = true
 
-# Worker thuộc tài khoản website; audio được đọc chéo tài khoản qua R2 S3 API và secret chỉ-đọc.
+# Worker thuộc tài khoản website; audio được đọc/ghi chéo tài khoản qua R2 S3 API.
+# Upload ở /admin cần thêm secrets SUPABASE_URL và SUPABASE_ANON_KEY.
+# Có thể đặt ADMIN_EMAILS (phân cách bằng dấu phẩy) để giới hạn thêm theo email.
+# ADMIN_MAX_UPLOAD_BYTES mặc định là 52428800 (50 MiB).

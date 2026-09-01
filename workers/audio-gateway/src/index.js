@@ -1,10 +1,17 @@
 import { resolveAudioPath, resolveLiturgyHlsPrefix } from './audioPath.js';
 import { AwsClient } from 'aws4fetch';
+import {
+  audioIndexKeyFromObject,
+  getMaxUploadBytes,
+  validateAdminAudioKey,
+  verifySupabaseAdmin,
+} from './adminAudio.js';
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 const memoryLimits = new Map();
 const hlsBundleExistence = new Map();
+let bibleCatalogMemory = null;
 
 const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(data), {
   status,
@@ -31,8 +38,9 @@ const corsHeaders = (request, env) => {
   if (!origin || !allowedOrigins(env).includes(origin)) return {};
   return {
     'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Headers': 'Authorization, Content-Type',
-    'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
+    'Access-Control-Allow-Headers': 'Authorization, Content-Type, X-Audio-Overwrite',
+    'Access-Control-Allow-Methods': 'POST, PUT, GET, HEAD, OPTIONS',
+    'Access-Control-Expose-Headers': 'ETag',
     Vary: 'Origin',
   };
 };
@@ -42,7 +50,7 @@ const enforceOrigin = (request, env) => {
   return !origin || allowedOrigins(env).includes(origin);
 };
 
-const getLimit = (kind) => ({ session: 6, ticket: 12, stream: 40 }[kind] || 12);
+const getLimit = (kind) => ({ session: 6, ticket: 12, stream: 40, admin: 120, upload: 60 }[kind] || 12);
 
 const isRateLimited = async (request, env, kind) => {
   const windowSeconds = 60;
@@ -141,19 +149,23 @@ const verifyTurnstile = async (token, request, env) => {
   return result.success === true;
 };
 
+const storageEndpoint = (env) => (env.R2_S3_ENDPOINT
+  || `https://${env.R2_STORAGE_ACCOUNT_ID}.r2.cloudflarestorage.com`).replace(/\/+$/, '');
+
 const objectUrl = (path, env) => {
-  const endpoint = (env.R2_S3_ENDPOINT || `https://${env.R2_STORAGE_ACCOUNT_ID}.r2.cloudflarestorage.com`).replace(/\/+$/, '');
   const key = path.split('/').map(encodeURIComponent).join('/');
-  return `${endpoint}/${encodeURIComponent(env.R2_BUCKET_NAME)}/${key}`;
+  return `${storageEndpoint(env)}/${encodeURIComponent(env.R2_BUCKET_NAME)}/${key}`;
 };
 
 // Cross-account R2 access is signed inside the Worker; credentials never reach the browser.
-const fetchObject = (path, env, init) => new AwsClient({
+const r2Client = (env) => new AwsClient({
   accessKeyId: env.R2_ACCESS_KEY_ID,
   secretAccessKey: env.R2_SECRET_ACCESS_KEY,
   service: 's3',
   region: 'auto',
-}).fetch(objectUrl(path, env), init);
+});
+
+const fetchObject = (path, env, init) => r2Client(env).fetch(objectUrl(path, env), init);
 
 const isObjectMissing = (response) => response.status === 404;
 
@@ -308,6 +320,114 @@ const handleHlsTicket = async (request, env, cors) => {
   }, 200, cors);
 };
 
+const decodeXml = (value) => value
+  .replace(/&amp;/g, '&')
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
+  .replace(/&quot;/g, '"')
+  .replace(/&#39;/g, "'");
+
+const listBibleAudio = async (env) => {
+  const keys = [];
+  let continuationToken = '';
+  do {
+    const url = new URL(`${storageEndpoint(env)}/${encodeURIComponent(env.R2_BUCKET_NAME)}`);
+    url.searchParams.set('list-type', '2');
+    url.searchParams.set('prefix', 'bible/');
+    url.searchParams.set('max-keys', '1000');
+    if (continuationToken) url.searchParams.set('continuation-token', continuationToken);
+    const response = await r2Client(env).fetch(url, { method: 'GET' });
+    if (!response.ok) throw new Error('Unable to list Bible audio');
+    const xml = await response.text();
+    for (const match of xml.matchAll(/<Key>([\s\S]*?)<\/Key>/g)) {
+      const key = audioIndexKeyFromObject(decodeXml(match[1]));
+      if (key) keys.push(key);
+    }
+    continuationToken = decodeXml(xml.match(/<NextContinuationToken>([\s\S]*?)<\/NextContinuationToken>/)?.[1] || '');
+  } while (continuationToken);
+  return [...new Set(keys)].sort();
+};
+
+const getBibleCatalog = async (env, force = false) => {
+  if (!force && bibleCatalogMemory?.expiresAt > Date.now()) return bibleCatalogMemory.data;
+  if (!force && env.AUDIO_RATE_LIMITS) {
+    const cached = await env.AUDIO_RATE_LIMITS.get('catalog:bible:v1', 'json');
+    if (cached?.bible) {
+      bibleCatalogMemory = { data: cached, expiresAt: Date.now() + 5 * 60_000 };
+      return cached;
+    }
+  }
+  const data = { version: 'r2-v1', updatedAt: new Date().toISOString(), bible: await listBibleAudio(env) };
+  bibleCatalogMemory = { data, expiresAt: Date.now() + 5 * 60_000 };
+  if (env.AUDIO_RATE_LIMITS) await env.AUDIO_RATE_LIMITS.put('catalog:bible:v1', JSON.stringify(data));
+  return data;
+};
+
+const requireAdmin = async (request, env, cors) => {
+  if (await isRateLimited(request, env, 'admin')) return { response: json({ error: 'Too many requests' }, 429, cors) };
+  const user = await verifySupabaseAdmin(request, env);
+  return user ? { user } : { response: json({ error: 'Admin authentication required' }, 401, cors) };
+};
+
+const handleAdminAudioStatus = async (request, env, cors) => {
+  const auth = await requireAdmin(request, env, cors);
+  if (auth.response) return auth.response;
+  const input = await request.json().catch(() => null);
+  const keys = Array.isArray(input?.keys) ? input.keys.slice(0, 40) : [];
+  const validKeys = keys.map(validateAdminAudioKey).filter(Boolean);
+  if (validKeys.length !== keys.length) return json({ error: 'Audio key invalid' }, 400, cors);
+
+  const objects = await Promise.all(validKeys.map(async (key) => {
+    const response = await fetchObject(key, env, { method: 'HEAD' });
+    if (!response.ok && !isObjectMissing(response)) return { key, error: true };
+    return {
+      key,
+      exists: response.ok,
+      size: Number(response.headers.get('Content-Length')) || null,
+      etag: response.headers.get('ETag'),
+    };
+  }));
+  return json({ objects }, 200, cors);
+};
+
+const handleAdminAudioUpload = async (request, env, cors) => {
+  if (await isRateLimited(request, env, 'upload')) return json({ error: 'Too many uploads' }, 429, cors);
+  const auth = await requireAdmin(request, env, cors);
+  if (auth.response) return auth.response;
+
+  const url = new URL(request.url);
+  const key = validateAdminAudioKey(url.searchParams.get('key'));
+  if (!key) return json({ error: 'Audio filename or directory invalid' }, 400, cors);
+  const size = Number(request.headers.get('Content-Length'));
+  const maxBytes = getMaxUploadBytes(env);
+  if (!Number.isFinite(size) || size <= 0) return json({ error: 'Content-Length is required' }, 411, cors);
+  if (size > maxBytes) return json({ error: 'Audio file is too large', maxBytes }, 413, cors);
+
+  const overwrite = request.headers.get('X-Audio-Overwrite') === 'true';
+  if (!overwrite) {
+    const existing = await fetchObject(key, env, { method: 'HEAD' });
+    if (existing.ok) return json({ error: 'Audio already exists', exists: true }, 409, cors);
+    if (!isObjectMissing(existing)) return json({ error: 'Audio storage unavailable' }, 503, cors);
+  }
+
+  const uploaded = await fetchObject(key, env, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'audio/mpeg',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Content-Length': String(size),
+    },
+    body: request.body,
+  });
+  if (!uploaded.ok) return json({ error: 'R2 rejected the upload' }, 502, cors);
+
+  if (key.startsWith('bible/')) {
+    bibleCatalogMemory = null;
+    await getBibleCatalog(env, true);
+  }
+  return json({ key, size, etag: uploaded.headers.get('ETag'), uploadedBy: auth.user.email }, 201, cors);
+};
+
 export default {
   async fetch(request, env) {
     const cors = corsHeaders(request, env);
@@ -322,6 +442,15 @@ export default {
     if (request.method === 'POST' && pathname === '/v1/session') return handleSession(request, env, cors);
     if (request.method === 'POST' && pathname === '/v1/ticket') return handleTicket(request, env, cors);
     if (request.method === 'POST' && pathname === '/v1/hls-ticket') return handleHlsTicket(request, env, cors);
+    if (request.method === 'GET' && pathname === '/v1/audio-index') {
+      try {
+        return json(await getBibleCatalog(env), 200, { ...cors, 'Cache-Control': 'public, max-age=300' });
+      } catch {
+        return json({ error: 'Audio catalog unavailable' }, 503, cors);
+      }
+    }
+    if (request.method === 'POST' && pathname === '/v1/admin/audio/status') return handleAdminAudioStatus(request, env, cors);
+    if (request.method === 'PUT' && pathname === '/v1/admin/audio') return handleAdminAudioUpload(request, env, cors);
     if ((request.method === 'GET' || request.method === 'HEAD') && pathname === '/v1/stream') return streamAudio(request, env, cors);
     if ((request.method === 'GET' || request.method === 'HEAD') && pathname === '/v1/hls') return streamHls(request, env, cors);
     return json({ error: 'Not found' }, 404, cors);
