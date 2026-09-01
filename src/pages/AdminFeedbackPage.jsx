@@ -1,27 +1,45 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { LogIn, LogOut, MessageSquareText, RefreshCw, ShieldCheck, UploadCloud } from 'lucide-react';
+import { ArrowLeft, KeyRound, LoaderCircle, LogIn, LogOut, MessageSquareText, RefreshCw, ShieldCheck, UploadCloud } from 'lucide-react';
 import AdminAudioUploader from '../components/admin/AdminAudioUploader.jsx';
 import { supabase } from '../lib/supabase.js';
+import { getPasswordRecoveryRedirect } from '../utils/adminPasswordRecovery.js';
 
 const STATUS_LABELS = { new: 'Mới', reviewing: 'Đang xem', resolved: 'Đã xử lý', archived: 'Lưu trữ' };
 
-function AdminLogin({ email, password, loginError, onEmailChange, onPasswordChange, onSubmit }) {
+function AdminLogin({
+  email,
+  password,
+  error,
+  forgotMode,
+  recoverySent,
+  submitting,
+  passwordUpdated,
+  onEmailChange,
+  onPasswordChange,
+  onSubmit,
+  onToggleMode,
+}) {
   return (
     <section className="mx-auto flex min-h-[70vh] max-w-md items-center px-4">
       <form onSubmit={onSubmit} className="w-full rounded-3xl border border-stone-200 bg-white p-6 shadow-xl dark:border-stone-800 dark:bg-stone-900">
-        <ShieldCheck className="text-amber-700" />
-        <h1 className="mt-3 font-serif text-2xl font-bold text-stone-900 dark:text-stone-100">Trang quản trị</h1>
-        <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Đăng nhập bằng tài khoản quản trị Supabase.</p>
+        {forgotMode ? <KeyRound className="text-amber-700" /> : <ShieldCheck className="text-amber-700" />}
+        <h1 className="mt-3 font-serif text-2xl font-bold text-stone-900 dark:text-stone-100">{forgotMode ? 'Khôi phục mật khẩu' : 'Trang quản trị'}</h1>
+        <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{forgotMode ? 'Nhập email quản trị để nhận liên kết tạo mật khẩu mới.' : 'Đăng nhập bằng tài khoản quản trị Supabase.'}</p>
+        {passwordUpdated && !forgotMode && <p role="status" className="mt-4 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">Mật khẩu đã được cập nhật. Bạn có thể đăng nhập bằng mật khẩu mới.</p>}
         <label className="mt-5 block text-sm font-bold">
           Email
           <input type="email" required value={email} onChange={onEmailChange} className="mt-1 h-11 w-full rounded-xl border border-stone-200 bg-white px-3 font-normal dark:border-stone-700 dark:bg-stone-800" />
         </label>
-        <label className="mt-3 block text-sm font-bold">
-          Mật khẩu
-          <input type="password" required value={password} onChange={onPasswordChange} className="mt-1 h-11 w-full rounded-xl border border-stone-200 bg-white px-3 font-normal dark:border-stone-700 dark:bg-stone-800" />
-        </label>
-        {loginError && <p role="alert" className="mt-3 text-xs font-semibold text-rose-600">{loginError}</p>}
-        <button className="mt-5 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-amber-700 text-sm font-bold text-white hover:bg-amber-800"><LogIn size={16} />Đăng nhập</button>
+        {!forgotMode && (
+          <label className="mt-3 block text-sm font-bold">
+            Mật khẩu
+            <input type="password" autoComplete="current-password" required value={password} onChange={onPasswordChange} className="mt-1 h-11 w-full rounded-xl border border-stone-200 bg-white px-3 font-normal dark:border-stone-700 dark:bg-stone-800" />
+          </label>
+        )}
+        {error && <p role="alert" className="mt-3 text-xs font-semibold text-rose-600">{error}</p>}
+        {recoverySent && forgotMode && <p role="status" className="mt-3 rounded-xl bg-emerald-50 p-3 text-sm font-semibold text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">Nếu email tồn tại, Supabase đã gửi liên kết. Hãy mở email mới nhất và kiểm tra cả thư mục Spam.</p>}
+        <button disabled={submitting} className="mt-5 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-amber-700 text-sm font-bold text-white hover:bg-amber-800 disabled:opacity-50">{submitting ? <LoaderCircle className="animate-spin" size={16} /> : forgotMode ? <KeyRound size={16} /> : <LogIn size={16} />}{submitting ? 'Đang xử lý…' : forgotMode ? 'Gửi email đặt lại mật khẩu' : 'Đăng nhập'}</button>
+        <button type="button" onClick={onToggleMode} className="mt-3 flex h-10 w-full items-center justify-center gap-2 text-sm font-semibold text-amber-800 hover:underline dark:text-amber-300">{forgotMode ? <><ArrowLeft size={15} />Quay lại đăng nhập</> : 'Quên mật khẩu?'}</button>
       </form>
     </section>
   );
@@ -69,6 +87,9 @@ export default function AdminFeedbackPage() {
   const [activeTab, setActiveTab] = useState('audio');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [forgotMode, setForgotMode] = useState(() => new URLSearchParams(window.location.search).get('forgot') === '1');
+  const [recoverySent, setRecoverySent] = useState(false);
+  const [authSubmitting, setAuthSubmitting] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -101,9 +122,24 @@ export default function AdminFeedbackPage() {
 
   const signIn = async (event) => {
     event.preventDefault();
+    setAuthSubmitting(true);
     setLoginError('');
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setLoginError('Không thể đăng nhập. Hãy kiểm tra email và mật khẩu.');
+    setAuthSubmitting(false);
+  };
+
+  const requestPasswordReset = async (event) => {
+    event.preventDefault();
+    setAuthSubmitting(true);
+    setLoginError('');
+    setRecoverySent(false);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: getPasswordRecoveryRedirect(window.location.origin),
+    });
+    if (error) setLoginError('Chưa thể gửi email. Hãy chờ một lúc rồi thử lại.');
+    else setRecoverySent(true);
+    setAuthSubmitting(false);
   };
 
   const updateStatus = async (id, status) => {
@@ -116,7 +152,25 @@ export default function AdminFeedbackPage() {
   };
 
   if (!authReady) return <div className="flex min-h-[70vh] items-center justify-center text-sm text-stone-500">Đang kiểm tra phiên đăng nhập…</div>;
-  if (!session) return <AdminLogin email={email} password={password} loginError={loginError} onEmailChange={(event) => setEmail(event.target.value)} onPasswordChange={(event) => setPassword(event.target.value)} onSubmit={signIn} />;
+  if (!session) return (
+    <AdminLogin
+      email={email}
+      password={password}
+      error={loginError}
+      forgotMode={forgotMode}
+      recoverySent={recoverySent}
+      submitting={authSubmitting}
+      passwordUpdated={new URLSearchParams(window.location.search).get('password') === 'updated'}
+      onEmailChange={(event) => setEmail(event.target.value)}
+      onPasswordChange={(event) => setPassword(event.target.value)}
+      onSubmit={forgotMode ? requestPasswordReset : signIn}
+      onToggleMode={() => {
+        setForgotMode((current) => !current);
+        setLoginError('');
+        setRecoverySent(false);
+      }}
+    />
+  );
 
   return (
     <section className="mx-auto min-h-[70vh] max-w-6xl px-4 py-8">

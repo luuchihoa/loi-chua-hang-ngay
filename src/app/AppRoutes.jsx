@@ -7,6 +7,7 @@ const BibleAudioPage = React.lazy(() => import('../pages/BibleAudioPage.jsx'));
 const CalendarPage = React.lazy(() => import('../pages/CalendarPage.jsx'));
 const BookmarksPage = React.lazy(() => import('../pages/BookmarksPage.jsx'));
 const AdminFeedbackPage = React.lazy(() => import('../pages/AdminFeedbackPage.jsx'));
+const AdminResetPasswordPage = React.lazy(() => import('../pages/AdminResetPasswordPage.jsx'));
 
 function PageFallback() {
   return (
@@ -33,6 +34,7 @@ export default function AppRoutes() {
       <Route path="/calendar" element={<LazyPage><CalendarPage /></LazyPage>} />
       <Route path="/bookmarks" element={<LazyPage><BookmarksPage /></LazyPage>} />
       <Route path="/admin" element={<LazyPage><AdminFeedbackPage /></LazyPage>} />
+      <Route path="/admin/reset-password" element={<LazyPage><AdminResetPasswordPage /></LazyPage>} />
     </Routes>
   );
 }
