@@ -18,12 +18,7 @@ import DatePicker from '../features/liturgy/components/DatePicker.jsx';
 import SearchResultItem from '../features/liturgy/components/SearchResultItem.jsx';
 import { LITURGICAL_SYNONYMS, QUICK_SEARCH_CHIPS } from '../features/liturgy/config/search.js';
 import SEO from '../components/seo/SEO.jsx';
-
-function getLiturgicalCycles(year) {
-  const sundayCycle = ["C", "A", "B"][year % 3];
-  const weekdayCycle = (year % 2 === 0) ? "II" : "I";
-  return { sundayCycle, weekdayCycle };
-}
+import { getLiturgicalCycles, hasCompletePrimaryLiturgyContent, mergeLiturgyRowsForKey } from '../utils/liturgyContentResolver.js';
 
 const LITURGICAL_THEMES = {
   amber: {
@@ -751,64 +746,7 @@ export default function LiturgyPage() {
 
         if (!error && data && data.length > 0) {
           const getDataForKey = (targetKey, preferredCycle = null) => {
-            if (!targetKey) return null;
-            const matches = data.filter(d => d.liturgy_key === targetKey);
-            if (matches.length === 0) return null;
-
-            // Xác định chu kỳ cần lấy
-            const reqCycle = preferredCycle || cycles.sundayCycle; // Thường là A, B hoặc C
-
-            // 1. Phân loại 3 dòng dữ liệu với 3 cấp độ
-            // Cấp 1: Dòng chứa Năm Chúa Nhật (A, B, C)
-            const sundayRow = preferredCycle 
-              ? matches.find(d => d.cycle === preferredCycle)
-              : matches.find(d => d.cycle === cycles.sundayCycle);
-            // Cấp 2: Dòng chứa Năm Ngày Thường (I, II)
-            const weekdayRow = (preferredCycle === 'I' || preferredCycle === 'II')
-              ? matches.find(d => d.cycle === preferredCycle)
-              : matches.find(d => d.cycle === cycles.weekdayCycle);
-            // Cấp 3: Dòng chung (all)
-            const allRow = matches.find(d => d.cycle === 'all');
-            
-            // Dòng dự phòng (nếu Database nhập sai chuẩn, không có A, B, C, I, II, all)
-            const fallbackRow = matches.find(d => d.cycle !== 'all' && d.cycle !== 'I' && d.cycle !== 'II' && !['A','B','C'].includes(d.cycle)) || matches[0];
-
-            const merged = {};
-            const allFields = [
-              'title', 'mass_title', 'quote', 
-              'r1_ref', 'r1_quote', 'r1_intro', 'r1_content', 
-              'psalm_ref', 'psalm_content', 
-              'r2_ref', 'r2_quote', 'r2_intro', 'r2_content', 
-              'gospel_ref', 'gospel_alleluia', 'gospel_intro', 'gospel_content', 
-              'reflection', 'extra_readings'
-            ];
-
-            const isNonEmpty = (val) => {
-              if (!val) return false;
-              if (Array.isArray(val)) return val.length > 0;
-              const plainText = val.toString().replace(/<[^>]*>/g, '').trim();
-              return plainText.length > 0;
-            };
-
-            // 2. Trộn dữ liệu theo thứ tự ưu tiên: Sunday > Weekday > All > Fallback
-            for (const f of allFields) {
-              const valFromSunday = sundayRow?.[f];
-              const valFromWeekday = weekdayRow?.[f];
-              const valFromAll = allRow?.[f];
-              const valFromFallback = fallbackRow?.[f];
-
-              if (isNonEmpty(valFromSunday)) {
-                merged[f] = valFromSunday;       // Có A/B/C -> Lấy ngay
-              } else if (isNonEmpty(valFromWeekday)) {
-                merged[f] = valFromWeekday;      // Thiếu A/B/C -> Lấy I/II
-              } else if (isNonEmpty(valFromAll)) {
-                merged[f] = valFromAll;          // Thiếu I/II -> Lấy all
-              } else if (isNonEmpty(valFromFallback)) {
-                merged[f] = valFromFallback;     // Quá xui, lấy dự phòng
-              }
-            }
-
-            return Object.keys(merged).length > 0 ? merged : null;
+            return mergeLiturgyRowsForKey(data, targetKey, cycles, preferredCycle);
           };
           const feastData = getDataForKey(currentInfo.key) 
                          || getDataForKey(`feast_${mPadded}_${dPadded}`) 
@@ -1574,6 +1512,9 @@ export default function LiturgyPage() {
     : isDateSpecific
     ? `https://loichuamoingay.org/liturgy/${dateStr}`
     : 'https://loichuamoingay.org/liturgy';
+  const seoRobots = isDateSpecific && !hasCompletePrimaryLiturgyContent(content)
+    ? 'noindex, follow'
+    : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
   return (
     <div className="min-h-screen bg-[#FDFCF9] dark:bg-[#12100E] text-stone-800 dark:text-stone-200 transition-colors duration-500 fade-in-up pb-32 overflow-x-hidden">
@@ -1581,6 +1522,7 @@ export default function LiturgyPage() {
         title={seoTitle}
         description={seoDescription}
         canonical={canonicalUrl}
+        robots={seoRobots}
         jsonLd={liturgyInfo ? {
           "@context": "https://schema.org",
           "@graph": [

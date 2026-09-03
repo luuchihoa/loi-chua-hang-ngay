@@ -22,6 +22,7 @@ const bibleIndexPath = path.join(__dirname, '../src/data/bible/bibleIndex.json')
 const bibleData = JSON.parse(fs.readFileSync(bibleIndexPath, 'utf8'));
 
 import { getLiturgyInfo } from '../src/utils/liturgyCalendar.js';
+import { hasCompletePrimaryLiturgyContent, resolveLiturgyContentForDate } from '../src/utils/liturgyContentResolver.js';
 
 const allBooks = [
   ...(bibleData.old_testament || []).map(b => ({ ...b, testament: 'old' })),
@@ -71,7 +72,29 @@ const loadChapterContent = async () => {
 
 const bibleChapterContent = await loadChapterContent();
 
-console.log('🚀 Đang prerender trang chính, 73 sách và toàn văn 1328 chương Kinh Thánh...');
+const loadLiturgyRows = async () => {
+  const rows = [];
+  const pageSize = 1000;
+
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await seoSupabase
+      .from('liturgy_contents')
+      .select('*')
+      .order('liturgy_key', { ascending: true })
+      .order('cycle', { ascending: true })
+      .range(from, from + pageSize - 1);
+
+    if (error) throw new Error(`Không thể tải liturgy_contents từ Supabase: ${error.message}`);
+    rows.push(...(data || []));
+    if (!data || data.length < pageSize) break;
+  }
+
+  return rows;
+};
+
+const liturgyRows = await loadLiturgyRows();
+
+console.log('🚀 Đang prerender bài đọc phụng vụ, 73 sách và toàn văn 1328 chương Kinh Thánh...');
 
 const DOMAIN = 'https://loichuamoingay.org';
 const DEFAULT_IMAGE = `${DOMAIN}/og-image.png`;
@@ -97,6 +120,34 @@ const renderChapterContent = (content) => content
     return `<p class="leading-8 text-stone-800 dark:text-stone-100">${escapeHtml(line)}</p>`;
   })
   .join('\n');
+
+const renderTextBlocks = (content) => String(content || '')
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter(Boolean)
+  .map((line) => `<p class="leading-8 text-stone-800 dark:text-stone-100">${escapeHtml(line)}</p>`)
+  .join('\n');
+
+const renderLiturgySection = ({ id, label, ref, quote, intro, content }) => {
+  if (!content) return '';
+  return `
+    <section aria-labelledby="${id}" class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-stone-900 sm:p-7">
+      <h2 id="${id}" class="font-serif text-2xl font-bold text-amber-900 dark:text-amber-100">${label}</h2>
+      ${ref ? `<p class="mt-2 font-semibold text-amber-800 dark:text-amber-300">${escapeHtml(ref)}</p>` : ''}
+      ${quote ? `<blockquote class="mt-3 border-l-4 border-amber-500 pl-4 italic text-stone-600 dark:text-stone-300">${escapeHtml(quote)}</blockquote>` : ''}
+      ${intro ? `<p class="mt-5 font-semibold text-stone-700 dark:text-stone-200">${escapeHtml(intro)}</p>` : ''}
+      <div class="mt-4 space-y-3">${renderTextBlocks(content)}</div>
+    </section>
+  `;
+};
+
+const renderLiturgyContent = (content, dateStr) => [
+  renderLiturgySection({ id: `bai-doc-1-${dateStr}`, label: 'Bài đọc I', ref: content.r1_ref, quote: content.r1_quote, intro: content.r1_intro, content: content.r1_content }),
+  renderLiturgySection({ id: `dap-ca-${dateStr}`, label: 'Đáp ca', ref: content.psalm_ref, content: content.psalm_content }),
+  renderLiturgySection({ id: `bai-doc-2-${dateStr}`, label: 'Bài đọc II', ref: content.r2_ref, quote: content.r2_quote, intro: content.r2_intro, content: content.r2_content }),
+  renderLiturgySection({ id: `tin-mung-${dateStr}`, label: 'Tin Mừng', ref: content.gospel_ref, quote: content.gospel_alleluia, intro: content.gospel_intro, content: content.gospel_content }),
+  content.reflection ? renderLiturgySection({ id: `suy-niem-${dateStr}`, label: 'Suy niệm Lời Chúa', content: content.reflection }) : '',
+].filter(Boolean).join('\n');
 
 function createStaticPage(routePath, title, description, jsonLdSchema = null, bodySkeleton = '', robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1') {
   const targetDir = path.join(DIST_DIR, routePath);
@@ -281,6 +332,7 @@ staticPages.forEach((page) => {
 const currentYear = new Date().getFullYear();
 const isLeap = (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0;
 const totalDays = isLeap ? 366 : 365;
+const liturgySitemapUrls = [];
 
 const formatDateToYYYYMMDD = (d) => {
   const y = d.getFullYear();
@@ -294,6 +346,9 @@ for (let d = 0; d < totalDays; d++) {
   const dateStr = formatDateToYYYYMMDD(date);
   const formattedDate = date.toLocaleDateString('vi-VN');
   const info = getLiturgyInfo(date);
+  const { content: liturgyContent } = resolveLiturgyContentForDate(date, liturgyRows);
+  const isIndexableLiturgy = hasCompletePrimaryLiturgyContent(liturgyContent);
+  const gospelReference = liturgyContent?.gospel_ref ? ` Tin Mừng: ${liturgyContent.gospel_ref}.` : '';
 
   const prevDate = new Date(date);
   prevDate.setDate(prevDate.getDate() - 1);
@@ -329,9 +384,11 @@ for (let d = 0; d < totalDays; d++) {
           <a href="/liturgy/${nextDateStr}" class="px-3.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-amber-600 hover:text-white transition-colors">Ngày sau (${nextDate.toLocaleDateString('vi-VN')}) ›</a>
         </nav>
 
-        <div class="p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm text-center">
-          <p class="text-sm font-medium text-stone-600 dark:text-stone-300">Đang tải toàn văn Bài Đọc I, Đáp Ca, Tin Mừng và bài suy niệm Lời Chúa ngày ${formattedDate}...</p>
-        </div>
+        ${isIndexableLiturgy ? `<div class="space-y-6">${renderLiturgyContent(liturgyContent, dateStr)}</div>` : `
+          <div class="p-6 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm text-center">
+            <p class="text-sm font-medium text-stone-600 dark:text-stone-300">Nội dung bài đọc ngày ${formattedDate} chưa được xuất bản đầy đủ.</p>
+          </div>
+        `}
       </div>
     </div>
   `;
@@ -339,7 +396,7 @@ for (let d = 0; d < totalDays; d++) {
   createStaticPage(
     `/liturgy/${dateStr}`,
     `Lời Chúa Ngày ${formattedDate} - ${info.displayName || 'Phụng Vụ'}`,
-    `Bài đọc Phụng Vụ Thánh Lễ và Suy niệm Tin Mừng ngày ${formattedDate} (${info.displayName || ''}). Lời Chúa Mỗi Ngày.`,
+    `Bài đọc Phụng Vụ Thánh Lễ và Suy niệm Tin Mừng ngày ${formattedDate} (${info.displayName || ''}).${gospelReference} Lời Chúa Mỗi Ngày.`,
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -365,13 +422,19 @@ for (let d = 0; d < totalDays; d++) {
           "description": `Bài đọc Phụng Vụ Thánh Lễ và Suy niệm Tin Mừng ngày ${formattedDate}.`,
           "inLanguage": "vi",
           "mainEntityOfPage": `${DOMAIN}/liturgy/${dateStr}`,
-          "datePublished": `${dateStr}T00:00:00+07:00`
+          "datePublished": `${dateStr}T00:00:00+07:00`,
+          "isAccessibleForFree": true,
+          "publisher": { "@id": `${DOMAIN}/#organization` },
+          "image": DEFAULT_IMAGE
         }
       ]
     },
     liturgySkeleton,
-    'noindex, follow'
+    isIndexableLiturgy
+      ? 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+      : 'noindex, follow'
   );
+  if (isIndexableLiturgy) liturgySitemapUrls.push(`${DOMAIN}/liturgy/${dateStr}`);
   generatedCount++;
 }
 
@@ -562,7 +625,7 @@ const staticSitemapUrls = [`${DOMAIN}/`, ...staticPages
   .filter((page) => !page.robots?.includes('noindex'))
   .map((page) => `${DOMAIN}${page.path}`)];
 const bookSitemapUrls = allBooks.map((book) => `${DOMAIN}/bible/${book.id}`);
-const sitemapUrls = [...staticSitemapUrls, ...bookSitemapUrls, ...bibleSitemapUrls];
+const sitemapUrls = [...staticSitemapUrls, ...liturgySitemapUrls, ...bookSitemapUrls, ...bibleSitemapUrls];
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`).join('\n')}\n</urlset>\n`;
 
 fs.writeFileSync(path.join(__dirname, '../public/sitemap.xml'), sitemapXml, 'utf8');

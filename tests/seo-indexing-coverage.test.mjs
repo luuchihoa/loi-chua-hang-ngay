@@ -40,8 +40,9 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
       u.replace(/<\/?loc>/g, '')
     );
 
-    const expectedTotal = 5 + allBooks.length + totalChapters;
-    assert.equal(urls.length, expectedTotal, `Sitemap must contain exactly ${expectedTotal} URLs, found ${urls.length}`);
+    const liturgyUrls = urls.filter((url) => url.startsWith('https://loichuamoingay.org/liturgy/'));
+    const expectedTotal = 5 + allBooks.length + totalChapters + liturgyUrls.length;
+    assert.equal(urls.length, expectedTotal, `Sitemap must contain exactly ${expectedTotal} canonical URLs, found ${urls.length}`);
 
     // Verify critical static routes
     assert.ok(urls.includes('https://loichuamoingay.org/'), 'Sitemap must include /');
@@ -50,7 +51,7 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
     assert.ok(urls.includes('https://loichuamoingay.org/bible-audio'), 'Sitemap must include /bible-audio');
     assert.ok(urls.includes('https://loichuamoingay.org/calendar'), 'Sitemap must include /calendar');
 
-    assert.ok(!urls.some((url) => url.startsWith('https://loichuamoingay.org/liturgy/')), 'Placeholder liturgy dates must not be submitted for indexing');
+    assert.ok(liturgyUrls.length > 0, 'Complete daily liturgy pages must be submitted for indexing');
 
     // Verify all 73 book hubs
     allBooks.forEach(b => {
