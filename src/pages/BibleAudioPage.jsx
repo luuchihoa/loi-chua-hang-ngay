@@ -484,10 +484,11 @@ export default function BibleAudioPage() {
         description="Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao truyền cảm."
         jsonLd={{
           "@context": "https://schema.org",
-          "@type": "AudioObject",
+          "@type": "CollectionPage",
           "name": "Kinh Thánh Audio Giọng Đọc Truyền Cảm | Lời Chúa Mỗi Ngày",
           "description": "Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao.",
-          "contentUrl": "https://loichuamoingay.org/bible-audio"
+          "url": "https://loichuamoingay.org/bible-audio",
+          "inLanguage": "vi"
         }}
       />
       <style>{`

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ArrowLeft, KeyRound, LoaderCircle, LogIn, LogOut, MessageSquareText, RefreshCw, ShieldCheck, UploadCloud } from 'lucide-react';
 import AdminAudioUploader from '../components/admin/AdminAudioUploader.jsx';
+import SEO from '../components/seo/SEO.jsx';
 import { supabase } from '../lib/supabase.js';
 import { getPasswordRecoveryRedirect } from '../utils/adminPasswordRecovery.js';
 
@@ -151,29 +152,42 @@ export default function AdminFeedbackPage() {
     setItems((current) => current.map((item) => item.id === id ? { ...item, status } : item));
   };
 
-  if (!authReady) return <div className="flex min-h-[70vh] items-center justify-center text-sm text-stone-500">Đang kiểm tra phiên đăng nhập…</div>;
-  if (!session) return (
-    <AdminLogin
-      email={email}
-      password={password}
-      error={loginError}
-      forgotMode={forgotMode}
-      recoverySent={recoverySent}
-      submitting={authSubmitting}
-      passwordUpdated={new URLSearchParams(window.location.search).get('password') === 'updated'}
-      onEmailChange={(event) => setEmail(event.target.value)}
-      onPasswordChange={(event) => setPassword(event.target.value)}
-      onSubmit={forgotMode ? requestPasswordReset : signIn}
-      onToggleMode={() => {
-        setForgotMode((current) => !current);
-        setLoginError('');
-        setRecoverySent(false);
-      }}
+  const adminSeo = (
+    <SEO
+      title="Trang quản trị"
+      description="Khu vực quản trị nội bộ của Lời Chúa Mỗi Ngày."
+      robots="noindex, nofollow, noarchive"
     />
   );
 
+  if (!authReady) return <>{adminSeo}<div className="flex min-h-[70vh] items-center justify-center text-sm text-stone-500">Đang kiểm tra phiên đăng nhập…</div></>;
+  if (!session) return (
+    <>
+      {adminSeo}
+      <AdminLogin
+        email={email}
+        password={password}
+        error={loginError}
+        forgotMode={forgotMode}
+        recoverySent={recoverySent}
+        submitting={authSubmitting}
+        passwordUpdated={new URLSearchParams(window.location.search).get('password') === 'updated'}
+        onEmailChange={(event) => setEmail(event.target.value)}
+        onPasswordChange={(event) => setPassword(event.target.value)}
+        onSubmit={forgotMode ? requestPasswordReset : signIn}
+        onToggleMode={() => {
+          setForgotMode((current) => !current);
+          setLoginError('');
+          setRecoverySent(false);
+        }}
+      />
+    </>
+  );
+
   return (
-    <section className="mx-auto min-h-[70vh] max-w-6xl px-4 py-8">
+    <>
+      {adminSeo}
+      <section className="mx-auto min-h-[70vh] max-w-6xl px-4 py-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-amber-700">Quản trị</p>
@@ -193,6 +207,7 @@ export default function AdminFeedbackPage() {
           ? <AdminAudioUploader session={session} />
           : <FeedbackList items={items} loading={loading} error={dataError} onRefresh={loadFeedback} onStatusChange={updateStatus} />}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

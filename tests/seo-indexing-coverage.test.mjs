@@ -107,6 +107,29 @@ test('SEO & Google Indexing Coverage Suite', async (t) => {
     assert.ok(html.includes('<meta name="robots" content="noindex, follow" />'), 'Bookmarks page must have noindex, follow meta tag');
   });
 
+  await t.test('private pages and 404 responses are protected from indexing', () => {
+    if (!fs.existsSync(distDir)) {
+      t.skip('dist directory does not exist yet');
+      return;
+    }
+
+    ['/admin', '/admin/reset-password'].forEach((route) => {
+      const html = fs.readFileSync(path.join(distDir, `${route}/index.html`), 'utf8');
+      assert.ok(html.includes('<meta name="robots" content="noindex, nofollow, noarchive" />'), `${route} must be noindex`);
+    });
+
+    const notFoundHtml = fs.readFileSync(path.join(distDir, '404.html'), 'utf8');
+    assert.ok(notFoundHtml.includes('<meta name="robots" content="noindex, follow, noarchive" />'), '404 page must be noindex');
+    assert.ok(notFoundHtml.includes('<title>Không tìm thấy trang | Lời Chúa Mỗi Ngày</title>'), '404 page must have a clear title');
+    assert.ok(!notFoundHtml.includes('<link rel="canonical"'), '404 page must not claim another canonical URL');
+  });
+
+  await t.test('Cloudflare serves unknown paths as real 404 responses', () => {
+    const config = JSON.parse(fs.readFileSync(path.join(rootDir, 'wrangler.jsonc'), 'utf8'));
+    assert.equal(config.assets?.directory, './dist');
+    assert.equal(config.assets?.not_found_handling, '404-page');
+  });
+
   await t.test('Sample pre-rendered HTML files contain complete SEO meta tags & Structured Data', () => {
     if (!fs.existsSync(distDir)) {
       t.skip('dist directory does not exist yet');

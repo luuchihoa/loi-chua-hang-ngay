@@ -13,15 +13,13 @@ export default function SEO({
   type = 'website',
   robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
   canonical = null,
-  jsonLd = null,
-  speakableSelectors = ['.liturgy-gospel-text', '.liturgy-homily-text'],
-  audioData = null
+  jsonLd = null
 }) {
   const location = useLocation();
   const rawPath = location.pathname.endsWith('/') && location.pathname !== '/'
     ? location.pathname.slice(0, -1)
     : location.pathname;
-  const canonicalUrl = canonical || `${DOMAIN}${rawPath}`;
+  const canonicalUrl = canonical || (rawPath === '/' ? `${DOMAIN}/` : `${DOMAIN}${rawPath}`);
   const fullTitle = title ? `${title} | Lời Chúa Mỗi Ngày` : DEFAULT_TITLE;
 
   useEffect(() => {
@@ -67,39 +65,22 @@ export default function SEO({
     // 4. Hợp nhất Schema JSON-LD đa tầng (WebSite, Sitelinks Search Box, Speakable, Audio, FAQ)
     const baseSchemas = [
       {
-        "@context": "https://schema.org",
         "@type": "WebSite",
+        "@id": `${DOMAIN}/#website`,
         "name": "Lời Chúa Mỗi Ngày",
-        "url": DOMAIN,
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": `${DOMAIN}/bible?search={search_term_string}`,
-          "query-input": "required name=search_term_string"
-        }
+        "url": `${DOMAIN}/`,
+        "inLanguage": "vi"
       },
       {
-        "@context": "https://schema.org",
         "@type": "WebPage",
+        "@id": `${canonicalUrl}#webpage`,
         "name": fullTitle,
         "url": canonicalUrl,
-        "speakable": {
-          "@type": "SpeakableSpecification",
-          "cssSelector": speakableSelectors
-        }
+        "description": description,
+        "inLanguage": "vi",
+        "isPartOf": { "@id": `${DOMAIN}/#website` }
       }
     ];
-
-    if (audioData) {
-      baseSchemas.push({
-        "@context": "https://schema.org",
-        "@type": "AudioObject",
-        "name": audioData.name || fullTitle,
-        "description": description,
-        "contentUrl": audioData.url,
-        "encodingFormat": "audio/mpeg",
-        "uploadDate": new Date().toISOString()
-      });
-    }
 
     if (jsonLd) {
       if (Array.isArray(jsonLd)) {
@@ -124,7 +105,7 @@ export default function SEO({
       "@graph": baseSchemas
     });
 
-  }, [fullTitle, description, canonicalUrl, image, type, jsonLd, speakableSelectors, audioData]);
+  }, [fullTitle, description, canonicalUrl, image, type, jsonLd]);
 
   return null;
 }

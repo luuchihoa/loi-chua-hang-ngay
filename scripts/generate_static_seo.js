@@ -166,6 +166,33 @@ function createStaticPage(routePath, title, description, jsonLdSchema = null, bo
   }
 }
 
+function createNotFoundPage() {
+  const title = 'Không tìm thấy trang | Lời Chúa Mỗi Ngày';
+  const description = 'Đường dẫn này không tồn tại trên Lời Chúa Mỗi Ngày.';
+  const body = `
+    <main class="min-h-screen bg-stone-50 p-6 text-stone-800">
+      <div class="mx-auto max-w-xl py-24 text-center">
+        <p class="font-serif text-6xl font-bold text-amber-700">404</p>
+        <h1 class="mt-4 font-serif text-3xl font-bold">Không tìm thấy trang</h1>
+        <p class="mt-3 text-stone-600">Đường dẫn có thể đã thay đổi hoặc không còn tồn tại.</p>
+        <a href="/" class="mt-7 inline-flex rounded-xl bg-amber-700 px-5 py-3 font-semibold text-white">Về trang Lời Chúa</a>
+      </div>
+    </main>
+  `;
+
+  const html = TEMPLATE
+    .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta name="description" content=".*?" \/>/g, '')
+    .replace(/<meta name="robots" content=".*?" \/>/g, '')
+    .replace(/<link rel="canonical" href=".*?" \/>/g, '')
+    .replace(/<meta property="og:.*?" content=".*?" \/>/g, '')
+    .replace(/<meta name="twitter:.*?" content=".*?" \/>/g, '')
+    .replace('</head>', `    <meta name="description" content="${description}" />\n    <meta name="robots" content="noindex, follow, noarchive" />\n  </head>`)
+    .replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+
+  fs.writeFileSync(path.join(DIST_DIR, '404.html'), html, 'utf8');
+}
+
 let generatedCount = 0;
 
 // ─────────────────────────────────────────────────────────────
@@ -202,10 +229,11 @@ const staticPages = [
     description: 'Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao truyền cảm.',
     schema: {
       "@context": "https://schema.org",
-      "@type": "AudioObject",
+      "@type": "CollectionPage",
       "name": "Kinh Thánh Audio Giọng Đọc Truyền Cảm",
       "description": "Nghe đọc Kinh Thánh Công giáo trọn bộ 73 sách Cựu Ước và Tân Ước với âm thanh chất lượng cao.",
-      "contentUrl": `${DOMAIN}/bible-audio`
+      "url": `${DOMAIN}/bible-audio`,
+      "inLanguage": "vi"
     }
   },
   {
@@ -224,6 +252,20 @@ const staticPages = [
     title: 'Bài Đọc Đã Lưu',
     description: 'Danh sách bài đọc Lời Chúa bạn đã đánh dấu yêu thích trên Lời Chúa Mỗi Ngày.',
     robots: 'noindex, follow',
+    schema: null
+  },
+  {
+    path: '/admin',
+    title: 'Trang Quản Trị',
+    description: 'Khu vực quản trị nội bộ của Lời Chúa Mỗi Ngày.',
+    robots: 'noindex, nofollow, noarchive',
+    schema: null
+  },
+  {
+    path: '/admin/reset-password',
+    title: 'Đặt Lại Mật Khẩu Quản Trị',
+    description: 'Trang bảo mật dành cho quản trị viên Lời Chúa Mỗi Ngày.',
+    robots: 'noindex, nofollow, noarchive',
     schema: null
   }
 ];
@@ -517,7 +559,7 @@ allBooks.forEach((book) => {
 });
 
 const staticSitemapUrls = [`${DOMAIN}/`, ...staticPages
-  .filter((page) => page.path !== '/bookmarks')
+  .filter((page) => !page.robots?.includes('noindex'))
   .map((page) => `${DOMAIN}${page.path}`)];
 const bookSitemapUrls = allBooks.map((book) => `${DOMAIN}/bible/${book.id}`);
 const sitemapUrls = [...staticSitemapUrls, ...bookSitemapUrls, ...bibleSitemapUrls];
@@ -525,5 +567,6 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http:
 
 fs.writeFileSync(path.join(__dirname, '../public/sitemap.xml'), sitemapXml, 'utf8');
 fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+createNotFoundPage();
 
 console.log(`✅ Đã hoàn tất Pre-rendering static HTML cho toàn bộ ${generatedCount} đường dẫn tĩnh trong dist/!`);

@@ -1570,7 +1570,7 @@ export default function LiturgyPage() {
     : `Bài đọc Phụng Vụ và Suy niệm Tin Mừng Lời Chúa ngày ${formattedDate} (${liturgyInfo?.displayName || ''}). Tin Mừng: ${content?.gospel_ref || ''}`;
 
   const canonicalUrl = isHome
-    ? 'https://loichuamoingay.org'
+    ? 'https://loichuamoingay.org/'
     : isDateSpecific
     ? `https://loichuamoingay.org/liturgy/${dateStr}`
     : 'https://loichuamoingay.org/liturgy';
